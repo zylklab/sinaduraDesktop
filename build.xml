@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!--
+# Copyright 2008 zylk.net
+#
+# This file is part of Sinadura.
+#
+# Sinadura is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# Sinadura is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Sinadura.  If not, see <http://www.gnu.org/licenses/>. [^]
+#
+# See COPYRIGHT.txt for copyright notices and details.
+#
+-->
+<project name="sinadura" basedir="." default="build">
+
+	<property file="build.properties" />
+	<property name="SRC" value="src" />
+	<property name="BIN" value="bin" />
+	<property name="LIB" value="lib" />
+	<property name="TARGET" value="target" />
+	<property name="STAGING-BIN" value="${TARGET}/staging/bin" />
+	<property name="STAGING-LIB" value="${TARGET}/staging/lib" />
+	<property name="TEMP" value="temp" />
+	<property name="INSTALL-RESOURCES" value="install-resources" />
+	<property name="RESOURCES" value="resources" />
+
+	<property name="MAC-APP-TEMPLATE" value="sinadura-template" />
+	<property name="SINADURA-VERSION-APP" value="sinadura_v${version}.app" />
+	<property name="MAC-APP-TEMPLATE-MACOS" value="sinadura_v${version}.app/Contents/MacOS" />
+
+	<target name="build">
+		<echo message="Creating the .app file." />
+
+		<copy todir="${TARGET}/${SINADURA-VERSION-APP}">
+			<fileset dir="installer/${MAC-APP-TEMPLATE}" />
+		</copy>
+
+		<copy file="${STAGING-BIN}/sinadura.sh" todir="${TARGET}/${MAC-APP-TEMPLATE-MACOS}/${BIN}" overwrite="true" />
+		
+		<copy todir="${TARGET}/${MAC-APP-TEMPLATE-MACOS}/resources-ext">
+			<fileset dir="resources-ext" />
+		</copy>
+
+		<copy todir="${TARGET}/${MAC-APP-TEMPLATE-MACOS}/${BIN}">
+			<fileset dir="${BIN}" />
+		</copy>
+
+		<copy todir="${TARGET}/${MAC-APP-TEMPLATE-MACOS}/${LIB}">
+			<fileset dir="${STAGING-LIB}" />
+		</copy>
+
+		<copy todir="${TARGET}/${MAC-APP-TEMPLATE-MACOS}/${RESOURCES}">
+			<fileset dir="${RESOURCES}" />
+		</copy>
+
+
+		<chmod file="${TARGET}/${MAC-APP-TEMPLATE-MACOS}/${BIN}/sinadura.sh" perm="ug+rx" />
+
+		<!-- Clean working directory -->
+		<echo message="Cleaning up working directory..." />
+
+		<delete dir="${TARGET}/${TEMP}/" quiet="true" includeemptydirs="true" />
+
+		<echo message="Done" />
+	</target>
+</project>

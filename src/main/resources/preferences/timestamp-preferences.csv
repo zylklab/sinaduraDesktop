@@ -1,0 +1,4 @@
+name;url;
+izenpe;http://ocsp.izenpe.com:8093;
+CATCert;http://psis.catcert.net/psis/catcert/tsp;
+ACCV;http://tss.accv.es:8318/tsa;

@@ -1,0 +1,117 @@
+# Copyright 2008 zylk.net
+#
+# This file is part of Sinadura.
+#
+# Sinadura is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# Sinadura is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Sinadura.  If not, see <http://www.gnu.org/licenses/>. [^]
+#
+# See COPYRIGHT.txt for copyright notices and details.
+#
+
+=== Cambios en la versión 3.0.0 ===
+
+- Firma de cualquier tipo de documento mediante firmas XADES-XL, XADES-T y XADES-BES detached.
+- La validación de documentos se ha mejorado notablemente.
+- Se ha añadido un visor para mostrar la información de las firmas.
+- Validacion por consola de documentos PDF.
+- Firma y validación por consola de cualquier tipo de documentos mediante firmas XADES.
+- Validación de ficheros de tipo PKCS7 (extensión p7s).
+- Autodetección de las preferencias del proxy del sistema.
+- Soporte para scripts proxy PAC.
+- Incluido un sistema de notificación de nuevas versiones.
+- Comprobaciones adicionales de la validez del certificado al firmar.
+- Envio de información anónima de uso.
+- Mejoras en la detección de java (java de 32 bits en sistemas operativos de 64 bits).
+- Posibilidad de abrir directamente un documento con Sinadura (Abrir con).
+- Ahora se validan automáticamente los documentos al importarlos a la tabla.
+- Posibilidad de seleccionar el número de página donde aparece el sello de la firma.
+- Ahora se completa la cadena de certificados en las firmas realizadas con certificados pkcs12.
+
+
+
+=== Cambios en la versión 2.0 ===
+
+- Mejoras en la firma (firma avanzada)
+	- Se añaden todos los certificados de la cadena firmante.
+	- Se incluye la comprobación online del estado de revocación (OCSP) del firmante.
+
+- Delegación en el cliente de email predeterminado de SO para el envío de emails.
+ 	
+- Nueva funcionalidad para la validación de pdfs. Modelo basado en:
+	- Certificados de confianza.
+	- Validación de la cadena completa.
+	- Comprobación online del estado de revocación (OCSP y CRL).
+	
+- Mejoras en el tratamiento de errores (especialmente en la carga de las tarjetas criptográficas).
+	- Password incorrecta, bloqueo de la tarjeta,...
+
+- Mejoras en la estructuración del core
+	- Estandarización de los parámetros (InputStream, Image, OutputStream,... )
+	
+- Modulo de firma a través de linea de comandos (consola).
+
+- Añadida configuración de proxy.
+
+- Certificación de documentos.
+
+- Mejoras de usabilidad en la interfaz
+	- Cambios en la gestión de los certificados
+	- Posibilidad de configuración de múltiples:
+		- Almacenes software
+		- Dispositivos criptográficos
+		- Timestamp authorities
+	- Interfaz gráfica para el posicionamiento del sello (de momento optimizado para A4)
+	- Eliminación de las cargas innecesarias de los dispositivos hardware y software.
+	
+- Mejoras en la seguridad
+	- Borrados los almacenamientos de la password.
+	- Logout del dispositivo hardware en cada sesión de firma.
+
+	
+
+=== Cambios en la versión 1.3 ===
+
+- Instalador de la aplicación (con accesos directos en el menu de aplicaciones).
+- Validación antes de enviar emails.
+- Revisados y corregidos los texto en todos los idiomas disponibles.
+- Mejoras para evitar el bloqueo de tarjetas.
+- Diversos bugs corregidos.
+
+=== Cambios en la versión 1.2 ===
+
+- Corregido bug al usar el servidor de izenpe (ahora funciona correctamente).
+- Añadido el servidor de tiempos de izenpe como servidor por defecto.
+- Añadido checkbox en las preferencias para habilitar la firma con timestamp.
+- Añadidas hotkeys en la ventana principal:
+	F1 -> ayuda
+	F5 -> firmar
+	Control + o -> abrir archivo
+	Control + d -> abrir directorio
+	supr -> para eliminar archivos de la lista (seleccionados previamente)
+
+- Mensaje de aviso al enviar email cuando no están configuradas las preferencias del correo.
+- Diversos bugs corregidos.
+
+
+=== Cambios en la versión 1.1 ===
+
+- Posibilidad de multifirma.
+- Mejoras en la gestión de passwords.
+- Cambios en la configuracion de las coordenadas del sello (ahora solo es necesario 2 coordenadas).
+- Mejoras en la interfaz:
+	- Nuevos iconos.
+	- Ventanas alineadas correctamente.
+	...
+- Añadida ventana de créditos.
+- Diversos bugs corregidos.
+

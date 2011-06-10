@@ -1,0 +1,32 @@
+Developers:
+
+	- Gustavo Fernández Gómez
+		[gus@zylk.net]		[Zylk.net]
+		
+	- Alfredo Sánchez Blanco
+		[asanchez@zylk.net]	[Zylk.net]
+		
+	- Daniel Sánchez Sierra
+		[dsanchez@zylk.net]	[Zylk.net]
+		
+	
+Contributors:
+
+	- César Capillas López
+		[cesar@zylk.net]	[Zylk.net]	[English translator of v.3.0.0]
+		
+	- Joseba Martos Sánchez
+		[jmartos@zylk.net]	[Zylk.net]	[Basque translator of v.3.0.0]
+		
+	- Luís Jorge Pinho 
+		[Community member]	[Portuguese translator of v.2.0.0]
+		
+	- Markus Schlautmann
+		[Community member]	[German translator of v.1.3.1]
+		
+	- Eloy García-Borreguero Melero
+		[Zylk.net]	[Contributor v.1.0.0]
+		
+	- Iker Sagasti Markina
+		[Irontec]	[Contributor v.1.0.0]
+		
