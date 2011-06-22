@@ -91,12 +91,15 @@ public class SignController {
 		
 		if (certificadoType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_HARDWARE)) 
 		{
-
-			String pkcs11Path = PreferencesUtil.getDefaultHardware();
-			long[] slots = null;
-			PKCS11Helper pk11h = new PKCS11Helper(pkcs11Path, "");
-			slots = pk11h.getSignatureCapableSlots();
-			slotsByReader = pk11h.getSoltsByReaderName();
+			if (!System.getProperty("os.name").toLowerCase().contains("win")) {
+			
+				String pkcs11Path = PreferencesUtil.getDefaultHardware();
+				PKCS11Helper pk11h = new PKCS11Helper(pkcs11Path, "");
+				// TODO revisar si es necesario
+				// long[] slots = null;
+				// slots = pk11h.getSignatureCapableSlots();
+				slotsByReader = pk11h.getSoltsByReaderName();
+			}
 
 		} else if (certificadoType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_SOFTWARE)) {
 
