@@ -42,7 +42,6 @@ import java.util.Vector;
 import net.esle.sinadura.core.certificate.CertificateUtil;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.core.util.KeystoreUtil;
-import net.esle.sinadura.gui.util.CertificateParserUtil;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
@@ -305,45 +304,39 @@ public class CacheCertsPreferences extends FieldEditorPreferencePage {
 				
 				for (int i : indices) {
 				
-					try {
-						// obtengo el certificado
-						X509Certificate cert = (X509Certificate)ksTemp.getCertificate(aliasesPosition.get(i));
-						
-						// inicializo el mensaje a mostrar
-						String s = "";
-						
-						// Subject name
-						s += LanguageUtil.getLanguage().getString("preferences.trusted.show.subject") +  "\n";
-						s += CertificateParserUtil.getSubjectDescription(cert);
-						s += "\n\n";
-
-						// validity
-						s += LanguageUtil.getLanguage().getString("preferences.trusted.show.valid") + "\n";
-						SimpleDateFormat dateFormat = LanguageUtil.getFullFormater();
-						s += LanguageUtil.getLanguage().getString("preferences.trusted.show.valid.from") + " "
-								+ dateFormat.format(cert.getNotBefore()) + "\n";
-						s += LanguageUtil.getLanguage().getString("preferences.trusted.show.valid.until") + " "
-								+ dateFormat.format(cert.getNotAfter()) + "\n\n";
-						
-						s += LanguageUtil.getLanguage().getString("preferences.trusted.show.uses") +  "\n";
-						s += CertificateParserUtil.getKeyUsage(cert);
-						s += "\n\n";
-
-						// Issuer name
-						s += LanguageUtil.getLanguage().getString("preferences.trusted.show.issuer") +  "\n";
-						s += CertificateParserUtil.getIssuerDescription(cert);
-						s += "\n";
-												
-						// muestro los datos en pantalla
-						InfoDialog id = new InfoDialog(compositeMain.getShell());
-						id.open(s);
+					// obtengo el certificado
+					X509Certificate cert = (X509Certificate)ksTemp.getCertificate(aliasesPosition.get(i));
 					
-					} catch (IOException e) {
-
-						log.error("", e);
-					}
+					// inicializo el mensaje a mostrar
+					String s = "";
 					
+					// Subject name
+					s += LanguageUtil.getLanguage().getString("preferences.trusted.show.subject") +  "\n";
+					s += cert.getSubjectX500Principal().getName();
+					s += "\n\n";
+
+					// validity
+					s += LanguageUtil.getLanguage().getString("preferences.trusted.show.valid") + "\n";
+					SimpleDateFormat dateFormat = LanguageUtil.getFullFormater();
+					s += LanguageUtil.getLanguage().getString("preferences.trusted.show.valid.from") + " "
+							+ dateFormat.format(cert.getNotBefore()) + "\n";
+					s += LanguageUtil.getLanguage().getString("preferences.trusted.show.valid.until") + " "
+							+ dateFormat.format(cert.getNotAfter()) + "\n\n";
+					
+					s += LanguageUtil.getLanguage().getString("preferences.trusted.show.uses") +  "\n";
+					s += CertificateUtil.getKeyUsage(cert);
+					s += "\n\n";
+
+					// Issuer name
+					s += LanguageUtil.getLanguage().getString("preferences.trusted.show.issuer") +  "\n";
+					s += cert.getIssuerX500Principal().getName();
+					s += "\n";
+											
+					// muestro los datos en pantalla
+					InfoDialog id = new InfoDialog(compositeMain.getShell());
+					id.open(s);
 				}
+				
 			} catch (KeyStoreException e) {
 				log.error("", e);
 			}

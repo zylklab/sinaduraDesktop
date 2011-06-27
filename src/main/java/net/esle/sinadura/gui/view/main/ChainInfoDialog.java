@@ -1,12 +1,10 @@
 package net.esle.sinadura.gui.view.main;
 
-import java.io.IOException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 import net.esle.sinadura.core.certificate.CertificateUtil;
-import net.esle.sinadura.gui.util.CertificateParserUtil;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 
@@ -185,13 +183,9 @@ public class ChainInfoDialog extends Dialog {
 		gdDataSubject.widthHint = 600;
 		dataSubject.setLayoutData(gdDataSubject);
 
-		String s = "";
 		// Subject name
-		try {
-			s = CertificateParserUtil.getSubjectDescription(certificate);
-		} catch (IOException e) {
-			log.error("", e);
-		}
+		String s = certificate.getSubjectX500Principal().getName();
+		
 		dataSubject.setText(s);
 
 		SimpleDateFormat dateFormat = LanguageUtil.getFullFormater();
@@ -225,7 +219,7 @@ public class ChainInfoDialog extends Dialog {
 		validUntil.setLayoutData(gdValidUntil);
 		validUntil.setText(dateFormat.format(certificate.getNotAfter()));
 
-		if (CertificateParserUtil.getKeyUsage(certificate) != null && !CertificateParserUtil.getKeyUsage(certificate).trim().equals("")) {
+		if (CertificateUtil.getKeyUsage(certificate) != null && !CertificateUtil.getKeyUsage(certificate).trim().equals("")) {
 
 			Label labelKeyUsage = new Label(this.compositeData, SWT.NONE);
 			labelKeyUsage.setText(LanguageUtil.getLanguage().getString("chain.info.key.usage"));
@@ -240,7 +234,7 @@ public class ChainInfoDialog extends Dialog {
 			gdKeyUsage.grabExcessVerticalSpace = false;
 			gdKeyUsage.widthHint = 600;
 			keyUsage.setLayoutData(gdKeyUsage);
-			keyUsage.setText(CertificateParserUtil.getKeyUsage(certificate));
+			keyUsage.setText(CertificateUtil.getKeyUsage(certificate));
 
 		}
 
@@ -257,11 +251,9 @@ public class ChainInfoDialog extends Dialog {
 		gdIssuerName.grabExcessVerticalSpace = false;
 		gdIssuerName.widthHint = 600;
 		issuerName.setLayoutData(gdIssuerName);
-		try {
-			s = CertificateParserUtil.getIssuerDescription(certificate);
-		} catch (IOException e) {
-			log.error("", e);
-		}
+		
+		s = certificate.getIssuerX500Principal().getName();
+		
 		issuerName.setText(s);
 	}
 
