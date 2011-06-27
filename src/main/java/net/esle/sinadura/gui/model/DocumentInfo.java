@@ -24,6 +24,8 @@ package net.esle.sinadura.gui.model;
 import java.util.List;
 import java.util.Map;
 
+import net.esle.sinadura.core.interpreter.SignatureInfo;
+
 
 public class DocumentInfo {
 

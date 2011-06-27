@@ -57,6 +57,9 @@ public class LanguageUtil {
 		
 		Locale.setDefault(currentLocale);
 		
+		// se cambia el locale en el core
+		net.esle.sinadura.core.util.LanguageUtil.reloadLocale(currentLocale);
+		
 		language = ResourceBundle.getBundle(LANGUAGE_FILE_PATH, currentLocale);
 
 	}

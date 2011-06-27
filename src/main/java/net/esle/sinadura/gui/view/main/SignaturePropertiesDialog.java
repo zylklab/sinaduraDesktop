@@ -5,10 +5,10 @@ import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 
 import net.esle.sinadura.core.certificate.CertificateUtil;
+import net.esle.sinadura.core.interpreter.MessageInfo;
+import net.esle.sinadura.core.interpreter.SignatureInfo;
 import net.esle.sinadura.core.model.Status;
 import net.esle.sinadura.gui.model.DocumentInfo;
-import net.esle.sinadura.gui.model.MessageInfo;
-import net.esle.sinadura.gui.model.SignatureInfo;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 

@@ -28,10 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.esle.sinadura.core.certificate.CertificateUtil;
+import net.esle.sinadura.core.interpreter.SignatureInfo;
 import net.esle.sinadura.core.model.Status;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.model.DocumentInfo;
-import net.esle.sinadura.gui.model.SignatureInfo;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.LoggingDesktopController;
