@@ -3,6 +3,7 @@ package net.esle.sinadura.gui.view.main;
 import java.io.File;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import net.esle.sinadura.core.certificate.CertificateUtil;
 import net.esle.sinadura.core.interpreter.MessageInfo;
@@ -210,8 +211,11 @@ public class SignaturePropertiesDialog extends Dialog {
 			@Override
 			public void handleEvent(Event arg0) {
 				if(tree.getSelection() != null && tree.getSelection().length == 1 ) {
-					ChainInfoDialog dialog = new ChainInfoDialog(sShell, ((SignatureInfo)tree.getSelection()[0].getData()).getChain());
-					dialog.open();
+					List<X509Certificate> chain = ((SignatureInfo)tree.getSelection()[0].getData()).getChain();
+					if (chain != null && chain.size() != 0) {
+						ChainInfoDialog dialog = new ChainInfoDialog(sShell, chain);
+						dialog.open();
+					}
 				}
 			}
 		});
