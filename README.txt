@@ -5,8 +5,9 @@ Para generar un nuevo empaquetado:
 install.xml
 pom.xml (core y desktop)
 configuration.properties (core y desktop)
-modificar el build.properties
+modificar el build.properties (estos se usan para algo? el del core? -> si no borrar)
 y en el servidor si se publica como nueva version
+(http://www.sinadura.net/server)
 
 
 - revisar log4j
@@ -14,7 +15,7 @@ y en el servidor si se publica como nueva version
 - comprobar el valor de la etiqueta "" que está en configuration.properties y que es la que controla si se muestra el botón de enviar 
 
 - descargar el proyecto launch4j-maven-plugings del svn y hacer un:
-mvn clean install 
+mvn clean install
 
 - Instalar sinadura xadestsa y xadesocsp
 

@@ -33,7 +33,7 @@
 		<appname>Sinadura</appname>
 		<appsubpath>sinadura</appsubpath>
 		<!-- <appversion>@{version}</appversion>  -->
-		<appversion>3.0.2</appversion>
+		<appversion>3.0.3</appversion>
 		<authors>
 			<author name="zylk.net" email="info@zylk.net" />
 		</authors>
