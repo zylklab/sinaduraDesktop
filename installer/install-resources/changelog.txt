@@ -18,6 +18,11 @@
 # See COPYRIGHT.txt for copyright notices and details.
 #
 
+=== Cambios en la versión 3.0.3 ===
+
+- Soporte para el uso varios lectores de tarjetas
+
+
 === Cambios en la versión 3.0.0 ===
 
 - Firma de cualquier tipo de documento mediante firmas XADES-XL, XADES-T y XADES-BES detached.
