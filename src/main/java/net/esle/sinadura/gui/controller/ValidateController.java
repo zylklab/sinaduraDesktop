@@ -123,6 +123,7 @@ public class ValidateController {
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
 			
 		} catch (IOException e) {
+			
 			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.certificate.validation.unexpected"),
 					pdfParameter.getPath(), e.getMessage());
 			log.error(m, e);

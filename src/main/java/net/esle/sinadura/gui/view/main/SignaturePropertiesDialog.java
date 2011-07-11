@@ -193,14 +193,7 @@ public class SignaturePropertiesDialog extends Dialog {
 		gdSigner.minimumWidth = 0;
 		this.signer.setLayoutData(gdSigner);
 		
-		Composite compositeShow = new Composite(compositeDatosFirma, SWT.NONE);
-		GridData gdShow = new GridData(GridData.FILL_HORIZONTAL);
-		gdShow.grabExcessHorizontalSpace = true;
-		gdShow.minimumWidth = 0;
-		compositeShow.setLayoutData(gdShow);
-		compositeShow.setLayout(new GridLayout());
-		
-		Button buttonShowCertificate = new Button(compositeShow, SWT.NONE);
+		Button buttonShowCertificate = new Button(compositeDatosFirma, SWT.NONE);
 		buttonShowCertificate.setText(LanguageUtil.getLanguage().getString("validation.show.certificate"));
 		GridData gd = new GridData(GridData.BEGINNING);
 		gd.grabExcessHorizontalSpace = false;
@@ -230,8 +223,27 @@ public class SignaturePropertiesDialog extends Dialog {
 		this.date = new Label(compositeDatosFirma, SWT.NONE);
 		GridData gdDate = new GridData(GridData.BEGINNING);
 		gdDate.minimumWidth = 0;
-		gdDate.verticalSpan = 2;
 		this.date.setLayoutData(gdDate);
+		
+		Button buttonShowTS = new Button(compositeDatosFirma, SWT.NONE);
+		buttonShowTS.setText(LanguageUtil.getLanguage().getString("validation.show.certificate"));
+		GridData gd2 = new GridData(GridData.BEGINNING);
+		gd2.grabExcessHorizontalSpace = false;
+		gd2.grabExcessVerticalSpace = false;
+		buttonShowTS.setLayoutData(gd2);
+		buttonShowTS.addListener(SWT.MouseUp, new Listener() {
+			
+			@Override
+			public void handleEvent(Event arg0) {
+				if (tree.getSelection() != null && tree.getSelection().length == 1) {
+					List<X509Certificate> chain = ((SignatureInfo)tree.getSelection()[0].getData()).getTsChain();
+					if (chain != null && chain.size() != 0) {
+						ChainInfoDialog dialog = new ChainInfoDialog(sShell, chain);
+						dialog.open();
+					}
+				}
+			}
+		});
 		
 		initialize(this.compositeData);
 
