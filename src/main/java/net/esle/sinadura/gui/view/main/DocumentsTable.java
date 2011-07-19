@@ -388,9 +388,9 @@ public class DocumentsTable extends Composite {
 		} else if (signature.getStatus().equals(Status.INVALID)) {
 			item.setImage(3, new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.CANCEL_IMG)));
 		} else if (signature.getStatus().equals(Status.VALID_WARNING)) {
-			item.setImage(3, new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.OK_WARNING_IMG)));
+			item.setImage(3, new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.WARNING_OK_IMG)));
 		} else if (signature.getStatus().equals(Status.UNKNOWN)) {
-			item.setImage(3, new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.WARNING_IMG)));
+			item.setImage(3, new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.UNKNOWN_IMG)));
 		}
 
 		// signer chain

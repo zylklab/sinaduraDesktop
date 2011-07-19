@@ -129,9 +129,9 @@ public class SignaturePropertiesDialog extends Dialog {
 			} else if (signature.getStatus().equals(Status.INVALID)) {
 				item.setImage(new Image(this.tree.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.CANCEL_IMG)));
 			} else if (signature.getStatus().equals(Status.VALID_WARNING)) {
-				item.setImage(new Image(this.tree.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.OK_WARNING_IMG)));
+				item.setImage(new Image(this.tree.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.WARNING_OK_IMG)));
 			} else if (signature.getStatus().equals(Status.UNKNOWN)) {
-				item.setImage(new Image(this.tree.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.WARNING_IMG)));
+				item.setImage(new Image(this.tree.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.UNKNOWN_IMG)));
 			}
 			if (sigInfo.equals(signature)) {
 				ti = item;
@@ -342,9 +342,9 @@ public class SignaturePropertiesDialog extends Dialog {
 				} else if (message.getSimpleStatus().equals(Status.INVALID)) {
 					image = new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.CANCEL_IMG));
 				} else if (message.getSimpleStatus().equals(Status.UNKNOWN)) {
-					image = new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.WARNING_IMG));
+					image = new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.UNKNOWN_IMG));
 				} else if (message.getSimpleStatus().equals(Status.VALID_WARNING)) {
-					image = new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.WARNING_IMG));
+					image = new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.WARNING_OK_IMG));
 				}
 				Label documentStateProperties = new Label(this.compositeProperties, SWT.NONE);
 				documentStateProperties.setImage(image);

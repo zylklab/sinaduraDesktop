@@ -21,8 +21,11 @@
  */
 package net.esle.sinadura.gui;
 
+import java.util.Locale;
+
 import javax.swing.JOptionPane;
 
+import net.esle.sinadura.gui.util.PropertiesUtil;
 import net.esle.sinadura.gui.util.StatisticsUtil;
 
 import org.apache.commons.logging.Log;
@@ -39,16 +42,25 @@ public class Sinadura {
 		
 		try {
 			log.info("Iniciando Sinadura");
+			
+			log.info("Sinadura version: " + PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.APPLICATION_VERSION_STRING));
+			
 			log.info("Java vendor: " + System.getProperty("java.vendor"));
 			log.info("Java version: " + System.getProperty("java.version"));
+			
 			log.info("Class path: " + System.getProperty("java.class.path"));
 			log.info("User home: " + System.getProperty("user.home"));
 			
-			// load
+			log.info("Os name: " + System.getProperty("os.name"));
+			log.info("Os version: " + System.getProperty("os.version"));
+			log.info("Os arch: " + System.getProperty("os.arch"));
+			
+			log.info("Locale country: " + Locale.getDefault().getCountry());
+			log.info("Locale language: " + Locale.getDefault().getLanguage());
+			
 			new LoadingWindow(args);
 
 			StatisticsUtil.log(StatisticsUtil.KEY_CLOSING_SINADURA);
-
 			log.info("Finalizando Sinadura");
 			
 		} catch (java.lang.UnsatisfiedLinkError e) {

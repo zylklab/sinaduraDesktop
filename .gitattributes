@@ -60,6 +60,7 @@ src/main/resources/images/sponsor.png svn_mime_002dtype=application%2Foctet-stre
 src/main/resources/images/unknown.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/validate.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/view.png svn_mime_002dtype=application%2Foctet-stream
+src/main/resources/images/warning-ok.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/warning.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/preferences/cache.jks svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/preferences/trusted.jks svn_mime_002dtype=application%2Foctet-stream

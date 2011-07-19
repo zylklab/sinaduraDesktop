@@ -128,14 +128,12 @@ class ThreadOperations extends Thread {
 			}
 		});
 		
-		log.info("sinadura version: " + PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.APPLICATION_VERSION_STRING));
-		
 		// init proxy
 		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
 			ProxyUtil.configureProxy(PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_USER), PreferencesUtil
 					.getPreferences().getString(PreferencesUtil.PROXY_PASS));
 		}
-		
+
 		// estadisticas
 		StatisticsUtil.log(StatisticsUtil.KEY_SO, System.getProperty("os.name"));
 		StatisticsUtil.log(StatisticsUtil.KEY_SO_VERSION, System.getProperty("os.version"));

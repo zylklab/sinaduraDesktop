@@ -55,8 +55,10 @@ public class ImagesUtil {
 	public static final String	VALIDATE_FILE_IMG			= PATH_IMAGES + "/" + "validate.png";
 	
 	public static final String	OK_IMG					= PATH_IMAGES + "/" + "ok.png";
-	public static final String	OK_WARNING_IMG					= PATH_IMAGES + "/" + "warning.png";
-	public static final String	WARNING_IMG					= PATH_IMAGES + "/" + "unknown.png";
+	public static final String	WARNING_OK_IMG					= PATH_IMAGES + "/" + "warning-valid.png";
+	// este no se usa
+	public static final String	WARNING_IMG					= PATH_IMAGES + "/" + "warning.png";
+	public static final String	UNKNOWN_IMG					= PATH_IMAGES + "/" + "unknown.png";
 	
 	// las de las preferencias software
 	public static final String	ADD_IMG		= PATH_IMAGES + "/" + "add.png";
