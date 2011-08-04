@@ -41,13 +41,15 @@ public class StatisticsUtil {
 
 	public static final String KEY_CLOSING_SINADURA = "KEY_CLOSING_SINADURA";
 
-	// VALUES
+	// VALUES 
+	// de la key KEY_SIGN_CERTTYPE
 	public static final String VALUE_SOFT = "Software";
 	public static final String VALUE_MSCAPI = "MSCapi";
 	public static final String VALUE_HARD = "Hardware";
 	
 	static {
 		MAC = getMacAddress();
+		log.info("mac adress: " + MAC);
 	}
 
 	public static void log(String key) {

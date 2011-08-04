@@ -270,6 +270,8 @@ public class CacheCertsPreferences extends FieldEditorPreferencePage {
 						
 					ksTemp.setCertificateEntry(CertificateUtil.getUniqueID(cert), cert);
 					StatisticsUtil.log(StatisticsUtil.KEY_ADD_CACHECERT, cert.getSubjectX500Principal().getName());
+					log.info("added new cache cert: " + cert.getSubjectX500Principal().getName());
+					
 					reloadVisualList();
 					
 					

@@ -131,11 +131,13 @@ public class SignController {
 		if (certificadoType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_HARDWARE)) {
 
 			String pkcs11Path = PreferencesUtil.getDefaultHardware();
+			
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_CERTTYPE, StatisticsUtil.VALUE_HARD);
+			log.info("sign type: " + StatisticsUtil.VALUE_HARD);
+			
 			StatisticsUtil.log(StatisticsUtil.KEY_LOAD_HARDWAREDRIVER, pkcs11Path);
+			log.info("sign driver: " + pkcs11Path);
 
-			
-			
 			ks = KeyStoreBuilderFactory.getKeyStore("HARD", KeyStoreTypes.PKCS11, pkcs11Path, slot, new KeyStore.CallbackHandlerProtection(
 					o));
 
@@ -195,11 +197,17 @@ public class SignController {
 
 		try {
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_DOCUMENT_EXTENSION, FileUtil.getExtension(pdfParameter.getPath()));
+			log.info("extension del documento: " + FileUtil.getExtension(pdfParameter.getPath()));
+			
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_MIMETYPE, pdfParameter.getMimeType());
-
+			log.info("mimetype del documento: " + pdfParameter.getMimeType());
+			
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_DOCUMENT_SIZE, new File(pdfParameter.getPath()).length() + "");
+			log.info("size del documento: " + new File(pdfParameter.getPath()).length() + "");
 
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_TSA, PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE)
+					+ "");
+			log.info("tsa enable: " + PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE)
 					+ "");
 
 			// firma
@@ -213,6 +221,7 @@ public class SignController {
 			} else {
 				signDetached(pdfParameter, ksSignaturePreferences);
 			}
+			
 		} catch (OverwritingException e) {
 
 			File file = new File(pdfParameter.getPath());
@@ -291,6 +300,7 @@ public class SignController {
 			signaturePreferences.setAddOCSP(addOCSP);
 
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_OCSP, addOCSP + "");
+			log.info("ocsp enable: " + addOCSP);
 
 			File file = new File(pdfParameter.getPath());
 			String outputPath = PreferencesUtil.getOutputDir(file) + File.separatorChar + PreferencesUtil.getOutputName(file.getName())
@@ -410,6 +420,7 @@ public class SignController {
 		signaturePreferences.setAddOCSP(addOCSP);
 
 		StatisticsUtil.log(StatisticsUtil.KEY_SIGN_OCSP, addOCSP + "");
+		log.info("ocsp enable: " + addOCSP);
 
 		// firmar
 		byte[] bytes = XadesService.signArchiver(documentPath, signaturePreferences);

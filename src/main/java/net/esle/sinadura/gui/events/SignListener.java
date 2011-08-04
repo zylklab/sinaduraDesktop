@@ -314,6 +314,8 @@ public class SignListener implements SelectionListener {
 				try {
 					X509Certificate cert = (X509Certificate) ksSignaturePreferences.getKs().getCertificate(alias);
 					StatisticsUtil.log(StatisticsUtil.KEY_SIGN_ISSUER, cert.getIssuerX500Principal().getName());
+					log.info("sign issuer: " + cert.getIssuerX500Principal().getName());
+					
 				} catch (KeyStoreException e) {
 					log.error("", e);
 				}
