@@ -22,7 +22,6 @@
 package net.esle.sinadura.gui.controller;
 
 import java.io.IOException;
-import java.security.KeyStore;
 import java.security.KeyStore.PasswordProtection;
 
 import javax.security.auth.callback.Callback;
@@ -32,8 +31,6 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 
 import net.esle.sinadura.core.exceptions.PasswordCallbackCanceledException;
 import net.esle.sinadura.core.password.PasswordExtractor;
-import net.esle.sinadura.gui.util.LanguageUtil;
-import net.esle.sinadura.gui.view.main.PasswordDialog;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -42,7 +39,6 @@ public class PasswordCallbackHandlerDialog implements CallbackHandler, PasswordE
 
 	private Shell sShell = null;
 	private PasswordProtection passwordProtection = null;
-	
 
 	public PasswordCallbackHandlerDialog(Shell sShell) {
 
@@ -52,13 +48,13 @@ public class PasswordCallbackHandlerDialog implements CallbackHandler, PasswordE
 
 	@Override
 	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-		
+
 		for (Callback c : callbacks) {
 			if (c instanceof PasswordCallback) {
 				PasswordCallback pc = (PasswordCallback) c;
-				this.initPassword();
-				if (this.passwordProtection != null && this.passwordProtection.getPassword() != null) {
-					pc.setPassword(this.passwordProtection.getPassword());
+				initPassword();
+				if ((passwordProtection != null) && (passwordProtection.getPassword() != null)) {
+					pc.setPassword(passwordProtection.getPassword());
 				} else {
 					throw new IOException(new PasswordCallbackCanceledException());
 				}
@@ -67,24 +63,16 @@ public class PasswordCallbackHandlerDialog implements CallbackHandler, PasswordE
 	}
 
 	private void initPassword() {
+		PasswordDialogRunnable runnable = new PasswordDialogRunnable(sShell);
 
 		// por acceder desde el hilo de la progresbar
-		Display.getDefault().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				
-				PasswordDialog passwordDialog = new PasswordDialog(sShell);
-				String password = passwordDialog.open(LanguageUtil.getLanguage().getString("password.dialog.message"));
-				if (password != null) {
-					passwordProtection = new KeyStore.PasswordProtection(password.toCharArray());
-				}
-			}
-		});
+		Display.getDefault().syncExec(runnable);
+		passwordProtection = runnable.getPasswordProtection();
 	}
 
 	@Override
 	public PasswordProtection getPasswordProtection() {
 
-		return this.passwordProtection;
+		return passwordProtection;
 	}
 }

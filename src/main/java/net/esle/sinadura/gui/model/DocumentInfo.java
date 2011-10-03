@@ -41,7 +41,6 @@ public class DocumentInfo {
 	 */
 	private List<SignatureInfo> signatures;
 	
-	
 	/**
 	 * propiedades adicionales (para el uso desde plugins) 
 	 */

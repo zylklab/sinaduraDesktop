@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.KeyStore;
+import java.security.KeyStore.PasswordProtection;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateExpiredException;
@@ -43,6 +44,7 @@ import net.esle.sinadura.core.exceptions.OCSPCoreException;
 import net.esle.sinadura.core.exceptions.OCSPIssuerRequiredException;
 import net.esle.sinadura.core.exceptions.OCSPUnknownUrlException;
 import net.esle.sinadura.core.exceptions.PKCS11Exception;
+import net.esle.sinadura.core.exceptions.PasswordCallbackCanceledException;
 import net.esle.sinadura.core.exceptions.PdfSignatureException;
 import net.esle.sinadura.core.exceptions.RevokedException;
 import net.esle.sinadura.core.exceptions.XadesSignatureException;
@@ -75,6 +77,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.exceptions.BadPasswordException;
 
 public class SignController {
 
@@ -212,7 +215,28 @@ public class SignController {
 
 			// firma
 			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_PDF)) {
-				signPDF(pdfParameter, ksSignaturePreferences);
+					
+				boolean successfullySigned = false;
+				PasswordProtection ownerPassword = null;
+				
+				while (!successfullySigned) {
+					try {
+						signPDF(pdfParameter, ksSignaturePreferences, ownerPassword);
+						successfullySigned = true;
+						
+					} catch (BadPasswordException e) {
+
+						PasswordDialogRunnable runnable = new PasswordDialogRunnable(null, LanguageUtil.getLanguage().getString(
+								"password.dialog.passwordprotected"));
+						
+						Display.getDefault().syncExec(runnable);
+						if (runnable.getPasswordProtection() == null) {
+							throw new PasswordCallbackCanceledException();
+						}
+						ownerPassword = runnable.getPasswordProtection();
+					}
+				}
+					
 			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_XML)) {
 				// TODO firma de xml enveloped
 				signDetached(pdfParameter, ksSignaturePreferences);
@@ -221,6 +245,13 @@ public class SignController {
 			} else {
 				signDetached(pdfParameter, ksSignaturePreferences);
 			}
+			
+		} catch (PasswordCallbackCanceledException e) {
+			
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString(
+				"error.document.notsigned.passwordlocked"), pdfParameter.getPath());
+			log.error(m, e);
+			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
 			
 		} catch (OverwritingException e) {
 
@@ -241,7 +272,7 @@ public class SignController {
 		}
 	}
 
-	private static void signPDF(DocumentInfo pdfParameter, KsSignaturePreferences ksSignaturePreferences) throws OCSPCoreException,
+	private static void signPDF(DocumentInfo pdfParameter, KsSignaturePreferences ksSignaturePreferences, PasswordProtection ownerPassword) throws OCSPCoreException,
 			RevokedException, OverwritingException, ConnectionException, IOException, CertificateExpiredException,
 			CertificateNotYetValidException, OCSPIssuerRequiredException, OCSPUnknownUrlException {
 
@@ -311,9 +342,9 @@ public class SignController {
 			}
 
 			// firmar
-			byte[] bytes = PdfService.sign(pdfParameter.getPath(), signaturePreferences);
-			FileUtil.bytesToFile(bytes, outputFile);
+			PdfService.sign(pdfParameter.getPath(), outputPath, signaturePreferences, ownerPassword);
 
+			
 			// TODO centralizar esto
 			// actualizo la entrada de la tabla
 			pdfParameter.setPath(outputPath);
