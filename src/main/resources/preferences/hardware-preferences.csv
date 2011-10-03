@@ -3,6 +3,7 @@ generic;/usr/lib/opensc-pkcs11.so;
 izenpe;c:\\windows\\system32\\aetpkss1.dll;
 dni;c:\\windows\\system32\\UsrPkcs11.dll;
 FNMT-RCM;c:\\windows\\system32\\PkcsV2GK.dll;
+Aladdin pro;c:\\windows\\system32\\eTPKCS11.dll;
 Siemens CardOS 3.2 (ACCV);c:\\windows\\system32\\siecap11.dll;
 Siemens CardOS 2.2 (ACCV);c:\\windows\\system32\\CardOS_PKCS11.dll;
 Siemens CardOS 3.2 (ACCV) Linux;/usr/local/lib/libsiecap11.so;
