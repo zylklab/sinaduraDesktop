@@ -9,7 +9,8 @@ import org.apache.commons.logging.LogFactory;
 
 public class StatisticsUtil {
 
-	private static Log log = LogFactory.getLog("Statistics.Sinadura");
+	private static Log log = LogFactory.getLog(StatisticsUtil.class);
+	private static Log logStats = LogFactory.getLog("Statistics.Sinadura");
 	
 	// Si se modifica el separador en esta clase, también hay que hacerlo en el fichero de propiedades de log4j (log4j.properties)
 	private static final String CSV_SEPARATOR = ";";
@@ -63,7 +64,7 @@ public class StatisticsUtil {
 			value = value.replace("\"", "\"\"");
 		}
 
-		log.info(StatisticsUtil.MAC + CSV_SEPARATOR + key + CSV_SEPARATOR + "\"" + value + "\"" + CSV_SEPARATOR);
+		logStats.info(StatisticsUtil.MAC + CSV_SEPARATOR + key + CSV_SEPARATOR + "\"" + value + "\"" + CSV_SEPARATOR);
 	}
 
 	private static String getMacAddress() {
