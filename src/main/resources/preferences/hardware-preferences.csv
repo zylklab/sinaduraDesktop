@@ -1,7 +1,7 @@
 name;path;
 generic;/usr/lib/opensc-pkcs11.so;
-bit4id (izenpe);/usr/lib/libbit4ipki.so;
-bit4id (izenpe);/usr/lib64/libbit4ipki.so;
+bit4id 32 bits (izenpe);/usr/lib/libbit4ipki.so;
+bit4id 64 bits (izenpe);/usr/lib64/libbit4ipki.so;
 izenpe;c:\\windows\\system32\\aetpkss1.dll;
 bit4id (izenpe);c:\\windows\\system32\\bit4ipki.dll;
 dni;c:\\windows\\system32\\UsrPkcs11.dll;
