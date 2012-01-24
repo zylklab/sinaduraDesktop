@@ -294,12 +294,16 @@ public class SignaturePropertiesDialog extends Dialog {
 		// Nombre del Firmante
 		if (signature.getChain() != null && signature.getChain().size() != 0) {
 			this.signer.setText(CertificateUtil.getFormattedName(signature.getChain().get(0)));
+		} else {
+			this.signer.setText("");
 		}
 
 		// Fecha de la firma
 		if (signature.getDate() != null) {
 			SimpleDateFormat dateFormat = LanguageUtil.getFullFormater();
 			this.date.setText(dateFormat.format(signature.getDate()));
+		} else {
+			this.date.setText("");
 		}
 	}
 
