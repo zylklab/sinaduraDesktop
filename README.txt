@@ -12,26 +12,25 @@ y en el servidor si se publica como nueva version
 
 - revisar log4j
 
-- comprobar el valor de la etiqueta "" que está en configuration.properties y que es la que controla si se muestra el botón de enviar 
+- comprobar el valor de la etiqueta "enable.send.button" que está en configuration.properties y que es la que controla si se muestra el botón de enviar. 
 
-- descargar el proyecto launch4j-maven-plugings del svn y hacer un:
+- descargar el proyecto launch4j-maven-plugings del svn y hacer:
 mvn clean install
 
-- Instalar sinadura xadestsa y xadesocsp
+- Descargar MITyCLibTSA-sinadura y MITyCLibOCSP-sinadura y hacer:
+mvn clean install
 
-- Instalar el core
-cd sinadura/trunk/sinaduraCore
+- Descargar sinaduraCore y hacer:
 mvn clean install
 
 
-- Generar empaquetados
+Finalmente para generar los empaquetados, en sinaduraDesktop: 
 mvn clean package -P Unix32
 mvn clean package -P Unix64
 mvn clean package -P Mac
-mvn clean package -P Win32
-
 mvn clean pre-integration-test -P Win32
+mvn clean package -P Win32 (este no generara la parte del exe, asi que no hay que utilizarlo!)
 
 
-- renombrarlos con la nomenclatura correcta
+- Y renombrarlos con la nomenclatura correcta al subirlos a www.sinadura.net (ver versiones anteriores).
 

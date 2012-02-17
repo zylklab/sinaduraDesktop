@@ -30,3 +30,6 @@ Contributors:
 	- Iker Sagasti Markina
 		[Irontec]	[Contributor v.1.0.0]
 		
+	- Daniel Martín Lambea
+	 	[Community member]	[Contributor v.3.1.0]
+		

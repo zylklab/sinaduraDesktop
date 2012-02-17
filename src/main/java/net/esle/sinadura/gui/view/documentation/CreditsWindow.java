@@ -30,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
@@ -102,7 +103,7 @@ public class CreditsWindow extends Dialog {
 
 		try {
 			InputStream is = ClassLoader.getSystemResourceAsStream(PropertiesUtil.CREDITS_PATH);
-			InputStreamReader isr = new InputStreamReader(is);	
+			InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));	
 	        BufferedReader in = new BufferedReader(isr);
 	        String str;
 	        while ((str = in.readLine()) != null) {
