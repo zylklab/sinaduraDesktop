@@ -19,10 +19,33 @@
  * # See COPYRIGHT.txt for copyright notices and details. 
  * #
  */
+/*
+ * # Copyright 2008 zylk.net 
+ * # 
+ * # This file is part of Sinadura. 
+ * # 
+ * # Sinadura is free software: you can redistribute it and/or modify 
+ * # it under the terms of the GNU General Public License as published by 
+ * # the Free Software Foundation, either version 2 of the License, or 
+ * # (at your option) any later version. 
+ * # 
+ * # Sinadura is distributed in the hope that it will be useful, 
+ * # but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * # GNU General Public License for more details. 
+ * # 
+ * # You should have received a copy of the GNU General Public License 
+ * # along with Sinadura. If not, see <http://www.gnu.org/licenses/>. [^] 
+ * # 
+ * # See COPYRIGHT.txt for copyright notices and details. 
+ * #
+ */
 package net.esle.sinadura.gui.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.security.KeyStore;
 import java.security.KeyStore.PasswordProtection;
@@ -342,7 +365,10 @@ public class SignController {
 			}
 
 			// firmar
-			PdfService.sign(pdfParameter.getPath(), outputPath, signaturePreferences, ownerPassword);
+			
+			InputStream is = new FileInputStream(pdfParameter.getPath());
+			
+			PdfService.sign(is, outputPath, signaturePreferences, ownerPassword);
 
 			
 			// TODO centralizar esto

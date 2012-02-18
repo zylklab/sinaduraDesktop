@@ -65,6 +65,7 @@ public class Sinadura {
 			
 		} catch (java.lang.UnsatisfiedLinkError e) {
 			
+			e.printStackTrace();
 			String message = e.getMessage();
 			if (message.equals("Cannot load 64-bit SWT libraries on 32-bit JVM")) {
 				message = "You have the 32 bits version of Java installed, and this is the 64 bits version of Sinadura.\nTry installing the 32 bits version.";
@@ -72,6 +73,7 @@ public class Sinadura {
 			JOptionPane.showMessageDialog(null, message, "Sinadura", JOptionPane.ERROR_MESSAGE);
 			
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, e.toString(), "Sinadura", JOptionPane.ERROR_MESSAGE);
 		}
 	}
