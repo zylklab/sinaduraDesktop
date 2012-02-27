@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -502,10 +503,30 @@ public class PreferencesUtil {
 				+ PreferencesUtil.getPreferences().getString(PreferencesUtil.SAVE_EXTENSION));	
 	}
 	
+	public static String getOutputNameFromCompletePath(String name) 
+	{
+		String name2 = name.substring(name.lastIndexOf("/")+1, name.length());
+		String vengaYa = PreferencesUtil.getPreferences().getString(PreferencesUtil.SAVE_EXTENSION);
+		
+		name2 = (name2.substring(0, name2.lastIndexOf("."))) + vengaYa;
+		System.out.println("NAME2.........................."+name2);
+		return 	name2;
+	}
+	
 	public static String getOutputDir(File file) {
 		
 		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.OUTPUT_AUTO_ENABLE)) {
 			return file.getParentFile().getPath();
+		} else {
+			return PreferencesUtil.getPreferences().getString(PreferencesUtil.OUTPUT_DIR);
+		}
+	}
+	
+	public static String getOutputDir(String filePath) {
+		
+		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.OUTPUT_AUTO_ENABLE)) 
+		{
+			return filePath.substring(0, filePath.lastIndexOf("/"));	
 		} else {
 			return PreferencesUtil.getPreferences().getString(PreferencesUtil.OUTPUT_DIR);
 		}

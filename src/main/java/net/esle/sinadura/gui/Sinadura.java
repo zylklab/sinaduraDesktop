@@ -30,6 +30,8 @@ import net.esle.sinadura.gui.util.StatisticsUtil;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.xml.utils.URI.MalformedURIException;
 
 /**
  * @author zylk.net
@@ -38,7 +40,7 @@ public class Sinadura {
 
 	private static Log log = LogFactory.getLog(Sinadura.class);
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileSystemException, MalformedURIException {
 		
 		try {
 			log.info("Iniciando Sinadura");

@@ -26,6 +26,8 @@ import net.esle.sinadura.gui.view.main.MainWindow;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.xml.utils.URI.MalformedURIException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -42,12 +44,12 @@ public class LoadingWindow {
 
 	private String[] args;
 
-	public LoadingWindow(String[] args) {
+	public LoadingWindow(String[] args) throws FileSystemException, MalformedURIException {
 		this.args = args;
 		init();
 	}
 
-	public void init() {
+	public void init() throws FileSystemException, MalformedURIException {
 
 		Display.setAppName(PropertiesUtil.APPLICATION_NAME);
 		Display display = new Display();

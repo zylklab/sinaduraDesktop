@@ -47,6 +47,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.KeyStore;
 import java.security.KeyStore.PasswordProtection;
 import java.security.KeyStoreException;
@@ -356,21 +358,57 @@ public class SignController {
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_OCSP, addOCSP + "");
 			log.info("ocsp enable: " + addOCSP);
 
-			File file = new File(pdfParameter.getPath());
-			String outputPath = PreferencesUtil.getOutputDir(file) + File.separatorChar + PreferencesUtil.getOutputName(file.getName())
-					+ "." + FileUtil.EXTENSION_PDF;
-			File outputFile = new File(outputPath);
-			if (outputFile.exists()) {
-				throw new OverwritingException();
+			
+			//InputStream is = new FileInputStream(pdfParameter.getPath());
+			InputStream is;
+			try {
+				is = FileUtil.getInputStreamFromURI(pdfParameter.getPath());
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				log.error("error creando el InputStream asociado al fichero de entrada " +pdfParameter.getPath() , e);
+				throw new IOException(e);
 			}
-
-			// firmar
 			
-			InputStream is = new FileInputStream(pdfParameter.getPath());
 			
-			PdfService.sign(is, outputPath, signaturePreferences, ownerPassword);
-
+			URI fileUri;
+			String outputPath = null;
+			try {
+				fileUri = new URI(pdfParameter.getPath());
+			} catch (URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				throw new IOException(e1);
+			}
 			
+			if(fileUri.getScheme() == null || fileUri.getScheme().equalsIgnoreCase("file")) //si es file voy por nombre y así se pueden firmar ficheros grandes
+			{
+				File file = new File(pdfParameter.getPath());
+				outputPath = PreferencesUtil.getOutputDir(file) + File.separatorChar + PreferencesUtil.getOutputName(file.getName()) + "." + FileUtil.EXTENSION_PDF;
+				File outputFile = new File(outputPath);
+				if (outputFile.exists()) {
+					throw new OverwritingException();
+				}
+				PdfService.sign(is, outputPath, signaturePreferences, ownerPassword);
+			}
+			else //si el protocolo no es file voy por inputstrema
+			{
+				System.out.println("outputPath--------------------->"+outputPath);
+				String sss = PreferencesUtil.getOutputNameFromCompletePath(pdfParameter.getPath());
+				
+				
+				outputPath = PreferencesUtil.getOutputDir(pdfParameter.getPath()) + "/" + sss + "." + FileUtil.EXTENSION_PDF;
+				
+				System.out.println("outputPath--------------------->"+outputPath);
+				
+				try {
+					PdfService.sign(is, FileUtil.getOutputStreamFromURI(outputPath), signaturePreferences, ownerPassword);
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					log.error("error creando el OutputStream asociado al fichero de entrada " +pdfParameter.getPath() , e);
+					throw new IOException(e);
+				}
+			}
+						
 			// TODO centralizar esto
 			// actualizo la entrada de la tabla
 			pdfParameter.setPath(outputPath);

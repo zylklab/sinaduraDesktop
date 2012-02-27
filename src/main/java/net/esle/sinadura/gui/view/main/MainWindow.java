@@ -39,6 +39,13 @@ import net.esle.sinadura.gui.util.PropertiesUtil;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.FileSystemManager;
+import org.apache.commons.vfs2.FileType;
+import org.apache.commons.vfs2.FileUtil;
+import org.apache.commons.vfs2.VFS;
+import org.apache.xml.utils.URI.MalformedURIException;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -56,11 +63,11 @@ public class MainWindow {
 	private String path = null;
 	private boolean directory = false;
 
-	public MainWindow (Display display, List<LoggerMessage> list, String[] args) {
+	public MainWindow (Display display, List<LoggerMessage> list, String[] args) throws FileSystemException, MalformedURIException {
 		initialize(display, list, args);
 	}	
 
-	public void initialize(Display display, List<LoggerMessage> list, String[] args) {
+	public void initialize(Display display, List<LoggerMessage> list, String[] args) throws FileSystemException, MalformedURIException {
 
 		Shell mainShell = new Shell(SWT.APPLICATION_MODAL | SWT.SHELL_TRIM);
 		
@@ -130,20 +137,22 @@ public class MainWindow {
 	 * Añade un documento si se ha metido como argumento su ruta por la linea de comandos
 	 * 
 	 * @param panelPDF
+	 * @throws FileSystemException 
+	 * @throws MalformedURIException 
 	 */
-	private void initializeTable(DocumentsPanel panelPDF, String[] args) {
+	private void initializeTable(DocumentsPanel panelPDF, String[] args) throws FileSystemException, MalformedURIException {
 
-		List<File> files = new ArrayList<File>();
+		List<String> files = new ArrayList<String>();
 		for (String filePath : args) {
-			File file = new File(filePath);
-			if (file.isFile()) {
-				files.add(file);
+			if (net.esle.sinadura.core.util.FileUtil.isFile(filePath)) 
+			{
+				files.add(filePath);
 			}
 		}
 
 		if (files.size() > 0) {
 
-			List<DocumentInfo> openWithDocuments = DocumentInfoUtil.fileToDocumentInfo(files);
+			List<DocumentInfo> openWithDocuments = DocumentInfoUtil.fileToDocumentInfoFromUris(files);
 			// TODO duplicado
 			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
 
