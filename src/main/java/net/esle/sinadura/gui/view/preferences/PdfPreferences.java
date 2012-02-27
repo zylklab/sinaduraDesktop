@@ -369,7 +369,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		public void widgetSelected(SelectionEvent event) {
 
 			String ruta = FileDialogs.openFileDialog(compositeMain.getShell(), new String[] { FileUtil.EXTENSION_PNG,
-					FileUtil.EXTENSION_JPG, FileUtil.EXTENSION_GIF }, false);
+					FileUtil.EXTENSION_JPG, FileUtil.EXTENSION_GIF }, true);
 			if (ruta != null) {
 				textRuta.setText(ruta);
 			}

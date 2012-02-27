@@ -195,7 +195,7 @@ public class SoftwareCertUpdateDialog extends Dialog {
 		
 		public void widgetSelected(SelectionEvent event) {
 
-			String filePath = FileDialogs.openFileDialog(sShell, new String[] {FileUtil.EXTENSION_P12, FileUtil.EXTENSION_PFX}, false);
+			String filePath = FileDialogs.openFileDialog(sShell, new String[] {FileUtil.EXTENSION_P12, FileUtil.EXTENSION_PFX}, true);
 			
 			if (filePath != null) {
 				textPath.setText(filePath);

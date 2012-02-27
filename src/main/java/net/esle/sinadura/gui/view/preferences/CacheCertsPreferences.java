@@ -244,7 +244,7 @@ public class CacheCertsPreferences extends FieldEditorPreferencePage {
 		public void widgetSelected(SelectionEvent event) {
 
 			String path = FileDialogs.openFileDialog(compositeMain.getShell(), new String[] { FileUtil.EXTENSION_CER,
-				FileUtil.EXTENSION_CRT}, false);
+				FileUtil.EXTENSION_CRT}, true);
 			
 			if (path != null) {
 				FileInputStream fis = null;

@@ -71,14 +71,14 @@ public class FileDialogs {
 		
 		List<String> names = new ArrayList<String>();
 		List<String> extensionsList = new ArrayList<String>();
-		if (allFilter) {
-			names.add("All files");
-			extensionsList.add("*.*");
-		}
 		
 		for (String extension : extensions) {
 			names.add("." + extension);
 			extensionsList.add("*." + extension);
+		}
+		if (allFilter) {
+			names.add("All files");
+			extensionsList.add("*.*");
 		}
 		
 		archivoDialog.setFilterNames((String[]) names.toArray(new String[names.size()]));
@@ -114,6 +114,7 @@ public class FileDialogs {
 		
 		List<String> names = new ArrayList<String>();
 		List<String> extensionsList = new ArrayList<String>();
+		
 		if (allFilter) {
 			names.add("All files");
 			extensionsList.add("*.*");
