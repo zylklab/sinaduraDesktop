@@ -1,16 +1,16 @@
 key;name;path;so
-generic;Genérico (32-bit);/usr/lib/opensc-pkcs11.so;0
-generic 64b;Genérico (64-bit);/usr/lib64/opensc-pkcs11.so;0
-bit4id 32 bits (izenpe);Izenpe 2012 (32-bit);/usr/lib/libbit4ipki.so;0
-bit4id 64 bits (izenpe);Izenpe 2012 (64-bit);/usr/lib64/libbit4ipki.so;0
-izenpe;Izenpe;c:\\windows\\system32\\aetpkss1.dll;1
-bit4id (izenpe);Izenpe 2012;c:\\windows\\system32\\bit4ipki.dll;1
-dni;DNIe;c:\\windows\\system32\\UsrPkcs11.dll;1
-FNMT-RCM;FNMT-RCM;c:\\windows\\system32\\PkcsV2GK.dll;1
-Aladdin pro;Aladdin pro;c:\\windows\\system32\\eTPKCS11.dll;1
-Siemens CardOS 3.2 (ACCV);Siemens CardOS 3.2 (ACCV);c:\\windows\\system32\\siecap11.dll;1
-Siemens CardOS 2.2 (ACCV);Siemens CardOS 2.2 (ACCV);c:\\windows\\system32\\CardOS_PKCS11.dll;1
-Siemens CardOS 3.2 (ACCV) Linux;Siemens CardOS 3.2 (ACCV) Linux;/usr/local/lib/libsiecap11.so;0
-generic;Genérico (32-bit);/Library/OpenSC/lib/opensc-pkcs11.so;2
-bit4id 32 bits (izenpe);Izenpe 2012 (32-bit);/usr/lib/libbit4ipki.dylib;2
-bit4id 64 bits (izenpe);Izenpe 2012 (64-bit);/usr/lib64/libbit4ipki.dylib;2
+generic;Genérico (32-bit);/usr/lib/opensc-pkcs11.so;linux
+generic 64b;Genérico (64-bit);/usr/lib64/opensc-pkcs11.so;linux
+bit4id 32 bits (izenpe);Izenpe 2012 (32-bit);/usr/lib/libbit4ipki.so;linux
+bit4id 64 bits (izenpe);Izenpe 2012 (64-bit);/usr/lib64/libbit4ipki.so;linux
+izenpe;Izenpe;c:\\windows\\system32\\aetpkss1.dll;win
+bit4id (izenpe);Izenpe 2012;c:\\windows\\system32\\bit4ipki.dll;win
+dni;DNIe;c:\\windows\\system32\\UsrPkcs11.dll;win
+FNMT-RCM;FNMT-RCM;c:\\windows\\system32\\PkcsV2GK.dll;win
+Aladdin pro;Aladdin pro;c:\\windows\\system32\\eTPKCS11.dll;win
+Siemens CardOS 3.2 (ACCV);Siemens CardOS 3.2 (ACCV);c:\\windows\\system32\\siecap11.dll;win
+Siemens CardOS 2.2 (ACCV);Siemens CardOS 2.2 (ACCV);c:\\windows\\system32\\CardOS_PKCS11.dll;win
+Siemens CardOS 3.2 (ACCV) Linux;Siemens CardOS 3.2 (ACCV) Linux;/usr/local/lib/libsiecap11.so;linux
+generic;Genérico (32-bit);/Library/OpenSC/lib/opensc-pkcs11.so;mac
+bit4id 32 bits (izenpe);Izenpe 2012 (32-bit);/usr/lib/libbit4ipki.dylib;mac
+bit4id 64 bits (izenpe);Izenpe 2012 (64-bit);/usr/lib64/libbit4ipki.dylib;mac

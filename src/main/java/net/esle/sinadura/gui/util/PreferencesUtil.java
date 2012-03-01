@@ -289,16 +289,14 @@ public class PreferencesUtil {
 				List<List<String>> array = CsvUtil.parseCSV(is);
 		
 				// generar el map
-				String key, name, path;
-				int so;
-				
+				String key, name, path, so;
 				for (int i = 1; i < array.size(); i++) {
 		
 					List<String> list = array.get(i);
 					key = list.get(0);
 					name = list.get(1);
 					path = list.get(2);
-					so 	= Integer.valueOf(list.get(3));
+					so 	= list.get(3);
 					File file = new File(path);
 					
 					/*
@@ -322,23 +320,11 @@ public class PreferencesUtil {
 	
 	/***************************************************************
 	 * @return true si soCol pertence al sistema operativo actual
-	 * soCol  	0 > linux
-	 *  		1 > windows
-	 *  		2 > mac
+	 * osPreferencias  	linux, win, mac
 	 ***************************************************************/
-	private static boolean pertenceSOActual(int soCol){
-		String osName = System.getProperty("os.name").toLowerCase();
-		int osNumber = 0;
-		
-		if (osName.contains("windows")){
-			osNumber = 1;
-			
-		}else if (osName.contains("mac")){
-			osNumber = 2;
-		}
-		return soCol == osNumber;	
+	private static boolean pertenceSOActual(String osPreferencias){
+		return System.getProperty("os.name").toLowerCase().contains(osPreferencias);
 	}
-	
 	
 	
 	private static Map<String, String> loadSoftwarePreferences() {

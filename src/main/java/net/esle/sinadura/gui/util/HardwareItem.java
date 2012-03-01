@@ -5,10 +5,9 @@ public class HardwareItem {
 	private String key;
 	private String name;
 	private String path;
-	private int so;
+	private String so;
 	
-	
-	public HardwareItem(String key, String name, String path, int so) {
+	public HardwareItem(String key, String name, String path, String so) {
 		super();
 		this.key = key;
 		this.name = name;
@@ -34,12 +33,10 @@ public class HardwareItem {
 	public void setPath(String path) {
 		this.path = path;
 	}
-	public int getSo() {
+	public String getSo() {
 		return so;
 	}
-	public void setSo(int so) {
+	public void setSo(String so) {
 		this.so = so;
 	}
-	
-	
 }
