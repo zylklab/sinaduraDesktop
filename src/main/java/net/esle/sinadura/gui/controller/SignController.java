@@ -373,7 +373,7 @@ public class SignController {
 			URI fileUri;
 			String outputPath = null;
 			try {
-				fileUri = new URI(pdfParameter.getPath());
+				fileUri = new URI(FileUtil.normalizarURI(pdfParameter.getPath()));
 			} catch (URISyntaxException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
