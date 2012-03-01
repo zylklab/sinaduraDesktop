@@ -23,9 +23,8 @@ package net.esle.sinadura.gui.view.preferences;
 
 
 import java.util.Map;
-import java.util.logging.Logger;
 
-import net.esle.sinadura.gui.Sinadura;
+import net.esle.sinadura.gui.util.HardwareItem;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 
@@ -59,13 +58,13 @@ public class HardwareCertPreferences extends FieldEditorPreferencePage {
 	@Override
 	protected void createFieldEditors() {
 		
-		Map<String, String> map = PreferencesUtil.getHardwarePreferences();
+		Map<String, HardwareItem> map = PreferencesUtil.getHardwarePreferences();
 		
 		String[][] comboFields = new String[map.size()][2];
 		
 		int i = 0;
-		for (String name : map.keySet()) {
-			String[] campo = { name, name };
+		for (HardwareItem item : map.values()){
+			String[] campo = { item.getName(), item.getKey()};
 			comboFields[i] = campo;
 			i++;
 		}

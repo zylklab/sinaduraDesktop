@@ -22,12 +22,10 @@
 package net.esle.sinadura.gui.util;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -73,7 +71,7 @@ public class PreferencesUtil {
 	// STATIC ATRIBUTES
 	private static PreferenceStore preferences = null;
 	private static Map<String, String> softwarePrefs = null;
-	private static Map<String, String> hardwarePrefs = null;
+	private static Map<String, HardwareItem> hardwarePrefs = null;
 	private static Map<String, String> timestampPrefs = null;
 	private static KeyStore trustedKeystore = null;
 	private static KeyStore cacheKeystore = null;
@@ -259,17 +257,17 @@ public class PreferencesUtil {
 	
 	public static String getDefaultHardware() throws DriversNotFoundException {
 		
-		Map<String, String> map = PreferencesUtil.getHardwarePreferences();
+		Map<String, HardwareItem> map = PreferencesUtil.getHardwarePreferences();
 		
 		if (map != null && map.size() > 0) {
 		
-			String driver = map.get(PreferencesUtil.getPreferences().getString(PreferencesUtil.HARDWARE_DISPOSITIVE));
+			HardwareItem driver = map.get(PreferencesUtil.getPreferences().getString(PreferencesUtil.HARDWARE_DISPOSITIVE));
 			if (driver == null || driver.equals("")) {
 				// sino devolver el primero
 				driver = map.values().iterator().next();
 			}
 			
-			return driver;
+			return driver.getPath();
 			
 		} else {
 			throw new DriversNotFoundException();
@@ -277,39 +275,70 @@ public class PreferencesUtil {
 	}
 
 	
-	public static Map<String, String> getHardwarePreferences() {
+	
+	public static Map<String, HardwareItem> getHardwarePreferences() {
 
 		if (hardwarePrefs == null) {
 			
-			Map<String, String> map = new TreeMap<String, String>();
+			Map<String, HardwareItem> map = new TreeMap<String, HardwareItem>();
 
 			try {
+				
 				// leer el csv
 				InputStream is = ClassLoader.getSystemResourceAsStream(PATH_DEFAULT_PREFERENCES_HARDWARE);
 				List<List<String>> array = CsvUtil.parseCSV(is);
 		
 				// generar el map
+				String key, name, path;
+				int so;
+				
 				for (int i = 1; i < array.size(); i++) {
 		
 					List<String> list = array.get(i);
-					String name = list.get(0);
-					String path = list.get(1);
+					key = list.get(0);
+					name = list.get(1);
+					path = list.get(2);
+					so 	= Integer.valueOf(list.get(3));
 					File file = new File(path);
-					if (file.exists()) {
-						// solo los instalados
-						map.put(name, path);
+					
+					/*
+					 *  el dispositivo pertence al So actual
+					 *  está instalado en path 
+					 */
+					if (pertenceSOActual(so) && file.exists()) {
+						map.put(key, new HardwareItem(key, name, path, so));
 					}
 				}
 				
 			} catch (IOException e) {
 				log.error("", e);
 			}
-			
 			hardwarePrefs = map;
 		}
 
 		return hardwarePrefs;
 	}
+	
+	
+	/***************************************************************
+	 * @return true si soCol pertence al sistema operativo actual
+	 * soCol  	0 > linux
+	 *  		1 > windows
+	 *  		2 > mac
+	 ***************************************************************/
+	private static boolean pertenceSOActual(int soCol){
+		String osName = System.getProperty("os.name").toLowerCase();
+		int osNumber = 0;
+		
+		if (osName.contains("windows")){
+			osNumber = 1;
+			
+		}else if (osName.contains("mac")){
+			osNumber = 2;
+		}
+		return soCol == osNumber;	
+	}
+	
 	
 	
 	private static Map<String, String> loadSoftwarePreferences() {

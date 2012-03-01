@@ -24,6 +24,7 @@ resources-ext/trusted-certs/izenpe-prod/ca_ciudadanos_entidades_reconocidos.crt 
 resources-ext/trusted-certs/izenpe-prod/ca_raiz.crt svn_mime_002dtype=application%2Foctet-stream
 resources/images/sinadura.ico svn_mime_002dtype=application%2Foctet-stream
 resources/images/sinadura48.png svn_mime_002dtype=application%2Foctet-stream
+src/main/java/net/esle/sinadura/gui/util/HardwareItem.java svn_mime_002dtype=text%2Fplain
 src/main/resources/images/accept.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/add.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/adddir.png svn_mime_002dtype=application%2Foctet-stream

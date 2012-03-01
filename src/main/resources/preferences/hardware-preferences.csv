@@ -1,12 +1,13 @@
-name;path;
-generic;/usr/lib/opensc-pkcs11.so;
-bit4id 32 bits (izenpe);/usr/lib/libbit4ipki.so;
-bit4id 64 bits (izenpe);/usr/lib64/libbit4ipki.so;
-izenpe;c:\\windows\\system32\\aetpkss1.dll;
-bit4id (izenpe);c:\\windows\\system32\\bit4ipki.dll;
-dni;c:\\windows\\system32\\UsrPkcs11.dll;
-FNMT-RCM;c:\\windows\\system32\\PkcsV2GK.dll;
-Aladdin pro;c:\\windows\\system32\\eTPKCS11.dll;
-Siemens CardOS 3.2 (ACCV);c:\\windows\\system32\\siecap11.dll;
-Siemens CardOS 2.2 (ACCV);c:\\windows\\system32\\CardOS_PKCS11.dll;
-Siemens CardOS 3.2 (ACCV) Linux;/usr/local/lib/libsiecap11.so;
+key;name;path;so
+generic;Genérico (32);/usr/lib/opensc-pkcs11.so;0
+generic 64b;Genérico (64);/usr/lib64/opensc-pkcs11.so;0
+bit4id 32 bits (izenpe);Izenpe 2012 (32);/usr/lib/libbit4ipki.so;0
+bit4id 64 bits (izenpe);Izenpe 2012 (64);/usr/lib64/libbit4ipki.so;0
+izenpe;Izenpe;c:\\windows\\system32\\aetpkss1.dll;1
+bit4id (izenpe);Izenpe 2012;c:\\windows\\system32\\bit4ipki.dll;1
+dni;DNIe;c:\\windows\\system32\\UsrPkcs11.dll;1
+FNMT-RCM;FNMT-RCM;c:\\windows\\system32\\PkcsV2GK.dll;1
+Aladdin pro;Aladdin pro;c:\\windows\\system32\\eTPKCS11.dll;1
+Siemens CardOS 3.2 (ACCV);Siemens CardOS 3.2 (ACCV);c:\\windows\\system32\\siecap11.dll;1
+Siemens CardOS 2.2 (ACCV);Siemens CardOS 2.2 (ACCV);c:\\windows\\system32\\CardOS_PKCS11.dll;1
+Siemens CardOS 3.2 (ACCV) Linux;Siemens CardOS 3.2 (ACCV) Linux;/usr/local/lib/libsiecap11.so;2
