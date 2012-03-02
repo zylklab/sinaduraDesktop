@@ -62,6 +62,7 @@ public class ImagesUtil {
 	
 	// las de las preferencias software
 	public static final String	ADD_IMG		= PATH_IMAGES + "/" + "add.png";
+	public static final String	EXPORT_IMG		= PATH_IMAGES + "/" + "export.png";
 	public static final String	EDIT_IMG		= PATH_IMAGES + "/" + "edit.png";
 	public static final String	REMOVE_IMG		= PATH_IMAGES + "/" + "remove.png";
 

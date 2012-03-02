@@ -36,6 +36,7 @@ src/main/resources/images/credits.png svn_mime_002dtype=application%2Foctet-stre
 src/main/resources/images/delete.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/edit.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/error.png svn_mime_002dtype=application%2Foctet-stream
+src/main/resources/images/export.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/file.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/file_menu.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/info.png svn_mime_002dtype=application%2Foctet-stream

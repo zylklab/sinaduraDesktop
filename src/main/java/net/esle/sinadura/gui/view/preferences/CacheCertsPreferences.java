@@ -23,6 +23,7 @@
 package net.esle.sinadura.gui.view.preferences;
 
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -48,6 +49,7 @@ import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.StatisticsUtil;
 import net.esle.sinadura.gui.view.main.FileDialogs;
 import net.esle.sinadura.gui.view.main.InfoDialog;
+import net.esle.sinadura.gui.view.preferences.TrustedCertsPreferences.ButtonExportListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -64,6 +66,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.FileDialog;
 
 
 /**
@@ -183,6 +186,14 @@ public class CacheCertsPreferences extends FieldEditorPreferencePage {
 		buttonShow.setImage(new Image(this.compositeMain.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.EDIT_IMG)));
 		buttonShow.addSelectionListener(new ButtonShowListener());
 
+		Button buttonExport = new Button(compositeButtons, SWT.NONE);
+		GridData gdExport = new GridData();
+		gdExport.horizontalAlignment = GridData.FILL;
+		buttonExport.setLayoutData(gdMod);
+		buttonExport.setText(LanguageUtil.getLanguage().getString("button.export"));
+		buttonExport.setImage(new Image(this.compositeMain.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.EXPORT_IMG)));
+		buttonExport.addSelectionListener(new ButtonExportListener());
+		
 		Button buttonRemove = new Button(compositeButtons, SWT.NONE);
 		GridData gdRemove = new GridData();
 		gdRemove.horizontalAlignment = GridData.FILL;
@@ -349,6 +360,33 @@ public class CacheCertsPreferences extends FieldEditorPreferencePage {
 			widgetSelected(event);
 		}
 	}
+	
+	
+	class ButtonExportListener implements SelectionListener {
+
+		public void widgetSelected(SelectionEvent event) {
+
+			try {
+				X509Certificate cert = (X509Certificate)ksTemp.getCertificate(aliasesPosition.get(visualList.getSelectionIndex()));
+
+				FileDialog fileDialog = new FileDialog(compositeMain.getShell(), SWT.SAVE);
+				fileDialog.setFileName(CertificateUtil.getFormattedName(cert).trim()+".crt");
+				fileDialog.setFilterExtensions(new String[] {"crt" });
+				String filePath = fileDialog.open();
+
+				FileUtil.export(cert, new File(filePath), false);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("", e);
+			}
+		}
+
+		public void widgetDefaultSelected(SelectionEvent event) {
+			widgetSelected(event);
+		}
+	}
+
 	
 	class ButtonRemoveListener implements SelectionListener {
 		
