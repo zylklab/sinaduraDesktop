@@ -43,7 +43,6 @@
 package net.esle.sinadura.gui.controller;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -55,6 +54,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
+import java.security.cert.X509Certificate;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -62,6 +62,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.esle.sinadura.core.certificate.CertificateUtil;
 import net.esle.sinadura.core.exceptions.ConnectionException;
 import net.esle.sinadura.core.exceptions.CoreException;
 import net.esle.sinadura.core.exceptions.CorePKCS12Exception;
@@ -88,12 +89,10 @@ import net.esle.sinadura.gui.events.ProgressWriter;
 import net.esle.sinadura.gui.exceptions.AliasesNotFoundException;
 import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
 import net.esle.sinadura.gui.exceptions.OverwritingException;
-import net.esle.sinadura.gui.exceptions.SignProgressInterruptedException;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.StatisticsUtil;
-import net.esle.sinadura.gui.view.main.SlotDialog;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -207,10 +206,13 @@ public class SignController {
 
 		List<String> list = new ArrayList<String>();
 
+		String certAlias;
 		Enumeration<String> aliases = ks.aliases();
 		while (aliases.hasMoreElements()) {
-			String string = aliases.nextElement();
-			list.add(string);
+			certAlias = aliases.nextElement();
+			if (CertificateUtil.hashDigitalSignature((X509Certificate)ks.getCertificate(certAlias))){
+				list.add(certAlias);				
+			}
 		}
 		if (list.size() == 0) {
 			throw new AliasesNotFoundException();
