@@ -541,6 +541,209 @@
 				</dependency>
 			</dependencies>
 		</profile>
+		
+		
+		
+		<profile>
+			<id>Win64</id>
+			<activation>
+				<os>
+					<name>win64</name>
+					<family>windows</family>
+					<arch>64</arch>
+				</os>
+				<property>
+					<name>win64</name>
+					<value>win64</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+
+					<!-- quitar el bat? -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>appassembler-maven-plugin</artifactId>
+						<version>1.1</version>
+						<executions>
+							<execution>
+								<id>scripts</id>
+								<phase>package</phase>
+								<goals>
+									<goal>assemble</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<platforms>
+								<platform>windows</platform>
+							</platforms>
+							<assembleDirectory>${staging-dir}</assembleDirectory>
+							<programs>
+								<program>
+									<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
+									<name>sinadura</name>
+								</program>
+								<program>
+									<mainClass>net.esle.sinadura.core.Sinadura</mainClass>
+									<name>sinadura-console</name>
+								</program>
+							</programs>
+							<repositoryLayout>flat</repositoryLayout>
+							<repositoryName>lib</repositoryName>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>2.3</version>
+						<executions>
+							<execution>
+								<id>resourcescopy</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<encoding>iso-8859-1</encoding>
+									<overWrite>true</overWrite>
+									<outputDirectory>${staging-dir}/resources</outputDirectory>
+									<resources>
+										<resource>
+											<filtering>true</filtering>
+											<directory>resources</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-resources</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<encoding>iso-8859-1</encoding>
+									<overWrite>true</overWrite>
+									<outputDirectory>${staging-dir}</outputDirectory>
+									<resources>
+										<resource>
+											<filtering>true</filtering>
+											<directory>installer/install-resources</directory>
+										</resource>
+										<resource>
+											<filtering>true</filtering>
+											<directory>src/main/izpack</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>com.akathist.maven.plugins.launch4j</groupId>
+						<artifactId>launch4j-maven-plugin</artifactId>
+						<version>1.3</version>
+						<executions>
+							<execution>
+								<id>sinadura</id>
+								<phase>package</phase>
+								<goals>
+									<goal>launch4j</goal>
+								</goals>
+								<configuration>
+									<dontWrapJar>true</dontWrapJar>
+									<headerType>gui</headerType>
+									<jar>lib/sinaduraDesktop-${project.version}.jar</jar>
+									<outfile>${staging-dir}/sinadura.exe</outfile>
+									<chdir>.</chdir>
+									<downloadUrl>http://java.com/download</downloadUrl>
+									<icon>${staging-dir}/resources/images/sinadura.ico</icon>
+									<singleInstance>
+										<mutexName>sinadura</mutexName>
+										<windowTitle></windowTitle>
+									</singleInstance>
+									<classPath>
+										<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
+										<addDependencies>true</addDependencies>
+										<jarLocation>lib/</jarLocation>
+									</classPath>
+									<jre>
+										<minVersion>1.6.0</minVersion>
+										<jdkPreference>preferJre</jdkPreference>
+									</jre>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.codehaus.izpack</groupId>
+						<artifactId>izpack-maven-plugin</artifactId>
+						<version>1.0-alpha-5</version>
+						<dependencies>
+							<dependency>
+								<groupId>org.codehaus.izpack</groupId>
+								<artifactId>izpack-standalone-compiler</artifactId>
+								<version>${izpack-standalone.version}</version>
+							</dependency>
+						</dependencies>
+						<configuration>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
+						</configuration>
+						<executions>
+							<execution>
+								<id>standard-installer</id>
+								<phase>package</phase>
+								<goals>
+									<goal>izpack</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.3</version>
+						<executions>
+							<execution>
+								<id>generarexe</id>
+								<phase>pre-integration-test</phase>
+								<configuration>
+									<tasks>
+										<echo message="Creating the .exe file." />
+										<exec executable="python" dir="installer/izpack2exe">
+											<arg value="izpack2exe.py" />
+											<arg
+												value="--file=../../target/sinaduraDesktop-${project.version}-standard.jar" />
+											<arg
+												value="--output=../../target/sinaduraDesktop-${project.version}-windows-installer.exe" />
+										</exec>
+									</tasks>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<dependency>
+ 	 				<groupId>org.eclipse.swt.win32.win32</groupId>
+  					<artifactId>x86_64</artifactId>
+  					<version>3.7.2</version>
+					<type>jar</type>
+					<scope>compile</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+		
+		
 		<profile>
 			<id>Mac32</id>
 			<activation>
@@ -955,7 +1158,7 @@
 		<repository>
 			<id>sinadura-group</id>
 			<name>sinadura-group</name>
-			<url>http://nexus-maven.zylk.net:8081/nexus/content/groups/sinadura-group</url>
+			<url>https://services.zylk.net/nexus/content/groups/sinadura-group</url>
 			<layout>default</layout>
 			<releases>
 				<enabled>true</enabled>
