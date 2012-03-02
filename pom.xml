@@ -883,7 +883,7 @@
 		<dependency>
 			<groupId>sinadura</groupId>
 			<artifactId>sinaduraCore</artifactId>
-			<version>3.1.0</version>
+			<version>3.1.1</version>
 			<scope>compile</scope>
 		</dependency>
 
