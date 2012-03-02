@@ -10,6 +10,7 @@ FNMT-RCM;FNMT-RCM;c:\\windows\\system32\\PkcsV2GK.dll;win;
 Aladdin pro;Aladdin pro;c:\\windows\\system32\\eTPKCS11.dll;win;
 Siemens CardOS 3.2 (ACCV);Siemens CardOS 3.2 (ACCV);c:\\windows\\system32\\siecap11.dll;win;
 Siemens CardOS 2.2 (ACCV);Siemens CardOS 2.2 (ACCV);c:\\windows\\system32\\CardOS_PKCS11.dll;win;
+camerfirma;Camerfirma;c:\\windows\\system32\\incryptoki2.dll;win;
 Siemens CardOS 3.2 (ACCV) Linux;Siemens CardOS 3.2 (ACCV) Linux;/usr/local/lib/libsiecap11.so;linux;
 generic;Genérico (32-bit);/Library/OpenSC/lib/opensc-pkcs11.so;mac;
 bit4id 32 bits (izenpe);Izenpe 2012 (32-bit);/usr/lib/libbit4ipki.dylib;mac;
