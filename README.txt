@@ -4,6 +4,8 @@ Para generar un nuevo empaquetado:
 * Cambiar la version en:
 - install.xml
 - pom.xml (core y desktop)
+  - cambiar la versión del producto generado (core y desktop)
+  - cambiar la versión de la referencia del desktop al core
 - configuration.properties (core y desktop)
 - modificar el build.properties (estos se usan para algo? el del core? -> si no borrar)
 @Irune sí se usa, en los build.xml de desktop y core.
