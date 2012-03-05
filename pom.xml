@@ -893,6 +893,45 @@
 							</execution>
 						</executions>
 					</plugin>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					<plugin>
+                		<groupId>org.codehaus.mojo</groupId>
+                		<artifactId>osxappbundle-maven-plugin</artifactId>
+                		<version>1.0-alpha-1</version>
+                		<configuration>
+                    		<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
+                    		<jvmVersion>1.6+</jvmVersion>
+                    		<javaApplicationStub>${basedir}/resources-ext/osx/MacOS/JavaApplicationStub</javaApplicationStub>
+                    		<iconFile>${basedir}/resources-ext/osx/MacOS/Resources/logo_sinadura.icns</iconFile>
+                    		<vmOptions>-d32 -XstartOnFirstThread</vmOptions>
+                    		<!-- dictionaryFile>${basedir}/src/main/app-resources/Info.plist</dictionaryFile-->
+                		</configuration>
+                		<executions>
+                    		<execution>
+                        		<phase>package</phase>
+                        		<goals>
+                            		<goal>bundle</goal>
+                        		</goals>
+                    		</execution>
+               			</executions>
+           			</plugin>
+					
+					
+					
+					
+					
+					
+					
+					
+					
 				</plugins>
 			</build>
 			<dependencies>
