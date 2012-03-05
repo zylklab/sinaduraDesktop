@@ -32,7 +32,6 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
-import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,7 +48,6 @@ import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.StatisticsUtil;
 import net.esle.sinadura.gui.view.main.FileDialogs;
 import net.esle.sinadura.gui.view.main.InfoDialog;
-import net.esle.sinadura.gui.view.preferences.TrustedCertsPreferences.ButtonExportListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -373,8 +371,10 @@ public class CacheCertsPreferences extends FieldEditorPreferencePage {
 				fileDialog.setFileName(CertificateUtil.getFormattedName(cert).trim()+".crt");
 				fileDialog.setFilterExtensions(new String[] {"crt" });
 				String filePath = fileDialog.open();
-
-				FileUtil.export(cert, new File(filePath), false);
+				
+				if (filePath != null){
+					FileUtil.export(cert, new File(filePath), false);					
+				}
 
 			} catch (Exception e) {
 				e.printStackTrace();

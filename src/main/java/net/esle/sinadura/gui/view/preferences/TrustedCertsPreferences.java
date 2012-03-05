@@ -382,7 +382,9 @@ public class TrustedCertsPreferences extends FieldEditorPreferencePage {
 				fileDialog.setFilterExtensions(new String[] {"crt" });
 				String filePath = fileDialog.open();
 
-				FileUtil.export(cert, new File(filePath), false);
+				if (filePath != null){
+					FileUtil.export(cert, new File(filePath), false);					
+				}
 
 			} catch (Exception e) {
 				e.printStackTrace();
