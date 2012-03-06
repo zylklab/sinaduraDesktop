@@ -51,7 +51,6 @@ mvn clean package -P Mac
 
 * windows
 _______________
-
 1. mvn clean pre-integration-test -P Win32
 1. mvn clean package -P Win32 (este no generara la parte del exe, asi que no hay que utilizarlo!)
 1. falla

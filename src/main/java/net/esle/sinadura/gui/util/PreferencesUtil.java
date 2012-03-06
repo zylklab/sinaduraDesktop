@@ -129,8 +129,15 @@ public class PreferencesUtil {
 	
 	static {
 		
+		// base
+		File f = new File(PropertiesUtil.USER_BASE_PATH);
+		if (!f.exists()) {
+			f.mkdir();
+		}
+		
+		
 		// folder
-		File f = new File(FOLDER_PATH);
+		f = new File(FOLDER_PATH);
 		if (!f.exists()) {
 			f.mkdir();
 		}
@@ -524,7 +531,6 @@ public class PreferencesUtil {
 		String vengaYa = PreferencesUtil.getPreferences().getString(PreferencesUtil.SAVE_EXTENSION);
 		
 		name2 = (name2.substring(0, name2.lastIndexOf("."))) + vengaYa;
-		System.out.println("NAME2.........................."+name2);
 		return 	name2;
 	}
 	
