@@ -12,7 +12,6 @@ import java.util.Locale;
 
 import net.esle.sinadura.core.exceptions.ConnectionException;
 import net.esle.sinadura.core.util.ProxyUtil;
-import net.esle.sinadura.core.validate.OcspUtil;
 import net.esle.sinadura.gui.model.LoggerMessage;
 import net.esle.sinadura.gui.model.LoggerMessage.Level;
 import net.esle.sinadura.gui.util.ImagesUtil;
@@ -147,28 +146,10 @@ class ThreadOperations extends Thread {
 		StatisticsUtil.log(StatisticsUtil.KEY_JAVA_VENDOR, System.getProperty("java.vendor"));
 		StatisticsUtil.log(StatisticsUtil.KEY_JAVA_VERSION, System.getProperty("java.version"));
 
-		// creacion de carpetas
-		// base
-		File f = new File(PropertiesUtil.USER_BASE_PATH);
-		if (!f.exists()) {
-			f.mkdir();
-		}
-
-		// log
-		f = new File(PropertiesUtil.LOG_FOLDER_PATH);
-		if (!f.exists()) {
-			f.mkdir();
-		}
-
-		// statistics
-		f = new File(PropertiesUtil.STATISTICS_FOLDER_PATH);
-		if (!f.exists()) {
-			f.mkdir();
-		}
 
 		// imagen por defecto para el sello
 		try {
-			f = new File(PropertiesUtil.DEFAULT_IMAGE_FILE_PATH);
+			File f = new File(PropertiesUtil.DEFAULT_IMAGE_FILE_PATH);
 			if (!f.exists()) {
 				InputStream is = ClassLoader.getSystemResourceAsStream(ImagesUtil.EXT_SINADURA_LOGO_150_IMG);
 				FileOutputStream fos = new FileOutputStream(PropertiesUtil.DEFAULT_IMAGE_FILE_PATH);

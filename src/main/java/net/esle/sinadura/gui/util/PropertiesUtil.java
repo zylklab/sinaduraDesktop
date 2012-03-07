@@ -22,8 +22,6 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PropertiesUtil {
 
-	private static Log log = LogFactory.getLog(PropertiesUtil.class);
-
 	// CONSTANTES de aplicacion TODO estaria bien encapsular el acceso a las constantes y a las keys -> getProperty(key/constante) 
 	public static final String APPLICATION_NAME = "Sinadura";
 	
@@ -59,8 +57,10 @@ public class PropertiesUtil {
 	
 	private static Properties configuration = null;
 
+	private static Log log;
 	public static Properties getConfiguration() {
 
+		 log = LogFactory.getLog(PropertiesUtil.class);
 		if (configuration == null) {
 			configuration = new Properties();
 			InputStream is = ClassLoader.getSystemResourceAsStream(PATH_CONFIGURATION);

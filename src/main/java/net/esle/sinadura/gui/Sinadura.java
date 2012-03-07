@@ -21,6 +21,7 @@
  */
 package net.esle.sinadura.gui;
 
+import java.io.File;
 import java.util.Locale;
 
 import javax.swing.JOptionPane;
@@ -38,11 +39,42 @@ import org.apache.xml.utils.URI.MalformedURIException;
  */
 public class Sinadura {
 
-	private static Log log = LogFactory.getLog(Sinadura.class);
+	private static Log log;
+	
+	/*************************************
+	 * init, creación de carpetas base
+	 *************************************/
+	static{
+		
+		// base
+		File f = new File(PropertiesUtil.USER_BASE_PATH);
+		if (!f.exists()) {
+			f.mkdir();
+		}
 
+		// log
+		f = new File(PropertiesUtil.LOG_FOLDER_PATH);
+		if (!f.exists()) {
+			f.mkdir();
+		}
+
+		// statistics
+		f = new File(PropertiesUtil.STATISTICS_FOLDER_PATH);
+		if (!f.exists()) {
+			f.mkdir();
+		}
+		
+		 log = LogFactory.getLog(Sinadura.class);
+	}
+	
+	
 	public static void main(String[] args) throws FileSystemException, MalformedURIException {
 		
 		try {
+			
+			//===========================
+			// env
+			//===========================
 			log.info("Iniciando Sinadura");
 			
 			log.info("Sinadura version: " + PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.APPLICATION_VERSION_STRING));
@@ -59,6 +91,7 @@ public class Sinadura {
 			
 			log.info("Locale country: " + Locale.getDefault().getCountry());
 			log.info("Locale language: " + Locale.getDefault().getLanguage());
+			
 			
 			new LoadingWindow(args);
 
