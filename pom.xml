@@ -59,6 +59,29 @@
 					<source>1.6</source>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -541,9 +564,9 @@
 				</dependency>
 			</dependencies>
 		</profile>
-		
-		
-		
+
+
+
 		<profile>
 			<id>Win64</id>
 			<activation>
@@ -734,16 +757,16 @@
 			</build>
 			<dependencies>
 				<dependency>
- 	 				<groupId>org.eclipse.swt.win32.win32</groupId>
-  					<artifactId>x86_64</artifactId>
-  					<version>3.7.2</version>
+					<groupId>org.eclipse.swt.win32.win32</groupId>
+					<artifactId>x86_64</artifactId>
+					<version>3.7.2</version>
 					<type>jar</type>
 					<scope>compile</scope>
 				</dependency>
 			</dependencies>
 		</profile>
-		
-		
+
+
 		<profile>
 			<id>Mac32</id>
 			<activation>
@@ -772,7 +795,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<extraJvmArguments>-d32 -XstartOnFirstThread</extraJvmArguments>							
+							<extraJvmArguments>-d32 -XstartOnFirstThread</extraJvmArguments>
 							<platforms>
 								<platform>unix</platform>
 							</platforms>
@@ -893,45 +916,45 @@
 							</execution>
 						</executions>
 					</plugin>
-					
-					
-					
-					
-					
-					
-					
-					
-					
+
+
+
+
+
+
+
+
+
 					<plugin>
-                		<groupId>org.codehaus.mojo</groupId>
-                		<artifactId>osxappbundle-maven-plugin</artifactId>
-                		<version>1.0-alpha-1</version>
-                		<configuration>
-                    		<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
-                    		<jvmVersion>1.6+</jvmVersion>
-                    		<javaApplicationStub>${basedir}/resources-ext/osx/MacOS/JavaApplicationStub</javaApplicationStub>
-                    		<iconFile>${basedir}/resources-ext/osx/MacOS/Resources/logo_sinadura.icns</iconFile>
-                    		<vmOptions>-d32 -XstartOnFirstThread</vmOptions>
-                    		<!-- dictionaryFile>${basedir}/src/main/app-resources/Info.plist</dictionaryFile-->
-                		</configuration>
-                		<executions>
-                    		<execution>
-                        		<phase>package</phase>
-                        		<goals>
-                            		<goal>bundle</goal>
-                        		</goals>
-                    		</execution>
-               			</executions>
-           			</plugin>
-					
-					
-					
-					
-					
-					
-					
-					
-					
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>osxappbundle-maven-plugin</artifactId>
+						<version>1.0-alpha-1</version>
+						<configuration>
+							<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
+							<jvmVersion>1.6+</jvmVersion>
+							<javaApplicationStub>${basedir}/resources-ext/osx/MacOS/JavaApplicationStub</javaApplicationStub>
+							<iconFile>${basedir}/resources-ext/osx/MacOS/Resources/logo_sinadura.icns</iconFile>
+							<vmOptions>-d32 -XstartOnFirstThread</vmOptions>
+							<!-- dictionaryFile>${basedir}/src/main/app-resources/Info.plist</dictionaryFile -->
+						</configuration>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>bundle</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+
+
+
+
+
+
+
+
 				</plugins>
 			</build>
 			<dependencies>
@@ -979,7 +1002,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<extraJvmArguments>-XstartOnFirstThread</extraJvmArguments>		
+							<extraJvmArguments>-XstartOnFirstThread</extraJvmArguments>
 							<platforms>
 								<platform>unix</platform>
 							</platforms>
@@ -1222,5 +1245,11 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-
+	<distributionManagement>
+		<repository>
+			<id>maven-nexus-zylk</id>
+			<name>Maven Nexus at Zylk</name>
+			<url>https://services.zylk.net/nexus/content/repositories/sinadura-releases/</url>
+		</repository>
+	</distributionManagement>
 </project>

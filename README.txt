@@ -1,4 +1,8 @@
-Para generar un nuevo empaquetado:
+** Para trabajar con el Nexus de zylk + maven es necesario tener el certificado SSL instalado en nuestra JVM
+www.zylk.net/web/guest/web-2-0/blog/-/blogs/accediendo-a-repositorios-de-maven-securizados
+
+ 
+** Para generar un nuevo empaquetado:
 
 =====================================
 = Cambio de versión
@@ -59,3 +63,23 @@ mvn clean install
 
 
 - Y renombrarlos con la nomenclatura correcta al subirlos a www.sinadura.net (ver versiones anteriores).
+
+=====================================
+= Subir nueva release a Nexus
+=====================================
+
+Es necesario tener el siguiente bloque en el ~/.m2/settings.xml
+con la autenticación del nexus
+<pre>
+<servers>
+    <server>
+      <id>maven-nexus-zylk</id>
+      <username>***</username>
+      <password>***</password>
+      <configuration></configuration>
+    </server>
+  </servers>
+
+</pre>
+En cada proyecto mvn deploy (-DskipTests)
+
