@@ -382,6 +382,10 @@ public class SignController {
 				throw new IOException(e1);
 			}
 			
+			log.info("File path pasado a URI : "+fileUri);
+			log.info("File path pasado a URI (protocol) :"+fileUri.getScheme()+", si no es file o es null usa /");
+			
+		 	
 			if(fileUri.getScheme() == null || fileUri.getScheme().equalsIgnoreCase("file")) //si es file voy por nombre y así se pueden firmar ficheros grandes
 			{
 				File file = new File(pdfParameter.getPath());
