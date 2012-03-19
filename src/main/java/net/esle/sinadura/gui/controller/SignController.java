@@ -394,14 +394,8 @@ public class SignController {
 			}
 			else //si el protocolo no es file voy por inputstrema
 			{
-				System.out.println("outputPath--------------------->"+outputPath);
 				String sss = PreferencesUtil.getOutputNameFromCompletePath(pdfParameter.getPath());
-				
-				
 				outputPath = PreferencesUtil.getOutputDir(pdfParameter.getPath()) + "/" + sss + "." + FileUtil.EXTENSION_PDF;
-				
-				System.out.println("outputPath--------------------->"+outputPath);
-				
 				try {
 					PdfService.sign(is, FileUtil.getOutputStreamFromURI(outputPath), signaturePreferences, ownerPassword);
 				} catch (URISyntaxException e) {

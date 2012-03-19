@@ -26,6 +26,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -527,7 +529,7 @@ public class PreferencesUtil {
 	
 	public static String getOutputNameFromCompletePath(String name) 
 	{
-		String name2 = name.substring(name.lastIndexOf("/")+1, name.length());
+		String name2 = name.substring(name.lastIndexOf(File.separatorChar)+1, name.length());
 		String vengaYa = PreferencesUtil.getPreferences().getString(PreferencesUtil.SAVE_EXTENSION);
 		
 		name2 = (name2.substring(0, name2.lastIndexOf("."))) + vengaYa;
@@ -547,10 +549,19 @@ public class PreferencesUtil {
 		
 		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.OUTPUT_AUTO_ENABLE)) 
 		{
-			return filePath.substring(0, filePath.lastIndexOf("/"));	
+			return filePath.substring(0, filePath.lastIndexOf(File.separatorChar));	
 		} else {
 			return PreferencesUtil.getPreferences().getString(PreferencesUtil.OUTPUT_DIR);
 		}
+		
+		
+	}
+	
+	
+	
+	public static void main(String[] args) throws URISyntaxException {
+		
+		
 	}
 	
 }
