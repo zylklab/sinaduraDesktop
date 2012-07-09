@@ -55,14 +55,29 @@ mvn clean package -P Mac
 
 * windows
 _______________
+
+0. para el empaquetado de windows hay que descargar el launch4j-maven-plugin original,
+luego patchearlo con la versión del SVN y finalmente hacer el empaquetado.
+> comentar en el pom.xml de sinaduraDesktop las lineas referentes al repositorio de sinadura-zylk 'repositories>repository>sinadura-group'
+
 1. mvn clean pre-integration-test -P Win32
-1. mvn clean package -P Win32 (este no generara la parte del exe, asi que no hay que utilizarlo!)
-1. falla
-2 descargar el proyecto launch4j-maven-plugings del svn y hacer:
-mvn clean install
+> aquí falla con un 'net.sf.launch4j.BuilderException: Especifique la ruta del jar relativa al ejecutable', es normal
+
+2. descargar el proyecto launch4j-maven-plugings del svn y hacer:
+mvn install
+
+1. repetir paso 1
+mvn clean pre-integration-test -P Win32
+
+Y con esto ya se genera el EXE.
+
+3. descomentar las lineas del repositorio de sinadura-zylk
+
+(no hay que hacerlo) 2. mvn clean package -P Win32 (este no generara la parte del exe, asi que no hay que utilizarlo!)
 
 
 - Y renombrarlos con la nomenclatura correcta al subirlos a www.sinadura.net (ver versiones anteriores).
+
 
 =====================================
 = Subir nueva release a Nexus
