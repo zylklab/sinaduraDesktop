@@ -56,24 +56,45 @@ mvn clean package -P Mac
 * windows
 _______________
 
-0. para el empaquetado de windows hay que descargar el launch4j-maven-plugin original,
-luego patchearlo con la versión del SVN y finalmente hacer el empaquetado.
-> comentar en el pom.xml de sinaduraDesktop las lineas referentes al repositorio de sinadura-zylk 'repositories>repository>sinadura-group'
-
 1. mvn clean pre-integration-test -P Win32
-> aquí falla con un 'net.sf.launch4j.BuilderException: Especifique la ruta del jar relativa al ejecutable', es normal
 
-2. descargar el proyecto launch4j-maven-plugings del svn y hacer:
+Aquí falla con un
+'net.sf.launch4j.BuilderException: Especifique la ruta del jar relativa al ejecutable'
+
+Esto es porque se baja del nexus-zylk una versión del launch4j incorrecta, con lo que tenemos que arreglarlo.
+Para ello;
+
+2 - borramos del repositorio de mavel el paquete launch4j
+
+$ ~/.m2/repository/com/akathist/maven/plugins/launch4j
+
+
+3 - comentamos del pom.xml de sinaduraDekstop la linea del repositorio del nexus-zylk en 'repositories>repository>sinadura-group'
+
+4 - volvemos a lanzar el comando del punto 0 (con esto descargamos el launch4j original)
+(dará el mismo error que antes)
+
+5 - descargamos del SVN el proyecto '/launch4j-maven-plugin' y hacemos un
 mvn install
 
-1. repetir paso 1
+Con esto parcheamos la versión oficial del launch4j.
+A mi este paso sólo me funciona desde el Eclipse, en consola me da un
+
+Reason: POM 'org.eclipse.m2e:lifecycle-mapping' not found in repository: Unable to download the arti
+fact from any repository
+
+
+
+6 - volvemos a lanzar el punto 0
+
 mvn clean pre-integration-test -P Win32
 
 Y con esto ya se genera el EXE.
 
-3. descomentar las lineas del repositorio de sinadura-zylk
+7. volver a activar las lineas del repositorio de sinadura-zylk en el pom.xml
 
 (no hay que hacerlo) 2. mvn clean package -P Win32 (este no generara la parte del exe, asi que no hay que utilizarlo!)
+
 
 
 - Y renombrarlos con la nomenclatura correcta al subirlos a www.sinadura.net (ver versiones anteriores).
