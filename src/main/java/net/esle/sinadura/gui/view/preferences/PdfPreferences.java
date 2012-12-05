@@ -66,6 +66,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 	private Text textRuta = null;
 	private Text textReason = null;
 	private Text textLocation = null;
+	private Label labelPosicion;
 	private Button buttonPosition = null;
 	private Button buttonBrowse = null;
 	private Label label = null;
@@ -101,9 +102,9 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		// composite que contiene todos los elementos de la pantalla
 		this.compositeMain = new Composite(parent, SWT.NONE);
 		GridLayout gridLayoutPrincipal = new GridLayout();
-		gridLayoutPrincipal.numColumns = 4;
+		gridLayoutPrincipal.numColumns = 3;
 		gridLayoutPrincipal.verticalSpacing = 5;
-		gridLayoutPrincipal.marginBottom = 20;
+		gridLayoutPrincipal.marginBottom = 5;
 		this.compositeMain.setLayout(gridLayoutPrincipal);
 
 		GridData gdPrincipal = new GridData();
@@ -123,7 +124,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		
 		// tipo firma
 		GridData gdComboTipoFirma = new GridData();
-		gdComboTipoFirma.verticalSpan = 4;
+		gdComboTipoFirma.verticalSpan = 3;
 		gdComboTipoFirma.verticalAlignment = SWT.NONE;
 		gdComboTipoFirma.horizontalAlignment = SWT.NONE;
 		gdComboTipoFirma.grabExcessHorizontalSpace = true;
@@ -154,7 +155,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		checkVisible = new Button(this.compositeMain, SWT.CHECK);
 		checkVisible.setText(LanguageUtil.getLanguage().getString("preferences.pdf.sign_visible"));
 		GridData gdVisible = new GridData();
-		gdVisible.horizontalSpan = 4;
+		gdVisible.horizontalSpan = 3;
 		gdVisible.grabExcessHorizontalSpace = true;
 		checkVisible.setLayoutData(gdVisible);
 		checkVisible.setSelection(PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PDF_VISIBLE));
@@ -168,6 +169,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 						label.setEnabled(true);
 						textRuta.setEnabled(true);
 						buttonBrowse.setEnabled(true);
+						labelPosicion.setEnabled(true);
 						buttonPosition.setEnabled(true);
 						labelPages.setEnabled(true);
 						comboSelectPage.setEnabled(true);
@@ -175,6 +177,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 						label.setEnabled(false);
 						textRuta.setEnabled(false);
 						buttonBrowse.setEnabled(false);
+						labelPosicion.setEnabled(false);
 						buttonPosition.setEnabled(false);
 						labelPages.setEnabled(false);
 						comboSelectPage.setEnabled(false);
@@ -185,6 +188,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 					label.setEnabled(false);
 					textRuta.setEnabled(false);
 					buttonBrowse.setEnabled(false);
+					labelPosicion.setEnabled(false);
 					buttonPosition.setEnabled(false);
 					labelPages.setEnabled(false);
 					comboSelectPage.setEnabled(false);
@@ -196,8 +200,9 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		
 		checkSello = new Button(this.compositeMain, SWT.CHECK);
 		checkSello.setText(LanguageUtil.getLanguage().getString("preferences.pdf.stamp_active"));
+		
 		GridData gdSello = new GridData();
-		gdSello.horizontalSpan = 4;
+		gdSello.horizontalSpan = 3;
 		gdSello.grabExcessHorizontalSpace = true;
 		checkSello.setLayoutData(gdSello);
 		checkSello.setSelection(PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PDF_STAMP_ENABLE));
@@ -243,33 +248,36 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 
 		buttonBrowse = new Button(this.compositeMain, SWT.NONE);
 		GridData gdBrowse = new GridData(GridData.FILL_HORIZONTAL);
-		gdBrowse.minimumWidth = 0;
+		gdBrowse.horizontalSpan = 1;
+		gdBrowse.grabExcessHorizontalSpace = true;
 		buttonBrowse.setLayoutData(gdBrowse);
 		buttonBrowse.setText(LanguageUtil.getLanguage().getString("button.browse"));
 		buttonBrowse.addSelectionListener(new ButtonBrowseListener());
 
+		
+		// posicion
+		labelPosicion = new Label(this.compositeMain, SWT.NONE);
+		labelPosicion.setText(LanguageUtil.getLanguage().getString("preferences.pdf.image.position"));
+		labelPosicion.setLayoutData(new GridData());
+
 		buttonPosition = new Button(this.compositeMain, SWT.NONE);
-		buttonPosition.setImage(new Image(this.compositeMain.getDisplay(), ClassLoader
-				.getSystemResourceAsStream(ImagesUtil.STAMP_POSITION_IMG)));
+		buttonPosition.setImage(new Image(this.compositeMain.getDisplay(), ClassLoader .getSystemResourceAsStream(ImagesUtil.STAMP_POSITION_IMG)));
 		buttonPosition.addSelectionListener(new ButtonPositionListener());
+		GridData gdPosicionBt = new GridData();
+		gdPosicionBt.horizontalSpan = 2;
+		gdPosicionBt.grabExcessHorizontalSpace = false;
+		buttonPosition.setLayoutData(gdPosicionBt);
+		
 
-		GridData gdCombo = new GridData();
-		gdCombo.verticalSpan = 4;
-		gdCombo.verticalAlignment = SWT.NONE;
-		gdCombo.horizontalAlignment = SWT.NONE;
-		gdCombo.grabExcessHorizontalSpace = true;
-
+		// pagina
 		labelPages = new Label(this.compositeMain, SWT.NONE);
 		labelPages.setText(LanguageUtil.getLanguage().getString("preferences.pdf.page.location"));
-		labelPages.setLayoutData(new GridData());
 
 		comboSelectPage = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
 		comboSelectPage.add(LanguageUtil.getLanguage().getString("preferences.pdf.last.page"), 0);
 		comboSelectPage.add(LanguageUtil.getLanguage().getString("preferences.pdf.first.page"), 1);
 		comboSelectPage.add(LanguageUtil.getLanguage().getString("preferences.pdf.select.page"), 2);
-		comboSelectPage.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 		comboSelectPage.addSelectionListener(new SelectionListener() {
-
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if (comboSelectPage.getSelectionIndex() > 1) {
@@ -284,12 +292,16 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 				widgetSelected(arg0);
 			}
 		});
+		GridData gdComboSelPage = new GridData(GridData.FILL_HORIZONTAL);
+		gdComboSelPage.grabExcessHorizontalSpace = true;
+		gdComboSelPage.horizontalSpan = 1;
+		comboSelectPage.setLayoutData(gdComboSelPage);
 
 		textSelectPage = new Text(this.compositeMain, SWT.NONE | SWT.BORDER);
-		GridData gdSelect = new GridData(GridData.FILL_HORIZONTAL);
-		gdSelect.minimumWidth = 0;
-		textSelectPage.setLayoutData(gdSelect);
 		textSelectPage.setEnabled(false);
+		GridData gdTextSelpage = new GridData();
+		gdTextSelpage.grabExcessHorizontalSpace = false;
+		textSelectPage.setLayoutData(gdTextSelpage);
 		
 		if (PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_PAGE).equals("0")) {
 			comboSelectPage.select(0);
@@ -298,12 +310,14 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		} else {
 			comboSelectPage.select(2);
 			textSelectPage.setText(PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_PAGE));
+			textSelectPage.setEnabled(true);
 		}
 
 		if (checkVisible.getSelection() && checkSello.getSelection()) {
 			label.setEnabled(true);
 			textRuta.setEnabled(true);
 			buttonBrowse.setEnabled(true);
+			labelPosicion.setEnabled(true);
 			buttonPosition.setEnabled(true);
 			labelPages.setEnabled(true);
 			if (comboSelectPage.getSelectionIndex() > 1) {
@@ -315,37 +329,28 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 			label.setEnabled(false);
 			textRuta.setEnabled(false);
 			buttonBrowse.setEnabled(false);
+			labelPosicion.setEnabled(false);
 			buttonPosition.setEnabled(false);
 			labelPages.setEnabled(false);
 			comboSelectPage.setEnabled(false);
 			textSelectPage.setEnabled(false);
 		}
 		
-		new Label(this.compositeMain, SWT.NONE);
-
 		String[][] comboFields2 = { { LanguageUtil.getLanguage().getString("preferences.pdf.combo.not.certified"), "" + PdfSignatureAppearance.NOT_CERTIFIED},
 				{ LanguageUtil.getLanguage().getString("preferences.pdf.combo.no.changes.allowed"), "" + PdfSignatureAppearance.CERTIFIED_NO_CHANGES_ALLOWED},
 				{ LanguageUtil.getLanguage().getString("preferences.pdf.combo.form.filling"), "" + PdfSignatureAppearance.CERTIFIED_FORM_FILLING},
 				{ LanguageUtil.getLanguage().getString("preferences.pdf.combo.form.filling.and.annotations"), "" + PdfSignatureAppearance.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS} };
 
 		
-		/*Composite compositeCertified = new Composite(this.compositeMain, SWT.BORDER);
-		GridLayout gridLayoutCertified = new GridLayout();
-		gridLayoutCertified.numColumns = 2;
-		compositeCertified.setLayout(gridLayoutCertified);
-		GridData gdCertified = new GridData();
-		gdCertified.horizontalSpan = 4;
-		gdCertified.grabExcessHorizontalSpace = true;
-		gdCertified.horizontalAlignment = SWT.FILL;
-		gdCertified.grabExcessVerticalSpace = true;
-		gdCertified.verticalAlignment = SWT.FILL;
-		compositeCertified.setLayoutData(gdCertified);*/
-		
 		this.labelOCSP = new Label(this.compositeMain, SWT.NONE);
 		this.labelOCSP.setText(LanguageUtil.getLanguage().getString("preferences.pdf.certified"));
-		this.labelOCSP.setLayoutData(new GridData());
 		
 		this.comboOCSP = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
+		GridData gdCert = new GridData();
+		gdCert.horizontalSpan = 2;
+		gdCert.grabExcessHorizontalSpace = true;
+		this.comboOCSP.setLayoutData(gdCert);
+		
 		int k = 0;
 		for (String[] value : comboFields2) {
 			this.comboOCSP.add(value[0], k);
@@ -362,16 +367,14 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 			this.comboOCSP.select(0);
 		}
 		
+		
+		// reason
 		Label labelReason = new Label(this.compositeMain, SWT.NONE);
 		labelReason.setText(LanguageUtil.getLanguage().getString("preferences.pdf.reason"));
-		GridData gdReason = new GridData();
-		gdReason.horizontalSpan = 4;
-		gdReason.grabExcessHorizontalSpace = true;
-		labelReason.setLayoutData(gdReason);
 
 		textReason = new Text(this.compositeMain, SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		GridData gdTextReason = new GridData();
-		gdTextReason.horizontalSpan = 4;
+		gdTextReason.horizontalSpan = 2;
 		gdTextReason.grabExcessHorizontalSpace = true;
 		gdTextReason.horizontalAlignment = SWT.FILL;
 		gdTextReason.grabExcessVerticalSpace = true;
@@ -379,16 +382,13 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		textReason.setLayoutData(gdTextReason);
 		textReason.setText(PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_REASON));
 
+		// location
 		Label labelLocation = new Label(this.compositeMain, SWT.NONE);
 		labelLocation.setText(LanguageUtil.getLanguage().getString("preferences.pdf.location"));
-		GridData gdLocation = new GridData();
-		gdLocation.horizontalSpan = 4;
-		gdLocation.grabExcessHorizontalSpace = true;
-		labelLocation.setLayoutData(gdLocation);
 
 		textLocation = new Text(this.compositeMain, SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		GridData gdTextLocation = new GridData();
-		gdTextLocation.horizontalSpan = 4;
+		gdTextLocation.horizontalSpan = 2;
 		gdTextLocation.grabExcessHorizontalSpace = true;
 		gdTextLocation.horizontalAlignment = SWT.FILL;
 		gdTextLocation.grabExcessVerticalSpace = true;
@@ -499,6 +499,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 			textRuta.setEnabled(false);
 			textReason.setEnabled(false);
 			textLocation.setEnabled(false);
+			labelPosicion.setEnabled(false);
 			buttonPosition.setEnabled(false);
 			buttonBrowse.setEnabled(false);
 			label.setEnabled(false);
@@ -514,12 +515,12 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 			textRuta.setEnabled(true);
 			textReason.setEnabled(true);
 			textLocation.setEnabled(true);
+			labelPosicion.setEnabled(true);
 			buttonPosition.setEnabled(true);
 			buttonBrowse.setEnabled(true);
 			label.setEnabled(true);
 			comboSelectPage.setEnabled(true);
 			labelPages.setEnabled(true);
-			textSelectPage.setEnabled(true);
 			comboOCSP.setEnabled(true);
 			labelOCSP.setEnabled(true);
 		}		
