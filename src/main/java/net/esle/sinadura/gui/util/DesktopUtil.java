@@ -30,6 +30,8 @@ import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.List;
 
+import net.esle.sinadura.core.util.FileUtil;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWTException;
@@ -84,8 +86,7 @@ public class DesktopUtil {
 		// virtual machine (VM) on this particular host.
 		if (Desktop.isDesktopSupported()) {
 			
-			// TODO input a output
-			File file = new File(path);
+			File file = FileUtil.getLocalFileFromURI(path);
 			if (file.exists()) {
 				try {
 					Desktop.getDesktop().open(file);

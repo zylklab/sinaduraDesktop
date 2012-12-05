@@ -55,6 +55,10 @@ public class PropertiesUtil {
 	
 	public static final String ENABLE_SEND_BUTTON = "enable.send.button";
 	
+	public static final String PREFERENCES_SUFFIX_ENABLED 	= "preferences.suffix.enabled";
+	public static final String PREFERENCES_PDF_ENABLED 		= "preferences.pdf.enabled";
+	
+	
 	private static Properties configuration = null;
 
 	private static Log log;

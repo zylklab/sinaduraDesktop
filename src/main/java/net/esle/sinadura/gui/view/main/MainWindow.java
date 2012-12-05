@@ -21,7 +21,6 @@
  */
 package net.esle.sinadura.gui.view.main;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -39,12 +38,7 @@ import net.esle.sinadura.gui.util.PropertiesUtil;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
-import org.apache.commons.vfs2.FileSystemManager;
-import org.apache.commons.vfs2.FileType;
-import org.apache.commons.vfs2.FileUtil;
-import org.apache.commons.vfs2.VFS;
 import org.apache.xml.utils.URI.MalformedURIException;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
@@ -134,7 +128,7 @@ public class MainWindow {
 	
 	
 	/**
-	 * Añade un documento si se ha metido como argumento su ruta por la linea de comandos
+	 * Añade un documento si se ha metido como argumento su ruta por precarga
 	 * 
 	 * @param panelPDF
 	 * @throws FileSystemException 

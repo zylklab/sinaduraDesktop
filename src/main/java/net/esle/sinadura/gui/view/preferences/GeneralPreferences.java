@@ -37,6 +37,7 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * @author zylk.net
@@ -57,6 +58,8 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 	
 	private BooleanFieldEditor statistics = null;
 
+	private Shell parent;
+	
 	/**
 	 * @param messages
 	 */
@@ -71,6 +74,8 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 	@Override
 	protected void createFieldEditors() {
 
+		this.parent = this.getShell();
+		
 		StringTokenizer stringTokenizer = new StringTokenizer(PropertiesUtil.getConfiguration().getProperty(
 				"idiomas.soportados"), ",");
 
@@ -123,9 +128,31 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 				.getLanguage().getString("preferences.main.output_dir"), getFieldEditorParent());
 		addField(outputDir2);
 		
-		saveExtension = new GenericStringFieldEditor(PreferencesUtil.SAVE_EXTENSION, LanguageUtil.getLanguage()
-				.getString("preferences.main.extension"), getFieldEditorParent(), 150);
-		addField(saveExtension);
+		
+		// -- sufijo
+		//---------------
+		if (Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_SUFFIX_ENABLED))){
+			saveExtension = new GenericStringFieldEditor(PreferencesUtil.SAVE_EXTENSION, LanguageUtil.getLanguage()
+					.getString("preferences.main.extension"), getFieldEditorParent(), 150);
+			
+			saveExtension.getTextControl(getFieldEditorParent()).addListener(SWT.KeyUp, new Listener() {
+				
+				@Override
+				public void handleEvent(Event arg0) {
+					if (saveExtension.getStringValue().trim().equals("")){
+						InfoDialog dialog = new InfoDialog(parent);
+						dialog.open(LanguageUtil.getLanguage().getString("warning.save_extension.empty"));
+						
+					}else{
+						
+					}
+				}
+			});
+			addField(saveExtension);
+		}
+		
+		
+		
 		
 		if (PreferencesUtil.getPreferences().getString(PreferencesUtil.OUTPUT_AUTO_ENABLE).equals("true")) {
 			outputDir2.setEnabled(false, getFieldEditorParent());
@@ -144,20 +171,8 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
  	
 	@Override
 	public boolean performOk() {
-
-		boolean ok = false;
-
-		if (saveExtension != null && (saveExtension.getStringValue() == null || saveExtension.getStringValue().equals(""))) {
-
-			log.error(LanguageUtil.getLanguage().getString("error.save_extension.empty"));
-			InfoDialog id = new InfoDialog(this.getShell());
-			id.open(LanguageUtil.getLanguage().getString("error.save_extension.empty"));
-
-		} else {
-			ok = super.performOk();
-			LanguageUtil.reloadLanguage();
-		}
-
+		boolean ok = super.performOk();
+		LanguageUtil.reloadLanguage();
 		return ok;
 	}
 }

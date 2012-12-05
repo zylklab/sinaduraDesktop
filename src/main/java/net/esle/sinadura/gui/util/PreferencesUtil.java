@@ -26,8 +26,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -103,6 +101,10 @@ public class PreferencesUtil {
 	
 	public static final String HARDWARE_DISPOSITIVE = "hardware.dispositive";
 	public static final String SOFTWARE_DISPOSITIVE = "software.dispositive";
+
+	// Opciones certificados
+	public static final String APLICAR_PREFERENCIAS_USAGE_CERT = "certificado.aplicar.preferencias";
+
 	
 	// Sign
 	public static final String SIGN_TS_ENABLE = "sign.ts.enable";
@@ -110,6 +112,9 @@ public class PreferencesUtil {
 	public static final String SIGN_OCSP_ENABLE = "sign.ocsp.enable";
 	
 	// Pdf
+	public static final String PDF_TIPO 	= "pdf.tipo";
+	public static final String PDF_TIPO_PDF = "0";
+	public static final String PDF_TIPO_XML = "1";
 	public static final String PDF_VISIBLE = "pdf.visible";
 	public static final String PDF_PAGE = "pdf.page";
 	public static final String PDF_REASON = "pdf.reason";
@@ -206,6 +211,10 @@ public class PreferencesUtil {
 				preferences.setDefault(IDIOMA, "es_ES");
 				preferences.setDefault(OUTPUT_AUTO_ENABLE, "true");
 				preferences.setDefault(OUTPUT_DIR, System.getProperty("user.home"));
+				/*
+				 * "-signed" - sinadura
+				 * ""  		 - parlamento
+				 */
 				preferences.setDefault(SAVE_EXTENSION, "-signed");
 				preferences.setDefault(AUTO_VALIDATE, "true");
 				preferences.setDefault(ENABLE_STATISTICS, "true");
@@ -219,8 +228,17 @@ public class PreferencesUtil {
 				preferences.setDefault(SIGN_TS_ENABLE, "true");
 				preferences.setDefault(SIGN_TS_TSA, "izenpe");
 				preferences.setDefault(SIGN_OCSP_ENABLE, "true");
+
+				// Certificado
+				preferences.setDefault(APLICAR_PREFERENCIAS_USAGE_CERT, true);
 				
 				// Pdf
+				
+				/*
+				 * 0 (pdf) - sinadura
+				 * 1 (xml) - parlamento
+				 */
+				preferences.setDefault(PDF_TIPO, "0");
 				preferences.setDefault(PDF_VISIBLE, "true");
 				preferences.setDefault(PDF_PAGE, "1");
 				preferences.setDefault(PDF_REASON, "powered by zylk.net");
@@ -529,10 +547,11 @@ public class PreferencesUtil {
 	
 	public static String getOutputNameFromCompletePath(String name) 
 	{
-		String name2 = name.substring(name.lastIndexOf(File.separatorChar)+1, name.length());
-		String vengaYa = PreferencesUtil.getPreferences().getString(PreferencesUtil.SAVE_EXTENSION);
+//		String name2 = name.substring(name.lastIndexOf(File.separatorChar)+1, name.length());
+		String name2 = name.substring(name.lastIndexOf("/")+1, name.length());
+		String sufijo = PreferencesUtil.getPreferences().getString(PreferencesUtil.SAVE_EXTENSION);
 		
-		name2 = (name2.substring(0, name2.lastIndexOf("."))) + vengaYa;
+		name2 = (name2.substring(0, name2.lastIndexOf("."))) + sufijo;
 		return 	name2;
 	}
 	
@@ -549,19 +568,11 @@ public class PreferencesUtil {
 		
 		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.OUTPUT_AUTO_ENABLE)) 
 		{
-			return filePath.substring(0, filePath.lastIndexOf(File.separatorChar));	
+			return filePath.substring(0, filePath.lastIndexOf("/"));
+//			return filePath.substring(0, filePath.lastIndexOf(File.separatorChar));	
 		} else {
 			return PreferencesUtil.getPreferences().getString(PreferencesUtil.OUTPUT_DIR);
 		}
-		
-		
-	}
-	
-	
-	
-	public static void main(String[] args) throws URISyntaxException {
-		
-		
 	}
 	
 }

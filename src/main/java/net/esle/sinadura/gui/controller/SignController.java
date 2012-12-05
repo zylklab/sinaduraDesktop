@@ -202,24 +202,70 @@ public class SignController {
 		KeyStoreBuilderFactory.logout(ks, alias);
 	}
 
+	/************************************************************
+	 * Se obtien el alias del certificado con el que firmar, 
+	 * pero siguiendo unas preferencias (si está el check habilitado)
+	 * #13187
+	 *************************************************************/
 	public static List<String> getAlias(KeyStore ks) throws AliasesNotFoundException, KeyStoreException {
 
-		List<String> list = new ArrayList<String>();
-
+		// clasificamos los certificados en base a la selección de preferencias
+		//--------------
+		boolean aplicarPreferencias = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.APLICAR_PREFERENCIAS_USAGE_CERT);
+		
+		List<String> certificadosNonRepudiation = new ArrayList<String>();
+		List<String> certificadosDigitalSignature = new ArrayList<String>();
+		List<String> certificadosSinKeyUsage = new ArrayList<String>();
+		List<String> certificadosTodos = new ArrayList<String>();
+		
 		String certAlias;
+		X509Certificate certificado;
 		Enumeration<String> aliases = ks.aliases();
+		
 		while (aliases.hasMoreElements()) {
+			
 			certAlias = aliases.nextElement();
-			if (CertificateUtil.hashDigitalSignature((X509Certificate)ks.getCertificate(certAlias))){
-				list.add(certAlias);				
+			certificado = (X509Certificate)ks.getCertificate(certAlias);
+			
+			if (aplicarPreferencias){
+				if (CertificateUtil.esNonRepudiation(certificado)){
+					certificadosNonRepudiation.add(certAlias);	
+				}else if (CertificateUtil.esDigitalSignature(certificado)){
+					certificadosDigitalSignature.add(certAlias);
+				}else if (CertificateUtil.keyUsageNoDefinido(certificado)){
+					certificadosSinKeyUsage.add(certAlias);
+				}	
+			}else{
+				certificadosTodos.add(certAlias);				
 			}
 		}
-		if (list.size() == 0) {
-			throw new AliasesNotFoundException();
+		
+		// obtenemos los certificados
+		//--------------
+		
+		if (aplicarPreferencias){
+			if (certificadosNonRepudiation.size() == 0 && 
+				certificadosDigitalSignature.size() == 0 &&
+				certificadosSinKeyUsage.size() == 0) {
+				throw new AliasesNotFoundException();
+			}else{
+				if (certificadosNonRepudiation.size() > 0){
+					return certificadosNonRepudiation;				
+				}else if (certificadosDigitalSignature.size() > 0){
+					return certificadosDigitalSignature;
+				}else{
+					return certificadosSinKeyUsage;
+				}
+			}
+		}else{
+			if (certificadosTodos.size() == 0) {
+				throw new AliasesNotFoundException();
+			}else{
+				return certificadosTodos;
+			}
 		}
-
-		return list;
 	}
+	
 
 	public static void sign(DocumentInfo pdfParameter, KsSignaturePreferences ksSignaturePreferences) throws OCSPCoreException,
 			RevokedException, ConnectionException, CertificateExpiredException, CertificateNotYetValidException,
@@ -227,7 +273,7 @@ public class SignController {
 
 		try {
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_DOCUMENT_EXTENSION, FileUtil.getExtension(pdfParameter.getPath()));
-			log.info("extension del documento: " + FileUtil.getExtension(pdfParameter.getPath()));
+			log.info("extension del documento: " + FileUtil.getExtension(FileUtil.getLocalPathFromURI(pdfParameter.getPath())));
 			
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_MIMETYPE, pdfParameter.getMimeType());
 			log.info("mimetype del documento: " + pdfParameter.getMimeType());
@@ -242,33 +288,40 @@ public class SignController {
 
 			// firma
 			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_PDF)) {
-					
-				boolean successfullySigned = false;
-				PasswordProtection ownerPassword = null;
 				
-				while (!successfullySigned) {
-					try {
-						signPDF(pdfParameter, ksSignaturePreferences, ownerPassword);
-						successfullySigned = true;
-						
-					} catch (BadPasswordException e) {
+				if (PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_TIPO).equals(PreferencesUtil.PDF_TIPO_XML)){
+					signDetached(pdfParameter, ksSignaturePreferences);
+					
+				}else{
+					boolean successfullySigned = false;
+					PasswordProtection ownerPassword = null;
+					
+					while (!successfullySigned) {
+						try {
+							signPDF(pdfParameter, ksSignaturePreferences, ownerPassword);
+							successfullySigned = true;
+							
+						} catch (BadPasswordException e) {
 
-						PasswordDialogRunnable runnable = new PasswordDialogRunnable(null, LanguageUtil.getLanguage().getString(
-								"password.dialog.passwordprotected"));
-						
-						Display.getDefault().syncExec(runnable);
-						if (runnable.getPasswordProtection() == null) {
-							throw new PasswordCallbackCanceledException();
+							PasswordDialogRunnable runnable = new PasswordDialogRunnable(null, LanguageUtil.getLanguage().getString(
+									"password.dialog.passwordprotected"));
+							
+							Display.getDefault().syncExec(runnable);
+							if (runnable.getPasswordProtection() == null) {
+								throw new PasswordCallbackCanceledException();
+							}
+							ownerPassword = runnable.getPasswordProtection();
 						}
-						ownerPassword = runnable.getPasswordProtection();
-					}
+					}					
 				}
 					
 			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_XML)) {
 				// TODO firma de xml enveloped
 				signDetached(pdfParameter, ksSignaturePreferences);
+				
 			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR)) {
 				signDetached(pdfParameter, ksSignaturePreferences);
+				
 			} else {
 				signDetached(pdfParameter, ksSignaturePreferences);
 			}
@@ -276,16 +329,16 @@ public class SignController {
 		} catch (PasswordCallbackCanceledException e) {
 			
 			String m = MessageFormat.format(LanguageUtil.getLanguage().getString(
-				"error.document.notsigned.passwordlocked"), pdfParameter.getPath());
+				"error.document.notsigned.passwordlocked"), FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
 			log.error(m, e);
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
 			
 		} catch (OverwritingException e) {
 
-			File file = new File(pdfParameter.getPath());
+			File file = FileUtil.getLocalFileFromURI(pdfParameter.getPath());
 			String fileDestino = PreferencesUtil.getOutputDir(file) + File.separatorChar + PreferencesUtil.getOutputName(file.getName());
 
-			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.overwrite"), pdfParameter.getPath(), fileDestino);
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.overwrite"), FileUtil.getLocalFileFromURI(pdfParameter.getPath()), FileUtil.getLocalPathFromURI(fileDestino));
 
 			log.error(m, e);
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
@@ -293,7 +346,7 @@ public class SignController {
 		} catch (IOException e) {
 
 			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.certificate.sign.unexpected"),
-					pdfParameter.getPath(), e.toString());
+					FileUtil.getLocalPathFromURI(pdfParameter.getPath()), e.toString());
 			log.error(m, e);
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
 		}
@@ -367,7 +420,7 @@ public class SignController {
 				is = FileUtil.getInputStreamFromURI(pdfParameter.getPath());
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
-				log.error("error creando el InputStream asociado al fichero de entrada " +pdfParameter.getPath() , e);
+				log.error("error creando el InputStream asociado al fichero de entrada " + FileUtil.getLocalPathFromURI(pdfParameter.getPath()) , e);
 				throw new IOException(e);
 			}
 			
@@ -375,7 +428,7 @@ public class SignController {
 			URI fileUri;
 			String outputPath = null;
 			try {
-				fileUri = new URI(FileUtil.normalizarURI(pdfParameter.getPath()));
+				fileUri = new URI(FileUtil.urlEncoder(pdfParameter.getPath()));
 			} catch (URISyntaxException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -390,10 +443,6 @@ public class SignController {
 			{
 				File file = new File(pdfParameter.getPath());
 				outputPath = PreferencesUtil.getOutputDir(file) + File.separatorChar + PreferencesUtil.getOutputName(file.getName()) + "." + FileUtil.EXTENSION_PDF;
-				File outputFile = new File(outputPath);
-				if (outputFile.exists()) {
-					throw new OverwritingException();
-				}
 				PdfService.sign(is, outputPath, signaturePreferences, ownerPassword);
 			}
 			else //si el protocolo no es file voy por inputstrema
@@ -404,7 +453,7 @@ public class SignController {
 					PdfService.sign(is, FileUtil.getOutputStreamFromURI(outputPath), signaturePreferences, ownerPassword);
 				} catch (URISyntaxException e) {
 					// TODO Auto-generated catch block
-					log.error("error creando el OutputStream asociado al fichero de entrada " +pdfParameter.getPath() , e);
+					log.error("error creando el OutputStream asociado al fichero de entrada " + FileUtil.getLocalPathFromURI(pdfParameter.getPath()) , e);
 					throw new IOException(e);
 				}
 			}
@@ -422,13 +471,13 @@ public class SignController {
 			}
 
 			// mensaje
-			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("info.document.signed"), pdfParameter.getPath());
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("info.document.signed"), FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.INFO, m));
 
 		} catch (PdfSignatureException e) {
 
 			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.certificate.sign.unexpected"),
-					pdfParameter.getPath(), e.getMessage());
+					FileUtil.getLocalPathFromURI(pdfParameter.getPath()), e.getMessage());
 			log.error(m, e);
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
 		}
@@ -444,27 +493,38 @@ public class SignController {
 
 			File inputFile = new File(pdfParameter.getPath());
 			String outputPath = null;
+			
 			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR)) {
 
 				outputPath = PreferencesUtil.getOutputDir(inputFile) + File.separatorChar
 						+ PreferencesUtil.getOutputName(inputFile.getName()) + "." + FileUtil.EXTENSION_SAR;
 
 			} else {
+
+				// sar
 				if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.XADES_ARCHIVE)) {
 
 					outputPath = PreferencesUtil.getOutputDir(inputFile) + File.separatorChar
 							+ PreferencesUtil.getOutputName(inputFile.getName()) + "." + FileUtil.EXTENSION_SAR;
+				// xml
 				} else {
+						
 					outputPath = PreferencesUtil.getOutputDir(inputFile) + File.separatorChar
-							+ PreferencesUtil.getOutputName(inputFile.getName()) + "." + FileUtil.EXTENSION_XML;
+								+ PreferencesUtil.getOutputName(inputFile.getName()) + "." + FileUtil.EXTENSION_XML;
+					
+					/*
+					 * unsupported
+					 * validamos que siendo firma XML, el archivo origen y destino no sea el mismo
+					 * // TODO esto se podría hacer con una firma enveloped/ing
+					 * @see SignController (core; desde consola no se pueden hacer firmas sar) + SignController (desktop)
+					 */
+					if (inputFile.getPath().equals(outputPath)){
+						log.error("Se está intentando firmar un fichero XML sobre si mismo. Modifique las preferencias para que esto no ocurra (firma detached sar, sufijo o directorio destino diferente)");
+						throw new OverwritingException();
+					}
 				}
 			}
 
-			// copy
-			File outputFile = new File(outputPath);
-			if (outputFile.exists()) {
-				throw new OverwritingException();
-			}
 			FileUtil.bytesToFile(bytes, outputPath);
 
 			// TODO centralizar esto
@@ -480,13 +540,13 @@ public class SignController {
 			}
 
 			// mensaje
-			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("info.document.signed"), pdfParameter.getPath());
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("info.document.signed"), FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.INFO, m));
 
 		} catch (XadesSignatureException e) {
 
 			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.certificate.sign.unexpected"),
-					pdfParameter.getPath(), e.getMessage());
+					FileUtil.getLocalPathFromURI(pdfParameter.getPath()), e.getMessage());
 			log.error(m, e);
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
 		}

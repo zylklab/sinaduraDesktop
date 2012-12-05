@@ -22,6 +22,7 @@
 package net.esle.sinadura.gui.view.main;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -207,9 +208,10 @@ public class DocumentsTable extends Composite {
 				item.setImage(1, image);
 			}
 
-			File file = new File(doc.getPath());
+			File file = FileUtil.getLocalFileFromURI(doc.getPath());
 			item.setText(2, file.getName());
-			item.setText(5, file.getPath());
+			item.setText(5, FileUtil.getLocalPathFromURI(doc.getPath()));
+			
 			boolean expanded = item.getExpanded();
 			
 			if (doc.getSignatures() != null) {
@@ -310,32 +312,45 @@ public class DocumentsTable extends Composite {
 	}
 
 	public void addDocuments(List<DocumentInfo> list) {
+		
 		List<TreeItem> selection = new ArrayList<TreeItem>();
 		for (DocumentInfo doc : list) {
 			TreeItem ti = new TreeItem(this.tree, SWT.NONE);
-			ti.setData(doc);
+			
+			// normalizamos el path que se inserta par que tenga formato URI
+			try {
+				doc.setPath(FileUtil.normaliceLocalURI(doc.getPath()));
+				ti.setData(doc);
 
-			// TODO pasar esto a image util
-			String extension = FileUtil.getExtension(doc.getPath());
-			Program p = Program.findProgram("." + extension);
-			if (p != null && p.getImageData() != null) {
-				Image image = new Image(this.getDisplay(), p.getImageData());
-				ti.setImage(1, image);
-			} else if (extension.equals(FileUtil.EXTENSION_SAR)) {
-				Image image = new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SAR_IMG));
-				ti.setImage(1, image);
+				// TODO pasar esto a image util
+				String extension = FileUtil.getExtension(doc.getPath());
+				Program p = Program.findProgram("." + extension);
+				if (p != null && p.getImageData() != null) {
+					Image image = new Image(this.getDisplay(), p.getImageData());
+					ti.setImage(1, image);
+				} else if (extension.equals(FileUtil.EXTENSION_SAR)) {
+					Image image = new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SAR_IMG));
+					ti.setImage(1, image);
+				}
+
+				File file = FileUtil.getLocalFileFromURI(doc.getPath());
+				ti.setText(2, file.getName());
+				ti.setText(5, FileUtil.getLocalPathFromURI(doc.getPath()));
+				selection.add(ti);
+				
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+				log.error("", e);
 			}
-
-			File file = new File(doc.getPath());
-			ti.setText(2, file.getName());
-			ti.setText(5, file.getPath());
-			selection.add(ti);
 		}
 		TreeItem[] array = (TreeItem[]) selection.toArray(new TreeItem[selection.size()]);
 		this.tree.setSelection(array);
 		
 		this.tree.update();
 	}
+	
+	
+	
 
 	public void setDocuments(List<DocumentInfo> list) {
 
@@ -357,9 +372,9 @@ public class DocumentsTable extends Composite {
 				item.setImage(1, image);
 			}
 
-			File file = new File(pdfParameter.getPath());
+			File file = FileUtil.getLocalFileFromURI(pdfParameter.getPath());
 			item.setText(2, file.getName());
-			item.setText(5, file.getPath());
+			item.setText(5, FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
 
 			if (pdfParameter.getSignatures() != null) {
 				if (pdfParameter.getSignatures().size() == 0) {

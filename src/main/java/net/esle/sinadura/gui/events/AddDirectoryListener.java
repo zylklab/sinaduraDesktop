@@ -36,6 +36,7 @@ import net.esle.sinadura.gui.view.main.FileDialogs;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.vfs2.FileSystemException;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -52,31 +53,38 @@ public class AddDirectoryListener implements SelectionListener {
 	}
 
 	public void widgetSelected(SelectionEvent event) {
-
-		List<File> fileList = FileDialogs.openDirDialog(this.tableDocument.getShell());
-		List<DocumentInfo> newDocs = DocumentInfoUtil.fileToDocumentInfo(fileList);
-
-		// TODO duplicado
-		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
 		
-			try {
+		List<DocumentInfo> newDocs = null;
+		try {
+			
+			List<File> fileList = FileDialogs.openDirDialog(this.tableDocument.getShell());
+			newDocs = DocumentInfoUtil.fileToDocumentInfo(fileList);
+
+			// TODO duplicado dónde? U.n
+			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
+				
 				ProgressMonitorDialog progressMonitorDialog = new ProgressMonitorDialog(this.tableDocument.getShell());
 				progressMonitorDialog.run(true, true, new ValidatePDFProgress(newDocs));
+			}
+		}catch(FileSystemException e){
+			// runtimes - error inesperado
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.validation.unexpected"), e.getCause().toString());
+			log.error("", e);
+			LoggingDesktopController.printError(m);
+			
+		} catch (InvocationTargetException e) {
 
-			} catch (InvocationTargetException e) {
+			// runtimes - error inesperado
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.validation.unexpected"), e.getCause().toString());
+			log.error("", e);
+			LoggingDesktopController.printError(m);
 
-				// runtimes - error inesperado
-				String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.validation.unexpected"), e.getCause().toString());
-				log.error("", e);
-				LoggingDesktopController.printError(m);
+		} catch (InterruptedException e) {
 
-			} catch (InterruptedException e) {
-
-				String m = LanguageUtil.getLanguage().getString("error.operacion_cancelada");
-				LoggingDesktopController.printError(m);
-				log.error(m);
-			}	
-		}
+			String m = LanguageUtil.getLanguage().getString("error.operacion_cancelada");
+			LoggingDesktopController.printError(m);
+			log.error(m);
+		}	
 		
 		this.tableDocument.addDocuments(newDocs);
 		this.tableDocument.reloadTable();

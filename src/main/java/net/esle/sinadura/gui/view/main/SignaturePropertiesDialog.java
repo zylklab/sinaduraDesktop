@@ -1,6 +1,5 @@
 package net.esle.sinadura.gui.view.main;
 
-import java.io.File;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -9,6 +8,7 @@ import net.esle.sinadura.core.certificate.CertificateUtil;
 import net.esle.sinadura.core.interpreter.MessageInfo;
 import net.esle.sinadura.core.interpreter.SignatureInfo;
 import net.esle.sinadura.core.model.Status;
+import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
@@ -85,7 +85,7 @@ public class SignaturePropertiesDialog extends Dialog {
 		compositeDocument.setLayout(gridLayoutDocument);
 
 		this.nombreDocumento = new Label(compositeDocument, SWT.NONE);
-		this.nombreDocumento.setText(new File(docInfo.getPath()).getName());
+		this.nombreDocumento.setText(FileUtil.getLocalFileFromURI(docInfo.getPath()).getName());
 		GridData gdLabelNombreDocumento = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
 		gdLabelNombreDocumento.grabExcessHorizontalSpace = false;
 		gdLabelNombreDocumento.grabExcessVerticalSpace = false;

@@ -79,7 +79,7 @@ public class ValidateController {
 		} catch (ValidationFatalException e) {
 
 			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.certificate.validation.unexpected"),
-					pdfParameter.getPath(), e.getMessage());
+					FileUtil.getLocalPathFromURI(pdfParameter.getPath()), e.getMessage());
 			log.error(m, e);
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
 		}
@@ -97,35 +97,35 @@ public class ValidateController {
 		} catch (XadesValidationFatalException e) {
 			
 			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.certificate.validation.unexpected"),
-					pdfParameter.getPath(), e.getMessage());
+					FileUtil.getLocalPathFromURI(pdfParameter.getPath()), e.getMessage());
 			log.error(m, e);
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
 		}
 
 	}
 
-	private static void validateP7(DocumentInfo pdfParameter) {
+	private static void validateP7(DocumentInfo p7path) {
 		
 		try {
-			byte[] bytes = FileUtil.getBytesFromFile(new File(pdfParameter.getPath()));
+			byte[] bytes = FileUtil.getBytesFromFile(FileUtil.getLocalFileFromURI(p7path.getPath()));
 			
 			List<PDFSignatureInfo> pdfSignatureInfos = Pkcs7Service.validate(bytes, PreferencesUtil.getCacheKeystoreComplete(),
 					PreferencesUtil.getTrustedKeystoreComplete());
 			
 			
-			pdfParameter.setSignatures(ValidationInterpreterUtil.parsePdfSignatureInfo(pdfSignatureInfos));
+			p7path.setSignatures(ValidationInterpreterUtil.parsePdfSignatureInfo(pdfSignatureInfos));
 
 		} catch (Pkcs7Exception e) {
 
 			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.certificate.validation.unexpected"),
-					pdfParameter.getPath(), e.getMessage());
+					FileUtil.getLocalPathFromURI(p7path.getPath()), e.getMessage());
 			log.error(m, e);
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
 			
 		} catch (IOException e) {
 			
 			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.certificate.validation.unexpected"),
-					pdfParameter.getPath(), e.getMessage());
+					FileUtil.getLocalPathFromURI(p7path.getPath()), e.getMessage());
 			log.error(m, e);
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
 		}

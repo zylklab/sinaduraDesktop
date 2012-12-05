@@ -3,6 +3,8 @@ package net.esle.sinadura.gui.util;
 import java.io.File;
 import java.util.List;
 
+import net.esle.sinadura.core.util.FileUtil;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
@@ -42,7 +44,7 @@ public class OutlookUtil {
 		setProperty(mail, "HtmlBody", "<html></html>");
 
 		for (String attachment : attachments) {
-			File file = new File(attachment);
+			File file = FileUtil.getLocalFileFromURI(attachment);
 			if (file.exists()) {
 				OleAutomation oleAttach = getProperty(mail, "Attachments");
 				invoke(oleAttach, "Add", file.getPath());

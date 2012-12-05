@@ -61,6 +61,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 	private Composite compositeMain = null;
 
 	private Button checkVisible = null;
+	private Combo comboTipoFirmaPDF = null;
 	private Button checkSello = null;
 	private Text textRuta = null;
 	private Text textReason = null;
@@ -102,7 +103,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		GridLayout gridLayoutPrincipal = new GridLayout();
 		gridLayoutPrincipal.numColumns = 4;
 		gridLayoutPrincipal.verticalSpacing = 5;
-		gridLayoutPrincipal.marginBottom = 30;
+		gridLayoutPrincipal.marginBottom = 20;
 		this.compositeMain.setLayout(gridLayoutPrincipal);
 
 		GridData gdPrincipal = new GridData();
@@ -113,12 +114,43 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		this.compositeMain.setLayoutData(gdPrincipal);
 
 		createArea();
-
+		trigerComboSelectTipoFirma();
 		return this.compositeMain;
 	}
 
 	private void createArea() {
 
+		
+		// tipo firma
+		GridData gdComboTipoFirma = new GridData();
+		gdComboTipoFirma.verticalSpan = 4;
+		gdComboTipoFirma.verticalAlignment = SWT.NONE;
+		gdComboTipoFirma.horizontalAlignment = SWT.NONE;
+		gdComboTipoFirma.grabExcessHorizontalSpace = true;
+
+		Label labelCombo = new Label(this.compositeMain, SWT.NONE);
+		labelCombo.setText("Tipo Firma");
+		labelCombo.setLayoutData(gdComboTipoFirma);
+		
+		
+		comboTipoFirmaPDF = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
+		comboTipoFirmaPDF.add("Firma PDF", 0);
+		comboTipoFirmaPDF.add("Firma XML", 1);
+		comboTipoFirmaPDF.select(Integer.valueOf(PreferencesUtil.getPreferences().getString((PreferencesUtil.PDF_TIPO))));
+		comboTipoFirmaPDF.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				trigerComboSelectTipoFirma();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				widgetSelected(arg0);
+			}
+		});
+		
+		
+		// firma visible
 		checkVisible = new Button(this.compositeMain, SWT.CHECK);
 		checkVisible.setText(LanguageUtil.getLanguage().getString("preferences.pdf.sign_visible"));
 		GridData gdVisible = new GridData();
@@ -161,6 +193,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 			}
 		});
 
+		
 		checkSello = new Button(this.compositeMain, SWT.CHECK);
 		checkSello.setText(LanguageUtil.getLanguage().getString("preferences.pdf.stamp_active"));
 		GridData gdSello = new GridData();
@@ -256,6 +289,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		GridData gdSelect = new GridData(GridData.FILL_HORIZONTAL);
 		gdSelect.minimumWidth = 0;
 		textSelectPage.setLayoutData(gdSelect);
+		textSelectPage.setEnabled(false);
 		
 		if (PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_PAGE).equals("0")) {
 			comboSelectPage.select(0);
@@ -398,6 +432,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 
 		if (checkVisible != null) {
 
+			PreferencesUtil.getPreferences().setValue(PreferencesUtil.PDF_TIPO, String.valueOf(comboTipoFirmaPDF.getSelectionIndex()));
 			PreferencesUtil.getPreferences().setValue(PreferencesUtil.PDF_VISIBLE, checkVisible.getSelection());
 			PreferencesUtil.getPreferences().setValue(PreferencesUtil.PDF_REASON, textReason.getText());
 			PreferencesUtil.getPreferences().setValue(PreferencesUtil.PDF_LOCATION, textLocation.getText());
@@ -455,5 +490,38 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		}
 		savePreferences();
 		return super.performOk();
+	}
+	
+	private void trigerComboSelectTipoFirma(){
+		if (comboTipoFirmaPDF.getSelectionIndex() == 1) {
+			checkVisible.setEnabled(false);
+			checkSello.setEnabled(false);
+			textRuta.setEnabled(false);
+			textReason.setEnabled(false);
+			textLocation.setEnabled(false);
+			buttonPosition.setEnabled(false);
+			buttonBrowse.setEnabled(false);
+			label.setEnabled(false);
+			comboSelectPage.setEnabled(false);
+			labelPages.setEnabled(false);
+			textSelectPage.setEnabled(false);
+			comboOCSP.setEnabled(false);
+			labelOCSP.setEnabled(false);
+			
+		} else {
+			checkVisible.setEnabled(true);
+			checkSello.setEnabled(true);
+			textRuta.setEnabled(true);
+			textReason.setEnabled(true);
+			textLocation.setEnabled(true);
+			buttonPosition.setEnabled(true);
+			buttonBrowse.setEnabled(true);
+			label.setEnabled(true);
+			comboSelectPage.setEnabled(true);
+			labelPages.setEnabled(true);
+			textSelectPage.setEnabled(true);
+			comboOCSP.setEnabled(true);
+			labelOCSP.setEnabled(true);
+		}		
 	}
 }

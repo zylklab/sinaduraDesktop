@@ -25,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.List;
 
+import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.controller.ValidateController;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.LanguageUtil;
@@ -52,7 +53,8 @@ public class ValidatePDFProgress implements IRunnableWithProgress {
 
 			if (!monitor.isCanceled()) {
 
-				String m2 = MessageFormat.format(LanguageUtil.getLanguage().getString("info.document.validating"), pdfParameter.getPath());
+				String m2 = null;
+				m2 = MessageFormat.format(LanguageUtil.getLanguage().getString("info.document.validating"), FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
 				monitor.beginTask(m2, IProgressMonitor.UNKNOWN);
 
 				ValidateController.validate(pdfParameter);

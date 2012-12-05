@@ -38,6 +38,7 @@ import net.esle.sinadura.gui.view.main.FileDialogs;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.vfs2.FileSystemException;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -56,32 +57,38 @@ public class AddDocumentListener implements SelectionListener {
 	
 	public void widgetSelected(SelectionEvent event) {
 		
-		List<File> fileList = FileDialogs.openFilesDialog(this.tableDocument.getShell(), new String[] { FileUtil.EXTENSION_PDF,
-				FileUtil.EXTENSION_SAR, FileUtil.EXTENSION_XML, FileUtil.EXTENSION_P7S }, true);
-		List<DocumentInfo> newDocs = DocumentInfoUtil.fileToDocumentInfo(fileList);
-
-		// TODO duplicado
-		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
+		List<DocumentInfo> newDocs = null;
+		try {
 			
-			try {
+			List<File> fileList = FileDialogs.openFilesDialog(this.tableDocument.getShell(), new String[] { FileUtil.EXTENSION_PDF,				FileUtil.EXTENSION_SAR, FileUtil.EXTENSION_XML, FileUtil.EXTENSION_P7S }, true);
+			newDocs = DocumentInfoUtil.fileToDocumentInfo(fileList);
+
+			// TODO duplicado
+			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
+				
 				ProgressMonitorDialog progressMonitorDialog = new ProgressMonitorDialog(this.tableDocument.getShell());
 				progressMonitorDialog.run(true, true, new ValidatePDFProgress(newDocs));
-
-			} catch (InvocationTargetException e) {
-
-				// runtimes - error inesperado
-				String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.validation.unexpected"), e.getCause().toString());
-				log.error("", e);
-				LoggingDesktopController.printError(m);
-
-			} catch (InterruptedException e) {
-
-				String m = LanguageUtil.getLanguage().getString("error.operacion_cancelada");
-				LoggingDesktopController.printError(m);
-				log.error(m);
 			}
+		}catch(FileSystemException e){
+			// runtimes - error inesperado
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.validation.unexpected"), e.getCause().toString());
+			log.error("", e);
+			LoggingDesktopController.printError(m);
 			
+		} catch (InvocationTargetException e) {
+
+			// runtimes - error inesperado
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.validation.unexpected"), e.getCause().toString());
+			log.error("", e);
+			LoggingDesktopController.printError(m);
+
+		} catch (InterruptedException e) {
+
+			String m = LanguageUtil.getLanguage().getString("error.operacion_cancelada");
+			LoggingDesktopController.printError(m);
+			log.error(m);
 		}
+			
 		
 		this.tableDocument.addDocuments(newDocs);	
 		this.tableDocument.reloadTable();

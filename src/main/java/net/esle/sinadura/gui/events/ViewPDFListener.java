@@ -23,8 +23,6 @@ package net.esle.sinadura.gui.events;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.esle.sinadura.core.exceptions.ArchiverException;
 import net.esle.sinadura.core.exceptions.Pkcs7Exception;
@@ -32,7 +30,6 @@ import net.esle.sinadura.core.exceptions.UknownArchiverException;
 import net.esle.sinadura.core.model.Archiver;
 import net.esle.sinadura.core.service.Pkcs7Service;
 import net.esle.sinadura.core.util.FileUtil;
-import net.esle.sinadura.gui.Sinadura;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.DesktopUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
@@ -66,19 +63,14 @@ public class ViewPDFListener implements SelectionListener {
 			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_P7S)) {
 
 				try {
-					File file = new File(pdfParameter.getPath());
+					File file = FileUtil.getLocalFileFromURI(pdfParameter.getPath());
 					byte[] bytes = FileUtil.getBytesFromFile(file);
 					byte[] content = Pkcs7Service.getSignedContent(bytes);
 
-					String name = file.getName();
-					name = name.substring(0, name.lastIndexOf("."));
-					
+					String name = generarNombreFichero(file.getName());
 					String tmpFile = PropertiesUtil.TMP_FOLDER_PATH + File.separatorChar + name;
 					
-					// TODO validar nombre
-					// si no es valido, analizar mimetype real? o pedir extension al usuario?
-					FileUtil.bytesToFile(content, new File(tmpFile));
-					
+					FileUtil.bytesToFile(content, tmpFile);
 					DesktopUtil.openSystemFile(tmpFile);
 					
 				} catch (IOException e) {
@@ -116,5 +108,39 @@ public class ViewPDFListener implements SelectionListener {
 	@Override
 	public void widgetDefaultSelected(SelectionEvent event) {
 		widgetSelected(event);
+	}
+	
+	/*****************************************
+	 * FIXES varios para intentar arreglar la
+	 * renombración de ficheros que hace el Outlook
+	 * // TODO generar la extensión por mime-type generado con el base64
+	 * #13179
+	 *****************************************/
+	private static String generarNombreFichero(String filename){
+		String name = filename;
+		name = name.substring(0, name.lastIndexOf("."));
+		
+		// si acaba con número, quitamos el último número
+		name = name.replaceAll("[0-9]$", "");
+		
+		// si lo que hay tras el primer espacio no es un '.' de extensión, lo generamos
+		int indexOfLastDot = name.lastIndexOf(".");
+		int indexOfLastSpace = name.lastIndexOf(" ");
+
+		if (indexOfLastDot < indexOfLastSpace){
+			// no existe replaceLast
+			char[] nameInArray = name.toCharArray();
+			nameInArray[indexOfLastSpace] = '.';
+			name = new String(nameInArray);
+		}
+		
+		log.info("Procedemos a abrir fichero: " + name);
+		return name;
+	}
+	
+	public static void main(String[] args){
+		System.out.println(generarNombreFichero("Hello.world.txt1.ps7"));
+		System.out.println(generarNombreFichero("Hello.world pdf.ps7"));
+		System.out.println(generarNombreFichero("Hello world pdf.ps7"));
 	}
 }

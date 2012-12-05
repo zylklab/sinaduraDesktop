@@ -22,7 +22,6 @@
 package net.esle.sinadura.gui.events;
 
 import java.lang.reflect.InvocationTargetException;
-import java.security.KeyStore;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.text.MessageFormat;
@@ -34,10 +33,10 @@ import net.esle.sinadura.core.exceptions.OCSPIssuerRequiredException;
 import net.esle.sinadura.core.exceptions.OCSPUnknownUrlException;
 import net.esle.sinadura.core.exceptions.RevokedException;
 import net.esle.sinadura.core.model.KsSignaturePreferences;
+import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.controller.SignController;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.LanguageUtil;
-import net.esle.sinadura.gui.util.StatisticsUtil;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,7 +65,8 @@ class SignProgress implements IRunnableWithProgress {
 			for (DocumentInfo pdfParameter : this.pdfParameterList) {
 				if (!monitor.isCanceled()) {
 					
-					String m2 = MessageFormat.format(LanguageUtil.getLanguage().getString("info.document.signing"), pdfParameter.getPath());
+					String m2;
+					m2 = MessageFormat.format(LanguageUtil.getLanguage().getString("info.document.signing"), FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
 					monitor.beginTask(m2, IProgressMonitor.UNKNOWN);
 
 					// firma

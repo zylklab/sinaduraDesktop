@@ -7,6 +7,8 @@ www.zylk.net/web/guest/web-2-0/blog/-/blogs/accediendo-a-repositorios-de-maven-s
 =====================================
 = Cambio de versión
 =====================================
+Actual: 3.2.2
+
 - install.xml
 - pom.xml (core y desktop)
   - cambiar la versión del producto generado (core y desktop)
@@ -31,8 +33,9 @@ y que es la que controla si se muestra el botón de enviar.
 - Descargar commmons-vfs2-sinadura y hacer
 mvn install
 
-- Descargar MITyCLibTSA-sinadura y MITyCLibOCSP-sinadura y hacer:
+- Descargar 'MITyCLibTSA-sinadura', 'MITyCLibOCSP-sinadura' y 'xmlsec-mityc-sinadura' y hacer:
 mvn clean install
+
 
 - Descargar sinaduraCore y hacer:
 mvn clean install

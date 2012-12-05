@@ -8,6 +8,7 @@ resources-ext/firmas/pdf/prueba.pdf svn_mime_002dtype=application%2Foctet-stream
 resources-ext/images/sinadura150.png svn_mime_002dtype=application%2Foctet-stream
 resources-ext/osx/MacOS/JavaApplicationStub svn_mime_002dtype=application%2Foctet-stream
 resources-ext/osx/MacOS/Resources/logo_sinadura.icns svn_mime_002dtype=application%2Foctet-stream
+resources-ext/p12/EntidadZylkdesarrollo.p12 svn_mime_002dtype=application%2Foctet-stream
 resources-ext/p12/cert_entidad_software_des.p12 svn_mime_002dtype=application%2Foctet-stream
 resources-ext/trusted-certs/dnie/DNIE_SU_0.crt svn_mime_002dtype=application%2Foctet-stream
 resources-ext/trusted-certs/dnie/DNIE_SU_1.crt svn_mime_002dtype=application%2Foctet-stream
@@ -26,6 +27,7 @@ resources-ext/trusted-certs/izenpe-prod/ca_ciudadanos_entidades_reconocidos.crt 
 resources-ext/trusted-certs/izenpe-prod/ca_raiz.crt svn_mime_002dtype=application%2Foctet-stream
 resources/images/sinadura.ico svn_mime_002dtype=application%2Foctet-stream
 resources/images/sinadura48.png svn_mime_002dtype=application%2Foctet-stream
+resources/preferences/preferences-sinadura-console.properties svn_mime_002dtype=text%2Fplain
 src/main/java/net/esle/sinadura/gui/util/HardwareItem.java svn_mime_002dtype=text%2Fplain
 src/main/resources/images/accept.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/add.png svn_mime_002dtype=application%2Foctet-stream

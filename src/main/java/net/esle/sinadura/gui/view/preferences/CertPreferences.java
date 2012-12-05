@@ -22,14 +22,12 @@
 package net.esle.sinadura.gui.view.preferences;
 
 
-import java.util.logging.Logger;
-
-import net.esle.sinadura.gui.Sinadura;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 
@@ -41,7 +39,6 @@ public class CertPreferences extends FieldEditorPreferencePage {
 	
 	private static Log log = LogFactory.getLog(CertPreferences.class);
 	
-
 	public CertPreferences() {
 		// Use the "flat" layout
 		super(FLAT);
@@ -50,6 +47,7 @@ public class CertPreferences extends FieldEditorPreferencePage {
 	@Override
 	protected void createFieldEditors() {
 		
+		// selección de carga de certificado
 		String[][] values = {
 				{ LanguageUtil.getLanguage().getString("preferences.cert.type.software"), PreferencesUtil.CERT_TYPE_VALUE_SOFTWARE },
 				{ LanguageUtil.getLanguage().getString("preferences.cert.type.hardware"), PreferencesUtil.CERT_TYPE_VALUE_HARDWARE }, 
@@ -59,8 +57,9 @@ public class CertPreferences extends FieldEditorPreferencePage {
 		
 		RadioGroupFieldEditor checkBoxSoftware = new RadioGroupFieldEditor(PreferencesUtil.CERT_TYPE, 
 				LanguageUtil.getLanguage().getString("preferences.cert.type"), 3, values, getFieldEditorParent());
-		
 		addField(checkBoxSoftware);
-		
+
+		BooleanFieldEditor signingCertificatesOnly = new BooleanFieldEditor(PreferencesUtil.APLICAR_PREFERENCIAS_USAGE_CERT, LanguageUtil.getLanguage().getString("preferences.filter.sign.certs"), getFieldEditorParent());
+		addField(signingCertificatesOnly);
 	}
 }

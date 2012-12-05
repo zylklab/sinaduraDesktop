@@ -22,12 +22,10 @@
 package net.esle.sinadura.gui.view.preferences;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import net.esle.sinadura.gui.Sinadura;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
+import net.esle.sinadura.gui.util.PropertiesUtil;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -111,7 +109,10 @@ public class PreferencesManager {
 			mgr.addTo(signNode.getId(), certNode);
 				mgr.addTo(signNode.getId() + "." + certNode.getId(), softwareCertNode);
 				mgr.addTo(signNode.getId() + "." + certNode.getId(), hardwareCertNode);
-			mgr.addTo(signNode.getId(), pdfNode);
+			
+			if (Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_PDF_ENABLED))){
+				mgr.addTo(signNode.getId(), pdfNode);
+			}
 			mgr.addTo(signNode.getId(), xadesNode);
 		mgr.addToRoot(trustedNode);
 			mgr.addTo(trustedNode.getId(), cacheNode);
