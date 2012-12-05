@@ -215,6 +215,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 					label.setEnabled(true);
 					textRuta.setEnabled(true);
 					buttonBrowse.setEnabled(true);
+					labelPosicion.setEnabled(true);
 					buttonPosition.setEnabled(true);
 					labelPages.setEnabled(true);
 					comboSelectPage.setEnabled(true);
@@ -227,6 +228,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 					label.setEnabled(false);
 					textRuta.setEnabled(false);
 					buttonBrowse.setEnabled(false);
+					labelPosicion.setEnabled(false);
 					buttonPosition.setEnabled(false);
 					labelPages.setEnabled(false);
 					comboSelectPage.setEnabled(false);
