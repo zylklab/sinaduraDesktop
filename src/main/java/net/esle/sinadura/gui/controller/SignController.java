@@ -222,10 +222,20 @@ public class SignController {
 		X509Certificate certificado;
 		Enumeration<String> aliases = ks.aliases();
 		
+		StatisticsUtil.log(StatisticsUtil.KEY_CERTIFICADO_NUMERO, String.valueOf(ks.size()));
+		log.info("Estadisticas | " + StatisticsUtil.KEY_CERTIFICADO_NUMERO + ": " + String.valueOf(ks.size()));
+		
 		while (aliases.hasMoreElements()) {
-			
+
 			certAlias = aliases.nextElement();
 			certificado = (X509Certificate)ks.getCertificate(certAlias);
+			
+			StatisticsUtil.log(StatisticsUtil.KEY_CERTIFICADO_ALIAS, certAlias);
+			log.info("Estadisticas | " + StatisticsUtil.KEY_CERTIFICADO_ALIAS + ": " + certAlias);
+			
+			StatisticsUtil.log(StatisticsUtil.KEY_CERTIFICADO_USAGE, CertificateUtil.getKeyUsage(certificado));
+			log.info("Estadisticas | " + StatisticsUtil.KEY_CERTIFICADO_USAGE + ": " + CertificateUtil.getKeyUsage(certificado));
+
 			
 			if (aplicarPreferencias){
 				if (CertificateUtil.esNonRepudiation(certificado)){
@@ -242,7 +252,6 @@ public class SignController {
 		
 		// obtenemos los certificados
 		//--------------
-		
 		if (aplicarPreferencias){
 			if (certificadosNonRepudiation.size() == 0 && 
 				certificadosDigitalSignature.size() == 0 &&

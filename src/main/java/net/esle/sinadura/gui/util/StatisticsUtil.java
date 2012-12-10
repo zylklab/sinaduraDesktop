@@ -37,6 +37,15 @@ public class StatisticsUtil {
 	public static final String KEY_SIGN_CERTTYPE = "KEY_SIGN_CERTTYPE";
 	public static final String KEY_LOAD_HARDWAREDRIVER = "KEY_LOAD_HARDWAREDRIVER";
 	
+	
+	/*
+	 * Numero de certificados detectados en dispositivos criptográficos y sus usages
+	 */
+	public static final String KEY_CERTIFICADO_ALIAS = "KEY_CERTIFICADO_ALIAS";
+	public static final String KEY_CERTIFICADO_NUMERO = "KEY_CERTIFICADO_NUMERO";
+	public static final String KEY_CERTIFICADO_USAGE = "KEY_CERTIFICADO_USAGE";
+	
+	
 	public static final String KEY_ADD_CACHECERT = "KEY_ADD_CACHECERT";
 	public static final String KEY_ADD_TRUSTEDCERT = "KEY_ADD_TRUSTEDCERT";
 
