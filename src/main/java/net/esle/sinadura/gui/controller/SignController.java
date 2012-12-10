@@ -230,9 +230,6 @@ public class SignController {
 			certAlias = aliases.nextElement();
 			certificado = (X509Certificate)ks.getCertificate(certAlias);
 			
-			StatisticsUtil.log(StatisticsUtil.KEY_CERTIFICADO_ALIAS, certAlias);
-			log.info("Estadisticas | " + StatisticsUtil.KEY_CERTIFICADO_ALIAS + ": " + certAlias);
-			
 			StatisticsUtil.log(StatisticsUtil.KEY_CERTIFICADO_USAGE, CertificateUtil.getKeyUsage(certificado));
 			log.info("Estadisticas | " + StatisticsUtil.KEY_CERTIFICADO_USAGE + ": " + CertificateUtil.getKeyUsage(certificado));
 

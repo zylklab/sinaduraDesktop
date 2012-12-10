@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.esle.sinadura.core.certificate.CertificateUtil;
 import net.esle.sinadura.core.exceptions.ConnectionException;
 import net.esle.sinadura.core.exceptions.CoreException;
 import net.esle.sinadura.core.exceptions.CorePKCS12Exception;
@@ -294,6 +295,11 @@ public class SignListener implements SelectionListener {
 					}
 					ksSignaturePreferences.setAlias(alias);
 					log.info("alias: " + alias);
+					
+					String usageSeleccionado = CertificateUtil.getKeyUsage((X509Certificate) ksSignaturePreferences.getKs().getCertificate(alias));
+					StatisticsUtil.log(StatisticsUtil.KEY_CERTIFICADO_USAGE_SELECTED, usageSeleccionado);
+					log.info("Estadisticas | " + StatisticsUtil.KEY_CERTIFICADO_USAGE_SELECTED + ": " + usageSeleccionado);
+					
 
 				} catch (AliasesNotFoundException e) {
 
