@@ -21,7 +21,6 @@
  */
 package net.esle.sinadura.gui.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -33,6 +32,8 @@ import net.esle.sinadura.core.exceptions.XadesValidationFatalException;
 import net.esle.sinadura.core.interpreter.SignatureInfo;
 import net.esle.sinadura.core.interpreter.ValidationInterpreterUtil;
 import net.esle.sinadura.core.model.PDFSignatureInfo;
+import net.esle.sinadura.core.model.Status;
+import net.esle.sinadura.core.model.ValidationError;
 import net.esle.sinadura.core.model.XadesSignatureInfo;
 import net.esle.sinadura.core.service.PdfService;
 import net.esle.sinadura.core.service.Pkcs7Service;
@@ -121,6 +122,14 @@ public class ValidateController {
 					FileUtil.getLocalPathFromURI(p7path.getPath()), e.getMessage());
 			log.error(m, e);
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
+			
+			// Pkcs7Exception > error 
+			List<PDFSignatureInfo> pdfSignaturesList = new ArrayList<PDFSignatureInfo>();
+			PDFSignatureInfo pdfSignature = new PDFSignatureInfo(); 
+			pdfSignature.setError(ValidationError.CORRUPT);
+			pdfSignature.setStatus(Status.INVALID);
+			pdfSignaturesList.add(pdfSignature);
+			p7path.setSignatures(ValidationInterpreterUtil.parsePdfSignatureInfo(pdfSignaturesList));
 			
 		} catch (IOException e) {
 			
