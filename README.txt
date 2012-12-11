@@ -60,6 +60,9 @@ mvn clean package -P Mac
 _______________
 
 1. mvn clean pre-integration-test -P Win32
+1. mvn clean pre-integration-test -P Win64
+__
+
 
 Aquí falla con un
 'net.sf.launch4j.BuilderException: Especifique la ruta del jar relativa al ejecutable'
