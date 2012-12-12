@@ -22,9 +22,12 @@
 package net.esle.sinadura.gui.view.preferences;
 
 
-import net.esle.sinadura.core.util.ProxyUtil;
+import java.text.MessageFormat;
+
+import net.esle.sinadura.ee.proxy.SinaduraProxyUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
+import net.esle.sinadura.gui.view.main.InfoDialog;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -96,7 +99,15 @@ public class ProxyPreferences extends FieldEditorPreferencePage {
 		boolean ok = super.performOk();
 		
 		if (user != null && pass != null && proxyPac != null && proxyPac.getBooleanValue()) {
-			ProxyUtil.configureProxy(user.getStringValue(), pass.getStringValue());
+			// ee (proxy)
+			try{
+				SinaduraProxyUtil.configureProxy(user.getStringValue(), pass.getStringValue());								
+			}catch(NoClassDefFoundError e){
+				if (e.getMessage().contains("ee")){
+					InfoDialog dialog = new InfoDialog(this.getShell());
+					dialog.open(MessageFormat.format(LanguageUtil.getLanguage().getString("ee.proxy.disabled"), "proxy"));
+				}
+			}
 		}
 		return ok;
 	}

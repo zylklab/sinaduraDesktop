@@ -57,6 +57,7 @@ public class PropertiesUtil {
 	
 	public static final String PREFERENCES_SUFFIX_ENABLED 	= "preferences.suffix.enabled";
 	public static final String PREFERENCES_PDF_ENABLED 		= "preferences.pdf.enabled";
+	public static final String PROXY_ENABLED 				= "proxy.enabled";
 	
 	
 	private static Properties configuration = null;

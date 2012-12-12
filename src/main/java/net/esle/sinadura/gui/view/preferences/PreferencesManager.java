@@ -104,7 +104,10 @@ public class PreferencesManager {
 
 		// Add the nodes
 		mgr.addToRoot(generalNode);
-		mgr.addToRoot(proxyNode);
+		if (Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PROXY_ENABLED))){
+			mgr.addToRoot(proxyNode);			
+		}
+		
 		mgr.addToRoot(signNode);
 			mgr.addTo(signNode.getId(), certNode);
 				mgr.addTo(signNode.getId() + "." + certNode.getId(), softwareCertNode);

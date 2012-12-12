@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Locale;
 
 import net.esle.sinadura.core.exceptions.ConnectionException;
-import net.esle.sinadura.core.util.ProxyUtil;
+import net.esle.sinadura.ee.proxy.SinaduraProxyUtil;
 import net.esle.sinadura.gui.model.LoggerMessage;
 import net.esle.sinadura.gui.model.LoggerMessage.Level;
 import net.esle.sinadura.gui.util.ImagesUtil;
@@ -129,11 +129,19 @@ class ThreadOperations extends Thread {
 			}
 		});
 		
-		// init proxy
-		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
-			ProxyUtil.configureProxy(PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_USER), PreferencesUtil
-					.getPreferences().getString(PreferencesUtil.PROXY_PASS));
+		// ee (proxy)
+		try{
+			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
+				SinaduraProxyUtil.configureProxy(PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_USER), PreferencesUtil
+						.getPreferences().getString(PreferencesUtil.PROXY_PASS));
+			}	
+		}catch(NoClassDefFoundError e){
+			if (e.getMessage().contains("ee")){
+				listMessages.add(new LoggerMessage(Level.INFO, 
+						MessageFormat.format(LanguageUtil.getLanguage().getString("ee.proxy.disabled"), "proxy")));
+			}
 		}
+		
 
 		// estadisticas
 		StatisticsUtil.log(StatisticsUtil.KEY_SO, System.getProperty("os.name"));

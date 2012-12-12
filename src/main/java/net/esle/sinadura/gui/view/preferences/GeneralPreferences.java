@@ -142,9 +142,6 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 					if (saveExtension.getStringValue().trim().equals("")){
 						InfoDialog dialog = new InfoDialog(parent);
 						dialog.open(LanguageUtil.getLanguage().getString("warning.save_extension.empty"));
-						
-					}else{
-						
 					}
 				}
 			});

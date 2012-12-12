@@ -47,7 +47,21 @@
 		<name>zylk.net</name>
 		<url>http://www.zylk.net</url>
 	</organization>
+	
+	<properties>
+		<izpack-standalone.version>4.3.2</izpack-standalone.version>
+		<ee.proxy.enabled>false</ee.proxy.enabled>
+		<staging-dir>${project.build.directory}/staging</staging-dir>
+	</properties>
+	
 	<build>
+		<resources>
+		     <resource>
+		       <directory>src/main/resources</directory>
+		       <filtering>true</filtering>
+		   </resource>
+		</resources>
+				     
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -84,7 +98,26 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 	<profiles>
+		<profile>
+			<id>EE</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<ee.proxy.enabled>true</ee.proxy.enabled>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>sinadura</groupId>
+					<artifactId>sinaduraEE</artifactId>
+					<version>3.2.2</version>
+					<scope>compile</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+		
 		<profile>
 			<id>Unix32</id>
 			<activation>
@@ -1195,12 +1228,14 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>sinadura</groupId>
+			<artifactId>sinaduraEE</artifactId>
+			<version>3.2.2</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
-
-	<properties>
-		<izpack-standalone.version>4.3.2</izpack-standalone.version>
-		<staging-dir>${project.build.directory}/staging</staging-dir>
-	</properties>
 
 	<repositories>
 		<repository>
