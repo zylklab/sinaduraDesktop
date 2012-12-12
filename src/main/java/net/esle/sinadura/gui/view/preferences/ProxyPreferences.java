@@ -63,26 +63,25 @@ public class ProxyPreferences extends FieldEditorPreferencePage {
 		
 		proxyPac = new BooleanFieldEditor(PreferencesUtil.PROXY_SYSTEM , LanguageUtil.getLanguage().getString("preferences.proxy.pac"), getFieldEditorParent());
 		addField(proxyPac);
-		
 		proxyPac.getDescriptionControl(getFieldEditorParent()).addListener(SWT.MouseDown, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
 				if (!proxyPac.getBooleanValue()) {
-					user.setEnabled(false, getFieldEditorParent());
-					pass.setEnabled(false, getFieldEditorParent());
-				} else {
 					user.setEnabled(true, getFieldEditorParent());
 					pass.setEnabled(true, getFieldEditorParent());
+				} else {
+					user.setEnabled(false, getFieldEditorParent());
+					pass.setEnabled(false, getFieldEditorParent());
 				}
 			}
 		});
 
 		if (PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_SYSTEM).equals("true")) {
-			user.setEnabled(false, getFieldEditorParent());
-			pass.setEnabled(false, getFieldEditorParent());
-		} else {
 			user.setEnabled(true, getFieldEditorParent());
 			pass.setEnabled(true, getFieldEditorParent());
+		} else {
+			user.setEnabled(false, getFieldEditorParent());
+			pass.setEnabled(false, getFieldEditorParent());
 		}
 	}
 	
