@@ -47,21 +47,32 @@
 		<name>zylk.net</name>
 		<url>http://www.zylk.net</url>
 	</organization>
-	
+
 	<properties>
 		<izpack-standalone.version>4.3.2</izpack-standalone.version>
 		<ee.proxy.enabled>false</ee.proxy.enabled>
 		<staging-dir>${project.build.directory}/staging</staging-dir>
 	</properties>
-	
+
 	<build>
 		<resources>
-		     <resource>
-		       <directory>src/main/resources</directory>
-		       <filtering>true</filtering>
-		   </resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>*.properties</include>
+				</includes>
+			</resource>
+
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>*.properties</exclude>
+				</excludes>
+			</resource>
 		</resources>
-				     
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -98,7 +109,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<id>EE</id>
@@ -117,7 +128,7 @@
 				</dependency>
 			</dependencies>
 		</profile>
-		
+
 		<profile>
 			<id>Unix32</id>
 			<activation>
@@ -262,7 +273,7 @@
 		<profile>
 			<id>Unix64</id>
 			<activation>
-			<activeByDefault>true</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 				<os>
 					<name>unix64</name>
 					<family>unix</family>
@@ -1228,7 +1239,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>sinadura</groupId>
 			<artifactId>sinaduraEE</artifactId>
