@@ -78,11 +78,11 @@ public class ProxyPreferences extends FieldEditorPreferencePage {
 		});
 
 		if (PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_SYSTEM).equals("true")) {
-			user.setEnabled(true, getFieldEditorParent());
-			pass.setEnabled(true, getFieldEditorParent());
-		} else {
 			user.setEnabled(false, getFieldEditorParent());
 			pass.setEnabled(false, getFieldEditorParent());
+		} else {
+			user.setEnabled(true, getFieldEditorParent());
+			pass.setEnabled(true, getFieldEditorParent());
 		}
 	}
 	
