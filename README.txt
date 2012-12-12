@@ -42,25 +42,28 @@ mvn clean install
 
 Finalmente para generar los empaquetados, en sinaduraDesktop:
 
+* Independientemente del so, si queremos generar la versión 'EE', deberemos insertar este perfil en el comando;
+p.e; mvn clean package -P Unix64,EE
+
 * unix 
 _______________
 
-mvn clean package -P Unix32
-mvn clean package -P Unix64
+mvn clean package -P Unix32,EE?
+mvn clean package -P Unix64,EE?
 
 El archivo de instalador es el que nos dejará en /target/sinaduraDesktop-xxx-standard.jar
 
 * mac
 _______________	
 
-mvn clean package -P Mac
+mvn clean package -P Mac, EE?
 
 
 * windows
 _______________
 
-1. mvn clean pre-integration-test -P Win32
-1. mvn clean pre-integration-test -P Win64
+1. mvn clean pre-integration-test -P Win32, EE?
+1. mvn clean pre-integration-test -P Win64, EE?
 __
 
 
