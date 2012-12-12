@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -42,10 +41,8 @@ import java.util.List;
 import java.util.Vector;
 
 import net.esle.sinadura.core.certificate.CertificateUtil;
-import net.esle.sinadura.core.console.SignController;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.core.util.KeystoreUtil;
-import net.esle.sinadura.gui.util.DesktopUtil;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
