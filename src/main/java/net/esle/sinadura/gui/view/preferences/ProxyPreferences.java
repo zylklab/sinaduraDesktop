@@ -55,26 +55,24 @@ public class ProxyPreferences extends FieldEditorPreferencePage {
 	@Override
 	protected void createFieldEditors() {
 
-		user = new StringFieldEditor(PreferencesUtil.PROXY_USER, LanguageUtil.getLanguage()
-				.getString("preferences.proxy.user"), getFieldEditorParent());
+		user = new StringFieldEditor(PreferencesUtil.PROXY_USER, LanguageUtil.getLanguage().getString("preferences.proxy.user"), getFieldEditorParent());
 		addField(user);
 		
-		pass = new PasswordStringFieldEditor(PreferencesUtil.PROXY_PASS, LanguageUtil.getLanguage()
-				.getString("preferences.proxy.pass"), getFieldEditorParent());
+		pass = new PasswordStringFieldEditor(PreferencesUtil.PROXY_PASS, LanguageUtil.getLanguage().getString("preferences.proxy.pass"), getFieldEditorParent());
 		addField(pass);
-		proxyPac = new BooleanFieldEditor(PreferencesUtil.PROXY_SYSTEM , LanguageUtil.getLanguage()
-				.getString("preferences.proxy.pac"), getFieldEditorParent());
+		
+		proxyPac = new BooleanFieldEditor(PreferencesUtil.PROXY_SYSTEM , LanguageUtil.getLanguage().getString("preferences.proxy.pac"), getFieldEditorParent());
 		addField(proxyPac);
 		
 		proxyPac.getDescriptionControl(getFieldEditorParent()).addListener(SWT.MouseDown, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
 				if (!proxyPac.getBooleanValue()) {
-					user.setEnabled(true, getFieldEditorParent());
-					pass.setEnabled(true, getFieldEditorParent());
-				} else {
 					user.setEnabled(false, getFieldEditorParent());
 					pass.setEnabled(false, getFieldEditorParent());
+				} else {
+					user.setEnabled(true, getFieldEditorParent());
+					pass.setEnabled(true, getFieldEditorParent());
 				}
 			}
 		});

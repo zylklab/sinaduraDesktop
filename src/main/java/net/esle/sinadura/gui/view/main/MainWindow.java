@@ -70,7 +70,7 @@ public class MainWindow {
 			mainShell.setSize(new Point(950, 720));
 			mainShell.setMaximized(true);
 			mainShell.setText(PropertiesUtil.APPLICATION_NAME);
-			mainShell.setImage(new Image(display, ClassLoader.getSystemResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
+			mainShell.setImage(new Image(display,Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 1;
 			gridLayout.verticalSpacing = 15;

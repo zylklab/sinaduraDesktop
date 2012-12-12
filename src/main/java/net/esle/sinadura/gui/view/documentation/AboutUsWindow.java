@@ -88,8 +88,7 @@ public class AboutUsWindow extends Dialog {
 
 		this.sShell.setText(LanguageUtil.getLanguage().getString("about.windowtitle"));
 		this.sShell.setSize(new Point(400, 350));
-		this.sShell.setImage(new Image(this.sShell.getDisplay(), ClassLoader
-				.getSystemResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
+		this.sShell.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 		
 		GridLayout gl = new GridLayout();
 		this.sShell.setLayout(gl);
@@ -110,7 +109,7 @@ public class AboutUsWindow extends Dialog {
 		this.labelImage = new Label(compositeMain, SWT.NONE);
 		this.labelImage.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
 		
-		Image imageSinadura = new Image(compositeMain.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SINADURA_FULL_IMG));
+		Image imageSinadura = new Image(compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_FULL_IMG));
 		this.labelImage.setImage(imageSinadura);
 
 		String textoTitle = PropertiesUtil.APPLICATION_NAME + " "
@@ -186,7 +185,7 @@ public class AboutUsWindow extends Dialog {
 
 		this.buttonClose = new Button(composite, SWT.NONE);
 		this.buttonClose.setText(LanguageUtil.getLanguage().getString("button.back"));
-		this.buttonClose.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.BACK_IMG)));
+		this.buttonClose.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.BACK_IMG)));
 		this.buttonClose.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
 		this.buttonClose.addSelectionListener(new BotonCloseListener());
 

@@ -68,7 +68,7 @@ public class PropertiesUtil {
 		 log = LogFactory.getLog(PropertiesUtil.class);
 		if (configuration == null) {
 			configuration = new Properties();
-			InputStream is = ClassLoader.getSystemResourceAsStream(PATH_CONFIGURATION);
+			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_CONFIGURATION);
 			try {
 				configuration.load(is);
 			} catch (IOException e) {
