@@ -24,7 +24,10 @@ package net.esle.sinadura.gui.view.preferences;
 
 import java.text.MessageFormat;
 
-import net.esle.sinadura.ee.proxy.SinaduraProxyUtil;
+import net.esle.sinadura.ee.EEModulesController;
+import net.esle.sinadura.ee.exceptions.EEModuleGenericException;
+import net.esle.sinadura.ee.exceptions.EEModuleNotFoundException;
+import net.esle.sinadura.ee.interfaces.IEEProxyModule;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.view.main.InfoDialog;
@@ -96,14 +99,18 @@ public class ProxyPreferences extends FieldEditorPreferencePage {
 		boolean ok = super.performOk();
 		
 		if (user != null && pass != null && proxyPac != null && proxyPac.getBooleanValue()) {
-			// ee (proxy)
+			// ee (proxy)			
 			try{
-				SinaduraProxyUtil.configureProxy(user.getStringValue(), pass.getStringValue());								
-			}catch(NoClassDefFoundError e){
-				if (e.getMessage().contains("ee")){
-					InfoDialog dialog = new InfoDialog(this.getShell());
-					dialog.open(MessageFormat.format(LanguageUtil.getLanguage().getString("ee.proxy.disabled"), "proxy"));
-				}
+				EEModulesController eeController = new EEModulesController();
+				IEEProxyModule proxyUtil = eeController.getProxyModule();
+				proxyUtil.configureProxy(user.getStringValue(), pass.getStringValue());
+				
+			}catch(EEModuleNotFoundException e){
+				InfoDialog dialog = new InfoDialog(this.getShell());
+				dialog.open(MessageFormat.format(LanguageUtil.getLanguage().getString("ee.proxy.disabled"), "proxy"));
+				
+			}catch(EEModuleGenericException e){
+				log.error(e);
 			}
 		}
 		return ok;

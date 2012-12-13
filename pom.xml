@@ -1242,6 +1242,13 @@
 
 		<dependency>
 			<groupId>sinadura</groupId>
+			<artifactId>sinaduraEE-Interface</artifactId>
+			<version>3.2.2</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>sinadura</groupId>
 			<artifactId>sinaduraEE</artifactId>
 			<version>3.2.2</version>
 			<scope>provided</scope>

@@ -30,22 +30,28 @@ y que es la que controla si se muestra el botón de enviar.
 = Generación de paquetería
 =====================================
 
-- Descargar commmons-vfs2-sinadura y hacer
-mvn install
+*  Si se han tocado los siguientes módulos, descargarlos y hacer un 'mvn clean install'.
+Si no se cogerá la última versión subida al nexus
 
-- Descargar 'MITyCLibTSA-sinadura', 'MITyCLibOCSP-sinadura' y 'xmlsec-mityc-sinadura' y hacer:
-mvn clean install
+ - commmons-vfs2-sinadura
+ - MITyCLibTSA-sinadura
+ - MITyCLibOCSP-sinadura
+ - xmlsec-mityc-sinadura
 
-
-- Descargar sinaduraCore y hacer:
-mvn clean install
-
-Finalmente para generar los empaquetados, en sinaduraDesktop:
+____
+ 
+ * Desde 'sinadura'
+ mvn clean install
+ 
+ Sinadura tiene como módulos 'sinaduraEE-Interface, sinaduraEE, sinaduraCore'
+____
+ 
+ * Desde 'sinaduraDesktop'
 
 * Independientemente del so, si queremos generar la versión 'EE', deberemos insertar este perfil en el comando;
 p.e; mvn clean package -P Unix64,EE
 
-* unix 
+A) unix 
 _______________
 
 mvn clean package -P Unix32,EE?
@@ -53,13 +59,13 @@ mvn clean package -P Unix64,EE?
 
 El archivo de instalador es el que nos dejará en /target/sinaduraDesktop-xxx-standard.jar
 
-* mac
+B) mac
 _______________	
 
 mvn clean package -P Mac, EE?
 
 
-* windows
+C) windows
 _______________
 
 1. mvn clean pre-integration-test -P Win32, EE?

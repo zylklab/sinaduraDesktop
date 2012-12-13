@@ -11,7 +11,10 @@ import java.util.List;
 import java.util.Locale;
 
 import net.esle.sinadura.core.exceptions.ConnectionException;
-import net.esle.sinadura.ee.proxy.SinaduraProxyUtil;
+import net.esle.sinadura.ee.EEModulesController;
+import net.esle.sinadura.ee.exceptions.EEModuleGenericException;
+import net.esle.sinadura.ee.exceptions.EEModuleNotFoundException;
+import net.esle.sinadura.ee.interfaces.IEEProxyModule;
 import net.esle.sinadura.gui.model.LoggerMessage;
 import net.esle.sinadura.gui.model.LoggerMessage.Level;
 import net.esle.sinadura.gui.util.ImagesUtil;
@@ -130,15 +133,21 @@ class ThreadOperations extends Thread {
 		});
 		
 		// ee (proxy)
-		try{
-			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
-				SinaduraProxyUtil.configureProxy(PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_USER), PreferencesUtil
-						.getPreferences().getString(PreferencesUtil.PROXY_PASS));
-			}	
-		}catch(NoClassDefFoundError e){
-			if (e.getMessage().contains("ee")){
+		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
+			try{
+				EEModulesController eeController = new EEModulesController();
+				IEEProxyModule proxyUtil = eeController.getProxyModule();
+				proxyUtil.configureProxy(
+										PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_USER), 
+										PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_PASS)
+										);
+				
+			}catch(EEModuleNotFoundException e){
 				listMessages.add(new LoggerMessage(Level.INFO, 
 						MessageFormat.format(LanguageUtil.getLanguage().getString("ee.proxy.disabled"), "proxy")));
+				
+			}catch(EEModuleGenericException e){
+				log.error(e);
 			}
 		}
 		
