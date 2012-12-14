@@ -64,7 +64,7 @@ public class NewsWindow extends Dialog {
 
 		this.sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.sShell.setSize(new Point(800, 600));
-		this.sShell.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
+		this.sShell.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 		this.sShell.setText(LanguageUtil.getLanguage().getString("news.windowtitle"));
 
 		GridLayout gridLayout = new GridLayout();
@@ -76,7 +76,7 @@ public class NewsWindow extends Dialog {
 		this.labelImage = new Label(sShell, SWT.CENTER);
 		this.labelImage.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
 
-		Image imageSinadura = new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_FULL_IMG));
+		Image imageSinadura = new Image(sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SINADURA_FULL_IMG));
 		this.labelImage.setImage(imageSinadura);
 		
 		Link urlSinadura = new Link(sShell, SWT.NONE);
@@ -119,7 +119,7 @@ public class NewsWindow extends Dialog {
 
 		this.buttonClose = new Button(composite, SWT.NONE);
 		this.buttonClose.setText(LanguageUtil.getLanguage().getString("button.back"));
-		this.buttonClose.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.BACK_IMG)));
+		this.buttonClose.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.BACK_IMG)));
 		this.buttonClose.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
 		this.buttonClose.addSelectionListener(new ButtonCloseListener());
 

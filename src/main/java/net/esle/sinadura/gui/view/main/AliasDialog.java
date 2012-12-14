@@ -80,7 +80,7 @@ public class AliasDialog extends Dialog {
 
 		this.sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		this.sShell
-				.setImage(new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
+				.setImage(new Image(sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 		this.sShell.setText(LanguageUtil.getLanguage().getString("alias.dialog.title"));
 
 		GridLayout shellGridLayout = new GridLayout();
@@ -122,12 +122,12 @@ public class AliasDialog extends Dialog {
 
 		this.bottonAceptar = new Button(this.ButtonsComposite, SWT.NONE);
 		this.bottonAceptar.setText(LanguageUtil.getLanguage().getString("button.accept"));
-		this.bottonAceptar.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.ACEPTAR_IMG)));
+		this.bottonAceptar.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.ACEPTAR_IMG)));
 		this.bottonAceptar.addSelectionListener(new BotonAceptarListener());
 
 		this.bottonCancelar = new Button(this.ButtonsComposite, SWT.NONE);
 		this.bottonCancelar.setText(LanguageUtil.getLanguage().getString("button.cancel"));
-		this.bottonCancelar.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.CANCEL_IMG)));
+		this.bottonCancelar.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.CANCEL_IMG)));
 		this.bottonCancelar.addSelectionListener(new BotonCancelarListener());
 		
 		this.sShell.pack();

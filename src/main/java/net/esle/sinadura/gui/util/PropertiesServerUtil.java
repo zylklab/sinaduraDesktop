@@ -22,7 +22,7 @@ public class PropertiesServerUtil {
 
 		if (configuration == null) {
 			configuration = new Properties();
-			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_CONFIGURATION);
+			InputStream is = ClassLoader.getSystemResourceAsStream(PATH_CONFIGURATION);
 			try {
 				configuration.load(is);
 			} catch (IOException e) {

@@ -86,7 +86,7 @@ $ ~/.m2/repository/com/akathist/maven/plugins/launch4j
 
 3 - comentamos del pom.xml de sinaduraDekstop la linea del repositorio del nexus-zylk en 'repositories>repository>sinadura-group'
 
-4 - volvemos a lanzar el comando del punto 0 (con esto descargamos el launch4j original)
+4 - volvemos a lanzar el comando del punto 1 (con esto descargamos el launch4j original)
 (dará el mismo error que antes)
 
 5 - descargamos del SVN el proyecto '/launch4j-maven-plugin' y hacemos un

@@ -263,7 +263,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		labelPosicion.setLayoutData(new GridData());
 
 		buttonPosition = new Button(this.compositeMain, SWT.NONE);
-		buttonPosition.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.STAMP_POSITION_IMG)));
+		buttonPosition.setImage(new Image(this.compositeMain.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.STAMP_POSITION_IMG)));
 		buttonPosition.addSelectionListener(new ButtonPositionListener());
 		GridData gdPosicionBt = new GridData();
 		gdPosicionBt.horizontalSpan = 2;

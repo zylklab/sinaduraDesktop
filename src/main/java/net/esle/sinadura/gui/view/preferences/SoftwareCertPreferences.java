@@ -143,7 +143,7 @@ public class SoftwareCertPreferences extends FieldEditorPreferencePage {
 		gdAdd.horizontalAlignment = GridData.FILL;
 		buttonAdd.setLayoutData(gdAdd);
 		buttonAdd.setText(LanguageUtil.getLanguage().getString("button.add"));
-		buttonAdd.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.ADD_IMG)));
+		buttonAdd.setImage(new Image(this.compositeMain.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.ADD_IMG)));
 		buttonAdd.addSelectionListener(new ButtonAddListener());
 
 		Button buttonModificar = new Button(compositeLista, SWT.NONE);
@@ -151,7 +151,7 @@ public class SoftwareCertPreferences extends FieldEditorPreferencePage {
 		gdMod.horizontalAlignment = GridData.FILL;
 		buttonModificar.setLayoutData(gdMod);
 		buttonModificar.setText(LanguageUtil.getLanguage().getString("button.modify"));
-		buttonModificar.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.EDIT_IMG)));
+		buttonModificar.setImage(new Image(this.compositeMain.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.EDIT_IMG)));
 		buttonModificar.addSelectionListener(new ButtonModifyListener());
 
 		Button buttonRemove = new Button(compositeLista, SWT.NONE);
@@ -160,7 +160,7 @@ public class SoftwareCertPreferences extends FieldEditorPreferencePage {
 		gdRemove.verticalAlignment = GridData.BEGINNING;
 		buttonRemove.setLayoutData(gdRemove);
 		buttonRemove.setText(LanguageUtil.getLanguage().getString("button.remove"));
-		buttonRemove.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.REMOVE_IMG)));
+		buttonRemove.setImage(new Image(this.compositeMain.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.REMOVE_IMG)));
 		buttonRemove.addSelectionListener(new ButtonRemoveListener());
 
 	}

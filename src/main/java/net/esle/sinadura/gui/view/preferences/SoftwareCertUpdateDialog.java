@@ -73,7 +73,7 @@ public class SoftwareCertUpdateDialog extends Dialog {
 
 		sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		sShell.setText(LanguageUtil.getLanguage().getString("preferences.cert.software.dialog.title"));
-		sShell.setImage(new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
+		sShell.setImage(new Image(sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		gridLayout.verticalSpacing = 10;
@@ -149,13 +149,13 @@ public class SoftwareCertUpdateDialog extends Dialog {
 
 		Button buttonAceptar = new Button(compositeButtons, SWT.NONE);
 		buttonAceptar.setText(LanguageUtil.getLanguage().getString("button.accept"));
-		buttonAceptar.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.ACEPTAR_IMG)));
+		buttonAceptar.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.ACEPTAR_IMG)));
 		buttonAceptar.setLayoutData(new GridData(GridData.END));
 		buttonAceptar.addSelectionListener(new ButtonOkListener());
 		
 		Button buttonCancel = new Button(compositeButtons, SWT.NONE);
 		buttonCancel.setText(LanguageUtil.getLanguage().getString("button.cancel"));
-		buttonCancel.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.CANCEL_IMG)));
+		buttonCancel.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.CANCEL_IMG)));
 		buttonCancel.setLayoutData(new GridData(GridData.END));
 		buttonCancel.addSelectionListener(new BotonCancelarListener());
 

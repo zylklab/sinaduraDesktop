@@ -204,7 +204,7 @@ public class DocumentsTable extends Composite {
 				Image image = new Image(this.getDisplay(), p.getImageData());
 				item.setImage(1, image);
 			} else if (extension.equals(FileUtil.EXTENSION_SAR)) {
-				Image image = new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SAR_IMG));
+				Image image = new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SAR_IMG));
 				item.setImage(1, image);
 			}
 
@@ -329,7 +329,7 @@ public class DocumentsTable extends Composite {
 					Image image = new Image(this.getDisplay(), p.getImageData());
 					ti.setImage(1, image);
 				} else if (extension.equals(FileUtil.EXTENSION_SAR)) {
-					Image image = new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SAR_IMG));
+					Image image = new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SAR_IMG));
 					ti.setImage(1, image);
 				}
 
@@ -368,7 +368,7 @@ public class DocumentsTable extends Composite {
 				Image image = new Image(this.getDisplay(), p.getImageData());
 				item.setImage(1, image);
 			} else if (extension.equals(FileUtil.EXTENSION_SAR)) {
-				Image image = new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SAR_IMG));
+				Image image = new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SAR_IMG));
 				item.setImage(1, image);
 			}
 
@@ -399,13 +399,13 @@ public class DocumentsTable extends Composite {
 	private void populateItem(TreeItem item, SignatureInfo signature) {
 
 		if (signature.getStatus().equals(Status.VALID)) {
-			item.setImage(3, new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.OK_IMG)));
+			item.setImage(3, new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.OK_IMG)));
 		} else if (signature.getStatus().equals(Status.INVALID)) {
-			item.setImage(3, new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.CANCEL_IMG)));
+			item.setImage(3, new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.CANCEL_IMG)));
 		} else if (signature.getStatus().equals(Status.VALID_WARNING)) {
-			item.setImage(3, new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.WARNING_OK_IMG)));
+			item.setImage(3, new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.WARNING_OK_IMG)));
 		} else if (signature.getStatus().equals(Status.UNKNOWN)) {
-			item.setImage(3, new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.UNKNOWN_IMG)));
+			item.setImage(3, new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.UNKNOWN_IMG)));
 		}
 
 		// signer chain
