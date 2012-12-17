@@ -102,8 +102,8 @@ public class PreferencesManager {
 			PreferenceNode cacheNode = new PreferenceNode("cacheNode", cachePreferences);
 		
 
-		// Add the nodes
 		mgr.addToRoot(generalNode);
+		// ee
 		if (Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PROXY_ENABLED))){
 			mgr.addToRoot(proxyNode);			
 		}
