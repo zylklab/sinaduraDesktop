@@ -28,6 +28,7 @@ import java.security.NoSuchAlgorithmException;
 
 import net.esle.sinadura.core.exceptions.CoreException;
 import net.esle.sinadura.core.exceptions.CorePKCS12Exception;
+import net.esle.sinadura.core.exceptions.NoSunPkcs11ProviderException;
 import net.esle.sinadura.core.exceptions.PKCS11Exception;
 import net.esle.sinadura.core.model.KsSignaturePreferences;
 import net.esle.sinadura.gui.controller.SignController;
@@ -74,8 +75,9 @@ class LoadKeyStoreProgress implements IRunnableWithProgress {
 			throw new InvocationTargetException(e);
 		} catch (DriversNotFoundException e) {
 			throw new InvocationTargetException(e);
-		}
-		
+		} catch (NoSunPkcs11ProviderException e) {
+			throw new InvocationTargetException(e);
+		}		
 		monitor.done();
 	}
 

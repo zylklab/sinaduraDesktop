@@ -36,6 +36,7 @@ import net.esle.sinadura.core.certificate.CertificateUtil;
 import net.esle.sinadura.core.exceptions.ConnectionException;
 import net.esle.sinadura.core.exceptions.CoreException;
 import net.esle.sinadura.core.exceptions.CorePKCS12Exception;
+import net.esle.sinadura.core.exceptions.NoSunPkcs11ProviderException;
 import net.esle.sinadura.core.exceptions.OCSPCoreException;
 import net.esle.sinadura.core.exceptions.OCSPIssuerRequiredException;
 import net.esle.sinadura.core.exceptions.OCSPUnknownUrlException;
@@ -227,6 +228,12 @@ public class SignListener implements SelectionListener {
 							LoggingDesktopController.printError(m);
 						}
 
+					} else if (e.getCause() instanceof NoSunPkcs11ProviderException){
+						
+						String m = LanguageUtil.getLanguage().getString("error.sun_provider.not.found");
+						log.error("NoSunPkcs11ProviderException: " + e.getCause().getMessage());
+						LoggingDesktopController.printError(m);
+					
 					} else if (e.getCause() instanceof PKCS11Exception) {
 
 						String m = "";
@@ -402,7 +409,11 @@ public class SignListener implements SelectionListener {
 
 			// cierro la session con la tarjeta para que pida el pin otra vez después de una firma masiva o una firma simple
 			if (ksSignaturePreferences != null) {
-				SignController.logout(ksSignaturePreferences.getKs(), alias);
+				try {
+					SignController.logout(ksSignaturePreferences.getKs(), alias);
+				} catch (NoSunPkcs11ProviderException e) {
+					log.warn("NoSunPkcs11ProviderException | No se puede realizar un logout del ks");
+				}
 			}
 
 			// refrescar tabla

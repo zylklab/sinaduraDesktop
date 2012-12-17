@@ -66,6 +66,7 @@ import net.esle.sinadura.core.certificate.CertificateUtil;
 import net.esle.sinadura.core.exceptions.ConnectionException;
 import net.esle.sinadura.core.exceptions.CoreException;
 import net.esle.sinadura.core.exceptions.CorePKCS12Exception;
+import net.esle.sinadura.core.exceptions.NoSunPkcs11ProviderException;
 import net.esle.sinadura.core.exceptions.OCSPCoreException;
 import net.esle.sinadura.core.exceptions.OCSPIssuerRequiredException;
 import net.esle.sinadura.core.exceptions.OCSPUnknownUrlException;
@@ -142,7 +143,7 @@ public class SignController {
 		return slotsByReader;
 	}
 
-	public static KsSignaturePreferences loadKeyStore(Shell sShell, String slot) throws NoSuchAlgorithmException, KeyStoreException, PKCS11Exception,
+	public static KsSignaturePreferences loadKeyStore(Shell sShell, String slot) throws NoSuchAlgorithmException, KeyStoreException, PKCS11Exception, NoSunPkcs11ProviderException, 
 			CoreException, CorePKCS12Exception, DriversNotFoundException {
 
 		String certificadoType = PreferencesUtil.getPreferences().getString(PreferencesUtil.CERT_TYPE);
@@ -174,7 +175,6 @@ public class SignController {
 					PreferencesUtil.getPreferences().getString(PreferencesUtil.SOFTWARE_DISPOSITIVE));
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_CERTTYPE, StatisticsUtil.VALUE_SOFT);
 			ks = KeyStoreBuilderFactory.getKeyStore("SOFT", KeyStoreTypes.PKCS12, pkcs12Path, new KeyStore.CallbackHandlerProtection(o));
-
 		}
 
 		else if (certificadoType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_MSCAPI)) {
@@ -195,7 +195,7 @@ public class SignController {
 		return ksSignaturePreferences;
 	}
 
-	public static void logout(KeyStore ks, String alias) {
+	public static void logout(KeyStore ks, String alias) throws NoSunPkcs11ProviderException {
 
 		// una vez que se ha firmado... hago un logout de la session del
 		// provider
