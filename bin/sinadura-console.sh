@@ -102,6 +102,6 @@ exec "$JAVACMD" $JAVA_OPTS \
   -Dapp.pid="$$" \
   -Dapp.repo="$REPO" \
   -Dbasedir="$BASEDIR" \
-  net.esle.sinadura.core.Sinadura \
+  net.esle.sinadura.console.Sinadura \
   $1 $2 $3 $4 $5 $6 \
   "$@"
