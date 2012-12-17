@@ -169,7 +169,7 @@
 									<name>sinadura.sh</name>
 								</program>
 								<program>
-									<mainClass>net.esle.sinadura.core.Sinadura</mainClass>
+									<mainClass>net.esle.sinadura.console.Sinadura</mainClass>
 									<name>sinadura-console.sh</name>
 								</program>
 							</programs>
@@ -310,7 +310,7 @@
 									<name>sinadura.sh</name>
 								</program>
 								<program>
-									<mainClass>net.esle.sinadura.core.Sinadura</mainClass>
+									<mainClass>net.esle.sinadura.console.Sinadura</mainClass>
 									<name>sinadura-console.sh</name>
 								</program>
 							</programs>
@@ -452,7 +452,7 @@
 									<name>sinadura</name>
 								</program>
 								<program>
-									<mainClass>net.esle.sinadura.core.Sinadura</mainClass>
+									<mainClass>net.esle.sinadura.console.Sinadura</mainClass>
 									<name>sinadura-console</name>
 								</program>
 							</programs>
@@ -653,7 +653,7 @@
 									<name>sinadura</name>
 								</program>
 								<program>
-									<mainClass>net.esle.sinadura.core.Sinadura</mainClass>
+									<mainClass>net.esle.sinadura.console.Sinadura</mainClass>
 									<name>sinadura-console</name>
 								</program>
 							</programs>
@@ -851,7 +851,7 @@
 									<name>sinadura.sh</name>
 								</program>
 								<program>
-									<mainClass>net.esle.sinadura.core.Sinadura</mainClass>
+									<mainClass>net.esle.sinadura.console.Sinadura</mainClass>
 									<name>sinadura-console.sh</name>
 								</program>
 							</programs>
@@ -1058,7 +1058,7 @@
 									<name>sinadura.sh</name>
 								</program>
 								<program>
-									<mainClass>net.esle.sinadura.core.Sinadura</mainClass>
+									<mainClass>net.esle.sinadura.console.Sinadura</mainClass>
 									<name>sinadura-console.sh</name>
 								</program>
 							</programs>
