@@ -133,7 +133,8 @@ class ThreadOperations extends Thread {
 		});
 		
 		// ee (proxy)
-		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
+		boolean proxyEnabled = Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PROXY_ENABLED));
+		if (proxyEnabled && PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
 			try{
 				EEModulesController eeController = new EEModulesController();
 				IEEProxyModule proxyUtil = eeController.getProxyModule();
