@@ -4,7 +4,7 @@
 	<groupId>sinadura</groupId>
 	<artifactId>sinaduraDesktop</artifactId>
 	<name>Sinadura Desktop</name>
-	<version>3.2.2</version>
+	<version>3.3.0</version>
 	<description>El origen de sinadura es un software de escritorio para
 		la firma de pdf mediante firma digital. Un aplicativo multiplataforma
 		y una comunidad que ofrece documentación y servicios de valor añadido.
@@ -123,7 +123,7 @@
 				<dependency>
 					<groupId>sinadura</groupId>
 					<artifactId>sinaduraEE</artifactId>
-					<version>3.2.2</version>
+					<version>3.3.0</version>
 					<scope>compile</scope>
 				</dependency>
 			</dependencies>
@@ -1193,7 +1193,7 @@
 		<dependency>
 			<groupId>sinadura</groupId>
 			<artifactId>sinaduraCore</artifactId>
-			<version>3.2.2</version>
+			<version>3.3.0</version>
 		</dependency>
 
 		<dependency>
@@ -1243,14 +1243,13 @@
 		<dependency>
 			<groupId>sinadura</groupId>
 			<artifactId>sinaduraEE-Interface</artifactId>
-			<version>3.2.2</version>
-			<scope>compile</scope>
+			<version>3.3.0</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>sinadura</groupId>
 			<artifactId>sinaduraEE</artifactId>
-			<version>3.2.2</version>
+			<version>3.3.0</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

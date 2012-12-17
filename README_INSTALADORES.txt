@@ -7,12 +7,12 @@ www.zylk.net/web/guest/web-2-0/blog/-/blogs/accediendo-a-repositorios-de-maven-s
 =====================================
 = Cambio de versión
 =====================================
-Actual: 3.2.2
+Actual: 3.3.0
 
 - install.xml
 - pom.xml (core y desktop)
   - cambiar la versión del producto generado (core y desktop)
-  - cambiar la versión de la referencia del desktop al core
+  - cambiar la versión de las referencias a sinadura*
 - configuration.properties (core y desktop)
 - modificar el build.properties (estos se usan para algo? el del core? -> si no borrar)
 @Irune sí se usa, en los build.xml de desktop y core.
@@ -62,7 +62,7 @@ El archivo de instalador es el que nos dejará en /target/sinaduraDesktop-xxx-st
 B) mac
 _______________	
 
-mvn clean package -P Mac, EE?
+mvn clean package -P Mac32, EE?
 
 
 C) windows
