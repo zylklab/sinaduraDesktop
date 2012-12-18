@@ -59,17 +59,17 @@ mvn clean package -P Unix64,EE?
 
 El archivo de instalador es el que nos dejará en /target/sinaduraDesktop-xxx-standard.jar
 
-B) mac
+B) mac (NOK)
 _______________	
 
-mvn clean package -P Mac32, EE?
+mvn clean package -P Mac32,EE?
 
 
 C) windows
 _______________
 
-1. mvn clean pre-integration-test -P Win32, EE?
-1. mvn clean pre-integration-test -P Win64, EE?
+1. mvn clean pre-integration-test -P Win32,EE?
+1. mvn clean pre-integration-test -P Win64,EE?
 __
 
 
