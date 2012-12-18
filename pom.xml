@@ -60,7 +60,7 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>*.properties</include>
+					<include>configuration.properties</include>
 				</includes>
 			</resource>
 
@@ -68,7 +68,7 @@
 				<directory>src/main/resources</directory>
 				<filtering>false</filtering>
 				<excludes>
-					<exclude>*.properties</exclude>
+					<exclude>configuration.properties</exclude>
 				</excludes>
 			</resource>
 		</resources>
