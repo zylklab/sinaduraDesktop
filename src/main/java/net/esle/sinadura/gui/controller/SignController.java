@@ -95,6 +95,7 @@ import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.StatisticsUtil;
 
+import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Display;
@@ -103,6 +104,8 @@ import org.eclipse.swt.widgets.Shell;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.exceptions.BadPasswordException;
+
+import es.mityc.firmaJava.libreria.utilidades.URIEncoder;
 
 public class SignController {
 
@@ -498,25 +501,34 @@ public class SignController {
 			byte[] bytes = signXades(pdfParameter.getPath(), ksSignaturePreferences);
 
 			File inputFile = new File(pdfParameter.getPath());
+			
+			String outputDir = PreferencesUtil.getOutputDir(inputFile);
+			
+			/*
+			 * si el dir está URIEncodeado, encodeamos el nombre, si no lo decodeamos
+			 * esto ocurre porque el path de salida puede ser el definido por el usuario (decoded) 
+			 * o el del fichero per se (encoded)
+			 */
+			String outputName = PreferencesUtil.getOutputName(inputFile.getName());
+			if (FileUtil.isURIEncoded(outputDir)){
+				outputName = URIEncoder.encode(outputName, "utf-8");
+			}else{
+				outputName = URIUtil.decode(outputName, "utf-8");
+			}
+			
 			String outputPath = null;
 			
 			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR)) {
-
-				outputPath = PreferencesUtil.getOutputDir(inputFile) + File.separatorChar
-						+ PreferencesUtil.getOutputName(inputFile.getName()) + "." + FileUtil.EXTENSION_SAR;
+				outputPath = outputDir + File.separatorChar + outputName + "." + FileUtil.EXTENSION_SAR;
 
 			} else {
 
 				// sar
 				if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.XADES_ARCHIVE)) {
-
-					outputPath = PreferencesUtil.getOutputDir(inputFile) + File.separatorChar
-							+ PreferencesUtil.getOutputName(inputFile.getName()) + "." + FileUtil.EXTENSION_SAR;
+					outputPath = outputDir + File.separatorChar	+ outputName + "." + FileUtil.EXTENSION_SAR;
 				// xml
 				} else {
-						
-					outputPath = PreferencesUtil.getOutputDir(inputFile) + File.separatorChar
-								+ PreferencesUtil.getOutputName(inputFile.getName()) + "." + FileUtil.EXTENSION_XML;
+					outputPath = outputDir + File.separatorChar	+ outputName + "." + FileUtil.EXTENSION_XML;
 					
 					/*
 					 * unsupported
