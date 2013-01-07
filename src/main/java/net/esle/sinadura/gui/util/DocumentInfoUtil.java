@@ -31,6 +31,7 @@ public class DocumentInfoUtil {
 	
 	/**************************************************
 	 * Canal de entrada 1. precarga / carga
+	 * (Canal de entrada 2. DocumentsTable.reload (el propio documento firmado)) 
 	 * Normalización de path a URI
 	 * @see FileUtil#normaliceLocalURI(String)
 	 ***************************************************/

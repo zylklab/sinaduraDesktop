@@ -197,6 +197,15 @@ public class DocumentsTable extends Composite {
 		for (TreeItem item : this.tree.getItems()) {
 
 			DocumentInfo doc = (DocumentInfo) item.getData();
+			
+			// normalizamos el path que se inserta par que tenga formato URI
+			try {
+				doc.setPath(FileUtil.normaliceLocalURI(doc.getPath()));
+				item.setData(doc);
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+				log.error("", e);
+			}
 
 			String extension = FileUtil.getExtension(doc.getPath());
 			Program p = Program.findProgram("." + extension);
@@ -317,31 +326,32 @@ public class DocumentsTable extends Composite {
 		for (DocumentInfo doc : list) {
 			TreeItem ti = new TreeItem(this.tree, SWT.NONE);
 			
-			// normalizamos el path que se inserta par que tenga formato URI
 			try {
+				// normalizamos el path que se inserta par que tenga formato URI
 				doc.setPath(FileUtil.normaliceLocalURI(doc.getPath()));
 				ti.setData(doc);
-
-				// TODO pasar esto a image util
-				String extension = FileUtil.getExtension(doc.getPath());
-				Program p = Program.findProgram("." + extension);
-				if (p != null && p.getImageData() != null) {
-					Image image = new Image(this.getDisplay(), p.getImageData());
-					ti.setImage(1, image);
-				} else if (extension.equals(FileUtil.EXTENSION_SAR)) {
-					Image image = new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SAR_IMG));
-					ti.setImage(1, image);
-				}
-
-				File file = FileUtil.getLocalFileFromURI(doc.getPath());
-				ti.setText(2, file.getName());
-				ti.setText(5, FileUtil.getLocalPathFromURI(doc.getPath()));
-				selection.add(ti);
 				
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
 				log.error("", e);
 			}
+			
+			// TODO pasar esto a image util
+			String extension = FileUtil.getExtension(doc.getPath());
+			Program p = Program.findProgram("." + extension);
+			if (p != null && p.getImageData() != null) {
+				Image image = new Image(this.getDisplay(), p.getImageData());
+				ti.setImage(1, image);
+			} else if (extension.equals(FileUtil.EXTENSION_SAR)) {
+				Image image = new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SAR_IMG));
+				ti.setImage(1, image);
+			}
+
+			File file = FileUtil.getLocalFileFromURI(doc.getPath());
+			ti.setText(2, file.getName());
+			ti.setText(5, FileUtil.getLocalPathFromURI(doc.getPath()));
+			selection.add(ti);
+
 		}
 		TreeItem[] array = (TreeItem[]) selection.toArray(new TreeItem[selection.size()]);
 		this.tree.setSelection(array);
@@ -358,6 +368,14 @@ public class DocumentsTable extends Composite {
 
 		for (DocumentInfo pdfParameter : list) {
 
+			// normalizamos el path que se inserta par que tenga formato URI
+			try {
+				pdfParameter.setPath(FileUtil.normaliceLocalURI(pdfParameter.getPath()));
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+				log.error("", e);
+			}
+			
 			TreeItem item = new TreeItem(this.tree, SWT.NONE);
 			item.setData(pdfParameter);
 
