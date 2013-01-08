@@ -454,7 +454,7 @@ public class SignController {
 			if(fileUri.getScheme() == null || fileUri.getScheme().equalsIgnoreCase("file"))
 			{
 				// cogemos el path en formato no URI
-				String inputPath = fileUri.getPath();
+				String inputPath = FileUtil.getLocalPathFromURI(fileUri);
 				
 				File file = new File(pdfParameter.getPath());
 				outputPath = PreferencesUtil.getOutputDir(file) + File.separatorChar + PreferencesUtil.getOutputName(file.getName()) + "." + FileUtil.EXTENSION_PDF;
