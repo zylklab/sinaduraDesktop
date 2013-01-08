@@ -423,7 +423,6 @@ public class SignController {
 			log.info("ocsp enable: " + addOCSP);
 
 			
-			//InputStream is = new FileInputStream(pdfParameter.getPath());
 			InputStream is;
 			try {
 				is = FileUtil.getInputStreamFromURI(pdfParameter.getPath());
@@ -439,8 +438,7 @@ public class SignController {
 			try {
 				fileUri = new URI(FileUtil.urlEncoder(pdfParameter.getPath()));
 			} catch (URISyntaxException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				log.error(e1);
 				throw new IOException(e1);
 			}
 			
@@ -448,13 +446,27 @@ public class SignController {
 			log.info("File path pasado a URI (protocol) :"+fileUri.getScheme()+", si no es file o es null usa /");
 			
 		 	
-			if(fileUri.getScheme() == null || fileUri.getScheme().equalsIgnoreCase("file")) //si es file voy por nombre y así se pueden firmar ficheros grandes
+			/*
+			 * Si es schema file:// se pueden manejar ficheros grandes usando un patch VFS
+			 * Se usan strings para ubicar el fichero en filesystem
+			 * Al PDFService el input/out string tiene que ir en formato no URI
+			 */
+			if(fileUri.getScheme() == null || fileUri.getScheme().equalsIgnoreCase("file"))
 			{
+				// cogemos el path en formato no URI
+				String inputPath = fileUri.getPath();
+				
 				File file = new File(pdfParameter.getPath());
 				outputPath = PreferencesUtil.getOutputDir(file) + File.separatorChar + PreferencesUtil.getOutputName(file.getName()) + "." + FileUtil.EXTENSION_PDF;
-				PdfService.sign(is, outputPath, signaturePreferences, ownerPassword);
-			}
-			else //si el protocolo no es file voy por inputstrema
+				
+				PdfService.sign(inputPath, outputPath, signaturePreferences, ownerPassword);
+					
+				
+			/*
+			 * Si no es schema file:// se manipulan los ficheros con streams 
+			 * y no se pueden tratar grandes tamaños ya que se hace un volcado a memoria del stream para su manipulación 
+			 */
+			}else 
 			{
 				String sss = PreferencesUtil.getOutputNameFromCompletePath(pdfParameter.getPath());
 				outputPath = PreferencesUtil.getOutputDir(pdfParameter.getPath()) + "/" + sss + "." + FileUtil.EXTENSION_PDF;
