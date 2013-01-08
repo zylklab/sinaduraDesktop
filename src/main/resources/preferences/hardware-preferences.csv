@@ -5,7 +5,10 @@ bit4id 32 bits (izenpe);Izenpe 2012 (32-bit);/usr/lib/libbit4ipki.so;linux;
 bit4id 64 bits (izenpe);Izenpe 2012 (64-bit);/usr/lib64/libbit4ipki.so;linux;
 izenpe;Izenpe;c:\\windows\\system32\\aetpkss1.dll;win;
 bit4id (izenpe);Izenpe 2012;c:\\windows\\system32\\bit4ipki.dll;win;
-dni;DNIe;c:\\windows\\system32\\UsrPkcs11.dll;win;
+dni x64 (64-bit);DNIe (64-bit);C:\\Program Files (x86)\\DNIe\\DNIeCMx64.dll;win
+dni x64 (32-bit);DNIe (32-bit);C:\\Program Files (x86)\\DNIe\\DNIeCMx86.dll;win
+dni x86 (WinXP, 32-bit);DNIe;c:\\windows\\system32\\UsrPkcs11.dll;win;
+dni x86 (32-bit);DNIe;C:\\Program Files\\DNIe\\DNIeCMx86.dll;win
 FNMT-RCM;FNMT-RCM;c:\\windows\\system32\\PkcsV2GK.dll;win;
 Aladdin pro;Aladdin pro;c:\\windows\\system32\\eTPKCS11.dll;win;
 Siemens CardOS 3.2 (ACCV);Siemens CardOS 3.2 (ACCV);c:\\windows\\system32\\siecap11.dll;win;
