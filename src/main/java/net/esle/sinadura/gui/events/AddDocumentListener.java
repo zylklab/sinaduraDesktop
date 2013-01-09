@@ -72,7 +72,7 @@ public class AddDocumentListener implements SelectionListener {
 			}
 		}catch(FileNotValidException e){
 			// runtimes - error inesperado
-			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.file.unexpected"), e.getFilePath());
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.file.invalid"), e.getFilePath());
 			log.error("", e);
 			LoggingDesktopController.printError(m);
 			

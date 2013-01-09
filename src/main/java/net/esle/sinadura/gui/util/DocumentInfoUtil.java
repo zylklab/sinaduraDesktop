@@ -2,7 +2,7 @@ package net.esle.sinadura.gui.util;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,12 +41,21 @@ public class DocumentInfoUtil {
 		URI uri = null;
 		String mimeType;
 		try{
+			
+			/*
+			 * TODO esto hay que revisarlo con el FileUtil#isURIEncoded
+			 */
+			String decoded = URLDecoder.decode(path.toString(), "utf-8");
+			if (decoded.contains("%")){
+				throw new Exception();
+			}
+			
 			path = FileUtil.normaliceLocalURI(path);
 			uri = new URI(path);
 			mimeType = FileUtil.getMimeType(uri.getPath());
 			 
-		}catch(URISyntaxException e){
-			log.error("URISyntaxException | " +  e.toString());
+		}catch(Exception e){
+			log.error("Exception | " +  e.toString());
 			throw new FileNotValidException(path);
 		}
 
