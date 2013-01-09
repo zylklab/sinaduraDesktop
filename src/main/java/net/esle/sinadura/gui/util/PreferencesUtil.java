@@ -41,6 +41,7 @@ import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.vfs2.util.Os;
 import org.eclipse.jface.preference.PreferenceStore;
 
 import com.itextpdf.text.pdf.PdfSignatureAppearance;
@@ -254,8 +255,12 @@ public class PreferencesUtil {
 				// xades
 				preferences.setDefault(XADES_ARCHIVE, "true");
 				
-				// Cert
-				preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_HARDWARE);
+				// carga de certificado
+				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())){
+					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_MSCAPI);
+				}else{
+					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_HARDWARE);					
+				}
 
 				preferences.setDefault(HARDWARE_DISPOSITIVE, "izenpe");
 				
