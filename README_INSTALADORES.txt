@@ -7,10 +7,10 @@ www.zylk.net/web/guest/web-2-0/blog/-/blogs/accediendo-a-repositorios-de-maven-s
 =====================================
 = Cambio de versión
 =====================================
-Actual: 3.3.0
+Actual: 3.3.3
 
 - install.xml
-- pom.xml (core y desktop)
+- pom.xml (core, desktop, ee, ee-interfaces, parent)
   - cambiar la versión del producto generado (core y desktop)
   - cambiar la versión de las referencias a sinadura*
 - configuration.properties (core y desktop)
@@ -22,9 +22,13 @@ Actual: 3.3.0
 =====================================
 = Comprobaciones
 =====================================
-- revisar log4j
+
+- revisar log4j.properties (desktop) que el 'log4j.rootLogger' esté a INFO
+
+¿esto para qué?
 - comprobar el valor de la etiqueta "enable.send.button" que está en configuration.properties 
-y que es la que controla si se muestra el botón de enviar. 
+y que es la que controla si se muestra el botón de enviar.
+ 
 
 =====================================
 = Generación de paquetería
@@ -40,7 +44,7 @@ Si no se cogerá la última versión subida al nexus
 
 ____
  
- * Desde 'sinadura'
+ * Desde 'sinaduraParent'
  mvn clean install
  
  Sinadura tiene como módulos 'sinaduraEE-Interface, sinaduraEE, sinaduraCore'
