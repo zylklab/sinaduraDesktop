@@ -15,6 +15,7 @@ import net.esle.sinadura.ee.EEModulesController;
 import net.esle.sinadura.ee.exceptions.EEModuleGenericException;
 import net.esle.sinadura.ee.exceptions.EEModuleNotFoundException;
 import net.esle.sinadura.ee.interfaces.IEEProxyModule;
+import net.esle.sinadura.gui.exceptions.FileNotValidException;
 import net.esle.sinadura.gui.model.LoggerMessage;
 import net.esle.sinadura.gui.model.LoggerMessage.Level;
 import net.esle.sinadura.gui.util.ImagesUtil;
@@ -46,12 +47,12 @@ public class LoadingWindow {
 
 	private String[] args;
 
-	public LoadingWindow(String[] args) throws FileSystemException, MalformedURIException {
+	public LoadingWindow(String[] args) throws FileNotValidException, FileSystemException, MalformedURIException {
 		this.args = args;
 		init();
 	}
 
-	public void init() throws FileSystemException, MalformedURIException {
+	public void init() throws FileNotValidException, FileSystemException, MalformedURIException {
 
 		Display.setAppName(PropertiesUtil.APPLICATION_NAME);
 		Display display = new Display();

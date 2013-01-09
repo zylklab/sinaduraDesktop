@@ -24,8 +24,10 @@ package net.esle.sinadura.gui.events;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
+import net.esle.sinadura.gui.exceptions.FileNotValidException;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.DocumentInfoUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
@@ -36,7 +38,6 @@ import net.esle.sinadura.gui.view.main.FileDialogs;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.vfs2.FileSystemException;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -54,7 +55,7 @@ public class AddDirectoryListener implements SelectionListener {
 
 	public void widgetSelected(SelectionEvent event) {
 		
-		List<DocumentInfo> newDocs = null;
+		List<DocumentInfo> newDocs = new ArrayList<DocumentInfo>();
 		try {
 			
 			List<File> fileList = FileDialogs.openDirDialog(this.tableDocument.getShell());
@@ -66,9 +67,9 @@ public class AddDirectoryListener implements SelectionListener {
 				ProgressMonitorDialog progressMonitorDialog = new ProgressMonitorDialog(this.tableDocument.getShell());
 				progressMonitorDialog.run(true, true, new ValidatePDFProgress(newDocs));
 			}
-		}catch(FileSystemException e){
+		}catch(FileNotValidException e){
 			// runtimes - error inesperado
-			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.validation.unexpected"), e.getCause().toString());
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.file.unexpected"), e.getFilePath());
 			log.error("", e);
 			LoggingDesktopController.printError(m);
 			

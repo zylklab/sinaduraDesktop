@@ -7,24 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.esle.sinadura.core.util.FileUtil;
+import net.esle.sinadura.gui.exceptions.FileNotValidException;
 import net.esle.sinadura.gui.model.DocumentInfo;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.vfs2.FileSystemException;
 
 public class DocumentInfoUtil {
 
 	private static Log log = LogFactory.getLog(DocumentInfoUtil.class);
 	
 	
-	public static DocumentInfo fileToDocumentInfo(String filePath) throws FileSystemException {
+	public static DocumentInfo fileToDocumentInfo(String filePath) throws FileNotValidException {
 		
 		File file = new File(filePath);
 		return fileToDocumentInfo(file);
 	}
 	
-	public static DocumentInfo fileToDocumentInfo(File file) throws FileSystemException {
+	public static DocumentInfo fileToDocumentInfo(File file) throws FileNotValidException {
 		return uriToDocumentInfo(file.getPath());
 	}
 	
@@ -35,28 +35,31 @@ public class DocumentInfoUtil {
 	 * Normalización de path a URI
 	 * @see FileUtil#normaliceLocalURI(String)
 	 ***************************************************/
-	public static DocumentInfo uriToDocumentInfo(String path) throws FileSystemException{
+	public static DocumentInfo uriToDocumentInfo(String path) throws FileNotValidException{
 
 		log.info("Path sin normalizar:  " + path);
 		URI uri = null;
+		String mimeType;
 		try{
 			path = FileUtil.normaliceLocalURI(path);
 			uri = new URI(path);
+			mimeType = FileUtil.getMimeType(uri.getPath());
+			 
 		}catch(URISyntaxException e){
-			e.printStackTrace();
+			log.error("URISyntaxException | " +  e.toString());
+			throw new FileNotValidException(path);
 		}
 
 		// document info
 		DocumentInfo d = new DocumentInfo();
 		d.setPath(path);
 		log.info("Path normalizado: " + path);
-		String mimeType = FileUtil.getMimeType(uri.getPath());
 		d.setMimeType(mimeType);
 		return d;
 	}
 	
 	
-	public static List<DocumentInfo> fileToDocumentInfo(List<File> files) throws FileSystemException {
+	public static List<DocumentInfo> fileToDocumentInfo(List<File> files) throws FileNotValidException {
 		
 		List<DocumentInfo> list = new ArrayList<DocumentInfo>();
 		for (File file : files) {			
@@ -66,7 +69,7 @@ public class DocumentInfoUtil {
 	}
 	
 	
-	public static List<DocumentInfo> fileToDocumentInfoFromUris(List<String> files) throws FileSystemException {
+	public static List<DocumentInfo> fileToDocumentInfoFromUris(List<String> files) throws FileNotValidException {
 		
 		List<DocumentInfo> list = new ArrayList<DocumentInfo>();
 		for (String file : files) {			

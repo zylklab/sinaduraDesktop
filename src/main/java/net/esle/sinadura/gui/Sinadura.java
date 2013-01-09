@@ -26,6 +26,7 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
+import net.esle.sinadura.gui.exceptions.FileNotValidException;
 import net.esle.sinadura.gui.util.PropertiesUtil;
 import net.esle.sinadura.gui.util.StatisticsUtil;
 
@@ -68,7 +69,7 @@ public class Sinadura {
 	}
 	
 	
-	public static void main(String[] args) throws FileSystemException, MalformedURIException {
+	public static void main(String[] args) throws FileNotValidException, FileSystemException, MalformedURIException {
 		
 		try {
 			

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.esle.sinadura.gui.events.ValidatePDFProgress;
+import net.esle.sinadura.gui.exceptions.FileNotValidException;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.model.LoggerMessage;
 import net.esle.sinadura.gui.util.DocumentInfoUtil;
@@ -57,11 +58,11 @@ public class MainWindow {
 	private String path = null;
 	private boolean directory = false;
 
-	public MainWindow (Display display, List<LoggerMessage> list, String[] args) throws FileSystemException, MalformedURIException {
+	public MainWindow (Display display, List<LoggerMessage> list, String[] args) throws FileNotValidException, FileSystemException, MalformedURIException {
 		initialize(display, list, args);
 	}	
 
-	public void initialize(Display display, List<LoggerMessage> list, String[] args) throws FileSystemException, MalformedURIException {
+	public void initialize(Display display, List<LoggerMessage> list, String[] args) throws FileNotValidException, FileSystemException, MalformedURIException {
 
 		Shell mainShell = new Shell(SWT.APPLICATION_MODAL | SWT.SHELL_TRIM);
 		
@@ -134,7 +135,7 @@ public class MainWindow {
 	 * @throws FileSystemException 
 	 * @throws MalformedURIException 
 	 */
-	private void initializeTable(DocumentsPanel panelPDF, String[] args) throws FileSystemException, MalformedURIException {
+	private void initializeTable(DocumentsPanel panelPDF, String[] args) throws FileNotValidException, FileSystemException, MalformedURIException {
 
 		List<String> files = new ArrayList<String>();
 		for (String filePath : args) {
