@@ -65,7 +65,7 @@ public class SignaturePropertiesDialog extends Dialog {
 		GridLayout gridLayout = new GridLayout();
 		this.sShell.setText(LanguageUtil.getLanguage().getString("validation.windowtitle"));
 		this.sShell.setSize(640, this.sShell.getSize().y);
-		this.sShell.setImage(new Image(sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
+		this.sShell.setImage(new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 		this.sShell.setLayout(gridLayout);
 		GridData gdShell = new GridData();
 //		gdShell.grabExcessHorizontalSpace = true;
@@ -125,13 +125,13 @@ public class SignaturePropertiesDialog extends Dialog {
 			TreeItem item = new TreeItem(this.tree, SWT.BORDER);
 			item.setData(signature);
 			if (signature.getStatus().equals(Status.VALID)) {
-				item.setImage(new Image(this.tree.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.OK_IMG)));
+				item.setImage(new Image(this.tree.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.OK_IMG)));
 			} else if (signature.getStatus().equals(Status.INVALID)) {
-				item.setImage(new Image(this.tree.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.CANCEL_IMG)));
+				item.setImage(new Image(this.tree.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.CANCEL_IMG)));
 			} else if (signature.getStatus().equals(Status.VALID_WARNING)) {
-				item.setImage(new Image(this.tree.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.WARNING_OK_IMG)));
+				item.setImage(new Image(this.tree.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.WARNING_OK_IMG)));
 			} else if (signature.getStatus().equals(Status.UNKNOWN)) {
-				item.setImage(new Image(this.tree.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.UNKNOWN_IMG)));
+				item.setImage(new Image(this.tree.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.UNKNOWN_IMG)));
 			}
 			if (sigInfo.equals(signature)) {
 				ti = item;
@@ -256,7 +256,7 @@ public class SignaturePropertiesDialog extends Dialog {
 
 		this.buttonAceptar = new Button(composite, SWT.NONE);
 		this.buttonAceptar.setText(LanguageUtil.getLanguage().getString("button.accept"));
-		this.buttonAceptar.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.BACK_IMG)));
+		this.buttonAceptar.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.BACK_IMG)));
 		GridData gdAceptar = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
 		gdAceptar.grabExcessHorizontalSpace = true;
 		gdAceptar.grabExcessVerticalSpace = true;
@@ -342,13 +342,13 @@ public class SignaturePropertiesDialog extends Dialog {
 
 				image = null;
 				if (message.getSimpleStatus().equals(Status.VALID)) {
-					image = new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.OK_IMG));
+					image = new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.OK_IMG));
 				} else if (message.getSimpleStatus().equals(Status.INVALID)) {
-					image = new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.CANCEL_IMG));
+					image = new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.CANCEL_IMG));
 				} else if (message.getSimpleStatus().equals(Status.UNKNOWN)) {
-					image = new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.UNKNOWN_IMG));
+					image = new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.UNKNOWN_IMG));
 				} else if (message.getSimpleStatus().equals(Status.VALID_WARNING)) {
-					image = new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.WARNING_OK_IMG));
+					image = new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.WARNING_OK_IMG));
 				}
 				Label documentStateProperties = new Label(this.compositeProperties, SWT.NONE);
 				documentStateProperties.setImage(image);

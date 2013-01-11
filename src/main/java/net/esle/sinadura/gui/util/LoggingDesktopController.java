@@ -253,7 +253,7 @@ public class LoggingDesktopController {
 	private static Image getImageInfo() {
 		
 		if (null == IMAGE_INFO) {			
-			IMAGE_INFO = new Image(cajaLogging.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.INFO_IMG_PATH));
+			IMAGE_INFO = new Image(cajaLogging.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.INFO_IMG_PATH));
 		}
 		return IMAGE_INFO;
 	}
@@ -261,7 +261,7 @@ public class LoggingDesktopController {
 	private static Image getImageError() {
 		
 		if (null == IMAGE_ERROR) {
-			IMAGE_ERROR = new Image(cajaLogging.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.ERROR_IMG_PATH));
+			IMAGE_ERROR = new Image(cajaLogging.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.ERROR_IMG_PATH));
 		}
 		return IMAGE_ERROR;
 	}

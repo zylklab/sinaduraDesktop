@@ -170,7 +170,7 @@ public class TrustedCertsPreferences extends FieldEditorPreferencePage {
 		gdAdd.horizontalAlignment = GridData.FILL;
 		buttonAdd.setLayoutData(gdAdd);
 		buttonAdd.setText(LanguageUtil.getLanguage().getString("button.add"));
-		buttonAdd.setImage(new Image(this.compositeMain.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.ADD_IMG)));
+		buttonAdd.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.ADD_IMG)));
 		buttonAdd.addSelectionListener(new ButtonAddListener());
 
 		Button buttonShow = new Button(compositeButtons, SWT.NONE);
@@ -178,7 +178,7 @@ public class TrustedCertsPreferences extends FieldEditorPreferencePage {
 		gdMod.horizontalAlignment = GridData.FILL;
 		buttonShow.setLayoutData(gdMod);
 		buttonShow.setText(LanguageUtil.getLanguage().getString("button.show"));
-		buttonShow.setImage(new Image(this.compositeMain.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.EDIT_IMG)));
+		buttonShow.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.EDIT_IMG)));
 		buttonShow.addSelectionListener(new ButtonShowListener());
 
 		
@@ -187,7 +187,7 @@ public class TrustedCertsPreferences extends FieldEditorPreferencePage {
 		gdExport.horizontalAlignment = GridData.FILL;
 		buttonExport.setLayoutData(gdMod);
 		buttonExport.setText(LanguageUtil.getLanguage().getString("button.export"));
-		buttonExport.setImage(new Image(this.compositeMain.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.EXPORT_IMG)));
+		buttonExport.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.EXPORT_IMG)));
 		buttonExport.addSelectionListener(new ButtonExportListener());
 		
 		
@@ -197,7 +197,7 @@ public class TrustedCertsPreferences extends FieldEditorPreferencePage {
 		gdRemove.verticalAlignment = GridData.BEGINNING;
 		buttonRemove.setLayoutData(gdRemove);
 		buttonRemove.setText(LanguageUtil.getLanguage().getString("button.remove"));
-		buttonRemove.setImage(new Image(this.compositeMain.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.REMOVE_IMG)));
+		buttonRemove.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.REMOVE_IMG)));
 		buttonRemove.addSelectionListener(new ButtonRemoveListener());
 
 	}

@@ -84,7 +84,7 @@ public class LicenciaWindow extends Dialog {
 
 		this.sShell.setText(LanguageUtil.getLanguage().getString("about.licencia"));
 		this.sShell.setSize(new Point(600, 500));
-		this.sShell.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
+		this.sShell.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
 		gridLayout.verticalSpacing = 10;
@@ -93,7 +93,7 @@ public class LicenciaWindow extends Dialog {
 		String textoDesc = "";
 
 		try {
-			InputStream is = ClassLoader.getSystemResourceAsStream(PropertiesUtil.LICENSE_PATH);
+			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PropertiesUtil.LICENSE_PATH);
 			InputStreamReader isr = new InputStreamReader(is);	
 	        BufferedReader in = new BufferedReader(isr);
 	        String str;
@@ -113,7 +113,7 @@ public class LicenciaWindow extends Dialog {
 		this.textDesc.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		this.bottonAceptar = new Button(sShell, SWT.NONE);
-		this.bottonAceptar.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.BACK_IMG)));
+		this.bottonAceptar.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.BACK_IMG)));
 		this.bottonAceptar.setText(LanguageUtil.getLanguage().getString("button.back"));
 		this.bottonAceptar.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
 

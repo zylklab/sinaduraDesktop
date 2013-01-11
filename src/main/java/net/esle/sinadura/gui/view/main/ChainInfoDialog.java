@@ -48,7 +48,7 @@ public class ChainInfoDialog extends Dialog {
 		this.sShell = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
 		GridLayout gridLayout = new GridLayout();
 		this.sShell.setText(LanguageUtil.getLanguage().getString("chain.info.windowtitle"));
-		this.sShell.setImage(new Image(sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
+		this.sShell.setImage(new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 		this.sShell.setLayout(gridLayout);
 		GridData gdShell = new GridData();
 		gdShell.grabExcessHorizontalSpace = true;
@@ -137,7 +137,7 @@ public class ChainInfoDialog extends Dialog {
 
 		Button buttonAceptar = new Button(composite, SWT.NONE);
 		buttonAceptar.setText(LanguageUtil.getLanguage().getString("button.accept"));
-		buttonAceptar.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.BACK_IMG)));
+		buttonAceptar.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.BACK_IMG)));
 		GridData gdAceptar = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
 		gdAceptar.grabExcessHorizontalSpace = true;
 		gdAceptar.grabExcessVerticalSpace = true;

@@ -59,7 +59,7 @@ public class LoadingWindow {
 
 		Shell shell = new Shell(SWT.APPLICATION_MODAL | SWT.BORDER);
 		shell.setText(LanguageUtil.getLanguage().getString("loading.windowtitle"));
-		shell.setImage(new Image(shell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
+		shell.setImage(new Image(shell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
@@ -82,7 +82,7 @@ public class LoadingWindow {
 		gdImage.grabExcessVerticalSpace = true;
 		labelImage.setLayoutData(gdImage);
 
-		Image imageSinadura = new Image(shell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SINADURA_FULL_IMG));
+		Image imageSinadura = new Image(shell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_FULL_IMG));
 		labelImage.setImage(imageSinadura);
 
 		Label messages = new Label(shell, SWT.NONE);
@@ -170,7 +170,7 @@ class ThreadOperations extends Thread {
 		try {
 			File f = new File(PropertiesUtil.DEFAULT_IMAGE_FILE_PATH);
 			if (!f.exists()) {
-				InputStream is = ClassLoader.getSystemResourceAsStream(ImagesUtil.EXT_SINADURA_LOGO_150_IMG);
+				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.EXT_SINADURA_LOGO_150_IMG);
 				FileOutputStream fos = new FileOutputStream(PropertiesUtil.DEFAULT_IMAGE_FILE_PATH);
 				IOUtils.copy(is, fos);
 			}

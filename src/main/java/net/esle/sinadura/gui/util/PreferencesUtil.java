@@ -164,7 +164,7 @@ public class PreferencesUtil {
 		f = new File(PATH_USER_PREFERENCES_SOFTWARE);
 		if (!f.exists()) {
 			try {
-				InputStream is = ClassLoader.getSystemResourceAsStream(PATH_DEFAULT_PREFERENCES_SOFTWARE);
+				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_DEFAULT_PREFERENCES_SOFTWARE);
 				FileOutputStream os = new FileOutputStream(PATH_USER_PREFERENCES_SOFTWARE);
 				IOUtils.copy(is, os);	
 			} catch (IOException e) {
@@ -176,7 +176,7 @@ public class PreferencesUtil {
 		f = new File(PATH_USER_PREFERENCES_TRUSTED_KEYSTORE);
 		if (!f.exists()) {
 			try {
-				InputStream is = ClassLoader.getSystemResourceAsStream(PATH_DEFAULT_PREFERENCES_TRUSTED_KEYSTORE);
+				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_DEFAULT_PREFERENCES_TRUSTED_KEYSTORE);
 				FileOutputStream os = new FileOutputStream(PATH_USER_PREFERENCES_TRUSTED_KEYSTORE);
 				IOUtils.copy(is, os);	
 			} catch (IOException e) {
@@ -188,7 +188,7 @@ public class PreferencesUtil {
 		f = new File(PATH_USER_PREFERENCES_CACHE_KEYSTORE);
 		if (!f.exists()) {
 			try {
-				InputStream is = ClassLoader.getSystemResourceAsStream(PATH_DEFAULT_PREFERENCES_CACHE_KEYSTORE);
+				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_DEFAULT_PREFERENCES_CACHE_KEYSTORE);
 				FileOutputStream os = new FileOutputStream(PATH_USER_PREFERENCES_CACHE_KEYSTORE);
 				IOUtils.copy(is, os);	
 			} catch (IOException e) {
@@ -317,7 +317,7 @@ public class PreferencesUtil {
 			try {
 				
 				// leer el csv
-				InputStream is = ClassLoader.getSystemResourceAsStream(PATH_DEFAULT_PREFERENCES_HARDWARE);
+				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_DEFAULT_PREFERENCES_HARDWARE);
 				List<List<String>> array = CsvUtil.parseCSV(is);
 		
 				// generar el map
@@ -421,7 +421,7 @@ public class PreferencesUtil {
 			
 			try {
 				// leer el csv
-				InputStream is = ClassLoader.getSystemResourceAsStream(PATH_DEFAULT_PREFERENCES_TIMESTAMP);
+				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_DEFAULT_PREFERENCES_TIMESTAMP);
 				List<List<String>> array = CsvUtil.parseCSV(is);
 				 
 				for (int i = 1; i < array.size(); i++) {

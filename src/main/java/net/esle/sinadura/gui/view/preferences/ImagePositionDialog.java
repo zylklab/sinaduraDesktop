@@ -75,7 +75,7 @@ public class ImagePositionDialog extends Dialog {
 		
 		Shell parent = getParent();
 		sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE );
-		sShell.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
+		sShell.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 		sShell.setText(LanguageUtil.getLanguage().getString("preferences.pdf.stamp.position.tittle"));
 		
 		sShell.setLayout(new GridLayout());
@@ -144,12 +144,12 @@ public class ImagePositionDialog extends Dialog {
 
 		bottonAceptar = new Button(compositeBotones, SWT.NONE);
 		bottonAceptar.setText(LanguageUtil.getLanguage().getString("button.accept"));
-		bottonAceptar.setImage(new Image(sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.ACEPTAR_IMG)));
+		bottonAceptar.setImage(new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.ACEPTAR_IMG)));
 		bottonAceptar.addSelectionListener(new BotonAceptarListener());
 
 		bottonCancelar = new Button(compositeBotones, SWT.NONE);
 		bottonCancelar.setText(LanguageUtil.getLanguage().getString("button.cancel"));
-		bottonCancelar.setImage(new Image(sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.CANCEL_IMG)));
+		bottonCancelar.setImage(new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.CANCEL_IMG)));
 		bottonCancelar.addSelectionListener(new BotonCancelarListener());
 
 	}

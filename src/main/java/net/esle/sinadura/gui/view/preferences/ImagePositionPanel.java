@@ -77,7 +77,7 @@ public class ImagePositionPanel extends Composite {
 		originalImage = new Image(this.getDisplay(), ruta);
 		image = new Image(this.getDisplay(), ruta);
 		
-		imageBackground = new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.STAMP_BACKGROUND_IMG));
+		imageBackground = new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.STAMP_BACKGROUND_IMG));
 		
 //		image = resize(image, 116, 40);
 		

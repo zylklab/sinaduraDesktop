@@ -114,15 +114,15 @@ public class MainMenu {
 		this.creditsItem = new MenuItem(this.ayudaMenu, SWT.PUSH);
 		this.acercaDeItem = new MenuItem(this.ayudaMenu, SWT.PUSH);
 
-		this.addDocument.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.MENU_FILE)));
-		this.addDirectory.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.MENU_ADDDIR)));
-		this.salirItem.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.MENU_EXIT)));
-		this.preferenciasItem.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.MENU_PREFERENCES)));
-		this.licenciaItem.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.MENU_LICENSE)));
-		this.creditsItem.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.CREDITS_IMG_PATH)));
-		this.acercaDeItem.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.MENU_ABOUT)));
-		this.documentacionItem.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.MENU_DOCUMENTATION)));
-		this.noticiasItem.setImage(new Image(this.sShell.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.NEWS_IMG_PATH)));
+		this.addDocument.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_FILE)));
+		this.addDirectory.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_ADDDIR)));
+		this.salirItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_EXIT)));
+		this.preferenciasItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_PREFERENCES)));
+		this.licenciaItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_LICENSE)));
+		this.creditsItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.CREDITS_IMG_PATH)));
+		this.acercaDeItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_ABOUT)));
+		this.documentacionItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_DOCUMENTATION)));
+		this.noticiasItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.NEWS_IMG_PATH)));
 
 		this.addDocument.addSelectionListener(new AddDocumentListener(documentsTable));
 		this.addDirectory.addSelectionListener(new AddDirectoryListener(documentsTable));

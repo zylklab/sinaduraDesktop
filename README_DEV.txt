@@ -1,8 +1,8 @@
 
 * maven/eclipse
 Para lanzar sinadura con maven (+perfiles), usar;
- - goal: 'resources:resources' y 'exec:ava'
- - profiles; 'Unix32' o 'Unix64' y 'EE'
+ - goals: 'resources:resources exec:java'
+ - profiles; 'Unix32,EE' o 'Unix64,EE'
  - argumentos:
  	exec.mainClass=net.esle.sinadura.gui.Sinadura
 ____

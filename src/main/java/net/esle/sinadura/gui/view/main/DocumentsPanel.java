@@ -115,7 +115,7 @@ public class DocumentsPanel extends Composite {
 		this.buttonAddPDF = new Button(buttonsComposite, SWT.NONE);
 		this.buttonAddPDF.setText(ValidatorUtil.formatedTextButton(LanguageUtil.getLanguage().getString(
 				"section.sign.button.add.pdf")));
-		this.buttonAddPDF.setImage(new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.FILE_IMG)));
+		this.buttonAddPDF.setImage(new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.FILE_IMG)));
 		GridData gdAddFile = new GridData();
 		gdAddFile.horizontalAlignment = GridData.FILL;
 		this.buttonAddPDF.setLayoutData(gdAddFile);
@@ -123,7 +123,7 @@ public class DocumentsPanel extends Composite {
 		this.buttonAddDir = new Button(buttonsComposite, SWT.NONE);
 		this.buttonAddDir.setText(ValidatorUtil.formatedTextButton(LanguageUtil.getLanguage().getString(
 				"section.sign.button.add.dir")));
-		this.buttonAddDir.setImage(new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.ADD_DIR_IMG)));
+		this.buttonAddDir.setImage(new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.ADD_DIR_IMG)));
 		GridData gdUpdate = new GridData();
 		gdUpdate.horizontalAlignment = GridData.FILL;
 		this.buttonAddDir.setLayoutData(gdUpdate);
@@ -131,7 +131,7 @@ public class DocumentsPanel extends Composite {
 		this.buttonRemove = new Button(buttonsComposite, SWT.NONE);
 		this.buttonRemove.setText(ValidatorUtil.formatedTextButton(LanguageUtil.getLanguage().getString(
 				"section.sign.button.remove")));
-		this.buttonRemove.setImage(new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.DELETE_FILE_IMG)));
+		this.buttonRemove.setImage(new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.DELETE_FILE_IMG)));
 		GridData gdDelete = new GridData();
 		gdDelete.horizontalAlignment = GridData.FILL;
 		this.buttonRemove.setLayoutData(gdDelete);
@@ -139,7 +139,7 @@ public class DocumentsPanel extends Composite {
 		this.buttonView = new Button(buttonsComposite, SWT.NONE);
 		this.buttonView.setText(ValidatorUtil.formatedTextButton(LanguageUtil.getLanguage().getString(
 				"section.sign.button.view")));
-		this.buttonView.setImage(new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.VIEW_IMG)));
+		this.buttonView.setImage(new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.VIEW_IMG)));
 		GridData gdView = new GridData();
 		gdView.horizontalAlignment = GridData.FILL;
 		this.buttonView.setLayoutData(gdView);
@@ -148,7 +148,7 @@ public class DocumentsPanel extends Composite {
 			this.buttonSend = new Button(buttonsComposite, SWT.NONE);
 			this.buttonSend.setText(ValidatorUtil.formatedTextButton(LanguageUtil.getLanguage().getString(
 					"section.sign.button.send")));
-			this.buttonSend.setImage(new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SEND_FILE_IMG)));
+			this.buttonSend.setImage(new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SEND_FILE_IMG)));
 			GridData gdSend = new GridData();
 			gdSend.horizontalAlignment = GridData.FILL;
 			this.buttonSend.setLayoutData(gdSend);
@@ -157,7 +157,7 @@ public class DocumentsPanel extends Composite {
 		this.buttonSign = new Button(buttonsComposite, SWT.NONE);
 		this.buttonSign.setText(ValidatorUtil.formatedTextButton(LanguageUtil.getLanguage().getString(
 				"section.sign.button.sign")));
-		this.buttonSign.setImage(new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SIGN_FILE_IMG)));
+		this.buttonSign.setImage(new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SIGN_FILE_IMG)));
 		GridData gdExportar = new GridData();
 		gdExportar.horizontalAlignment = GridData.FILL;
 		this.buttonSign.setLayoutData(gdExportar);
@@ -165,7 +165,7 @@ public class DocumentsPanel extends Composite {
 		this.buttonValidate = new Button(buttonsComposite, SWT.NONE);
 		this.buttonValidate.setText(ValidatorUtil.formatedTextButton(LanguageUtil.getLanguage().getString(
 				"section.sign.button.validate")));
-		this.buttonValidate.setImage(new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.VALIDATE_FILE_IMG)));
+		this.buttonValidate.setImage(new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.VALIDATE_FILE_IMG)));
 		GridData gdValidate = new GridData();
 		gdValidate.horizontalAlignment = GridData.FILL;
 		this.buttonValidate.setLayoutData(gdValidate);
@@ -222,7 +222,7 @@ public class DocumentsPanel extends Composite {
 //		}
 				
 		Label labelEsle = new Label(buttonsComposite, SWT.NONE);
-		labelEsle.setImage(new Image(this.getDisplay(), ClassLoader.getSystemResourceAsStream(ImagesUtil.SPONSOR_LOGO_IMG)));
+		labelEsle.setImage(new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SPONSOR_LOGO_IMG)));
 		
 		GridData gdLabel = new GridData();
 		gdLabel.horizontalAlignment = GridData.CENTER;
