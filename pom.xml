@@ -114,7 +114,7 @@
 		<profile>
 			<id>EE</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
 				<ee.proxy.enabled>true</ee.proxy.enabled>
