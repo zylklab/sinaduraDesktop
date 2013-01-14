@@ -1296,12 +1296,4 @@
 			<url>http://www.9stmaryrd.com/maven</url>
 		</pluginRepository>
 	</pluginRepositories>
-
-	<distributionManagement>
-		<repository>
-			<id>maven-nexus-zylk</id>
-			<name>Maven Nexus at Zylk</name>
-			<url>https://services.zylk.net/nexus/content/repositories/sinadura-releases/</url>
-		</repository>
-	</distributionManagement>
 </project>

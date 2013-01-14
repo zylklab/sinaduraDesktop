@@ -123,8 +123,14 @@ Y con esto ya se genera el EXE.
 = Subir nueva release a Nexus
 =====================================
 
-Es necesario tener el siguiente bloque en el ~/.m2/settings.xml
-con la autenticación del nexus
+
+1. Es necesario tener configurada la variable MAVEN_OPTS para que confie en certificado servidor.
+<pre>
+export MAVEN_OPTS="-Djavax.net.ssl.trustStore=/usr/lib/jvm/java-6-sun/jre/lib/security/cacert -Djavax.net.ssl.trustStorePassword=changeit -Djavax.net.debug=ssl"
+</pre>
+
+
+Es necesario tener el siguiente bloque en el ~/.m2/settings.xml con la autenticación del nexus
 <pre>
 <servers>
     <server>
@@ -136,5 +142,15 @@ con la autenticación del nexus
   </servers>
 
 </pre>
+
+
 En cada proyecto mvn deploy (-DskipTests)
+
+(si se han modificado)
+- vfs2
+- launch4j
+- mityc*-sinadura
+
+- sinaduraCore
+- sinaduraDesktop NO ya que no es una dependencia para nadie
 
