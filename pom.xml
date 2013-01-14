@@ -124,7 +124,7 @@
 					<groupId>sinadura</groupId>
 					<artifactId>sinaduraEE</artifactId>
 					<version>3.3.3</version>
-					<scope>compile</scope>
+					<scope>runtime</scope>
 				</dependency>
 			</dependencies>
 		</profile>
