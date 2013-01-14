@@ -1245,13 +1245,6 @@
 			<artifactId>sinaduraEE-Interface</artifactId>
 			<version>3.3.3</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>sinadura</groupId>
-			<artifactId>sinaduraEE</artifactId>
-			<version>3.3.3</version>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 
 	<repositories>
