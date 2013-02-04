@@ -408,11 +408,13 @@ public class SignController {
 			signaturePreferences.setCertified(PreferencesUtil.getPreferences().getInt(PreferencesUtil.PDF_CERTIFIED));
 
 			String tsurl = null;
+			String tsaOcspUrl = null; // en la firma de PDF este dato no es necesario, pero lo añado igualmente.
 			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE) == true) {
-				tsurl = PreferencesUtil.getTimestampPreferences().get(
-						PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA));
+				tsurl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA)).getUrl();
+				tsaOcspUrl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA)).getOcspUrl();
 			}
 			signaturePreferences.setTimestampUrl(tsurl);
+			signaturePreferences.setTimestampOcspUrl(tsaOcspUrl);
 			signaturePreferences.setTimestampUser(null);
 			signaturePreferences.setTimestampPassword(null);
 
@@ -593,13 +595,17 @@ public class SignController {
 		signaturePreferences.setKsCache(PreferencesUtil.getCacheKeystoreComplete());
 
 		String tsurl = null;
+		String tsaOcspUrl = null;
 		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE) == true) {
-			tsurl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA));
+			tsurl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA)).getUrl();
+			tsaOcspUrl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA)).getOcspUrl();
 		}
 
 		signaturePreferences.setTimestampUrl(tsurl);
+		signaturePreferences.setTimestampOcspUrl(tsaOcspUrl);
 		signaturePreferences.setTimestampUser(null);
 		signaturePreferences.setTimestampPassword(null);
+		
 
 		boolean addOCSP = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_OCSP_ENABLE);
 		signaturePreferences.setAddOCSP(addOCSP);

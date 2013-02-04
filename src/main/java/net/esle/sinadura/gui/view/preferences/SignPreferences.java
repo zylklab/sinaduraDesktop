@@ -23,8 +23,10 @@ package net.esle.sinadura.gui.view.preferences;
 
 import java.util.Map;
 
+import net.esle.sinadura.gui.util.HardwareItem;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
+import net.esle.sinadura.gui.util.TimestampItem;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
@@ -62,11 +64,12 @@ public class SignPreferences extends FieldEditorPreferencePage {
 				"preferences.sign.ts.enable"), getFieldEditorParent());
 		addField(this.checkTSEnable);
 
-		Map<String, String> map = PreferencesUtil.getTimestampPreferences();
+		Map<String, TimestampItem> map = PreferencesUtil.getTimestampPreferences();
 		String[][] comboFields = new String[map.size()][2];
 		int i = 0;
-		for (String name : map.keySet()) {
-			String[] campo2 = { name, name };
+		
+		for (TimestampItem item : map.values()){
+			String[] campo2 = { item.getName(), item.getKey()};
 			comboFields[i] = campo2;
 			i++;
 		}

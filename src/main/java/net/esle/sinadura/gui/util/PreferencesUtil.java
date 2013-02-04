@@ -73,7 +73,7 @@ public class PreferencesUtil {
 	private static PreferenceStore preferences = null;
 	private static Map<String, String> softwarePrefs = null;
 	private static Map<String, HardwareItem> hardwarePrefs = null;
-	private static Map<String, String> timestampPrefs = null;
+	private static Map<String, TimestampItem> timestampPrefs = null;
 	private static KeyStore trustedKeystore = null;
 	private static KeyStore cacheKeystore = null;
 	
@@ -413,29 +413,37 @@ public class PreferencesUtil {
 
 	}
 	
-	public static Map<String, String> getTimestampPreferences() {
+	
+	
+	public static Map<String, TimestampItem> getTimestampPreferences() {
 
 		if (timestampPrefs == null) {
-		
-			Map<String, String> map = new TreeMap<String, String>();
 			
+			Map<String, TimestampItem> map = new TreeMap<String, TimestampItem>();
+
 			try {
+				
 				// leer el csv
 				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_DEFAULT_PREFERENCES_TIMESTAMP);
 				List<List<String>> array = CsvUtil.parseCSV(is);
-				 
+		
+				// generar el map
+				String key, name, url, ocspUrl;
 				for (int i = 1; i < array.size(); i++) {
+		
 					List<String> list = array.get(i);
-					String name = list.get(0);
-					String path = list.get(1);
-					map.put(name, path);
+					key = list.get(0);
+					name = list.get(1);
+					url = list.get(2);
+					ocspUrl	= list.get(3);
+					
+					map.put(key, new TimestampItem(key, name, url, ocspUrl));
 				}
+				
 			} catch (IOException e) {
-				log.error("",e);
+				log.error("", e);
 			}
-			
 			timestampPrefs = map;
-			
 		}
 
 		return timestampPrefs;
