@@ -36,6 +36,8 @@ public class XadesPreferences extends FieldEditorPreferencePage {
 	private static Log log = LogFactory.getLog(XadesPreferences.class);
 
 	private BooleanFieldEditor archiveField = null;
+	private BooleanFieldEditor xlOcspAddAllField = null;
+	
 	
 	public XadesPreferences() {
 		
@@ -48,6 +50,10 @@ public class XadesPreferences extends FieldEditorPreferencePage {
 		archiveField = new BooleanFieldEditor(PreferencesUtil.XADES_ARCHIVE, LanguageUtil.getLanguage().getString(
 			"preferences.xades.archive"), getFieldEditorParent());
 		addField(archiveField);
+		
+		xlOcspAddAllField = new BooleanFieldEditor(PreferencesUtil.XADES_XL_OCSP_ADD_ALL, LanguageUtil.getLanguage().getString(
+			"preferences.xades.xl.ocsp.add_all"), getFieldEditorParent());
+		addField(xlOcspAddAllField);
 	}
 	
 	

@@ -130,6 +130,7 @@ public class PreferencesUtil {
 	
 	// xades
 	public static final String XADES_ARCHIVE = "xades.archive";
+	public static final String XADES_XL_OCSP_ADD_ALL = "xades.xl.ocsp.add_all";
 
 	// FileDialogs path
 	public static final String FILEDIALOG_PATH = "filedialog.path";
@@ -254,6 +255,7 @@ public class PreferencesUtil {
 				
 				// xades
 				preferences.setDefault(XADES_ARCHIVE, "true");
+				preferences.setDefault(XADES_XL_OCSP_ADD_ALL, "true");
 				
 				// carga de certificado
 				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())){

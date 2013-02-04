@@ -612,6 +612,9 @@ public class SignController {
 
 		StatisticsUtil.log(StatisticsUtil.KEY_SIGN_OCSP, addOCSP + "");
 		log.info("ocsp enable: " + addOCSP);
+		
+		boolean xlOcspAddAll = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.XADES_XL_OCSP_ADD_ALL);
+		signaturePreferences.setXlOcspAddAll(xlOcspAddAll);
 
 		// firmar
 		byte[] bytes = XadesService.signArchiver(documentPath, signaturePreferences);
