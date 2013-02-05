@@ -114,7 +114,7 @@
 		<profile>
 			<id>EE</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
 				<ee.proxy.enabled>true</ee.proxy.enabled>
@@ -124,7 +124,7 @@
 					<groupId>sinadura</groupId>
 					<artifactId>sinaduraEE</artifactId>
 					<version>3.3.3</version>
-					<scope>runtime</scope>
+					<scope>compile</scope>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -132,7 +132,7 @@
 		<profile>
 			<id>Unix32</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 				<os>
 					<name>unix</name>
 					<family>unix</family>
@@ -273,7 +273,7 @@
 		<profile>
 			<id>Unix64</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 				<os>
 					<name>unix64</name>
 					<family>unix</family>
@@ -1244,6 +1244,7 @@
 			<groupId>sinadura</groupId>
 			<artifactId>sinaduraEE-Interface</artifactId>
 			<version>3.3.3</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
