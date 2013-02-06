@@ -180,19 +180,22 @@ class ThreadOperations extends Thread {
 			log.error("", e);
 		}
 
-		// check version
-		try {
-			if (VersionUtil.isThereApplicationNewVersion()) {
-				
-				listMessages.add(new LoggerMessage(Level.INFO, MessageFormat.format(
-						LanguageUtil.getLanguage().getString("loading.new.version"),
-						PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SINADURA_MAIN_URL))));
+		// check new version
+		boolean checkNewVersion = Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VERSION_CHECK_UPDATE_ENABLED));
+		if (checkNewVersion) {
+			try {
+				if (VersionUtil.isThereApplicationNewVersion()) {
+					
+					listMessages.add(new LoggerMessage(Level.INFO, MessageFormat.format(
+							LanguageUtil.getLanguage().getString("loading.new.version"),
+							PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SINADURA_MAIN_URL))));
+				}
+			} catch (ConnectionException e) {
+				log.error("", e);
+				String m = MessageFormat
+						.format(LanguageUtil.getLanguage().getString("error.certificate.connection"), e.getCause().toString());
+				listMessages.add(new LoggerMessage(Level.ERROR, m));
 			}
-		} catch (ConnectionException e) {
-			log.error("", e);
-			String m = MessageFormat
-					.format(LanguageUtil.getLanguage().getString("error.certificate.connection"), e.getCause().toString());
-			listMessages.add(new LoggerMessage(Level.ERROR, m));
 		}
 
 		shell.getDisplay().asyncExec(new Runnable() {

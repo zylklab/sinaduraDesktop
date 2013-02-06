@@ -1,4 +1,4 @@
 key;name;url;ocspurl;
-izenpe;Izenpe;http://ocspdes.izenpe.com:8093;http://ocspdes.izenpe.com:8094;
+izenpe;Izenpe;http://ocsp.izenpe.com:8093;http://ocsp.izenpe.com:8094;
 CATCert;CATCert;http://psis.catcert.net/psis/catcert/tsp;noesnecesario;
 ACCV;ACCV;http://tss.accv.es:8318/tsa;noesnecesario;

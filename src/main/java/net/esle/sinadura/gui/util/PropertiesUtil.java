@@ -57,11 +57,14 @@ public class PropertiesUtil {
 	// visibilidad de opciones de las preferencias
 	public static final String PREFERENCES_SUFFIX_ENABLED 	= "preferences.suffix.enabled";
 	public static final String PREFERENCES_PDF_ENABLED 		= "preferences.pdf.enabled";
+	public static final String PREFERENCES_XADES_XL_OCSP_ADD_ALL_VISIBLE = "preferences.xades.xl.ocsp.add_all.visible";
 	
 	// valor por defecto de las preferencias.
 	public static final String DEFAULT_IMAGE_FILE_PATH = USER_BASE_PATH + File.separatorChar + "sinadura150.png"; 	// imagen por defecto para el sello
 	public static final String PREFERENCES_PDF_TIPO_DEFAULT = "preferences.pdf.tipo.default";
 	public static final String PREFERENCES_SAVE_EXTENSION_DEFAULT = "preferences.save.extension.default";
+	
+	public static final String VERSION_CHECK_UPDATE_ENABLED = "version.check.update.enabled";
 	
 	public static final String PROXY_ENABLED 				= "proxy.enabled";
 	
