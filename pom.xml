@@ -54,8 +54,10 @@
 		<ee.proxy.enabled>false</ee.proxy.enabled>
 		<preferences.suffix.enabled>true</preferences.suffix.enabled>
 		<preferences.pdf.enabled>true</preferences.pdf.enabled>
+		<preferences.xades.xl.ocsp.add_all.visible>true</preferences.xades.xl.ocsp.add_all.visible>
 		<preferences.pdf.tipo.default>0</preferences.pdf.tipo.default>
 		<preferences.save.extension.default>-signed</preferences.save.extension.default>
+		<version.check.update.enabled>true</version.check.update.enabled>
 	</properties>
 
 	<build>
@@ -141,8 +143,10 @@
 			<properties>
 				<preferences.suffix.enabled>false</preferences.suffix.enabled>
 				<preferences.pdf.enabled>false</preferences.pdf.enabled>
+				<preferences.xades.xl.ocsp.add_all.visible>false</preferences.xades.xl.ocsp.add_all.visible>
 				<preferences.pdf.tipo.default>1</preferences.pdf.tipo.default>
 				<preferences.save.extension.default></preferences.save.extension.default>
+				<version.check.update.enabled>false</version.check.update.enabled>
 			</properties>
 		</profile>
 
