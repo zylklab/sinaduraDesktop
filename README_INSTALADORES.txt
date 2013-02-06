@@ -7,7 +7,7 @@ www.zylk.net/web/guest/web-2-0/blog/-/blogs/accediendo-a-repositorios-de-maven-s
 =====================================
 = Cambio de versión
 =====================================
-Actual: 3.3.3
+Actual: 3.3.4
 
 - install.xml
 - pom.xml (core, desktop, ee, ee-interfaces, parent)
@@ -15,7 +15,7 @@ Actual: 3.3.3
   - cambiar la versión de las referencias a sinadura*
 - configuration.properties (core y desktop)
 - modificar el build.properties (estos se usan para algo? el del core? -> si no borrar)
-@Irune sí se usa, en los build.xml de desktop y core.
+   @Irune sí se usa, en los build.xml de desktop y core.
 - y en el servidor si se publica como nueva version
 (http://www.sinadura.net/server)
 

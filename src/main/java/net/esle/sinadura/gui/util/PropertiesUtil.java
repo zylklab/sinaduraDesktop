@@ -32,8 +32,7 @@ public class PropertiesUtil {
 	public static final String STATISTICS_FOLDER_PATH = USER_BASE_PATH + File.separatorChar + "statistics";
 	public static final String TMP_FOLDER_PATH = System.getProperty("java.io.tmpdir");
 	
-	// imagen por defecto para el sello
-	public static final String DEFAULT_IMAGE_FILE_PATH = USER_BASE_PATH + File.separatorChar + "sinadura150.png";
+
 
 	public static final String LICENSE_PATH = "LICENSE.txt";
 	public static final String CREDITS_PATH = "credits.txt";
@@ -55,14 +54,21 @@ public class PropertiesUtil {
 	
 	public static final String ENABLE_SEND_BUTTON = "enable.send.button";
 	
+	// visibilidad de opciones de las preferencias
 	public static final String PREFERENCES_SUFFIX_ENABLED 	= "preferences.suffix.enabled";
 	public static final String PREFERENCES_PDF_ENABLED 		= "preferences.pdf.enabled";
-	public static final String PROXY_ENABLED 				= "proxy.enabled";
 	
+	// valor por defecto de las preferencias.
+	public static final String DEFAULT_IMAGE_FILE_PATH = USER_BASE_PATH + File.separatorChar + "sinadura150.png"; 	// imagen por defecto para el sello
+	public static final String PREFERENCES_PDF_TIPO_DEFAULT = "preferences.pdf.tipo.default";
+	public static final String PREFERENCES_SAVE_EXTENSION_DEFAULT = "preferences.save.extension.default";
+	
+	public static final String PROXY_ENABLED 				= "proxy.enabled";
 	
 	private static Properties configuration = null;
 
 	private static Log log;
+	
 	public static Properties getConfiguration() {
 
 		 log = LogFactory.getLog(PropertiesUtil.class);

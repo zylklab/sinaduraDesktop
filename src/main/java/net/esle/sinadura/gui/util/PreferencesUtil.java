@@ -213,11 +213,13 @@ public class PreferencesUtil {
 				preferences.setDefault(IDIOMA, "es_ES");
 				preferences.setDefault(OUTPUT_AUTO_ENABLE, "true");
 				preferences.setDefault(OUTPUT_DIR, System.getProperty("user.home"));
+				
 				/*
 				 * "-signed" - sinadura
 				 * ""  		 - parlamento
 				 */
-				preferences.setDefault(SAVE_EXTENSION, "-signed");
+				String saveExtensionDefault = PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_SAVE_EXTENSION_DEFAULT);
+				preferences.setDefault(SAVE_EXTENSION, saveExtensionDefault);
 				preferences.setDefault(AUTO_VALIDATE, "true");
 				preferences.setDefault(ENABLE_STATISTICS, "true");
 				
@@ -239,8 +241,10 @@ public class PreferencesUtil {
 				/*
 				 * 0 (pdf) - sinadura
 				 * 1 (xml) - parlamento
-				 */
-				preferences.setDefault(PDF_TIPO, "0");
+				 */  
+				String pdfTipoDefault = PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_PDF_TIPO_DEFAULT);
+				preferences.setDefault(PDF_TIPO, pdfTipoDefault);
+				
 				preferences.setDefault(PDF_VISIBLE, "true");
 				preferences.setDefault(PDF_PAGE, "1");
 				preferences.setDefault(PDF_REASON, "powered by zylk.net");

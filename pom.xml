@@ -4,7 +4,7 @@
 	<groupId>sinadura</groupId>
 	<artifactId>sinaduraDesktop</artifactId>
 	<name>Sinadura Desktop</name>
-	<version>3.3.3</version>
+	<version>3.3.4</version>
 	<description>El origen de sinadura es un software de escritorio para
 		la firma de pdf mediante firma digital. Un aplicativo multiplataforma
 		y una comunidad que ofrece documentación y servicios de valor añadido.
@@ -50,8 +50,12 @@
 
 	<properties>
 		<izpack-standalone.version>4.3.2</izpack-standalone.version>
-		<ee.proxy.enabled>false</ee.proxy.enabled>
 		<staging-dir>${project.build.directory}/staging</staging-dir>
+		<ee.proxy.enabled>false</ee.proxy.enabled>
+		<preferences.suffix.enabled>true</preferences.suffix.enabled>
+		<preferences.pdf.enabled>true</preferences.pdf.enabled>
+		<preferences.pdf.tipo.default>0</preferences.pdf.tipo.default>
+		<preferences.save.extension.default>-signed</preferences.save.extension.default>
 	</properties>
 
 	<build>
@@ -123,10 +127,23 @@
 				<dependency>
 					<groupId>sinadura</groupId>
 					<artifactId>sinaduraEE</artifactId>
-					<version>3.3.3</version>
+					<version>3.3.4</version>
 					<scope>compile</scope>
 				</dependency>
 			</dependencies>
+		</profile>
+		
+		<profile>
+			<id>Parlamento</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<preferences.suffix.enabled>false</preferences.suffix.enabled>
+				<preferences.pdf.enabled>false</preferences.pdf.enabled>
+				<preferences.pdf.tipo.default>1</preferences.pdf.tipo.default>
+				<preferences.save.extension.default></preferences.save.extension.default>
+			</properties>
 		</profile>
 
 		<profile>
@@ -1193,7 +1210,7 @@
 		<dependency>
 			<groupId>sinadura</groupId>
 			<artifactId>sinaduraCore</artifactId>
-			<version>3.3.3</version>
+			<version>3.3.4</version>
 		</dependency>
 
 		<dependency>
@@ -1243,7 +1260,7 @@
 		<dependency>
 			<groupId>sinadura</groupId>
 			<artifactId>sinaduraEE-Interface</artifactId>
-			<version>3.3.3</version>
+			<version>3.3.4</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
