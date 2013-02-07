@@ -16,7 +16,8 @@ Actual: 3.3.4
 - configuration.properties (core y desktop)
 - modificar el build.properties (estos se usan para algo? el del core? -> si no borrar)
    @Irune sí se usa, en los build.xml de desktop y core.
-- y en el servidor si se publica como nueva version
+   @Alfredo sí pero esos tampoco se usan. Para la siguiente se borran. 
+- y en el servidor si se publica como nueva version (esto solo para la comunnity. Y para la EE?).
 (http://www.sinadura.net/server)
 
 =====================================
@@ -76,6 +77,11 @@ _______________
 1. mvn clean pre-integration-test -P Win64,EE?
 __
 
+D) Parlamento
+_______________
+
+mvn clean pre-integration-test -P Win32,EE,Parlamento
+
 
 Aquí falla con un
 'net.sf.launch4j.BuilderException: Especifique la ruta del jar relativa al ejecutable'
@@ -101,7 +107,6 @@ A mi este paso sólo me funciona desde el Eclipse, en consola me da un
 
 Reason: POM 'org.eclipse.m2e:lifecycle-mapping' not found in repository: Unable to download the arti
 fact from any repository
-
 
 
 6 - volvemos a lanzar el punto 0
