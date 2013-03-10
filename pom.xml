@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sinadura</groupId>
 	<artifactId>sinaduraDesktop</artifactId>
 	<name>Sinadura Desktop</name>
-	<version>3.3.4-SNAPSHOT</version>
+	<version>3.3.4</version>
 	<description>El origen de sinadura es un software de escritorio para
 		la firma de pdf mediante firma digital. Un aplicativo multiplataforma
 		y una comunidad que ofrece documentación y servicios de valor añadido.
@@ -19,8 +18,8 @@
 	<url>http://www.sinadura.net</url>
 	
 	<scm>
-   		<connection>scm:svn:https://services.zylk.net/sinadura-repo/sinadura/sinaduraDesktop/trunk</connection>
-   		<url>https://services.zylk.net/sinadura-repo/sinadura/sinaduraDesktop/trunk</url>
+   		<connection>scm:svn:https://services.zylk.net/sinadura-repo/sinadura/sinaduraDesktop/tags/sinaduraDesktop-3.3.4</connection>
+   		<url>https://services.zylk.net/sinadura-repo/sinadura/sinaduraDesktop/tags/sinaduraDesktop-3.3.4</url>
 	</scm>
 	
 	
@@ -162,7 +161,7 @@
 				<preferences.pdf.enabled>false</preferences.pdf.enabled>
 				<preferences.xades.xl.ocsp.add_all.visible>false</preferences.xades.xl.ocsp.add_all.visible>
 				<preferences.pdf.tipo.default>1</preferences.pdf.tipo.default>
-				<preferences.save.extension.default></preferences.save.extension.default>
+				<preferences.save.extension.default />
 				<version.check.update.enabled>false</version.check.update.enabled>
 			</properties>
 		</profile>
@@ -568,7 +567,7 @@
 									<icon>${staging-dir}/resources/images/sinadura.ico</icon>
 									<singleInstance>
 										<mutexName>sinadura</mutexName>
-										<windowTitle></windowTitle>
+										<windowTitle />
 									</singleInstance>
 									<classPath>
 										<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
@@ -622,10 +621,8 @@
 										<echo message="Creating the .exe file." />
 										<exec executable="python" dir="installer/izpack2exe">
 											<arg value="izpack2exe.py" />
-											<arg
-												value="--file=../../target/sinaduraDesktop-${project.version}-standard.jar" />
-											<arg
-												value="--output=../../target/sinadura-${project.version}-windows-installer.exe" />
+											<arg value="--file=../../target/sinaduraDesktop-${project.version}-standard.jar" />
+											<arg value="--output=../../target/sinadura-${project.version}-windows-installer.exe" />
 										</exec>
 									</tasks>
 								</configuration>
@@ -769,7 +766,7 @@
 									<icon>${staging-dir}/resources/images/sinadura.ico</icon>
 									<singleInstance>
 										<mutexName>sinadura</mutexName>
-										<windowTitle></windowTitle>
+										<windowTitle />
 									</singleInstance>
 									<classPath>
 										<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
@@ -823,10 +820,8 @@
 										<echo message="Creating the .exe file." />
 										<exec executable="python" dir="installer/izpack2exe">
 											<arg value="izpack2exe.py" />
-											<arg
-												value="--file=../../target/sinaduraDesktop-${project.version}-standard.jar" />
-											<arg
-												value="--output=../../target/sinaduraDesktop-${project.version}-windows-installer.exe" />
+											<arg value="--file=../../target/sinaduraDesktop-${project.version}-standard.jar" />
+											<arg value="--output=../../target/sinaduraDesktop-${project.version}-windows-installer.exe" />
 										</exec>
 									</tasks>
 								</configuration>
@@ -988,8 +983,7 @@
 											<tarfileset dir="." includes="COPYRIGHT.txt" />
 											<tarfileset dir="." includes="changelog.txt" />
 										</tar>
-										<gzip destfile="./target/sinaduraDesktop-${project.version}-mac.tar.gz"
-											src="./target/sinaduraDesktop-${project.version}-mac.tar" />
+										<gzip destfile="./target/sinaduraDesktop-${project.version}-mac.tar.gz" src="./target/sinaduraDesktop-${project.version}-mac.tar" />
 										<delete file="./target/sinaduraDesktop-${project.version}-mac.tar" />
 									</tasks>
 								</configuration>
@@ -1195,8 +1189,7 @@
 											<tarfileset dir="." includes="COPYRIGHT.txt" />
 											<tarfileset dir="." includes="changelog.txt" />
 										</tar>
-										<gzip destfile="./target/sinaduraDesktop-${project.version}-mac.tar.gz"
-											src="./target/sinaduraDesktop-${project.version}-mac.tar" />
+										<gzip destfile="./target/sinaduraDesktop-${project.version}-mac.tar.gz" src="./target/sinaduraDesktop-${project.version}-mac.tar" />
 										<delete file="./target/sinaduraDesktop-${project.version}-mac.tar" />
 									</tasks>
 								</configuration>
