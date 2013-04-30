@@ -45,7 +45,7 @@ public class Sinadura {
 	/*************************************
 	 * init, creación de carpetas base
 	 *************************************/
-	static{
+	static {
 		
 		// base
 		File f = new File(PropertiesUtil.USER_BASE_PATH);
@@ -58,6 +58,24 @@ public class Sinadura {
 		if (!f.exists()) {
 			f.mkdir();
 		}
+		
+		// log-zain
+		f = new File(PropertiesUtil.LOG_ZAIN_FOLDER_PATH);
+		if (!f.exists()) {
+			f.mkdir();
+		}
+		
+		// log-zain-request
+		f = new File(PropertiesUtil.LOG_ZAIN_REQUEST_FOLDER_PATH);
+		if (!f.exists()) {
+			f.mkdir();
+		}
+		
+		// log-zain-response
+		f = new File(PropertiesUtil.LOG_ZAIN_RESPONSE_FOLDER_PATH);
+		if (!f.exists()) {
+			f.mkdir();
+		}
 
 		// statistics
 		f = new File(PropertiesUtil.STATISTICS_FOLDER_PATH);
@@ -65,7 +83,7 @@ public class Sinadura {
 			f.mkdir();
 		}
 		
-		 log = LogFactory.getLog(Sinadura.class);
+		log = LogFactory.getLog(Sinadura.class);
 	}
 	
 	

@@ -21,6 +21,7 @@
  */
 package net.esle.sinadura.gui.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -39,10 +40,13 @@ import net.esle.sinadura.core.service.PdfService;
 import net.esle.sinadura.core.service.Pkcs7Service;
 import net.esle.sinadura.core.service.XadesService;
 import net.esle.sinadura.core.util.FileUtil;
+import net.esle.sinadura.core.xades.validator.XadesValidator;
+import net.esle.sinadura.core.xades.validator.XadesValidatorFactory;
 import net.esle.sinadura.gui.events.ProgressWriter;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
+import net.esle.sinadura.gui.util.PropertiesUtil;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -90,7 +94,24 @@ public class ValidateController {
 	private static void validateXades(DocumentInfo pdfParameter) {
 
 		try {
-			List<XadesSignatureInfo> resultados = XadesService.validateArchiver(pdfParameter.getPath(), PreferencesUtil.getCacheKeystoreComplete(),
+			
+			XadesValidator xadesValidator;
+			if (true) {
+				String endPoint = "https://psfdes.izenpe.com:8443/trustedx-gw/SoapGateway";
+				String truststorePath = "/home/alfredo/workspaces/sinadura34/sinaduraCore/resources-ext/zain/zain-truststore-des-2ik_4k.jks";
+				String truststorePassword = "zainzain";
+				String keystorePath = "/home/alfredo/workspaces/sinadura34/sinaduraCore/resources-ext/zain/EntidadZylkdesarrollo.p12";
+				String keystorePassword = "1111";
+				String requestLogSavePath = PropertiesUtil.LOG_ZAIN_REQUEST_FOLDER_PATH;
+				String responseLogSavePath = PropertiesUtil.LOG_ZAIN_RESPONSE_FOLDER_PATH;
+				
+				xadesValidator = XadesValidatorFactory.getZainInstance(endPoint, truststorePath, truststorePassword,
+						keystorePath, keystorePassword, requestLogSavePath, responseLogSavePath);
+			} else {
+				xadesValidator = XadesValidatorFactory.getSinaduraInstance();
+			}
+			
+			List<XadesSignatureInfo> resultados = XadesService.validateArchiver(xadesValidator, pdfParameter.getPath(), PreferencesUtil.getCacheKeystoreComplete(),
 					PreferencesUtil.getTrustedKeystoreComplete());
 			
 			pdfParameter.setSignatures(ValidationInterpreterUtil.parseResultadoValidacion(resultados));

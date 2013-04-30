@@ -29,6 +29,11 @@ public class PropertiesUtil {
 	public static final String USER_BASE_PATH = System.getProperty("user.home") + File.separatorChar + ".sinadura";
 	
 	public static final String LOG_FOLDER_PATH = USER_BASE_PATH + File.separatorChar + "log";
+	public static final String LOG_ZAIN_FOLDER_PATH = LOG_FOLDER_PATH + File.separatorChar + "zain";
+	public static final String LOG_ZAIN_REQUEST_FOLDER_PATH = LOG_ZAIN_FOLDER_PATH + File.separatorChar + "request";
+	public static final String LOG_ZAIN_RESPONSE_FOLDER_PATH = LOG_ZAIN_FOLDER_PATH + File.separatorChar + "response";
+	
+	
 	public static final String STATISTICS_FOLDER_PATH = USER_BASE_PATH + File.separatorChar + "statistics";
 	public static final String TMP_FOLDER_PATH = System.getProperty("java.io.tmpdir");
 	
