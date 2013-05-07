@@ -96,19 +96,28 @@ public class ValidateController {
 		try {
 			
 			XadesValidator xadesValidator;
-			if (true) {
-				String endPoint = "https://psfdes.izenpe.com:8443/trustedx-gw/SoapGateway";
-				String truststorePath = "/home/alfredo/workspaces/sinadura34/sinaduraCore/resources-ext/zain/zain-truststore-des-2ik_4k.jks";
-				String truststorePassword = "zainzain";
-				String keystorePath = "/home/alfredo/workspaces/sinadura34/sinaduraCore/resources-ext/zain/EntidadZylkdesarrollo.p12";
-				String keystorePassword = "1111";
+			
+			String xadesValidatorImpl = PreferencesUtil.getPreferences().getString(PreferencesUtil.XADES_VALIDATOR_IMPL);
+			
+			if (xadesValidatorImpl != null && xadesValidatorImpl.equals("zain")) { // TODO hardcode!
+				
+				String endPoint = PreferencesUtil.getPreferences().getString(PreferencesUtil.ZAIN_ENDPOINT);
+				String truststorePath = PreferencesUtil.getPreferences().getString(PreferencesUtil.ZAIN_TRUSTED_PATH);
+				String truststorePassword = PreferencesUtil.getPreferences().getString(PreferencesUtil.ZAIN_TRUSTED_PASSWORD);
+				String keystorePath = PreferencesUtil.getPreferences().getString(PreferencesUtil.ZAIN_P12_PATH);
+				String keystorePassword = PreferencesUtil.getPreferences().getString(PreferencesUtil.ZAIN_P12_PASSWORD);
+				boolean logActive = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.ZAIN_LOG_ACTIVE);
 				String requestLogSavePath = PropertiesUtil.LOG_ZAIN_REQUEST_FOLDER_PATH;
 				String responseLogSavePath = PropertiesUtil.LOG_ZAIN_RESPONSE_FOLDER_PATH;
 				
 				xadesValidator = XadesValidatorFactory.getZainInstance(endPoint, truststorePath, truststorePassword,
-						keystorePath, keystorePassword, requestLogSavePath, responseLogSavePath);
-			} else {
+						keystorePath, keystorePassword, logActive, requestLogSavePath, responseLogSavePath);
+				
+			} else if (xadesValidatorImpl != null && xadesValidatorImpl.equals("sinadura")) {
+				
 				xadesValidator = XadesValidatorFactory.getSinaduraInstance();
+			} else {
+				throw new XadesValidationFatalException("unknown xades validator impl");
 			}
 			
 			List<XadesSignatureInfo> resultados = XadesService.validateArchiver(xadesValidator, pdfParameter.getPath(), PreferencesUtil.getCacheKeystoreComplete(),

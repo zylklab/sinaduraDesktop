@@ -24,10 +24,10 @@ package net.esle.sinadura.gui.view.preferences;
 
 import java.text.MessageFormat;
 
-import net.esle.sinadura.ee.EEModulesController;
+import net.esle.sinadura.ee.EEModulesManager;
 import net.esle.sinadura.ee.exceptions.EEModuleGenericException;
 import net.esle.sinadura.ee.exceptions.EEModuleNotFoundException;
-import net.esle.sinadura.ee.interfaces.IEEProxyModule;
+import net.esle.sinadura.ee.interfaces.ProxyEEModule;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.view.main.InfoDialog;
@@ -101,8 +101,7 @@ public class ProxyPreferences extends FieldEditorPreferencePage {
 		if (user != null && pass != null && proxyPac != null && proxyPac.getBooleanValue()) {
 			// ee (proxy)			
 			try{
-				EEModulesController eeController = new EEModulesController();
-				IEEProxyModule proxyUtil = eeController.getProxyModule();
+				ProxyEEModule proxyUtil = EEModulesManager.getProxyModule();
 				proxyUtil.configureProxy(user.getStringValue(), pass.getStringValue());
 				
 			}catch(EEModuleNotFoundException e){

@@ -68,6 +68,7 @@ public class PropertiesUtil {
 	public static final String DEFAULT_IMAGE_FILE_PATH = USER_BASE_PATH + File.separatorChar + "sinadura150.png"; 	// imagen por defecto para el sello
 	public static final String PREFERENCES_PDF_TIPO_DEFAULT = "preferences.pdf.tipo.default";
 	public static final String PREFERENCES_SAVE_EXTENSION_DEFAULT = "preferences.save.extension.default";
+	public static final String PREFERENCES_XADES_VALIDATOR_IMPL_DEFAULT = "preferences.xades.validator.impl.default";
 	
 	public static final String VERSION_CHECK_UPDATE_ENABLED = "version.check.update.enabled";
 	

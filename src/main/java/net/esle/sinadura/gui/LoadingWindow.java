@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Locale;
 
 import net.esle.sinadura.core.exceptions.ConnectionException;
-import net.esle.sinadura.ee.EEModulesController;
+import net.esle.sinadura.ee.EEModulesManager;
 import net.esle.sinadura.ee.exceptions.EEModuleGenericException;
 import net.esle.sinadura.ee.exceptions.EEModuleNotFoundException;
-import net.esle.sinadura.ee.interfaces.IEEProxyModule;
+import net.esle.sinadura.ee.interfaces.ProxyEEModule;
 import net.esle.sinadura.gui.exceptions.FileNotValidException;
 import net.esle.sinadura.gui.model.LoggerMessage;
 import net.esle.sinadura.gui.model.LoggerMessage.Level;
@@ -137,8 +137,7 @@ class ThreadOperations extends Thread {
 		boolean proxyEnabled = Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PROXY_ENABLED));
 		if (proxyEnabled && PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
 			try{
-				EEModulesController eeController = new EEModulesController();
-				IEEProxyModule proxyUtil = eeController.getProxyModule();
+				ProxyEEModule proxyUtil = EEModulesManager.getProxyModule();
 				proxyUtil.configureProxy(
 										PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_USER), 
 										PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_PASS)

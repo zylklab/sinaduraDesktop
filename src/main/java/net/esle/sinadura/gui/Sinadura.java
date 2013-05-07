@@ -26,6 +26,7 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
+import net.esle.sinadura.core.util.PropertiesCoreUtil;
 import net.esle.sinadura.gui.exceptions.FileNotValidException;
 import net.esle.sinadura.gui.util.PropertiesUtil;
 import net.esle.sinadura.gui.util.StatisticsUtil;
@@ -58,24 +59,6 @@ public class Sinadura {
 		if (!f.exists()) {
 			f.mkdir();
 		}
-		
-		// log-zain
-		f = new File(PropertiesUtil.LOG_ZAIN_FOLDER_PATH);
-		if (!f.exists()) {
-			f.mkdir();
-		}
-		
-		// log-zain-request
-		f = new File(PropertiesUtil.LOG_ZAIN_REQUEST_FOLDER_PATH);
-		if (!f.exists()) {
-			f.mkdir();
-		}
-		
-		// log-zain-response
-		f = new File(PropertiesUtil.LOG_ZAIN_RESPONSE_FOLDER_PATH);
-		if (!f.exists()) {
-			f.mkdir();
-		}
 
 		// statistics
 		f = new File(PropertiesUtil.STATISTICS_FOLDER_PATH);
@@ -97,6 +80,7 @@ public class Sinadura {
 			log.info("Iniciando Sinadura");
 			
 			log.info("Sinadura version: " + PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.APPLICATION_VERSION_STRING));
+			log.info("Sinadura core version: " + PropertiesCoreUtil.getProperty(PropertiesCoreUtil.KEY_CORE_VERSION));
 			
 			log.info("Java vendor: " + System.getProperty("java.vendor"));
 			log.info("Java version: " + System.getProperty("java.version"));
