@@ -148,22 +148,6 @@
 					<version>3.3.5-SNAPSHOT</version>
 					<scope>compile</scope>
 				</dependency>
-				<!-- "axis-wsdl4j" y "commons-discovery" son dependencias "axis"(1.4) pero 
-				tienen scope de "runtime" y es necesario que esten en "compile" para que 
-				el m2exe las añada al classpath (esto no deberia estar aqui sino en sinaduraEE) -->
-				<dependency>
-					<groupId>axis</groupId>
-					<artifactId>axis-wsdl4j</artifactId>
-					<version>1.5.1</version>
-					<scope>compile</scope>
-				</dependency>
-				<dependency>
-					<groupId>commons-discovery</groupId>
-		  			<artifactId>commons-discovery</artifactId>
-		  			<name>Discovery</name>
-		  			<version>0.2</version>
-		  			<scope>compile</scope>
-				</dependency>
 			</dependencies>
 		</profile>
 		
