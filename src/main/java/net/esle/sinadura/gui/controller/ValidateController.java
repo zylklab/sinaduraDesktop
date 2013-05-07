@@ -60,9 +60,9 @@ public class ValidateController {
 
 		if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_PDF)) {
 			validatePDF(pdfParameter);
-		} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR)) {
-			validateXades(pdfParameter);
-		} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_XML)) {
+		} else if (pdfParameter.getMimeType() != null
+				&& (pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR) || pdfParameter.getMimeType().equals(
+						FileUtil.MIMETYPE_XML))) {
 			validateXades(pdfParameter);
 		} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_P7S)) {
 			validateP7(pdfParameter);
@@ -120,8 +120,15 @@ public class ValidateController {
 				throw new XadesValidationFatalException("unknown xades validator impl");
 			}
 			
-			List<XadesSignatureInfo> resultados = XadesService.validateArchiver(xadesValidator, pdfParameter.getPath(), PreferencesUtil.getCacheKeystoreComplete(),
-					PreferencesUtil.getTrustedKeystoreComplete());
+			List<XadesSignatureInfo> resultados = null;
+			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR)) {
+				resultados = XadesService.validateArchiver(xadesValidator, pdfParameter.getPath(),
+						PreferencesUtil.getCacheKeystoreComplete(), PreferencesUtil.getTrustedKeystoreComplete());
+			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_XML)) {
+				// TODO posibilitar el envio de documentos adjuntos (para detached). De momento los detached solo a partir de sar.
+				resultados = XadesService.validateXml(xadesValidator, pdfParameter.getPath(), null,
+						PreferencesUtil.getCacheKeystoreComplete(), PreferencesUtil.getTrustedKeystoreComplete());
+			}
 			
 			pdfParameter.setSignatures(ValidationInterpreterUtil.parseResultadoValidacion(resultados));
 			

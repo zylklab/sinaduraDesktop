@@ -26,7 +26,6 @@ import java.io.IOException;
 
 import net.esle.sinadura.core.exceptions.ArchiverException;
 import net.esle.sinadura.core.exceptions.Pkcs7Exception;
-import net.esle.sinadura.core.exceptions.UknownArchiverException;
 import net.esle.sinadura.core.model.Archiver;
 import net.esle.sinadura.core.service.Pkcs7Service;
 import net.esle.sinadura.core.util.FileUtil;
@@ -89,9 +88,7 @@ public class ViewPDFListener implements SelectionListener {
 						
 					DesktopUtil.openSystemFile(path);
 					// se tiene que quedar abierto el archiver
-					
-				} catch (UknownArchiverException e) {
-					log.error(e);	
+				
 				} catch (ArchiverException e) {
 					log.error(e);
 				}
