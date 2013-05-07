@@ -68,6 +68,7 @@
 		<preferences.xades.xl.ocsp.add_all.visible>true</preferences.xades.xl.ocsp.add_all.visible>
 		<preferences.pdf.tipo.default>0</preferences.pdf.tipo.default>
 		<preferences.save.extension.default>-signed</preferences.save.extension.default>
+		<preferences.xades.validator.impl.default>sinadura</preferences.xades.validator.impl.default>
 		<version.check.update.enabled>true</version.check.update.enabled>
 	</properties>
 
@@ -80,7 +81,6 @@
 					<include>configuration.properties</include>
 				</includes>
 			</resource>
-
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>false</filtering>
@@ -162,6 +162,7 @@
 				<preferences.xades.xl.ocsp.add_all.visible>false</preferences.xades.xl.ocsp.add_all.visible>
 				<preferences.pdf.tipo.default>1</preferences.pdf.tipo.default>
 				<preferences.save.extension.default />
+				<preferences.xades.validator.impl.default>zain</preferences.xades.validator.impl.default>
 				<version.check.update.enabled>false</version.check.update.enabled>
 			</properties>
 		</profile>
