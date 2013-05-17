@@ -107,7 +107,7 @@ public class PropertiesUtil {
 		
 		try {
 			String classesPath = Sinadura.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-			APP_BASE_PATH = new File(classesPath).getParentFile().getAbsolutePath() + File.separatorChar + "config" + File.separatorChar;
+			APP_BASE_PATH = new File(classesPath).getParentFile().getParentFile().getAbsolutePath() + File.separatorChar + "config" + File.separatorChar;
 			
 			// TODO arreglar esto (es para que funcione en eclipse)
 			if (new File(classesPath).getParentFile().getName().equals("target")) {
@@ -139,8 +139,8 @@ public class PropertiesUtil {
 		}
 		configuration.setProperty(ZAIN_LOG_REQUEST_FOLDER_PATH, zainLogRequestPath);
 		configuration.setProperty(ZAIN_LOG_RESPONSE_FOLDER_PATH, zainLogResponsePath);
-		configuration.setProperty(ZAIN_P12_PATH_ABSOLUTE, APP_BASE_PATH + File.separatorChar + "zain" + File.separatorChar + "EntidadZylkdesarrollo.p12");
-		configuration.setProperty(ZAIN_TRUSTED_PATH_ABSOLUTE, APP_BASE_PATH + File.separatorChar + "zain" + File.separatorChar + "zain-truststore-des-2ik_4k.jks");	
+		configuration.setProperty(ZAIN_P12_PATH_ABSOLUTE, APP_BASE_PATH + File.separatorChar + "zain" + File.separatorChar + "zain.p12");
+		configuration.setProperty(ZAIN_TRUSTED_PATH_ABSOLUTE, APP_BASE_PATH + File.separatorChar + "zain" + File.separatorChar + "zain.jks");	
 	}
 	
 	
