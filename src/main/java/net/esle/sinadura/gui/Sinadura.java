@@ -96,6 +96,9 @@ public class Sinadura {
 			log.info("Locale language: " + Locale.getDefault().getLanguage());
 			
 			
+			log.info("APP_BASE_PATHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHh: " + PropertiesUtil.APP_BASE_PATH);
+			
+			
 			new LoadingWindow(args);
 
 			StatisticsUtil.log(StatisticsUtil.KEY_CLOSING_SINADURA);

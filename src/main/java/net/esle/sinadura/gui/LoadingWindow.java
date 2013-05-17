@@ -136,18 +136,16 @@ class ThreadOperations extends Thread {
 		// ee (proxy)
 		boolean proxyEnabled = Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PROXY_ENABLED));
 		if (proxyEnabled && PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
-			try{
+			try {
 				ProxyEEModule proxyUtil = EEModulesManager.getProxyModule();
-				proxyUtil.configureProxy(
-										PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_USER), 
-										PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_PASS)
-										);
-				
-			}catch(EEModuleNotFoundException e){
-				listMessages.add(new LoggerMessage(Level.INFO, 
-						MessageFormat.format(LanguageUtil.getLanguage().getString("ee.proxy.disabled"), "proxy")));
-				
-			}catch(EEModuleGenericException e){
+				proxyUtil.configureProxy(PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_USER), PreferencesUtil
+						.getPreferences().getString(PreferencesUtil.PROXY_PASS));
+
+			} catch (EEModuleNotFoundException e) {
+				listMessages.add(new LoggerMessage(Level.INFO, MessageFormat.format(
+						LanguageUtil.getLanguage().getString("ee.proxy.disabled"), "proxy")));
+
+			} catch (EEModuleGenericException e) {
 				log.error(e);
 			}
 		}

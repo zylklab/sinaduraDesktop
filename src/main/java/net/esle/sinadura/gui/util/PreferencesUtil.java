@@ -109,13 +109,6 @@ public class PreferencesUtil {
 	// FileDialogs path
 	public static final String FILEDIALOG_PATH = "filedialog.path";
 	
-	// zain
-	public static final String ZAIN_P12_PATH = "zain.p12.path";
-	public static final String ZAIN_P12_PASSWORD = "zain.p12.password";
-	public static final String ZAIN_TRUSTED_PATH = "zain.trusted.path";
-	public static final String ZAIN_TRUSTED_PASSWORD = "zain.trusted.password";
-	public static final String ZAIN_ENDPOINT = "zain.endpoint";
-	public static final String ZAIN_LOG_ACTIVE = "zain.log.active";
 
 	// *******************************
 	
@@ -129,11 +122,6 @@ public class PreferencesUtil {
 	private static final String PATH_USER_PREFERENCES_TRUSTED_KEYSTORE = FOLDER_PREFERENCES_PATH + File.separatorChar + "trusted.jks";
 	private static final String PATH_USER_PREFERENCES_CACHE_KEYSTORE = FOLDER_PREFERENCES_PATH + File.separatorChar + "cache.jks";
 	
-	// preferencias zain
-	private static final String FOLDER_PREFERENCES_ZAIN_PATH = FOLDER_PREFERENCES_PATH + File.separatorChar + "zain";
-	private static final String PATH_ZAIN_P12 = FOLDER_PREFERENCES_ZAIN_PATH + File.separatorChar + "zain.p12";
-	private static final String PATH_ZAIN_TRUSTED = FOLDER_PREFERENCES_ZAIN_PATH + File.separatorChar + "zain.jks";
-	
 	// default files (se cargan por classloader)
 	private static final String PACKAGE_PATH = "preferences";
 	private static final String PATH_DEFAULT_PREFERENCES_SOFTWARE = PACKAGE_PATH + "/" + "software-preferences.csv";
@@ -141,10 +129,6 @@ public class PreferencesUtil {
 	private static final String PATH_DEFAULT_PREFERENCES_TIMESTAMP = PACKAGE_PATH + "/"+ "timestamp-preferences.csv";
 	private static final String PATH_DEFAULT_PREFERENCES_TRUSTED_KEYSTORE = PACKAGE_PATH + "/" + "trusted.jks";
 	private static final String PATH_DEFAULT_PREFERENCES_CACHE_KEYSTORE = PACKAGE_PATH + "/" + "cache.jks";
-	// default files (zain)
-	private static final String PACKAGE_ZAIN_PATH = "zain";
-	private static final String PATH_DEFAULT_ZAIN_P12 = PACKAGE_ZAIN_PATH + "/" + "EntidadZylkdesarrollo.p12";
-	private static final String PATH_DEFAULT_ZAIN_TRUSTED = PACKAGE_ZAIN_PATH + "/" + "zain-truststore-des-2ik_4k.jks";
 	
 	
 	// STATIC ATRIBUTES
@@ -216,56 +200,7 @@ public class PreferencesUtil {
 			}
 		}
 		
-		// ZAIN
 		
-		// log-zain
-		f = new File(PropertiesUtil.LOG_ZAIN_FOLDER_PATH);
-		if (!f.exists()) {
-			f.mkdir();
-		}
-		
-		// log-zain-request
-		f = new File(PropertiesUtil.LOG_ZAIN_REQUEST_FOLDER_PATH);
-		if (!f.exists()) {
-			f.mkdir();
-		}
-		
-		// log-zain-response
-		f = new File(PropertiesUtil.LOG_ZAIN_RESPONSE_FOLDER_PATH);
-		if (!f.exists()) {
-			f.mkdir();
-		}
-		
-		// folder (preferences)
-		f = new File(FOLDER_PREFERENCES_ZAIN_PATH);
-		if (!f.exists()) {
-			f.mkdir();
-		}
-		
-		// El cliente de zain necesita que los ficheros de configuracion esten en filesystem (no tiene inputStream).
-		// p12
-		f = new File(PATH_ZAIN_P12);
-		if (!f.exists()) {
-			try {
-				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_DEFAULT_ZAIN_P12);
-				FileOutputStream os = new FileOutputStream(PATH_ZAIN_P12);
-				IOUtils.copy(is, os);	
-			} catch (IOException e) {
-				log.error("", e);
-			}
-		}
-		
-		// trusted
-		f = new File(PATH_ZAIN_TRUSTED);
-		if (!f.exists()) {
-			try {
-				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_DEFAULT_ZAIN_TRUSTED);
-				FileOutputStream os = new FileOutputStream(PATH_ZAIN_TRUSTED);
-				IOUtils.copy(is, os);	
-			} catch (IOException e) {
-				log.error("", e);
-			}
-		}
 		
 	}
 	
@@ -332,14 +267,6 @@ public class PreferencesUtil {
 				preferences.setDefault(XADES_XL_OCSP_ADD_ALL, "true");
 				String xadesValidatorImplDefault = PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_XADES_VALIDATOR_IMPL_DEFAULT);
 				preferences.setDefault(XADES_VALIDATOR_IMPL, xadesValidatorImplDefault);
-				
-				// zain
-				preferences.setDefault(ZAIN_P12_PATH, PATH_ZAIN_P12);
-				preferences.setDefault(ZAIN_P12_PASSWORD, "1111");
-				preferences.setDefault(ZAIN_TRUSTED_PATH, PATH_ZAIN_TRUSTED);
-				preferences.setDefault(ZAIN_TRUSTED_PASSWORD, "zainzain");
-				preferences.setDefault(ZAIN_ENDPOINT, "https://psfdes.izenpe.com:8443/trustedx-gw/SoapGateway");
-				preferences.setDefault(ZAIN_LOG_ACTIVE, "true");
 				
 				// carga de certificado
 				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())){

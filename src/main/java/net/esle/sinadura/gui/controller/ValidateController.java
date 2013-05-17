@@ -42,8 +42,14 @@ import net.esle.sinadura.core.service.XadesService;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.core.xades.validator.XadesValidator;
 import net.esle.sinadura.core.xades.validator.XadesValidatorFactory;
+import net.esle.sinadura.ee.EEModulesManager;
+import net.esle.sinadura.ee.exceptions.EEModuleGenericException;
+import net.esle.sinadura.ee.exceptions.EEModuleNotFoundException;
+import net.esle.sinadura.ee.interfaces.ProxyEEModule;
 import net.esle.sinadura.gui.events.ProgressWriter;
 import net.esle.sinadura.gui.model.DocumentInfo;
+import net.esle.sinadura.gui.model.LoggerMessage;
+import net.esle.sinadura.gui.model.LoggerMessage.Level;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.PropertiesUtil;
@@ -101,17 +107,25 @@ public class ValidateController {
 			
 			if (xadesValidatorImpl != null && xadesValidatorImpl.equals("zain")) { // TODO hardcode!
 				
-				String endPoint = PreferencesUtil.getPreferences().getString(PreferencesUtil.ZAIN_ENDPOINT);
-				String truststorePath = PreferencesUtil.getPreferences().getString(PreferencesUtil.ZAIN_TRUSTED_PATH);
-				String truststorePassword = PreferencesUtil.getPreferences().getString(PreferencesUtil.ZAIN_TRUSTED_PASSWORD);
-				String keystorePath = PreferencesUtil.getPreferences().getString(PreferencesUtil.ZAIN_P12_PATH);
-				String keystorePassword = PreferencesUtil.getPreferences().getString(PreferencesUtil.ZAIN_P12_PASSWORD);
-				boolean logActive = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.ZAIN_LOG_ACTIVE);
-				String requestLogSavePath = PropertiesUtil.LOG_ZAIN_REQUEST_FOLDER_PATH;
-				String responseLogSavePath = PropertiesUtil.LOG_ZAIN_RESPONSE_FOLDER_PATH;
+				String endPoint = PropertiesUtil.get(PropertiesUtil.ZAIN_ENDPOINT);
+				String truststorePath = PropertiesUtil.get(PropertiesUtil.ZAIN_TRUSTED_PATH_ABSOLUTE);
+				String truststorePassword = PropertiesUtil.get(PropertiesUtil.ZAIN_TRUSTED_PASSWORD);
+				String keystorePath = PropertiesUtil.get(PropertiesUtil.ZAIN_P12_PATH_ABSOLUTE);
+				String keystorePassword = PropertiesUtil.get(PropertiesUtil.ZAIN_P12_PASSWORD);
+				boolean logActive = PropertiesUtil.getBoolean(PropertiesUtil.ZAIN_LOG_ACTIVE);
+				String requestLogSavePath = PropertiesUtil.get(PropertiesUtil.ZAIN_LOG_REQUEST_FOLDER_PATH);
+				String responseLogSavePath = PropertiesUtil.get(PropertiesUtil.ZAIN_LOG_RESPONSE_FOLDER_PATH);
+				
+				String proxyUser = null;
+				String proxyPass = null;
+				boolean proxyEnabled = Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PROXY_ENABLED));
+				if (proxyEnabled && PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
+					proxyUser = PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_USER);
+					proxyPass = PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_PASS);
+				}
 				
 				xadesValidator = XadesValidatorFactory.getZainInstance(endPoint, truststorePath, truststorePassword,
-						keystorePath, keystorePassword, logActive, requestLogSavePath, responseLogSavePath);
+						keystorePath, keystorePassword, proxyUser, proxyPass, logActive, requestLogSavePath, responseLogSavePath);
 				
 			} else if (xadesValidatorImpl != null && xadesValidatorImpl.equals("sinadura")) {
 				
