@@ -72,5 +72,5 @@ src/main/resources/images/warning-valid.png svn_mime_002dtype=application%2Focte
 src/main/resources/images/warning.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/preferences/cache.jks svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/preferences/trusted.jks svn_mime_002dtype=application%2Foctet-stream
-src/main/resources/zain/EntidadZylkdesarrollo.p12 svn_mime_002dtype=application%2Foctet-stream
-src/main/resources/zain/zain-truststore-des-2ik_4k.jks svn_mime_002dtype=application%2Foctet-stream
+src/main/resources/zain/zain.jks svn_mime_002dtype=application%2Foctet-stream
+src/main/resources/zain/zain.p12 svn_mime_002dtype=application%2Foctet-stream

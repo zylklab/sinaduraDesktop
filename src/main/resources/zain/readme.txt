@@ -1,0 +1,1 @@
+De momento los recursos de este dir estan aqui para que funcione desde eclipse. Refactor!
