@@ -26,9 +26,6 @@ resources-ext/trusted-certs/izenpe-prod/RAIZ2007_CERTIFICATE_AND_CRL_SIGNING_SHA
 resources-ext/trusted-certs/izenpe-prod/ca_aapp_reconocidos.crt svn_mime_002dtype=application%2Foctet-stream
 resources-ext/trusted-certs/izenpe-prod/ca_ciudadanos_entidades_reconocidos.crt svn_mime_002dtype=application%2Foctet-stream
 resources-ext/trusted-certs/izenpe-prod/ca_raiz.crt svn_mime_002dtype=application%2Foctet-stream
-resources/images/sinadura.ico svn_mime_002dtype=application%2Foctet-stream
-resources/images/sinadura48.png svn_mime_002dtype=application%2Foctet-stream
-resources/preferences/preferences-sinadura-console.properties svn_mime_002dtype=text%2Fplain
 src/main/java/net/esle/sinadura/gui/exceptions/FileNotValidException.java svn_mime_002dtype=text%2Fplain
 src/main/java/net/esle/sinadura/gui/util/HardwareItem.java svn_mime_002dtype=text%2Fplain
 src/main/resources/images/accept.png svn_mime_002dtype=application%2Foctet-stream
