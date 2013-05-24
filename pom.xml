@@ -22,7 +22,6 @@
    		<url>https://services.zylk.net/sinadura-repo/sinadura/sinaduraDesktop/trunk</url>
 	</scm>
 	
-	
 	<developers>
 		<developer>
 			<id>egb001</id>
@@ -73,23 +72,24 @@
 	</properties>
 
 	<build>
+		
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>configuration.properties</include>
+					<include>config/configuration.properties</include>
 				</includes>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>false</filtering>
 				<excludes>
-					<exclude>configuration.properties</exclude>
+					<exclude>config/configuration.properties</exclude>
 				</excludes>
 			</resource>
 		</resources>
-
+ 		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -129,6 +129,17 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Para exluir los resources del jar (se incluyen despues en un dir en la phase de package) -->
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-jar-plugin</artifactId>
+		        <version>2.4</version>
+		        <configuration>
+		          <includes>
+		            <include>net/esle/**</include><!-- Solo el src -->
+		          </includes>
+		        </configuration>
+		    </plugin>
 		</plugins>
 	</build>
 
@@ -213,6 +224,11 @@
 							</programs>
 							<repositoryLayout>flat</repositoryLayout>
 							<repositoryName>lib</repositoryName>
+							<configurationDirectory>resources</configurationDirectory>
+							<property>
+                      			<name>configuration.directory.in.classpath.first</name>
+                      			<value>resources</value>
+                    		</property>
 						</configuration>
 					</plugin>
 					<plugin>
@@ -221,7 +237,7 @@
 						<version>2.4</version>
 						<executions>
 							<execution>
-								<id>resourcescopy</id>
+								<id>resources-copy</id>
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -232,14 +248,41 @@
 									<outputDirectory>${staging-dir}/resources</outputDirectory>
 									<resources>
 										<resource>
+											<filtering>false</filtering>
+											<directory>src/main/resources</directory>
+											<excludes>
+												<exclude>config/configuration.properties</exclude>
+											</excludes>
+										</resource>
+										<resource>
 											<filtering>true</filtering>
-											<directory>resources</directory>
+											<directory>src/main/resources</directory>
+											<includes>
+												<include>config/configuration.properties</include>
+											</includes>
 										</resource>
 									</resources>
 								</configuration>
 							</execution>
 							<execution>
-								<id>install-resources</id>
+								<id>app-package-copy</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<encoding>iso-8859-1</encoding>
+									<overWrite>true</overWrite>
+									<outputDirectory>${staging-dir}</outputDirectory>
+									<resources>
+										<resource>
+											<directory>app-package</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-resources-copy</id>
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -252,10 +295,6 @@
 										<resource>
 											<filtering>true</filtering>
 											<directory>installer/install-resources</directory>
-										</resource>
-										<resource>
-											<filtering>true</filtering>
-											<directory>src/main/izpack</directory>
 										</resource>
 									</resources>
 								</configuration>
@@ -354,6 +393,11 @@
 							</programs>
 							<repositoryLayout>flat</repositoryLayout>
 							<repositoryName>lib</repositoryName>
+							<configurationDirectory>resources</configurationDirectory>
+							<property>
+                      			<name>configuration.directory.in.classpath.first</name>
+                      			<value>resources</value>
+                    		</property>
 						</configuration>
 					</plugin>
 					<plugin>
@@ -362,7 +406,7 @@
 						<version>2.4</version>
 						<executions>
 							<execution>
-								<id>resourcescopy</id>
+								<id>resources-copy</id>
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -373,14 +417,41 @@
 									<outputDirectory>${staging-dir}/resources</outputDirectory>
 									<resources>
 										<resource>
+											<filtering>false</filtering>
+											<directory>src/main/resources</directory>
+											<excludes>
+												<exclude>config/configuration.properties</exclude>
+											</excludes>
+										</resource>
+										<resource>
 											<filtering>true</filtering>
-											<directory>resources</directory>
+											<directory>src/main/resources</directory>
+											<includes>
+												<include>config/configuration.properties</include>
+											</includes>
 										</resource>
 									</resources>
 								</configuration>
 							</execution>
 							<execution>
-								<id>install-resources</id>
+								<id>app-package-copy</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<encoding>iso-8859-1</encoding>
+									<overWrite>true</overWrite>
+									<outputDirectory>${staging-dir}</outputDirectory>
+									<resources>
+										<resource>
+											<directory>app-package</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-resources-copy</id>
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -393,10 +464,6 @@
 										<resource>
 											<filtering>true</filtering>
 											<directory>installer/install-resources</directory>
-										</resource>
-										<resource>
-											<filtering>true</filtering>
-											<directory>src/main/izpack</directory>
 										</resource>
 									</resources>
 								</configuration>
@@ -496,16 +563,20 @@
 							</programs>
 							<repositoryLayout>flat</repositoryLayout>
 							<repositoryName>lib</repositoryName>
+							<configurationDirectory>resources</configurationDirectory>
+							<property>
+                      			<name>configuration.directory.in.classpath.first</name>
+                      			<value>resources</value>
+                    		</property>
 						</configuration>
 					</plugin>
-
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-resources-plugin</artifactId>
 						<version>2.3</version>
 						<executions>
 							<execution>
-								<id>resourcescopy</id>
+								<id>resources-copy</id>
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -516,14 +587,41 @@
 									<outputDirectory>${staging-dir}/resources</outputDirectory>
 									<resources>
 										<resource>
+											<filtering>false</filtering>
+											<directory>src/main/resources</directory>
+											<excludes>
+												<exclude>config/configuration.properties</exclude>
+											</excludes>
+										</resource>
+										<resource>
 											<filtering>true</filtering>
-											<directory>resources</directory>
+											<directory>src/main/resources</directory>
+											<includes>
+												<include>config/configuration.properties</include>
+											</includes>
 										</resource>
 									</resources>
 								</configuration>
 							</execution>
 							<execution>
-								<id>install-resources</id>
+								<id>app-package-copy</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<encoding>iso-8859-1</encoding>
+									<overWrite>true</overWrite>
+									<outputDirectory>${staging-dir}</outputDirectory>
+									<resources>
+										<resource>
+											<directory>app-package</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-resources-copy</id>
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -536,10 +634,6 @@
 										<resource>
 											<filtering>true</filtering>
 											<directory>installer/install-resources</directory>
-										</resource>
-										<resource>
-											<filtering>true</filtering>
-											<directory>src/main/izpack</directory>
 										</resource>
 									</resources>
 								</configuration>
@@ -574,6 +668,7 @@
 										<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
 										<addDependencies>true</addDependencies>
 										<jarLocation>lib/</jarLocation>
+										<preCp>resources</preCp>										
 									</classPath>
 									<jre>
 										<minVersion>1.6.0</minVersion>
@@ -646,8 +741,6 @@
 			</dependencies>
 		</profile>
 
-
-
 		<profile>
 			<id>Win64</id>
 			<activation>
@@ -663,7 +756,6 @@
 			</activation>
 			<build>
 				<plugins>
-
 					<!-- quitar el bat? -->
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
@@ -695,16 +787,20 @@
 							</programs>
 							<repositoryLayout>flat</repositoryLayout>
 							<repositoryName>lib</repositoryName>
+							<configurationDirectory>resources</configurationDirectory>
+							<property>
+                      			<name>configuration.directory.in.classpath.first</name>
+                      			<value>resources</value>
+                    		</property>
 						</configuration>
 					</plugin>
-
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-resources-plugin</artifactId>
 						<version>2.3</version>
 						<executions>
 							<execution>
-								<id>resourcescopy</id>
+								<id>resources-copy</id>
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -715,14 +811,41 @@
 									<outputDirectory>${staging-dir}/resources</outputDirectory>
 									<resources>
 										<resource>
+											<filtering>false</filtering>
+											<directory>src/main/resources</directory>
+											<excludes>
+												<exclude>config/configuration.properties</exclude>
+											</excludes>
+										</resource>
+										<resource>
 											<filtering>true</filtering>
-											<directory>resources</directory>
+											<directory>src/main/resources</directory>
+											<includes>
+												<include>config/configuration.properties</include>
+											</includes>
 										</resource>
 									</resources>
 								</configuration>
 							</execution>
 							<execution>
-								<id>install-resources</id>
+								<id>app-package-copy</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<encoding>iso-8859-1</encoding>
+									<overWrite>true</overWrite>
+									<outputDirectory>${staging-dir}</outputDirectory>
+									<resources>
+										<resource>
+											<directory>app-package</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-resources-copy</id>
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -735,10 +858,6 @@
 										<resource>
 											<filtering>true</filtering>
 											<directory>installer/install-resources</directory>
-										</resource>
-										<resource>
-											<filtering>true</filtering>
-											<directory>src/main/izpack</directory>
 										</resource>
 									</resources>
 								</configuration>
@@ -891,6 +1010,11 @@
 							</programs>
 							<repositoryLayout>flat</repositoryLayout>
 							<repositoryName>lib</repositoryName>
+							<configurationDirectory>resources</configurationDirectory>
+							<property>
+                      			<name>configuration.directory.in.classpath.first</name>
+                      			<value>resources</value>
+                    		</property>
 						</configuration>
 					</plugin>
 					<plugin>
@@ -899,7 +1023,7 @@
 						<version>2.3</version>
 						<executions>
 							<execution>
-								<id>resourcescopy</id>
+								<id>resources-copy</id>
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -910,14 +1034,41 @@
 									<outputDirectory>${staging-dir}/resources</outputDirectory>
 									<resources>
 										<resource>
+											<filtering>false</filtering>
+											<directory>src/main/resources</directory>
+											<excludes>
+												<exclude>config/configuration.properties</exclude>
+											</excludes>
+										</resource>
+										<resource>
 											<filtering>true</filtering>
-											<directory>resources</directory>
+											<directory>src/main/resources</directory>
+											<includes>
+												<include>config/configuration.properties</include>
+											</includes>
 										</resource>
 									</resources>
 								</configuration>
 							</execution>
 							<execution>
-								<id>install-resources</id>
+								<id>app-package-copy</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<encoding>iso-8859-1</encoding>
+									<overWrite>true</overWrite>
+									<outputDirectory>${staging-dir}</outputDirectory>
+									<resources>
+										<resource>
+											<directory>app-package</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-resources-copy</id>
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -930,10 +1081,6 @@
 										<resource>
 											<filtering>true</filtering>
 											<directory>installer/install-resources</directory>
-										</resource>
-										<resource>
-											<filtering>true</filtering>
-											<directory>src/main/izpack</directory>
 										</resource>
 									</resources>
 								</configuration>
@@ -995,14 +1142,6 @@
 						</executions>
 					</plugin>
 
-
-
-
-
-
-
-
-
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>osxappbundle-maven-plugin</artifactId>
@@ -1024,14 +1163,6 @@
 							</execution>
 						</executions>
 					</plugin>
-
-
-
-
-
-
-
-
 
 				</plugins>
 			</build>
@@ -1097,6 +1228,11 @@
 							</programs>
 							<repositoryLayout>flat</repositoryLayout>
 							<repositoryName>lib</repositoryName>
+							<configurationDirectory>resources</configurationDirectory>
+							<property>
+                      			<name>configuration.directory.in.classpath.first</name>
+                      			<value>resources</value>
+                    		</property>
 						</configuration>
 					</plugin>
 					<plugin>
@@ -1105,7 +1241,7 @@
 						<version>2.3</version>
 						<executions>
 							<execution>
-								<id>resourcescopy</id>
+								<id>resources-copy</id>
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -1116,14 +1252,41 @@
 									<outputDirectory>${staging-dir}/resources</outputDirectory>
 									<resources>
 										<resource>
+											<filtering>false</filtering>
+											<directory>src/main/resources</directory>
+											<excludes>
+												<exclude>config/configuration.properties</exclude>
+											</excludes>
+										</resource>
+										<resource>
 											<filtering>true</filtering>
-											<directory>resources</directory>
+											<directory>src/main/resources</directory>
+											<includes>
+												<include>config/configuration.properties</include>
+											</includes>
 										</resource>
 									</resources>
 								</configuration>
 							</execution>
 							<execution>
-								<id>install-resources</id>
+								<id>app-package-copy</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<encoding>iso-8859-1</encoding>
+									<overWrite>true</overWrite>
+									<outputDirectory>${staging-dir}</outputDirectory>
+									<resources>
+										<resource>
+											<directory>app-package</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-resources-copy</id>
 								<phase>package</phase>
 								<goals>
 									<goal>copy-resources</goal>
@@ -1137,16 +1300,11 @@
 											<filtering>true</filtering>
 											<directory>installer/install-resources</directory>
 										</resource>
-										<resource>
-											<filtering>true</filtering>
-											<directory>src/main/izpack</directory>
-										</resource>
 									</resources>
 								</configuration>
 							</execution>
 						</executions>
 					</plugin>
-
 
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>

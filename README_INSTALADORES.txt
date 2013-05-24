@@ -9,11 +9,10 @@ www.zylk.net/web/guest/web-2-0/blog/-/blogs/accediendo-a-repositorios-de-maven-s
 =====================================
 Actual: 3.3.4
 
-- install.xml
 - pom.xml (core, desktop, ee, ee-interfaces, parent)
   - cambiar la versión del producto generado (core y desktop)
   - cambiar la versión de las referencias a sinadura*
-- configuration.properties (core y desktop)
+- En el "configuration.properties" (desktop) la propiedad "application.local.version"
 - modificar el build.properties (estos se usan para algo? el del core? -> si no borrar)
    @Irune sí se usa, en los build.xml de desktop y core.
    @Alfredo sí pero esos tampoco se usan. Para la siguiente se borran. 
