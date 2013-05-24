@@ -139,6 +139,8 @@ public class SignaturePropertiesDialog extends Dialog {
 			java.util.List<X509Certificate> chain = signature.getChain();
 			if (chain != null && chain.size() != 0) {
 				item.setText(CertificateUtil.getFormattedName(chain.get(0)));
+			} else {
+				item.setText(LanguageUtil.getLanguage().getString("validation.signer.unknown"));
 			}
 		}
 		this.tree.select(ti);

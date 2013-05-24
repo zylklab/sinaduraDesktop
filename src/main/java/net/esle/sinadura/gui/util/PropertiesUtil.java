@@ -24,24 +24,24 @@ import org.apache.commons.logging.LogFactory;
  * @author zylk.net
  */
 public class PropertiesUtil {
+	
+	private static Log log = LogFactory.getLog(PropertiesUtil.class);
+	
 
-	public static String APP_BASE_PATH = null;
+	private static String APP_BASE_ABSOLUTE_PATH = null; // No utilizar! (solo cuando no se pueda cargar los recursos por classpath)
+	private static String RESOURCES_BASE_ABSOLUTE_PATH = null; // No utilizar! (solo cuando no se pueda cargar los recursos por classpath)
 	
 	
 	// CONSTANTES de aplicacion TODO estaria bien encapsular el acceso a las constantes y a las keys -> getProperty(key/constante) 
 	public static final String APPLICATION_NAME = "Sinadura";
+
+	public static final String USER_BASE_PATH = Sinadura.PRIVATE_USER_BASE_PATH;
 	
-	// este valor tambien esta hardcode en el fichero del logger
-	public static final String USER_BASE_PATH = System.getProperty("user.home") + File.separatorChar + ".sinadura";
+	public static final String LOG_FOLDER_PATH = Sinadura.PRIVATE_LOG_FOLDER_PATH;
+	public static final String STATISTICS_FOLDER_PATH = Sinadura.PRIVATE_LOG_FOLDER_PATH;
 	
-	public static final String LOG_FOLDER_PATH = USER_BASE_PATH + File.separatorChar + "log";
-	
-	
-	
-	public static final String STATISTICS_FOLDER_PATH = USER_BASE_PATH + File.separatorChar + "statistics";
 	public static final String TMP_FOLDER_PATH = System.getProperty("java.io.tmpdir");
 	
-
 
 	public static final String LICENSE_PATH = "LICENSE.txt";
 	public static final String CREDITS_PATH = "credits.txt";
@@ -49,7 +49,7 @@ public class PropertiesUtil {
 	public static final String INTROKEY = "RETURN";
 	
 	
-	private static final String PATH_CONFIGURATION = "configuration.properties";
+	private static final String PATH_CONFIGURATION = "config/configuration.properties";
 	
 	
 	// KEYS del configuration.properties
@@ -91,11 +91,9 @@ public class PropertiesUtil {
 	
 	private static Properties configuration = null;
 	
-	private static Log log = LogFactory.getLog(PropertiesUtil.class);
-	
-	
-	static {
-		
+
+	private static void init() {
+
 		configuration = new Properties();
 		
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_CONFIGURATION);
@@ -106,13 +104,17 @@ public class PropertiesUtil {
 		}
 		
 		try {
-			String classesPath = Sinadura.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-			APP_BASE_PATH = new File(classesPath).getParentFile().getParentFile().getAbsolutePath() + File.separatorChar + "config" + File.separatorChar;
+			String libClassesPath = Sinadura.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 			
-			// TODO arreglar esto (es para que funcione en eclipse)
-			if (new File(classesPath).getParentFile().getName().equals("target")) {
-				APP_BASE_PATH = new File(classesPath).getAbsolutePath();
+			APP_BASE_ABSOLUTE_PATH = new File(libClassesPath).getParentFile().getParentFile().getAbsolutePath();
+			RESOURCES_BASE_ABSOLUTE_PATH = APP_BASE_ABSOLUTE_PATH + File.separatorChar + "resources";
+			// solucionar esto? (es para que funcione en eclipse)
+			if (new File(libClassesPath).getParentFile().getName().equals("target")) {
+				APP_BASE_ABSOLUTE_PATH = new File(libClassesPath).getParentFile().getAbsolutePath();
+				RESOURCES_BASE_ABSOLUTE_PATH = new File(libClassesPath).getAbsolutePath();
 			}
+			log.info("APP_BASE_PATH: " + APP_BASE_ABSOLUTE_PATH);
+			log.info("RESOURCES_BASE_PATH: " + RESOURCES_BASE_ABSOLUTE_PATH);
 			
 		} catch (URISyntaxException e) {
 			log.error(e);
@@ -137,16 +139,21 @@ public class PropertiesUtil {
 		if (!f.exists()) {
 			f.mkdir();
 		}
+		
 		configuration.setProperty(ZAIN_LOG_REQUEST_FOLDER_PATH, zainLogRequestPath);
 		configuration.setProperty(ZAIN_LOG_RESPONSE_FOLDER_PATH, zainLogResponsePath);
-		configuration.setProperty(ZAIN_P12_PATH_ABSOLUTE, APP_BASE_PATH + File.separatorChar + "zain" + File.separatorChar + "zain.p12");
-		configuration.setProperty(ZAIN_TRUSTED_PATH_ABSOLUTE, APP_BASE_PATH + File.separatorChar + "zain" + File.separatorChar + "zain.jks");	
+		configuration.setProperty(ZAIN_P12_PATH_ABSOLUTE, RESOURCES_BASE_ABSOLUTE_PATH + File.separatorChar + "zain" + File.separatorChar + "zain.p12");
+		configuration.setProperty(ZAIN_TRUSTED_PATH_ABSOLUTE, RESOURCES_BASE_ABSOLUTE_PATH + File.separatorChar + "zain" + File.separatorChar + "zain.jks");	
 	}
 	
 	
 	// este tendria que estar a private, y solo usar los metodos de get(). Así que hay que ir migrando las llamadas.
 	public static Properties getConfiguration() {
 
+		if (configuration == null) {
+			init();
+		}
+		
 		return configuration;
 	}
 	

@@ -430,6 +430,8 @@ public class DocumentsTable extends Composite {
 		List<X509Certificate> chain = signature.getChain();
 		if (chain != null && chain.size() != 0) {
 			item.setText(3, " " + CertificateUtil.getFormattedName(signature.getChain().get(0)));
+		} else {
+			item.setText(3, " " + LanguageUtil.getLanguage().getString("validation.signer.unknown"));
 		}
 
 		// date

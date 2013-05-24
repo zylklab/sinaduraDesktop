@@ -26,7 +26,9 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import net.esle.sinadura.core.exceptions.CipherException;
 import net.esle.sinadura.core.exceptions.Pkcs7Exception;
 import net.esle.sinadura.core.exceptions.ValidationFatalException;
 import net.esle.sinadura.core.exceptions.XadesValidationFatalException;
@@ -39,6 +41,7 @@ import net.esle.sinadura.core.model.XadesSignatureInfo;
 import net.esle.sinadura.core.service.PdfService;
 import net.esle.sinadura.core.service.Pkcs7Service;
 import net.esle.sinadura.core.service.XadesService;
+import net.esle.sinadura.core.util.CipherUtil;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.core.xades.validator.XadesValidator;
 import net.esle.sinadura.core.xades.validator.XadesValidatorFactory;
@@ -111,7 +114,14 @@ public class ValidateController {
 				String truststorePath = PropertiesUtil.get(PropertiesUtil.ZAIN_TRUSTED_PATH_ABSOLUTE);
 				String truststorePassword = PropertiesUtil.get(PropertiesUtil.ZAIN_TRUSTED_PASSWORD);
 				String keystorePath = PropertiesUtil.get(PropertiesUtil.ZAIN_P12_PATH_ABSOLUTE);
-				String keystorePassword = PropertiesUtil.get(PropertiesUtil.ZAIN_P12_PASSWORD);
+				String encryptedPassword = PropertiesUtil.get(PropertiesUtil.ZAIN_P12_PASSWORD);
+				String keystorePassword;
+				try {
+					keystorePassword = CipherUtil.decrypt(encryptedPassword);
+				} catch (CipherException e) {
+					throw new XadesValidationFatalException(e);
+				}
+				
 				boolean logActive = PropertiesUtil.getBoolean(PropertiesUtil.ZAIN_LOG_ACTIVE);
 				String requestLogSavePath = PropertiesUtil.get(PropertiesUtil.ZAIN_LOG_REQUEST_FOLDER_PATH);
 				String responseLogSavePath = PropertiesUtil.get(PropertiesUtil.ZAIN_LOG_RESPONSE_FOLDER_PATH);
@@ -124,14 +134,16 @@ public class ValidateController {
 					proxyPass = PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_PASS);
 				}
 				
+				String language = Locale.getDefault().getLanguage();
+				
 				xadesValidator = XadesValidatorFactory.getZainInstance(endPoint, truststorePath, truststorePassword,
-						keystorePath, keystorePassword, proxyUser, proxyPass, logActive, requestLogSavePath, responseLogSavePath);
+						keystorePath, keystorePassword, proxyUser, proxyPass, logActive, requestLogSavePath, responseLogSavePath, language);
 				
 			} else if (xadesValidatorImpl != null && xadesValidatorImpl.equals("sinadura")) {
 				
 				xadesValidator = XadesValidatorFactory.getSinaduraInstance();
 			} else {
-				throw new XadesValidationFatalException("unknown xades validator impl");
+				throw new XadesValidationFatalException("unknown xades validator impl: " + xadesValidatorImpl);
 			}
 			
 			List<XadesSignatureInfo> resultados = null;

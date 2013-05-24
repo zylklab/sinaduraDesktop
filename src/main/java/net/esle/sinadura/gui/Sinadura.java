@@ -42,6 +42,14 @@ import org.apache.xml.utils.URI.MalformedURIException;
 public class Sinadura {
 
 	private static Log log;
+
+	// Como es necesario crear los directorios de log antes de obtener un Log (LogFactory.getLog), se inicializan y crean aqui las variables.
+	// No usar estas variables!, utilizar las correspondientes de PropertiesUtil (para que este el acceso centralizado).
+	// Este valor tambien esta hardcode en el fichero del logger
+	public static final String PRIVATE_USER_BASE_PATH = System.getProperty("user.home") + File.separatorChar + ".sinadura";
+	public static final String PRIVATE_LOG_FOLDER_PATH = PRIVATE_USER_BASE_PATH + File.separatorChar + "log";
+	public static final String PRIVATE_STATISTICS_FOLDER_PATH = PRIVATE_USER_BASE_PATH + File.separatorChar + "statistics";
+	
 	
 	/*************************************
 	 * init, creación de carpetas base
@@ -49,19 +57,19 @@ public class Sinadura {
 	static {
 		
 		// base
-		File f = new File(PropertiesUtil.USER_BASE_PATH);
+		File f = new File(PRIVATE_USER_BASE_PATH);
 		if (!f.exists()) {
 			f.mkdir();
 		}
 
 		// log
-		f = new File(PropertiesUtil.LOG_FOLDER_PATH);
+		f = new File(PRIVATE_LOG_FOLDER_PATH);
 		if (!f.exists()) {
 			f.mkdir();
 		}
 
 		// statistics
-		f = new File(PropertiesUtil.STATISTICS_FOLDER_PATH);
+		f = new File(PRIVATE_STATISTICS_FOLDER_PATH);
 		if (!f.exists()) {
 			f.mkdir();
 		}
@@ -73,10 +81,6 @@ public class Sinadura {
 	public static void main(String[] args) throws FileNotValidException, FileSystemException, MalformedURIException {
 		
 		try {
-			
-			//===========================
-			// env
-			//===========================
 			log.info("Iniciando Sinadura");
 			
 			log.info("Sinadura version: " + PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.APPLICATION_VERSION_STRING));
@@ -94,10 +98,6 @@ public class Sinadura {
 			
 			log.info("Locale country: " + Locale.getDefault().getCountry());
 			log.info("Locale language: " + Locale.getDefault().getLanguage());
-			
-			
-			log.info("APP_BASE_PATHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHh: " + PropertiesUtil.APP_BASE_PATH);
-			
 			
 			new LoadingWindow(args);
 
