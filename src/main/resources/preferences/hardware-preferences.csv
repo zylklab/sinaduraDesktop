@@ -3,6 +3,8 @@ generic;Genérico (32-bit);/usr/lib/opensc-pkcs11.so;linux;
 generic 64b;Genérico (64-bit);/usr/lib64/opensc-pkcs11.so;linux;
 bit4id 32 bits (izenpe);Izenpe 2012 (32-bit);/usr/lib/libbit4ipki.so;linux;
 bit4id 64 bits (izenpe);Izenpe 2012 (64-bit);/usr/lib64/libbit4ipki.so;linux;
+dnie-izenpe;DNIe (izenpe);/usr/lib/dniepkcs11.so;linux;
+dnie-izenpe-64;DNIe 64-bit (izenpe);/usr/lib64/dniepkcs11.so;linux;
 izenpe;Izenpe;c:\\windows\\system32\\aetpkss1.dll;win;
 bit4id (izenpe);Izenpe 2012;c:\\windows\\system32\\bit4ipki.dll;win;
 dni x64 (64-bit);DNIe (64-bit);C:\\Program Files (x86)\\DNIe\\DNIeCMx64.dll;win
