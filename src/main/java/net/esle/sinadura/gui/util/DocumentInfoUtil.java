@@ -52,7 +52,7 @@ public class DocumentInfoUtil {
 			
 			path = FileUtil.normaliceLocalURI(path);
 			uri = new URI(path);
-			mimeType = FileUtil.getMimeType(uri.getPath());
+			mimeType = FileUtil.getMimeType(path);
 			 
 		}catch(Exception e){
 			log.error("Exception | " +  e.toString());

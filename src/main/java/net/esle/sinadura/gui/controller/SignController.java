@@ -325,13 +325,14 @@ public class SignController {
 				}
 					
 			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_XML)) {
-				// TODO firma de xml enveloped
+				// TODO Aqui tendria sentido hacer una firma enveloped
+				// TODO Como ahora solo es detached -> mostrar error??? -> Para evitar firmar un xml que sea ya una firma.
 				signDetached(pdfParameter, ksSignaturePreferences);
 				
 			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR)) {
 				signDetached(pdfParameter, ksSignaturePreferences);
 				
-			} else {
+			} else { // un documento cualquiera
 				signDetached(pdfParameter, ksSignaturePreferences);
 			}
 			
@@ -591,7 +592,7 @@ public class SignController {
 		XadesSignaturePreferences signaturePreferences = new XadesSignaturePreferences();
 		signaturePreferences.setKsSignaturePreferences(ksSignaturePreferences);
 		signaturePreferences.setType(XadesSignaturePreferences.Type.Detached);
-		signaturePreferences.setArchive(PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.XADES_ARCHIVE));
+		signaturePreferences.setGenerateArchiver(PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.XADES_ARCHIVE));
 		signaturePreferences.setKsCache(PreferencesUtil.getCacheKeystoreComplete());
 
 		String tsurl = null;
