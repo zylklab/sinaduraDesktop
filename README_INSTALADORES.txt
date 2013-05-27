@@ -9,14 +9,15 @@ www.zylk.net/web/guest/web-2-0/blog/-/blogs/accediendo-a-repositorios-de-maven-s
 =====================================
 Actual: 3.3.4
 
-- pom.xml (core, desktop, ee, ee-interfaces, parent)
+- En el pom.xml (core, desktop, ee, ee-interfaces, parent, mityc...)
   - cambiar la versión del producto generado (core y desktop)
   - cambiar la versión de las referencias a sinadura*
 - En el "configuration.properties" (desktop) la propiedad "application.local.version"
-- modificar el build.properties (estos se usan para algo? el del core? -> si no borrar)
+- Modificar el build.properties (estos se usan para algo? el del core? -> si no borrar)
    @Irune sí se usa, en los build.xml de desktop y core.
-   @Alfredo sí pero esos tampoco se usan. Para la siguiente se borran. 
-- y en el servidor si se publica como nueva version (esto solo para la comunnity. Y para la EE?).
+   @Alfredo sí pero esos tampoco se usan. Para la siguiente se borran.
+   @Alfredo borrado el del core. El del dekstop los dejo por si se utilizan en el empaquetado de mac (revisar build.xml). 
+- Y en el servidor si se publica como nueva version (esto solo para la comunnity. Y para la EE?).
 (http://www.sinadura.net/server)
 
 =====================================
