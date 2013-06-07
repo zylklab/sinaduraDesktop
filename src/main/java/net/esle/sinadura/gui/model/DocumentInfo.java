@@ -29,6 +29,7 @@ import net.esle.sinadura.core.interpreter.SignatureInfo;
 
 public class DocumentInfo {
 
+	// TODO pasarlo a URI
 	private String path;
 	/**
 	 * null cuando no es reconocido
