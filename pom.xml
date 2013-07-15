@@ -69,7 +69,7 @@
 		<preferences.save.extension.default>-signed</preferences.save.extension.default>
 		<preferences.xades.validator.impl.default>sinadura</preferences.xades.validator.impl.default>
 		<version.check.update.enabled>true</version.check.update.enabled>
-		<release.publish.path>/var/www/releases/sinadura</release.publish.path>
+		<release.publish.path>/home/alfredo/Escritorio/jaja</release.publish.path>
 	</properties>
 
 	<build>
@@ -346,7 +346,7 @@
 										<echo message="Publicando la aplicacion..." />
 										<copy file="./target/sinaduraDesktop-${project.version}-standard.jar"
 											tofile="${release.publish.path}/${project.version}/sinadura-${project.version}-unix32-installer.jar"
-											overwrite="false" verbose="true" />
+											overwrite="false" granularity="9223372036854" verbose="true" />
 										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
@@ -536,7 +536,7 @@
 										<echo message="Publicando la aplicacion..." />
 										<copy file="./target/sinaduraDesktop-${project.version}-standard.jar"
 											tofile="${release.publish.path}/${project.version}/sinadura-${project.version}-unix64-installer.jar"
-											overwrite="false" verbose="true" />
+											overwrite="false" granularity="9223372036854" verbose="true" />
 										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
@@ -782,9 +782,18 @@
 								<configuration>
 									<tasks>
 										<echo message="Publicando la aplicacion..." />
+										<!--  
+										<copy todir="${release.publish.path}/${project.version}">
+	      									<fileset dir="./target">
+	        									<include name="sinadura-${project.version}-windows-installer.exe"/>
+	        									<present present="srconly" targetdir="${release.publish.path}/${project.version}"/>
+	      									</fileset>
+    									</copy>
+  										-->
 										<copy file="./target/sinadura-${project.version}-windows-installer.exe"
 											tofile="${release.publish.path}/${project.version}/sinadura-${project.version}-windows-installer.exe"
-											overwrite="false" verbose="true" />
+											overwrite="false" granularity="9223372036854" verbose="true" />
+		 
 										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
@@ -1023,7 +1032,7 @@
 										<echo message="Publicando la aplicacion..." />
 										<copy file="./target/sinadura-${project.version}-windows64-installer.exe"
 											tofile="${release.publish.path}/${project.version}/sinadura-${project.version}-windows64-installer.exe"
-											overwrite="false" verbose="true" />
+											overwrite="false" granularity="9223372036854" verbose="true" />
 										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
