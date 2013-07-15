@@ -69,7 +69,6 @@
 		<preferences.save.extension.default>-signed</preferences.save.extension.default>
 		<preferences.xades.validator.impl.default>sinadura</preferences.xades.validator.impl.default>
 		<version.check.update.enabled>true</version.check.update.enabled>
-		<release.publish.path>/home/alfredo/Escritorio/jaja/sinadura</release.publish.path>
 	</properties>
 
 	<build>
@@ -141,13 +140,6 @@
 		          </includes>
 		        </configuration>
 		    </plugin>
-		    <!-- Se deshabilita la phase de deploy, ya que no tiene sentido en el desktop. Se publica de forma explicita por ant (ver "deploy-release"). -->
-			<plugin>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -309,6 +301,7 @@
 							</execution>
 						</executions>
 					</plugin>
+
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
@@ -333,29 +326,7 @@
 							</execution>
 						</executions>
 					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.3</version>
-						<executions>
-							<execution>
-								<id>deploy-release</id>
-								<phase>deploy</phase>
-								<configuration>
-									<tasks>
-										<echo message="Publicando la aplicacion..." />
-										<copy file="./target/sinaduraDesktop-${project.version}-standard.jar"
-											tofile="${release.publish.path}/${project.version}/sinadura-${project.version}-unix32-installer.jar"
-											overwrite="false" verbose="true" />
-										<echo message="Publicacion ok" />
-									</tasks>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
+
 				</plugins>
 			</build>
 			<dependencies>
@@ -498,6 +469,7 @@
 								</configuration>
 							</execution>
 						</executions>
+
 					</plugin>
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
@@ -523,29 +495,7 @@
 							</execution>
 						</executions>
 					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.3</version>
-						<executions>
-							<execution>
-								<id>deploy-release</id>
-								<phase>deploy</phase>
-								<configuration>
-									<tasks>
-										<echo message="Publicando la aplicacion..." />
-										<copy file="./target/sinaduraDesktop-${project.version}-standard.jar"
-											tofile="${release.publish.path}/${project.version}/sinadura-${project.version}-unix64-installer.jar"
-											overwrite="false" verbose="true" />
-										<echo message="Publicacion ok" />
-									</tasks>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
+
 				</plugins>
 			</build>
 			<dependencies>
@@ -778,29 +728,6 @@
 							</execution>
 						</executions>
 					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.3</version>
-						<executions>
-							<execution>
-								<id>deploy-release</id>
-								<phase>deploy</phase>
-								<configuration>
-									<tasks>
-										<echo message="Publicando la aplicacion..." />
-										<copy file="./target/sinadura-${project.version}-windows-installer.exe"
-											tofile="${release.publish.path}/${project.version}/sinadura-${project.version}-windows-installer.exe"
-											overwrite="false" verbose="true" />
-										<echo message="Publicacion ok" />
-									</tasks>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
 				</plugins>
 			</build>
 			<dependencies>
@@ -1014,31 +941,8 @@
 										<exec executable="python" dir="installer/izpack2exe">
 											<arg value="izpack2exe.py" />
 											<arg value="--file=../../target/sinaduraDesktop-${project.version}-standard.jar" />
-											<arg value="--output=../../target/sinadura-${project.version}-windows64-installer.exe" />
+											<arg value="--output=../../target/sinaduraDesktop-${project.version}-windows-installer.exe" />
 										</exec>
-									</tasks>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.3</version>
-						<executions>
-							<execution>
-								<id>deploy-release</id>
-								<phase>deploy</phase>
-								<configuration>
-									<tasks>
-										<echo message="Publicando la aplicacion..." />
-										<copy file="./target/sinadura-${project.version}-windows64-installer.exe"
-											tofile="${release.publish.path}/${project.version}/sinadura-${project.version}-windows64-installer.exe"
-											overwrite="false" verbose="true" />
-										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
 								<goals>
