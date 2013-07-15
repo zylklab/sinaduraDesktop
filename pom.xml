@@ -141,6 +141,13 @@
 		          </includes>
 		        </configuration>
 		    </plugin>
+		    <!-- Se deshabilita la phase de deploy, ya que no tiene sentido en el desktop. Se publica de forma explicita por ant (ver "deploy-release"). -->
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
