@@ -761,7 +761,7 @@
 						<executions>
 							<execution>
 								<id>generarexe</id>
-								<phase>package</phase>
+								<phase>pre-integration-test</phase>
 								<configuration>
 									<tasks>
 										<echo message="Creating the .exe file." />
