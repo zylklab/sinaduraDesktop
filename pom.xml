@@ -69,6 +69,7 @@
 		<preferences.save.extension.default>-signed</preferences.save.extension.default>
 		<preferences.xades.validator.impl.default>sinadura</preferences.xades.validator.impl.default>
 		<version.check.update.enabled>true</version.check.update.enabled>
+		<release.publish.path>/home/alfredo/Escritorio/jaja/sinadura</release.publish.path>
 	</properties>
 
 	<build>
