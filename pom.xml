@@ -3,7 +3,7 @@
 	<groupId>sinadura</groupId>
 	<artifactId>sinaduraDesktop</artifactId>
 	<name>Sinadura Desktop</name>
-	<version>3.3.5</version>
+	<version>3.3.6-SNAPSHOT</version>
 	<description>El origen de sinadura es un software de escritorio para
 		la firma de pdf mediante firma digital. Un aplicativo multiplataforma
 		y una comunidad que ofrece documentación y servicios de valor añadido.
@@ -18,8 +18,8 @@
 	<url>http://www.sinadura.net</url>
 	
 	<scm>
-   		<connection>scm:svn:https://services.zylk.net/sinadura-repo/sinadura/sinaduraDesktop/tags/sinaduraDesktop-3.3.5</connection>
-   		<url>https://services.zylk.net/sinadura-repo/sinadura/sinaduraDesktop/tags/sinaduraDesktop-3.3.5</url>
+   		<connection>scm:svn:https://services.zylk.net/sinadura-repo/sinadura/sinaduraDesktop/trunk</connection>
+   		<url>https://services.zylk.net/sinadura-repo/sinadura/sinaduraDesktop/trunk</url>
 	</scm>
 	
 	<developers>
