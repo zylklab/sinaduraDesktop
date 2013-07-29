@@ -3,7 +3,7 @@
 	<groupId>sinadura</groupId>
 	<artifactId>sinaduraDesktop</artifactId>
 	<name>Sinadura Desktop</name>
-	<version>3.3.5</version>
+	<version>3.3.6</version>
 	<description>El origen de sinadura es un software de escritorio para
 		la firma de pdf mediante firma digital. Un aplicativo multiplataforma
 		y una comunidad que ofrece documentación y servicios de valor añadido.
@@ -110,6 +110,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
 				<executions>
 					<execution>
 						<goals>
@@ -121,6 +122,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -144,6 +146,7 @@
 		    <!-- Se deshabilita la phase de deploy, ya que no tiene sentido en el desktop. Se publica de forma explicita por ant (ver "deploy-release"). -->
 			<plugin>
 				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
 				<configuration>
 					<skip>true</skip>
 				</configuration>
@@ -1465,7 +1468,7 @@
 		<dependency>
 			<groupId>sinadura</groupId>
 			<artifactId>sinaduraCore</artifactId>
-			<version>3.3.7</version>
+			<version>3.3.8</version>
 		</dependency>
 
 		<dependency>
