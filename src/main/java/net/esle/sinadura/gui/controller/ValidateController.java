@@ -22,7 +22,10 @@
 package net.esle.sinadura.gui.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,7 @@ import net.esle.sinadura.core.interpreter.ValidationInterpreterUtil;
 import net.esle.sinadura.core.model.PDFSignatureInfo;
 import net.esle.sinadura.core.model.Status;
 import net.esle.sinadura.core.model.ValidationError;
+import net.esle.sinadura.core.model.ValidationPreferences;
 import net.esle.sinadura.core.model.XadesSignatureInfo;
 import net.esle.sinadura.core.service.PdfService;
 import net.esle.sinadura.core.service.Pkcs7Service;
@@ -45,14 +49,8 @@ import net.esle.sinadura.core.util.CipherUtil;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.core.xades.validator.XadesValidator;
 import net.esle.sinadura.core.xades.validator.XadesValidatorFactory;
-import net.esle.sinadura.ee.EEModulesManager;
-import net.esle.sinadura.ee.exceptions.EEModuleGenericException;
-import net.esle.sinadura.ee.exceptions.EEModuleNotFoundException;
-import net.esle.sinadura.ee.interfaces.ProxyEEModule;
 import net.esle.sinadura.gui.events.ProgressWriter;
 import net.esle.sinadura.gui.model.DocumentInfo;
-import net.esle.sinadura.gui.model.LoggerMessage;
-import net.esle.sinadura.gui.model.LoggerMessage.Level;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.PropertiesUtil;
@@ -69,9 +67,9 @@ public class ValidateController {
 
 		if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_PDF)) {
 			validatePDF(pdfParameter);
-		} else if (pdfParameter.getMimeType() != null
-				&& (pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR) || pdfParameter.getMimeType().equals(
-						FileUtil.MIMETYPE_XML))) {
+		} else if (pdfParameter.getMimeType() != null && (pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR)
+						|| pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_CXSIG)
+						|| pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_XML))) {
 			validateXades(pdfParameter);
 		} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_P7S)) {
 			validateP7(pdfParameter);
@@ -146,14 +144,28 @@ public class ValidateController {
 				throw new XadesValidationFatalException("unknown xades validator impl: " + xadesValidatorImpl);
 			}
 			
+			ValidationPreferences validationPreferences = new ValidationPreferences();
+			validationPreferences.setCheckRevocation(false);
+			validationPreferences.setKsCache(PreferencesUtil.getCacheKeystoreComplete());
+			validationPreferences.setKsTrust(PreferencesUtil.getTrustedKeystoreComplete());
+			validationPreferences.setValidatePolicy(false);
+			validationPreferences.setCheckNodeName(false);
+			
 			List<XadesSignatureInfo> resultados = null;
 			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR)) {
-				resultados = XadesService.validateArchiver(xadesValidator, pdfParameter.getPath(),
-						PreferencesUtil.getCacheKeystoreComplete(), PreferencesUtil.getTrustedKeystoreComplete());
+				resultados = XadesService.validateArchiver(xadesValidator, pdfParameter.getPath(), validationPreferences);
+			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_CXSIG)) {
+				try {
+					URI uri = new URI(pdfParameter.getPath());
+					File file = new File(uri);
+					InputStream is = new FileInputStream(file);
+					resultados = XadesService.validateCxsigArchiver(xadesValidator, is, validationPreferences);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_XML)) {
 				// TODO posibilitar el envio de documentos adjuntos (para detached). De momento los detached solo a partir de sar.
-				resultados = XadesService.validateXml(xadesValidator, pdfParameter.getPath(), null,
-						PreferencesUtil.getCacheKeystoreComplete(), PreferencesUtil.getTrustedKeystoreComplete());
+				resultados = XadesService.validateXml(xadesValidator, pdfParameter.getPath(), null, validationPreferences);
 			}
 			
 			pdfParameter.setSignatures(ValidationInterpreterUtil.parseResultadoValidacion(resultados));
