@@ -23,9 +23,11 @@ package net.esle.sinadura.gui.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,7 @@ import net.esle.sinadura.core.service.Pkcs7Service;
 import net.esle.sinadura.core.service.XadesService;
 import net.esle.sinadura.core.util.CipherUtil;
 import net.esle.sinadura.core.util.FileUtil;
+import net.esle.sinadura.core.util.PropertiesCoreUtil;
 import net.esle.sinadura.core.xades.validator.XadesValidator;
 import net.esle.sinadura.core.xades.validator.XadesValidatorFactory;
 import net.esle.sinadura.gui.events.ProgressWriter;
@@ -145,24 +148,32 @@ public class ValidateController {
 			}
 			
 			ValidationPreferences validationPreferences = new ValidationPreferences();
-			validationPreferences.setCheckRevocation(false);
+			validationPreferences.setCheckRevocation(PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.VALIDATION_CHECK_REVOCATION));
+			validationPreferences.setValidateEpesPolicy(PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.VALIDATION_CHECK_POLICY));
 			validationPreferences.setKsCache(PreferencesUtil.getCacheKeystoreComplete());
 			validationPreferences.setKsTrust(PreferencesUtil.getTrustedKeystoreComplete());
-			validationPreferences.setValidatePolicy(false);
-			validationPreferences.setCheckNodeName(false);
+
+			// configuracion estatica, lo dejo aqui para que este con el resto de preferencias de validacion
+			PropertiesCoreUtil.setCheckNodeName(PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.VALIDATION_CHECK_NODE_NAME));
 			
 			List<XadesSignatureInfo> resultados = null;
+			
 			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR)) {
 				resultados = XadesService.validateArchiver(xadesValidator, pdfParameter.getPath(), validationPreferences);
+				
 			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_CXSIG)) {
+				// TODO URI?? y polimorfismo de la funcion de validacion (por path en vez de IS)
 				try {
 					URI uri = new URI(pdfParameter.getPath());
 					File file = new File(uri);
 					InputStream is = new FileInputStream(file);
-					resultados = XadesService.validateCxsigArchiver(xadesValidator, is, validationPreferences);
-				} catch (Exception e) {
-					e.printStackTrace();
+					resultados = XadesService.validateCxsig(xadesValidator, is, validationPreferences);
+				} catch (FileNotFoundException e) {
+					throw new XadesValidationFatalException(e);
+				} catch (URISyntaxException e) {
+					throw new XadesValidationFatalException(e);
 				}
+				
 			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_XML)) {
 				// TODO posibilitar el envio de documentos adjuntos (para detached). De momento los detached solo a partir de sar.
 				resultados = XadesService.validateXml(xadesValidator, pdfParameter.getPath(), null, validationPreferences);

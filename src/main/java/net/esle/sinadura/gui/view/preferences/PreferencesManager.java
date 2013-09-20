@@ -81,9 +81,13 @@ public class PreferencesManager {
 			xadesPreferences.setTitle(LanguageUtil.getLanguage().getString("preferences.xades.title"));
 			xadesPreferences.setDescription(LanguageUtil.getLanguage().getString("preferences.xades.description") + "\n");
 
-		TrustedCertsPreferences trustedPreferences = new TrustedCertsPreferences();
-		trustedPreferences.setTitle(LanguageUtil.getLanguage().getString("preferences.trusted.title"));
-		trustedPreferences.setDescription(LanguageUtil.getLanguage().getString("preferences.trusted.description") + "\n");
+		ValidationPreferences validationPreferences = new ValidationPreferences();
+		validationPreferences.setTitle(LanguageUtil.getLanguage().getString("preferences.validation.title"));
+		validationPreferences.setDescription(LanguageUtil.getLanguage().getString("preferences.validation.description") + "\n");	
+			
+			TrustedCertsPreferences trustedPreferences = new TrustedCertsPreferences();
+			trustedPreferences.setTitle(LanguageUtil.getLanguage().getString("preferences.trusted.title"));
+			trustedPreferences.setDescription(LanguageUtil.getLanguage().getString("preferences.trusted.description") + "\n");
 		
 			CacheCertsPreferences cachePreferences = new CacheCertsPreferences();
 			cachePreferences.setTitle(LanguageUtil.getLanguage().getString("preferences.cache.title"));
@@ -98,7 +102,8 @@ public class PreferencesManager {
 				PreferenceNode hardwareCertNode = new PreferenceNode("hardwareCertNode", hardwareCertPreferences);
 			PreferenceNode pdfNode = new PreferenceNode("pdfNode", pdfPreferences);
 			PreferenceNode xadesNode = new PreferenceNode("xadesNode", xadesPreferences);
-		PreferenceNode trustedNode = new PreferenceNode("trustedNode", trustedPreferences);
+		PreferenceNode validationNode = new PreferenceNode("trustedNode", validationPreferences);
+			PreferenceNode trustedNode = new PreferenceNode("trustedNode", trustedPreferences);
 			PreferenceNode cacheNode = new PreferenceNode("cacheNode", cachePreferences);
 		
 
@@ -117,8 +122,9 @@ public class PreferencesManager {
 				mgr.addTo(signNode.getId(), pdfNode);
 			}
 			mgr.addTo(signNode.getId(), xadesNode);
-		mgr.addToRoot(trustedNode);
-			mgr.addTo(trustedNode.getId(), cacheNode);
+		mgr.addToRoot(validationNode);
+			mgr.addTo(validationNode.getId(), trustedNode);
+			mgr.addTo(validationNode.getId(), cacheNode);
 		
 
 		// Create the preferences dialog

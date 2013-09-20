@@ -105,6 +105,11 @@ public class PreferencesUtil {
 	public static final String XADES_ARCHIVE = "xades.archive";
 	public static final String XADES_XL_OCSP_ADD_ALL = "xades.xl.ocsp.add_all";
 	public static final String XADES_VALIDATOR_IMPL = "xades.validator.impl";
+	
+	// validation
+	public static final String VALIDATION_CHECK_REVOCATION = "validation.check_revocation";
+	public static final String VALIDATION_CHECK_POLICY = "validation.check_policy";
+	public static final String VALIDATION_CHECK_NODE_NAME = "validation.check_node_name";
 
 	// FileDialogs path
 	public static final String FILEDIALOG_PATH = "filedialog.path";
@@ -267,6 +272,11 @@ public class PreferencesUtil {
 				preferences.setDefault(XADES_XL_OCSP_ADD_ALL, "true");
 				String xadesValidatorImplDefault = PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_XADES_VALIDATOR_IMPL_DEFAULT);
 				preferences.setDefault(XADES_VALIDATOR_IMPL, xadesValidatorImplDefault);
+				
+				// validation
+				preferences.setDefault(VALIDATION_CHECK_REVOCATION, "true");
+				preferences.setDefault(VALIDATION_CHECK_POLICY, "true");
+				preferences.setDefault(VALIDATION_CHECK_NODE_NAME, "true");
 				
 				// carga de certificado
 				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())){
