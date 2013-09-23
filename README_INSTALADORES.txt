@@ -1,8 +1,44 @@
 ** Para trabajar con el Nexus de zylk + maven es necesario tener el certificado SSL instalado en nuestra JVM
 www.zylk.net/web/guest/web-2-0/blog/-/blogs/accediendo-a-repositorios-de-maven-securizados
 
- 
-** Para generar un nuevo empaquetado:
+
+
+JENKINS
+-------
+
+Ahora la públicacion de versiones esta automatizada en el jenkins. Así que para generar/publicar una nueva versión hay que hacer lo siguiente:
+
+Hacer un "perform maven release" en el jenkins de los proyectos que se hayan modificado. Hay que indicar: 
+ "Release Version:" versión que se va a publicar (por ejemplo: 3.3.7)
+ "Development version:" versión a la que se actualiza el pom despues de generar la nueva versión (por ejemplo: 3.3.8-SNAPSHOT)
+
+Hay que tener en cuenta que si se hace un "release" de un proyecto hay que hacer un "release" también de los proyectos que dependen de él.
+
+El orden en el que hay que ir realizado este proceso es el siguiente:
+ - MITyCLibOCSP-sinadura
+ - MITyCLibTSA-sinadura
+ - MITyCLibXADES-sinadura
+ - xmlsec-mityc-sinadura
+ - sinaduraEE-Interface
+ - sinaduraCore
+ - sinaduraEE
+ - sinaduraDesktop (en este no hay que hacer "perform maven release")
+
+
+Antes de hacer el "release" es importante revisar el pom del proyecto en cuestión por si hay referencias con "-SNAPSHOT". Si existen estas
+dependencias hay que quitarle dicho sufijo (para apuntar a la versión estable). Es decir, NO hay que editar la version del 
+propio pom (esto lo hace automaticamente el jenkins), unicamente hay que revisar las dependencias.
+   * (no se si hay alguna forma de que se haga esto automaticamente)
+
+
+Por último en el proyecto "sinaduraDesktop" no hay que hacer "perform maven release", sino un build normal del jenkins. Aunque antes hay que 
+revisar tambien el pom.xml, quitando los "-SNAPSHOT" de las dependencias, y en este caso modificando tambien la version principal del pom.
+
+Y una vez publicada la versión hay que hacer a mano:
+- La tag correspondiente en el svn
+- Actualizar el pom, incrementando la versión y poniendole el sufijo "-SNAPSHOT"
+
+
 
 =====================================
 = Cambio de versión
@@ -21,7 +57,7 @@ Actual: 3.3.4
 (http://www.sinadura.net/server)
 
 =====================================
-= Comprobaciones
+= Comprobaciones adicionales
 =====================================
 
 - revisar log4j.properties (desktop) que el 'log4j.rootLogger' esté a INFO
@@ -122,6 +158,8 @@ Y con esto ya se genera el EXE.
 
 
 - Y renombrarlos con la nomenclatura correcta al subirlos a www.sinadura.net (ver versiones anteriores).
+
+
 
 
 =====================================
