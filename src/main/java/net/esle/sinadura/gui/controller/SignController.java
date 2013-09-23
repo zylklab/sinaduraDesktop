@@ -526,13 +526,13 @@ public class SignController {
 			 */
 			String outputName = PreferencesUtil.getOutputName(inputFile.getName());
 			
-			
-			// TODO REVISAR!!! He comentado esto porque estaba dando problemas de encoder en windows al generar el path de salida de la firma
-//			if (FileUtil.isURIEncoded(outputDir)){
-//				outputName = URIEncoder.encode(outputName, "utf-8");
-//			}else{
-//				outputName = URIUtil.decode(outputName, "utf-8");
-//			}
+			if (FileUtil.isURIEncoded(outputDir)) {
+				if (!FileUtil.isURIEncoded(outputName)) {
+					outputName = URIEncoder.encode(outputName, "utf-8");
+				}
+			} else {
+				outputName = URIUtil.decode(outputName, "utf-8");
+			}
 			
 			String outputPath = null;
 			
