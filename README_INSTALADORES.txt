@@ -3,8 +3,9 @@ www.zylk.net/web/guest/web-2-0/blog/-/blogs/accediendo-a-repositorios-de-maven-s
 
 
 
-JENKINS
--------
+
+PUBLICACION DE VERSIONES - JENKINS
+----------------------------------
 
 Ahora la públicacion de versiones esta automatizada en el jenkins. Así que para generar/publicar una nueva versión hay que hacer lo siguiente:
 
@@ -25,25 +26,31 @@ El orden en el que hay que ir realizado este proceso es el siguiente:
  - sinaduraDesktop (en este no hay que hacer "perform maven release")
 
 
-Antes de hacer el "release" es importante revisar el pom del proyecto en cuestión por si hay referencias con "-SNAPSHOT". Si existen estas
+Antes de hacer el "release" es importante revisar el pom del proyecto en cuestión, por si hay referencias con "-SNAPSHOT". Si existen estas
 dependencias hay que quitarle dicho sufijo (para apuntar a la versión estable). Es decir, NO hay que editar la version del 
 propio pom (esto lo hace automaticamente el jenkins), unicamente hay que revisar las dependencias.
    * (no se si hay alguna forma de que se haga esto automaticamente)
 
 
 Por último en el proyecto "sinaduraDesktop" no hay que hacer "perform maven release", sino un build normal del jenkins. Aunque antes hay que 
-revisar tambien el pom.xml, quitando los "-SNAPSHOT" de las dependencias, y en este caso modificando tambien la version principal del pom.
+revisar tambien el pom.xml, quitando los "-SNAPSHOT" de las dependencias, y en este caso quitandolo tambien de la versión principal del pom.
 
-Y una vez publicada la versión hay que hacer a mano:
-- La tag correspondiente en el svn
-- Actualizar el pom, incrementando la versión y poniendole el sufijo "-SNAPSHOT"
+A nivel de codigo fuente hay que especificar a mano la versión en:
+- En el "configuration.properties" (desktop) la propiedad "application.local.version"
+
+Una vez hecho esto ya se puede hacer el build.
+
+Y una vez publicada la versión hay que hacer también a mano:
+- La tag correspondiente en el svn.
+- Actualizar el pom, incrementando la versión y poniendole el sufijo "-SNAPSHOT".
+
 
 
 
 =====================================
 = Cambio de versión
 =====================================
-Actual: 3.3.4
+
 
 - En el pom.xml (core, desktop, ee, ee-interfaces, parent, mityc...)
   - cambiar la versión del producto generado (core y desktop)
