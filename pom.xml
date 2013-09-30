@@ -1468,7 +1468,7 @@
 		<dependency>
 			<groupId>sinadura</groupId>
 			<artifactId>sinaduraCore</artifactId>
-			<version>3.3.9</version>
+			<version>3.3.10-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
