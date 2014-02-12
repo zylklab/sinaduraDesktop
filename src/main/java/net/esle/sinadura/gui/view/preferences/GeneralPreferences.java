@@ -56,6 +56,8 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 	
 	private BooleanFieldEditor autoValidate = null;
 	
+	private BooleanFieldEditor addDirRecursive = null;
+	
 	private BooleanFieldEditor statistics = null;
 
 	private Shell parent;
@@ -160,6 +162,10 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 		autoValidate = new BooleanFieldEditor(PreferencesUtil.AUTO_VALIDATE, LanguageUtil.getLanguage().getString(
 			"preferences.main.auto.validate"), getFieldEditorParent());
 		addField(autoValidate);
+		
+		addDirRecursive = new BooleanFieldEditor(PreferencesUtil.ADD_DIR_RECURSIVE, LanguageUtil.getLanguage().getString(
+			"preferences.main.add.dir.recursive"), getFieldEditorParent());
+		addField(addDirRecursive);
 		
 		statistics = new BooleanFieldEditor(PreferencesUtil.ENABLE_STATISTICS, LanguageUtil.getLanguage().getString(
 			"preferences.main.enable.statistics"), getFieldEditorParent());

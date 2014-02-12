@@ -60,6 +60,7 @@ public class PreferencesUtil {
 	public static final String OUTPUT_DIR = "output.dir";
 	public static final String SAVE_EXTENSION = "save.extension";
 	public static final String AUTO_VALIDATE = "auto.validate";
+	public static final String ADD_DIR_RECURSIVE = "add.dir.recursive";
 	public static final String ENABLE_STATISTICS = "enable.statistics";
 	
 	// Proxy
@@ -231,6 +232,7 @@ public class PreferencesUtil {
 				String saveExtensionDefault = PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_SAVE_EXTENSION_DEFAULT);
 				preferences.setDefault(SAVE_EXTENSION, saveExtensionDefault);
 				preferences.setDefault(AUTO_VALIDATE, "true");
+				preferences.setDefault(ADD_DIR_RECURSIVE, "false");
 				preferences.setDefault(ENABLE_STATISTICS, "true");
 				
 				// Proxy

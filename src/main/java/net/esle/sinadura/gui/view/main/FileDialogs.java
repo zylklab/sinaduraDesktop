@@ -157,9 +157,11 @@ public class FileDialogs {
 		
 		List<File> fileList = new ArrayList<File>();
 		
+		boolean addDirRecursive = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.ADD_DIR_RECURSIVE);
+		
 		if (dir != null) {
 			File dirFile = new File(dir);
-			fileList = FileUtil.getFilesFromDir(dirFile);
+			fileList = FileUtil.getFilesFromDir(dirFile, addDirRecursive);
 		}
 		
 		return fileList;
