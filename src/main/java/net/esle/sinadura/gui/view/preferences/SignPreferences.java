@@ -26,6 +26,7 @@ import java.util.Map;
 import net.esle.sinadura.gui.util.HardwareItem;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
+import net.esle.sinadura.gui.util.PropertiesUtil;
 import net.esle.sinadura.gui.util.TimestampItem;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
@@ -62,7 +63,7 @@ public class SignPreferences extends FieldEditorPreferencePage {
 		
 		this.checkTSEnable = new BooleanFieldEditor(PreferencesUtil.SIGN_TS_ENABLE, LanguageUtil.getLanguage().getString(
 				"preferences.sign.ts.enable"), getFieldEditorParent());
-		addField(this.checkTSEnable);
+		
 
 		Map<String, TimestampItem> map = PreferencesUtil.getTimestampPreferences();
 		String[][] comboFields = new String[map.size()][2];
@@ -79,7 +80,7 @@ public class SignPreferences extends FieldEditorPreferencePage {
 		
 		ComboFieldEditor comboTSA = new ComboFieldEditor(PreferencesUtil.SIGN_TS_TSA, LanguageUtil.getLanguage().getString("preferences.sign.ts.tsa"),
 				comboFields, composite);
-		addField(comboTSA);
+		
 
 		this.checkOCSP = new BooleanFieldEditor(PreferencesUtil.SIGN_OCSP_ENABLE, LanguageUtil.getLanguage().getString(
 				"preferences.sign.ocsp.enable"), getFieldEditorParent());
@@ -90,8 +91,14 @@ public class SignPreferences extends FieldEditorPreferencePage {
 		} else {
 			this.checkOCSP.setEnabled(true, getFieldEditorParent());
 		}
-		addField(this.checkOCSP);
-
+		
+		if(Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE).equals(0)||
+				(Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE).equals(0)) && Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL))))){
+			
+			addField(this.checkTSEnable);
+			addField(comboTSA);
+			addField(this.checkOCSP);
+		}
 		
 		this.checkTSEnable.getDescriptionControl(getFieldEditorParent()).addListener(SWT.MouseUp, new Listener() {
 

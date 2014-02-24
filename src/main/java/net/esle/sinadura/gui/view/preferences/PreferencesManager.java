@@ -41,6 +41,8 @@ public class PreferencesManager {
 	private static Log log = LogFactory.getLog(PreferencesManager.class);
 
 	/**
+	 * sadsad
+	 * sadsad
 	 * @param mainShell
 	 */
 	public void run(Shell mainShell) {
@@ -118,14 +120,21 @@ public class PreferencesManager {
 				mgr.addTo(signNode.getId() + "." + certNode.getId(), softwareCertNode);
 				mgr.addTo(signNode.getId() + "." + certNode.getId(), hardwareCertNode);
 			
-			if (Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_PDF_ENABLED))){
+			if (Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_PDF_ENABLED))) {
 				mgr.addTo(signNode.getId(), pdfNode);
 			}
-			mgr.addTo(signNode.getId(), xadesNode);
-		mgr.addToRoot(validationNode);
-			mgr.addTo(validationNode.getId(), trustedNode);
-			mgr.addTo(validationNode.getId(), cacheNode);
-		
+			if(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.XADES_PREFERENCES_VISIBLE).equals(0) ||
+					(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.XADES_PREFERENCES_VISIBLE).equals(1) && Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL)))){
+				
+				mgr.addTo(signNode.getId(), xadesNode);
+			}
+	
+		if (PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VALIDATIONNODE_VISIBLE).equals(0) ||
+				(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VALIDATIONNODE_VISIBLE).equals(1) && Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL)))) {
+			mgr.addToRoot(validationNode);
+				mgr.addTo(validationNode.getId(), trustedNode);
+				mgr.addTo(validationNode.getId(), cacheNode);
+		}
 
 		// Create the preferences dialog
 		PreferenceDialog dlg = new PreferenceDialog(mainShell, mgr);

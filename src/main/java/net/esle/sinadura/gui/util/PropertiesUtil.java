@@ -77,7 +77,16 @@ public class PropertiesUtil {
 	// visibilidad de opciones de las preferencias
 	public static final String PREFERENCES_SUFFIX_ENABLED 	= "preferences.suffix.enabled";
 	public static final String PREFERENCES_PDF_ENABLED 		= "preferences.pdf.enabled";
-	public static final String PREFERENCES_XADES_XL_OCSP_ADD_ALL_VISIBLE = "preferences.xades.xl.ocsp.add_all.visible";
+	public static final String PREFERENCES_XADES_XL_OCSP_ADD_ALL_VISIBLE = "preferences.visible.xades.xl.ocsp.add_all";
+	
+	public static final String VISIBLE_ALL = "preferences.visible.all";
+	public static final String GENERAL_SAVE = "preferences.visible.general.save.extension";
+	public static final String SIGNNODE_TIMESTAMP_VISIBLE = "preferences.visible.sign.timeStamp";
+	public static final String SIGNNODE_VA_VISIBLE = "preferences.visible.sign.va";
+	public static final String SIGNNODE_OCSP = "preferences.visible.sign.ocsp";
+	public static final String XADES_PREFERENCES_VISIBLE = "preferences.visible.sign.XadesPreferences";
+	public static final String VALIDATIONNODE_VISIBLE = "preferences.visible.validation.section";
+	
 	
 	// valor por defecto de las preferencias.
 	public static final String DEFAULT_IMAGE_FILE_PATH = USER_BASE_PATH + File.separatorChar + "sinadura150.png"; 	// imagen por defecto para el sello

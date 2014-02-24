@@ -110,26 +110,37 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 
 		addField(cfe);
 		
-		checkOutput = new BooleanFieldEditor(PreferencesUtil.OUTPUT_AUTO_ENABLE, LanguageUtil.getLanguage().getString(
-			"preferences.main.output.auto.enable"), getFieldEditorParent());
-		addField(checkOutput);
-		checkOutput.getDescriptionControl(getFieldEditorParent()).addListener(SWT.MouseUp, new Listener() {
-			
-			@Override
-			public void handleEvent(Event arg0) {
-				if (!checkOutput.getBooleanValue()) {
-					outputDir2.setEnabled(true, getFieldEditorParent());
-				} else {
+		if(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.GENERAL_SAVE).equals(0) ||
+			(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.GENERAL_SAVE).equals(1) && 
+			Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL )))){
+				
+				checkOutput = new BooleanFieldEditor(PreferencesUtil.OUTPUT_AUTO_ENABLE, LanguageUtil.getLanguage().getString(
+					"preferences.main.output.auto.enable"), getFieldEditorParent());
+				addField(checkOutput);
+				checkOutput.getDescriptionControl(getFieldEditorParent()).addListener(SWT.MouseUp, new Listener() {
+					
+					@Override
+					public void handleEvent(Event arg0) {
+						if (!checkOutput.getBooleanValue()) {
+							outputDir2.setEnabled(true, getFieldEditorParent());
+						} else {
+							outputDir2.setEnabled(false, getFieldEditorParent());
+						}
+					}
+				});
+				
+				// Add a directory field
+				outputDir2 = new GenericDirectoryFieldEditor(PreferencesUtil.OUTPUT_DIR, LanguageUtil
+						.getLanguage().getString("preferences.main.output_dir"), getFieldEditorParent());
+				addField(outputDir2);
+				
+				
+				if (PreferencesUtil.getPreferences().getString(PreferencesUtil.OUTPUT_AUTO_ENABLE).equals("true")) {
 					outputDir2.setEnabled(false, getFieldEditorParent());
+				} else {
+					outputDir2.setEnabled(true, getFieldEditorParent());
 				}
-			}
-		});
-		
-		// Add a directory field
-		outputDir2 = new GenericDirectoryFieldEditor(PreferencesUtil.OUTPUT_DIR, LanguageUtil
-				.getLanguage().getString("preferences.main.output_dir"), getFieldEditorParent());
-		addField(outputDir2);
-		
+		}
 		
 		// -- sufijo
 		//---------------
@@ -150,14 +161,6 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 			addField(saveExtension);
 		}
 		
-		
-		
-		
-		if (PreferencesUtil.getPreferences().getString(PreferencesUtil.OUTPUT_AUTO_ENABLE).equals("true")) {
-			outputDir2.setEnabled(false, getFieldEditorParent());
-		} else {
-			outputDir2.setEnabled(true, getFieldEditorParent());
-		}
 		
 		autoValidate = new BooleanFieldEditor(PreferencesUtil.AUTO_VALIDATE, LanguageUtil.getLanguage().getString(
 			"preferences.main.auto.validate"), getFieldEditorParent());

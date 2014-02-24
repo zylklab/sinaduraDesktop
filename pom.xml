@@ -70,6 +70,16 @@
 		<preferences.xades.validator.impl.default>sinadura</preferences.xades.validator.impl.default>
 		<version.check.update.enabled>true</version.check.update.enabled>
 		<release.publish.path>/var/www/releases/sinadura</release.publish.path>
+		
+		<preferences.visible.general.save.extension>0</preferences.visible.general.save.extension>
+		<preferences.visible.pdf.section>0</preferences.visible.pdf.section>
+		<preferences.visible.xades.xl.ocsp.add_all>0</preferences.visible.xades.xl.ocsp.add_all>
+		<preferences.visible.sign.section>0</preferences.visible.sign.section>
+		<preferences.visible.sign.timeStamp>0</preferences.visible.sign.timeStamp>
+		<preferences.visible.sign.va>0</preferences.visible.sign.va>
+		<preferences.visible.sign.ocsp>0</preferences.visible.sign.ocsp>
+		<preferences.visible.sign.XadesPreferences>0</preferences.visible.sign.XadesPreferences>
+		<preferences.visible.validation.section>0</preferences.visible.validation.section>
 	</properties>
 
 	<build>
@@ -186,6 +196,17 @@
 				<preferences.save.extension.default />
 				<preferences.xades.validator.impl.default>zain</preferences.xades.validator.impl.default>
 				<version.check.update.enabled>false</version.check.update.enabled>
+				
+				
+				<preferences.visible.general.save.extension>1</preferences.visible.general.save.extension>
+				<preferences.visible.pdf.section>1</preferences.visible.pdf.section>
+				<preferences.visible.xades.xl.ocsp.add_all>1</preferences.visible.xades.xl.ocsp.add_all>
+				<preferences.visible.sign.section>1</preferences.visible.sign.section>
+				<preferences.visible.sign.timeStamp>1</preferences.visible.sign.timeStamp>
+				<preferences.visible.sign.va>1</preferences.visible.sign.va>
+				<preferences.visible.sign.ocsp>1</preferences.visible.sign.ocsp>
+				<preferences.visible.sign.XadesPreferences>1</preferences.visible.sign.XadesPreferences>
+				<preferences.visible.validation.section>1</preferences.visible.validation.section>
 			</properties>
 		</profile>
 
@@ -245,7 +266,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-resources-plugin</artifactId>
-						<version>2.4</version>
+						<version>2.6</version>
 						<executions>
 							<execution>
 								<id>resources-copy</id>
