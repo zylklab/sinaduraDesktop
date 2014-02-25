@@ -123,14 +123,14 @@ public class PreferencesManager {
 			if (Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_PDF_ENABLED))) {
 				mgr.addTo(signNode.getId(), pdfNode);
 			}
-			if(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.XADES_PREFERENCES_VISIBLE).equals(0) ||
-					(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.XADES_PREFERENCES_VISIBLE).equals(1) && Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL)))){
+			if(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.XADES_PREFERENCES_VISIBLE).equals("0") ||
+					(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.XADES_PREFERENCES_VISIBLE).equals("1") && Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL)))){
 				
 				mgr.addTo(signNode.getId(), xadesNode);
 			}
 	
-		if (PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VALIDATIONNODE_VISIBLE).equals(0) ||
-				(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VALIDATIONNODE_VISIBLE).equals(1) && Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL)))) {
+		if (PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VALIDATIONNODE_VISIBLE).equals("0") ||
+				(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VALIDATIONNODE_VISIBLE).equals("1") && Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL)))) {
 			mgr.addToRoot(validationNode);
 				mgr.addTo(validationNode.getId(), trustedNode);
 				mgr.addTo(validationNode.getId(), cacheNode);

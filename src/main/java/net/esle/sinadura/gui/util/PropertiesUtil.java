@@ -80,10 +80,10 @@ public class PropertiesUtil {
 	public static final String PREFERENCES_XADES_XL_OCSP_ADD_ALL_VISIBLE = "preferences.visible.xades.xl.ocsp.add_all";
 	
 	public static final String VISIBLE_ALL = "preferences.visible.all";
-	public static final String GENERAL_SAVE = "preferences.visible.general.save.extension";
+	public static final String GENERAL_SAVE_VISIBLE = "preferences.visible.general.save.extension";
 	public static final String SIGNNODE_TIMESTAMP_VISIBLE = "preferences.visible.sign.timeStamp";
 	public static final String SIGNNODE_VA_VISIBLE = "preferences.visible.sign.va";
-	public static final String SIGNNODE_OCSP = "preferences.visible.sign.ocsp";
+	public static final String SIGNNODE_OCSP_VISIBLE = "preferences.visible.sign.ocsp";
 	public static final String XADES_PREFERENCES_VISIBLE = "preferences.visible.sign.XadesPreferences";
 	public static final String VALIDATIONNODE_VISIBLE = "preferences.visible.validation.section";
 	

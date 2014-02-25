@@ -29,6 +29,8 @@ import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.PropertiesUtil;
 import net.esle.sinadura.gui.util.TimestampItem;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -43,6 +45,8 @@ import org.eclipse.swt.widgets.Listener;
  */
 
 public class SignPreferences extends FieldEditorPreferencePage {
+	
+	private static Log log = LogFactory.getLog(SignPreferences.class);
 
 	private BooleanFieldEditor checkTSEnable = null;
 	private BooleanFieldEditor checkOCSP = null;
@@ -92,8 +96,9 @@ public class SignPreferences extends FieldEditorPreferencePage {
 			this.checkOCSP.setEnabled(true, getFieldEditorParent());
 		}
 		
-		if(Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE).equals(0)||
-				(Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE).equals(0)) && Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL))))){
+		log.info(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE));
+		if(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE).equals("0")||
+				(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE).equals("1") && Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL)))){
 			
 			addField(this.checkTSEnable);
 			addField(comboTSA);

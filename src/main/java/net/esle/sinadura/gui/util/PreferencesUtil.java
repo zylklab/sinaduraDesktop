@@ -62,7 +62,8 @@ public class PreferencesUtil {
 	public static final String AUTO_VALIDATE = "auto.validate";
 	public static final String ADD_DIR_RECURSIVE = "add.dir.recursive";
 	public static final String ENABLE_STATISTICS = "enable.statistics";
-	
+	public static final String GENERAL_SAVE_VISIBLE = "preferences.visible.general.save.extension";
+
 	// Proxy
 	public static final String PROXY_USER = "proxy.http.user";
 	public static final String PROXY_PASS = "proxy.http.pass";
@@ -86,6 +87,10 @@ public class PreferencesUtil {
 	public static final String SIGN_TS_TSA = "sign.ts.tsa";
 	public static final String SIGN_OCSP_ENABLE = "sign.ocsp.enable";
 	
+	public static final String SIGNNODE_TIMESTAMP_VISIBLE = "preferences.visible.sign.timeStamp";
+	public static final String SIGNNODE_VA_VISIBLE = "preferences.visible.sign.va";
+	public static final String SIGNNODE_OCSP_VISIBLE = "preferences.visible.sign.ocsp";
+	
 	// Pdf
 	public static final String PDF_TIPO 	= "pdf.tipo";
 	public static final String PDF_TIPO_PDF = "0";
@@ -107,10 +112,14 @@ public class PreferencesUtil {
 	public static final String XADES_XL_OCSP_ADD_ALL = "xades.xl.ocsp.add_all";
 	public static final String XADES_VALIDATOR_IMPL = "xades.validator.impl";
 	
+	public static final String XADES_PREFERENCES_VISIBLE = "preferences.visible.sign.XadesPreferences";
+	
 	// validation
 	public static final String VALIDATION_CHECK_REVOCATION = "validation.check_revocation";
 	public static final String VALIDATION_CHECK_POLICY = "validation.check_policy";
 	public static final String VALIDATION_CHECK_NODE_NAME = "validation.check_node_name";
+	
+	public static final String VALIDATIONNODE_VISIBLE = "preferences.visible.validation.section";
 
 	// FileDialogs path
 	public static final String FILEDIALOG_PATH = "filedialog.path";
@@ -224,6 +233,7 @@ public class PreferencesUtil {
 				preferences.setDefault(IDIOMA, "es_ES");
 				preferences.setDefault(OUTPUT_AUTO_ENABLE, "true");
 				preferences.setDefault(OUTPUT_DIR, System.getProperty("user.home"));
+				preferences.setDefault(GENERAL_SAVE_VISIBLE, PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.GENERAL_SAVE_VISIBLE));
 				
 				/*
 				 * "-signed" - sinadura
@@ -244,6 +254,10 @@ public class PreferencesUtil {
 				preferences.setDefault(SIGN_TS_ENABLE, "true");
 				preferences.setDefault(SIGN_TS_TSA, "izenpe");
 				preferences.setDefault(SIGN_OCSP_ENABLE, "true");
+				
+				preferences.setDefault(SIGNNODE_TIMESTAMP_VISIBLE, PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE));
+				preferences.setDefault(SIGNNODE_VA_VISIBLE, PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_VA_VISIBLE));
+				preferences.setDefault(SIGNNODE_OCSP_VISIBLE, PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_OCSP_VISIBLE));
 
 				// Certificado
 				preferences.setDefault(APLICAR_PREFERENCIAS_USAGE_CERT, true);
@@ -275,10 +289,15 @@ public class PreferencesUtil {
 				String xadesValidatorImplDefault = PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_XADES_VALIDATOR_IMPL_DEFAULT);
 				preferences.setDefault(XADES_VALIDATOR_IMPL, xadesValidatorImplDefault);
 				
+				preferences.setDefault(XADES_PREFERENCES_VISIBLE, PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.XADES_PREFERENCES_VISIBLE));
+				
+				
 				// validation
 				preferences.setDefault(VALIDATION_CHECK_REVOCATION, "true");
 				preferences.setDefault(VALIDATION_CHECK_POLICY, "true");
 				preferences.setDefault(VALIDATION_CHECK_NODE_NAME, "true");
+				
+				preferences.setDefault(VALIDATIONNODE_VISIBLE, PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VALIDATIONNODE_VISIBLE));
 				
 				// carga de certificado
 				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())){
