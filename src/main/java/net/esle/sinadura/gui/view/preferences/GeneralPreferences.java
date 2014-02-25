@@ -111,9 +111,9 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 		addField(cfe);
 		//log.info(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.GENERAL_SAVE_VISIBLE) + " - " + Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL )));
 		//log.info("GENERAL_SAVE - " + Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL)));
-		if(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.GENERAL_SAVE_VISIBLE).equals("0") ||
-			(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.GENERAL_SAVE_VISIBLE).equals("1") && 
-			Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL)))){
+		if(PropertiesUtil.get(PropertiesUtil.GENERAL_SAVE_VISIBLE).equals(PreferencesUtil.VISIBILITY_TYPE_VISIBLE) ||
+			(PropertiesUtil.get(PropertiesUtil.GENERAL_SAVE_VISIBLE).equals(PreferencesUtil.VISIBILITY_TYPE_HIDDEN_DEPENDANT) && 
+			PropertiesUtil.getBoolean(PropertiesUtil.VISIBLE_ALL))){
 				
 				checkOutput = new BooleanFieldEditor(PreferencesUtil.OUTPUT_AUTO_ENABLE, LanguageUtil.getLanguage().getString(
 					"preferences.main.output.auto.enable"), getFieldEditorParent());
@@ -145,7 +145,7 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 		
 		// -- sufijo
 		//---------------
-		if (Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_SUFFIX_ENABLED))){
+		if (PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_SUFFIX_ENABLED)){
 			saveExtension = new GenericStringFieldEditor(PreferencesUtil.SAVE_EXTENSION, LanguageUtil.getLanguage()
 					.getString("preferences.main.extension"), getFieldEditorParent(), 150);
 			

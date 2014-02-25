@@ -51,7 +51,8 @@ public class PreferencesUtil {
 
 	private static Log log = LogFactory.getLog(PreferencesUtil.class);
 	
-	// PREFERENCES KEYS *******************************
+	// *******************************
+	// PREFERENCES KEYS
 	
 	// General
 	public static final String IDIOMA = "idioma";
@@ -92,7 +93,7 @@ public class PreferencesUtil {
 	public static final String SIGNNODE_OCSP_VISIBLE = "preferences.visible.sign.ocsp";
 	
 	// Pdf
-	public static final String PDF_TIPO 	= "pdf.tipo";
+	public static final String PDF_TIPO = "pdf.tipo";
 	public static final String PDF_TIPO_PDF = "0";
 	public static final String PDF_TIPO_XML = "1";
 	public static final String PDF_VISIBLE = "pdf.visible";
@@ -109,7 +110,7 @@ public class PreferencesUtil {
 	
 	// xades
 	public static final String XADES_ARCHIVE = "xades.archive";
-	public static final String XADES_XL_OCSP_ADD_ALL = "xades.xl.ocsp.add_all";
+	public static final String XADES_XL_OCSP_ADD_ALL = "preferences.visible.xades.xl.ocsp.add_all";
 	public static final String XADES_VALIDATOR_IMPL = "xades.validator.impl";
 	
 	public static final String XADES_PREFERENCES_VISIBLE = "preferences.visible.sign.XadesPreferences";
@@ -126,8 +127,15 @@ public class PreferencesUtil {
 	
 
 	// *******************************
+	// PREFERENCES VALUE (constants)
+	public static final String VISIBILITY_TYPE_VISIBLE = "0";
+	public static final String VISIBILITY_TYPE_HIDDEN_DEPENDANT = "1";
+	public static final String VISIBILITY_TYPE_HIDDEN_ALWAYS = "2";
 	
+	
+	// *******************************
 	// PATHS
+	private static final String USER_HOME = "user.home";
 	
 	// preferencias
 	private static final String FOLDER_PREFERENCES_PATH = PropertiesUtil.USER_BASE_PATH + File.separatorChar + "preferences";
@@ -230,86 +238,72 @@ public class PreferencesUtil {
 				// VALORES POR DEFECTO
 				
 				// General
-				preferences.setDefault(IDIOMA, "es_ES");
-				preferences.setDefault(OUTPUT_AUTO_ENABLE, "true");
-				preferences.setDefault(OUTPUT_DIR, System.getProperty("user.home"));
-				preferences.setDefault(GENERAL_SAVE_VISIBLE, PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.GENERAL_SAVE_VISIBLE));
+				preferences.setDefault(IDIOMA, PreferencesDefaultUtil.get(IDIOMA));
+				preferences.setDefault(OUTPUT_AUTO_ENABLE,PreferencesDefaultUtil.get(OUTPUT_AUTO_ENABLE));// "true");
+				preferences.setDefault(OUTPUT_DIR, System.getProperty(USER_HOME)); // esta necesita definirse en runtime
 				
 				/*
 				 * "-signed" - sinadura
 				 * ""  		 - parlamento
 				 */
-				String saveExtensionDefault = PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_SAVE_EXTENSION_DEFAULT);
-				preferences.setDefault(SAVE_EXTENSION, saveExtensionDefault);
-				preferences.setDefault(AUTO_VALIDATE, "true");
-				preferences.setDefault(ADD_DIR_RECURSIVE, "false");
-				preferences.setDefault(ENABLE_STATISTICS, "true");
+				preferences.setDefault(SAVE_EXTENSION, PreferencesDefaultUtil.get(SAVE_EXTENSION));
+				preferences.setDefault(AUTO_VALIDATE, PreferencesDefaultUtil.get(AUTO_VALIDATE));//"true");
+				preferences.setDefault(ADD_DIR_RECURSIVE, PreferencesDefaultUtil.get(ADD_DIR_RECURSIVE));//"false");
+				preferences.setDefault(ENABLE_STATISTICS, PreferencesDefaultUtil.get(ENABLE_STATISTICS));//"true");
 				
 				// Proxy
-				preferences.setDefault(PROXY_USER, "");
-				preferences.setDefault(PROXY_PASS, "");
-				preferences.setDefault(PROXY_SYSTEM, "true");
+				preferences.setDefault(PROXY_USER, PreferencesDefaultUtil.get(PROXY_USER));//"");
+				preferences.setDefault(PROXY_PASS, PreferencesDefaultUtil.get(PROXY_PASS));//"");
+				preferences.setDefault(PROXY_SYSTEM, PreferencesDefaultUtil.get(PROXY_SYSTEM));//"true");
 				
 				// Sign
-				preferences.setDefault(SIGN_TS_ENABLE, "true");
-				preferences.setDefault(SIGN_TS_TSA, "izenpe");
-				preferences.setDefault(SIGN_OCSP_ENABLE, "true");
-				
-				preferences.setDefault(SIGNNODE_TIMESTAMP_VISIBLE, PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE));
-				preferences.setDefault(SIGNNODE_VA_VISIBLE, PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_VA_VISIBLE));
-				preferences.setDefault(SIGNNODE_OCSP_VISIBLE, PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_OCSP_VISIBLE));
+				preferences.setDefault(SIGN_TS_ENABLE, PreferencesDefaultUtil.get(SIGN_TS_ENABLE));//"true");
+				preferences.setDefault(SIGN_TS_TSA, PreferencesDefaultUtil.get(SIGN_TS_TSA));//"izenpe");
+				preferences.setDefault(SIGN_OCSP_ENABLE, PreferencesDefaultUtil.get(SIGN_OCSP_ENABLE));//"true");
 
 				// Certificado
-				preferences.setDefault(APLICAR_PREFERENCIAS_USAGE_CERT, true);
+				preferences.setDefault(APLICAR_PREFERENCIAS_USAGE_CERT, PreferencesDefaultUtil.get(APLICAR_PREFERENCIAS_USAGE_CERT));//true);
 				
 				// Pdf
 				
 				/*
 				 * 0 (pdf) - sinadura
 				 * 1 (xml) - parlamento
-				 */  
-				String pdfTipoDefault = PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_PDF_TIPO_DEFAULT);
-				preferences.setDefault(PDF_TIPO, pdfTipoDefault);
-				
-				preferences.setDefault(PDF_VISIBLE, "true");
-				preferences.setDefault(PDF_PAGE, "1");
-				preferences.setDefault(PDF_REASON, "powered by zylk.net");
-				preferences.setDefault(PDF_LOCATION, "Bilbao");
-				preferences.setDefault(PDF_STAMP_ENABLE, "true");
-				preferences.setDefault(PDF_STAMP_PATH, PropertiesUtil.DEFAULT_IMAGE_FILE_PATH);
-				preferences.setDefault(PDF_STAMP_X, "20");
-				preferences.setDefault(PDF_STAMP_Y, "20");
-				preferences.setDefault(PDF_STAMP_WIDTH, "125");
-				preferences.setDefault(PDF_STAMP_HEIGHT, "125");
-				preferences.setDefault(PDF_CERTIFIED, "" + PdfSignatureAppearance.NOT_CERTIFIED);
+				 */
+				preferences.setDefault(PDF_TIPO, PreferencesDefaultUtil.get(PDF_TIPO));
+				preferences.setDefault(PDF_VISIBLE, PreferencesDefaultUtil.get(PDF_VISIBLE));//"true");
+				preferences.setDefault(PDF_PAGE, PreferencesDefaultUtil.get(PDF_PAGE));//"1");
+				preferences.setDefault(PDF_REASON, PreferencesDefaultUtil.get(PDF_REASON));//"powered by zylk.net");
+				preferences.setDefault(PDF_LOCATION, PreferencesDefaultUtil.get(PDF_LOCATION));//"Bilbao");
+				preferences.setDefault(PDF_STAMP_ENABLE, PreferencesDefaultUtil.get(PDF_STAMP_ENABLE));//"true");
+				preferences.setDefault(PDF_STAMP_PATH, PropertiesUtil.DEFAULT_IMAGE_FILE_PATH); // esta necesita definirse en runtime
+				preferences.setDefault(PDF_STAMP_X, PreferencesDefaultUtil.get(PDF_STAMP_X));//"20");
+				preferences.setDefault(PDF_STAMP_Y, PreferencesDefaultUtil.get(PDF_STAMP_Y));//"20");
+				preferences.setDefault(PDF_STAMP_WIDTH, PreferencesDefaultUtil.get(PDF_STAMP_WIDTH));//"125");
+				preferences.setDefault(PDF_STAMP_HEIGHT, PreferencesDefaultUtil.get(PDF_STAMP_HEIGHT));//"125");
+				preferences.setDefault(PDF_CERTIFIED, PreferencesDefaultUtil.get(PDF_CERTIFIED));//""+ PdfSignatureAppearance.NOT_CERTIFIED);
 				
 				// xades
-				preferences.setDefault(XADES_ARCHIVE, "true");
-				preferences.setDefault(XADES_XL_OCSP_ADD_ALL, "true");
-				String xadesValidatorImplDefault = PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_XADES_VALIDATOR_IMPL_DEFAULT);
-				preferences.setDefault(XADES_VALIDATOR_IMPL, xadesValidatorImplDefault);
-				
-				preferences.setDefault(XADES_PREFERENCES_VISIBLE, PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.XADES_PREFERENCES_VISIBLE));
-				
+				preferences.setDefault(XADES_ARCHIVE, PreferencesDefaultUtil.get(XADES_ARCHIVE));//"true");
+				preferences.setDefault(XADES_XL_OCSP_ADD_ALL, PreferencesDefaultUtil.get(XADES_XL_OCSP_ADD_ALL));//"true");
+				preferences.setDefault(XADES_VALIDATOR_IMPL, PreferencesDefaultUtil.get(XADES_VALIDATOR_IMPL));
 				
 				// validation
-				preferences.setDefault(VALIDATION_CHECK_REVOCATION, "true");
-				preferences.setDefault(VALIDATION_CHECK_POLICY, "true");
-				preferences.setDefault(VALIDATION_CHECK_NODE_NAME, "true");
-				
-				preferences.setDefault(VALIDATIONNODE_VISIBLE, PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VALIDATIONNODE_VISIBLE));
+				preferences.setDefault(VALIDATION_CHECK_REVOCATION, PreferencesDefaultUtil.get(VALIDATION_CHECK_REVOCATION));//"true");
+				preferences.setDefault(VALIDATION_CHECK_POLICY, PreferencesDefaultUtil.get(VALIDATION_CHECK_POLICY));//"true");
+				preferences.setDefault(VALIDATION_CHECK_NODE_NAME, PreferencesDefaultUtil.get(VALIDATION_CHECK_NODE_NAME));//"true");
 				
 				// carga de certificado
-				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())){
+				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())) { // esta necesita definirse en runtime
 					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_MSCAPI);
 				}else{
 					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_HARDWARE);					
 				}
 
-				preferences.setDefault(HARDWARE_DISPOSITIVE, "izenpe");
+				preferences.setDefault(HARDWARE_DISPOSITIVE, PreferencesDefaultUtil.get(HARDWARE_DISPOSITIVE));//"izenpe");
 				
 				// FileDialogs path
-				preferences.setDefault(FILEDIALOG_PATH, System.getProperty("user.home"));
+				preferences.setDefault(FILEDIALOG_PATH, System.getProperty(USER_HOME)); // esta necesita definirse en runtime
 				
 			} catch (IOException e) {
 				
