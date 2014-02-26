@@ -94,6 +94,7 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>config/configuration.properties</include>
+					<include>preferences/preferences-default.properties</include>
 				</includes>
 			</resource>
 			<resource>
@@ -101,6 +102,7 @@
 				<filtering>false</filtering>
 				<excludes>
 					<exclude>config/configuration.properties</exclude>
+					<exclude>preferences/preferences-default.properties</exclude>
 				</excludes>
 			</resource>
 		</resources>
@@ -289,6 +291,7 @@
 											<directory>src/main/resources</directory>
 											<excludes>
 												<exclude>config/configuration.properties</exclude>
+												<exclude>preferences/preferences-default.properties</exclude>
 											</excludes>
 										</resource>
 										<resource>
@@ -296,6 +299,7 @@
 											<directory>src/main/resources</directory>
 											<includes>
 												<include>config/configuration.properties</include>
+												<include>preferences/preferences-default.properties</include>
 											</includes>
 										</resource>
 									</resources>
@@ -479,6 +483,7 @@
 											<directory>src/main/resources</directory>
 											<excludes>
 												<exclude>config/configuration.properties</exclude>
+												<exclude>preferences/preferences-default.properties</exclude>
 											</excludes>
 										</resource>
 										<resource>
@@ -486,6 +491,7 @@
 											<directory>src/main/resources</directory>
 											<includes>
 												<include>config/configuration.properties</include>
+												<include>preferences/preferences-default.properties</include>
 											</includes>
 										</resource>
 									</resources>
@@ -670,6 +676,7 @@
 											<directory>src/main/resources</directory>
 											<excludes>
 												<exclude>config/configuration.properties</exclude>
+												<exclude>preferences/preferences-default.properties</exclude>
 											</excludes>
 										</resource>
 										<resource>
@@ -677,6 +684,7 @@
 											<directory>src/main/resources</directory>
 											<includes>
 												<include>config/configuration.properties</include>
+												<include>preferences/preferences-default.properties</include>
 											</includes>
 										</resource>
 									</resources>
@@ -910,6 +918,7 @@
 											<directory>src/main/resources</directory>
 											<excludes>
 												<exclude>config/configuration.properties</exclude>
+												<exclude>preferences/preferences-default.properties</exclude>
 											</excludes>
 										</resource>
 										<resource>
@@ -917,6 +926,7 @@
 											<directory>src/main/resources</directory>
 											<includes>
 												<include>config/configuration.properties</include>
+												<include>preferences/preferences-default.properties</include>
 											</includes>
 										</resource>
 									</resources>
@@ -1149,6 +1159,7 @@
 											<directory>src/main/resources</directory>
 											<excludes>
 												<exclude>config/configuration.properties</exclude>
+												<exclude>preferences/preferences-default.properties</exclude>
 											</excludes>
 										</resource>
 										<resource>
@@ -1156,6 +1167,7 @@
 											<directory>src/main/resources</directory>
 											<includes>
 												<include>config/configuration.properties</include>
+												<include>preferences/preferences-default.properties</include>
 											</includes>
 										</resource>
 									</resources>
@@ -1367,6 +1379,7 @@
 											<directory>src/main/resources</directory>
 											<excludes>
 												<exclude>config/configuration.properties</exclude>
+												<exclude>preferences/preferences-default.properties</exclude>
 											</excludes>
 										</resource>
 										<resource>
@@ -1374,6 +1387,7 @@
 											<directory>src/main/resources</directory>
 											<includes>
 												<include>config/configuration.properties</include>
+												<include>preferences/preferences-default.properties</include>
 											</includes>
 										</resource>
 									</resources>
