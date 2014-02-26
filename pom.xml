@@ -997,6 +997,7 @@
 										<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
 										<addDependencies>true</addDependencies>
 										<jarLocation>lib/</jarLocation>
+										<preCp>resources</preCp>
 									</classPath>
 									<jre>
 										<minVersion>1.6.0</minVersion>
