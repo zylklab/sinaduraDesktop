@@ -271,8 +271,7 @@ public class PreferencesUtil {
 				 * 1 (xml) - parlamento
 				 */
 				
-				log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ - " + PreferencesUtil.getPreferences().getInt(PDF_TIPO));
-				log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ - " + PropertiesUtil.get(PDF_TIPO));
+				//log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ - " + PropertiesUtil.get(PDF_TIPO));
 				preferences.setDefault(PDF_TIPO, PropertiesUtil.get(PDF_TIPO));
 				preferences.setDefault(PDF_VISIBLE, PreferencesDefaultUtil.get(PDF_VISIBLE));//"true");
 				preferences.setDefault(PDF_PAGE, PreferencesDefaultUtil.get(PDF_PAGE));//"1");
