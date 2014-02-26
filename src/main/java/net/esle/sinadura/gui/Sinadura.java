@@ -84,7 +84,6 @@ public class Sinadura {
 		
 		try {
 			
-			int i = 0/0;
 			log.info("Iniciando Sinadura");
 			
 			log.info("Sinadura version: " + PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.APPLICATION_VERSION_STRING));
