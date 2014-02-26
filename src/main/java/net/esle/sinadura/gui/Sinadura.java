@@ -22,6 +22,8 @@
 package net.esle.sinadura.gui;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Locale;
 
 import javax.swing.JOptionPane;
@@ -81,6 +83,8 @@ public class Sinadura {
 	public static void main(String[] args) throws FileNotValidException, FileSystemException, MalformedURIException {
 		
 		try {
+			
+			int i = 0/0;
 			log.info("Iniciando Sinadura");
 			
 			log.info("Sinadura version: " + PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.APPLICATION_VERSION_STRING));
@@ -115,7 +119,21 @@ public class Sinadura {
 			
 		} catch (RuntimeException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, e.toString(), "Sinadura", JOptionPane.ERROR_MESSAGE);
+//			String message = e.toString(); // solo el message
+			String message = getTextStackTrace(e); // toda la pila
+			JOptionPane.showMessageDialog(null, message, "Sinadura", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	// TODO este metodo deberia estar en alguna clase Util. ExceptionUtil del core por ejemplo.
+	private static String getTextStackTrace(Throwable t) {
+        
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        t.printStackTrace(pw);
+        String stackTrace = sw.toString();
+       
+        return stackTrace;
+	}
+	
 }
