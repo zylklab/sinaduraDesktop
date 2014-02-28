@@ -64,21 +64,22 @@
 		<staging-dir>${project.build.directory}/staging</staging-dir>
 		<release.publish.path>/var/www/releases/sinadura</release.publish.path>
 		
-		<!-- preferencias de usuario -->
-		<ee.proxy.enabled>false</ee.proxy.enabled>		
+		<!-- PREFERENCIAS de usuario -->
 		<pdf.tipo>0</pdf.tipo>
 		<save.extension>-signed</save.extension>
 		<xades.validator.impl>sinadura</xades.validator.impl>
-		<version.check.update.enabled>true</version.check.update.enabled>
 
-		<!-- configuracion de la aplicacion -->
+		<!-- CONFIGURACION de la aplicacion -->
+		<!-- system -->
+		<ee.proxy.enabled>false</ee.proxy.enabled>
+		<version.check.update.enabled>true</version.check.update.enabled>
+		
+		<!-- visibilidad -->
 		<preferences.visible.suffix.enabled>0</preferences.visible.suffix.enabled>
 		<preferences.visible.pdf.enabled>0</preferences.visible.pdf.enabled>
 		<preferences.visible.xades.xl.ocsp.add_all>0</preferences.visible.xades.xl.ocsp.add_all>
 		
 		<preferences.visible.general.save.extension>0</preferences.visible.general.save.extension>
-		<preferences.visible.pdf.section>0</preferences.visible.pdf.section>
-		<preferences.visible.sign.section>0</preferences.visible.sign.section>
 		<preferences.visible.sign.timeStamp>0</preferences.visible.sign.timeStamp>
 		<preferences.visible.sign.va>0</preferences.visible.sign.va>
 		<preferences.visible.sign.ocsp>0</preferences.visible.sign.ocsp>
@@ -177,6 +178,8 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
+				<!-- CONFIGURACION de la aplicacion -->
+				<!-- system -->
 				<ee.proxy.enabled>true</ee.proxy.enabled>
 			</properties>
 			<dependencies>
@@ -195,20 +198,21 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<!-- preferencias de usuario -->
+				<!-- PREFERENCIAS de usuario -->
 				<pdf.tipo>1</pdf.tipo>
 				<save.extension />
 				<xades.validator.impl>zain</xades.validator.impl>
+				
+				<!-- CONFIGURACION de la aplicacion -->
+				<!-- system -->
 				<version.check.update.enabled>false</version.check.update.enabled>
 				
-				<!-- configuracion de la aplicacion -->
+				<!-- visibilidad -->
 				<preferences.visible.suffix.enabled>2</preferences.visible.suffix.enabled>
 				<preferences.visible.pdf.enabled>2</preferences.visible.pdf.enabled>
 				<preferences.visible.xades.xl.ocsp.add_all>2</preferences.visible.xades.xl.ocsp.add_all>
 				
 				<preferences.visible.general.save.extension>1</preferences.visible.general.save.extension>
-				<preferences.visible.pdf.section>1</preferences.visible.pdf.section>
-				<preferences.visible.sign.section>1</preferences.visible.sign.section>
 				<preferences.visible.sign.timeStamp>1</preferences.visible.sign.timeStamp>
 				<preferences.visible.sign.va>1</preferences.visible.sign.va>
 				<preferences.visible.sign.ocsp>1</preferences.visible.sign.ocsp>
