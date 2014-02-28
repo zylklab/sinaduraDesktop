@@ -111,8 +111,8 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 		addField(cfe);
 		//log.info(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.GENERAL_SAVE_VISIBLE) + " - " + Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL )));
 		//log.info("GENERAL_SAVE - " + Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL)));
-		if(PropertiesUtil.get(PropertiesUtil.GENERAL_SAVE_VISIBLE).equals(PreferencesUtil.VISIBILITY_TYPE_VISIBLE) ||
-			(PropertiesUtil.get(PropertiesUtil.GENERAL_SAVE_VISIBLE).equals(PreferencesUtil.VISIBILITY_TYPE_HIDDEN_DEPENDANT) && 
+		if(PropertiesUtil.get(PropertiesUtil.GENERAL_SAVE_VISIBLE).equals(PropertiesUtil.VISIBILITY_TYPE_VISIBLE) ||
+			(PropertiesUtil.get(PropertiesUtil.GENERAL_SAVE_VISIBLE).equals(PropertiesUtil.VISIBILITY_TYPE_HIDDEN_DEPENDANT) && 
 			PropertiesUtil.getBoolean(PropertiesUtil.VISIBLE_ALL))){
 				
 				checkOutput = new BooleanFieldEditor(PreferencesUtil.OUTPUT_AUTO_ENABLE, LanguageUtil.getLanguage().getString(

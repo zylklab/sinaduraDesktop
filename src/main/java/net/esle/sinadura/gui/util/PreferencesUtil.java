@@ -113,24 +113,13 @@ public class PreferencesUtil {
 	public static final String XADES_XL_OCSP_ADD_ALL = "preferences.visible.xades.xl.ocsp.add_all";
 	public static final String XADES_VALIDATOR_IMPL = "xades.validator.impl";
 	
-	public static final String XADES_PREFERENCES_VISIBLE = "preferences.visible.sign.XadesPreferences";
-	
 	// validation
 	public static final String VALIDATION_CHECK_REVOCATION = "validation.check_revocation";
 	public static final String VALIDATION_CHECK_POLICY = "validation.check_policy";
 	public static final String VALIDATION_CHECK_NODE_NAME = "validation.check_node_name";
-	
-	public static final String VALIDATIONNODE_VISIBLE = "preferences.visible.validation.section";
 
 	// FileDialogs path
 	public static final String FILEDIALOG_PATH = "filedialog.path";
-	
-
-	// *******************************
-	// PREFERENCES VALUE (constants)
-	public static final String VISIBILITY_TYPE_VISIBLE = "0";
-	public static final String VISIBILITY_TYPE_HIDDEN_DEPENDANT = "1";
-	public static final String VISIBILITY_TYPE_HIDDEN_ALWAYS = "2";
 	
 	
 	// *******************************
@@ -241,7 +230,6 @@ public class PreferencesUtil {
 				preferences.setDefault(IDIOMA, PreferencesDefaultUtil.get(IDIOMA));
 				preferences.setDefault(OUTPUT_AUTO_ENABLE,PreferencesDefaultUtil.get(OUTPUT_AUTO_ENABLE));// "true");
 				preferences.setDefault(OUTPUT_DIR, System.getProperty(USER_HOME)); // esta necesita definirse en runtime
-				
 				/*
 				 * "-signed" - sinadura
 				 * ""  		 - parlamento
@@ -272,7 +260,7 @@ public class PreferencesUtil {
 				 */
 				
 				//log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ - " + PropertiesUtil.get(PDF_TIPO));
-				preferences.setDefault(PDF_TIPO, PropertiesUtil.get(PDF_TIPO));
+				preferences.setDefault(PDF_TIPO, PreferencesDefaultUtil.get(PDF_TIPO));
 				preferences.setDefault(PDF_VISIBLE, PreferencesDefaultUtil.get(PDF_VISIBLE));//"true");
 				preferences.setDefault(PDF_PAGE, PreferencesDefaultUtil.get(PDF_PAGE));//"1");
 				preferences.setDefault(PDF_REASON, PreferencesDefaultUtil.get(PDF_REASON));//"powered by zylk.net");
@@ -298,7 +286,7 @@ public class PreferencesUtil {
 				// carga de certificado
 				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())) { // esta necesita definirse en runtime
 					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_MSCAPI);
-				}else{
+				} else{
 					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_HARDWARE);					
 				}
 

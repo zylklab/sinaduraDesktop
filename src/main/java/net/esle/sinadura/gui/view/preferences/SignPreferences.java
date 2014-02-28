@@ -95,11 +95,10 @@ public class SignPreferences extends FieldEditorPreferencePage {
 		} else {
 			this.checkOCSP.setEnabled(true, getFieldEditorParent());
 		}
-		
-		//log.info(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE));
-		//log.info("SIGNNODE - " + Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL)));
-		if(PropertiesUtil.get(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE).equals(PreferencesUtil.VISIBILITY_TYPE_VISIBLE)||
-				(PropertiesUtil.get(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE).equals(PreferencesUtil.VISIBILITY_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.VISIBLE_ALL))){
+
+		if (PropertiesUtil.get(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE).equals(PropertiesUtil.VISIBILITY_TYPE_VISIBLE)
+				|| (PropertiesUtil.get(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE).equals(
+						PropertiesUtil.VISIBILITY_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.VISIBLE_ALL))) {
 			
 			addField(this.checkTSEnable);
 			addField(comboTSA);

@@ -74,7 +74,7 @@ public class PropertiesUtil {
 	public static final String ZAIN_LOG_RESPONSE_FOLDER_PATH = "zain.log.response.path"; // son paths de file system
 	
 	
-	// visibilidad de opciones de las preferencias
+	// Visibilidad de las preferencias
 	public static final String PREFERENCES_SUFFIX_ENABLED 	= "preferences.visible.suffix.enabled";
 	public static final String PREFERENCES_PDF_ENABLED 		= "preferences.visible.pdf.enabled";
 	public static final String PREFERENCES_XADES_XL_OCSP_ADD_ALL_VISIBLE = "preferences.visible.xades.xl.ocsp.add_all";
@@ -86,13 +86,16 @@ public class PropertiesUtil {
 	public static final String SIGNNODE_OCSP_VISIBLE = "preferences.visible.sign.ocsp";
 	public static final String XADES_PREFERENCES_VISIBLE = "preferences.visible.sign.XadesPreferences";
 	public static final String VALIDATIONNODE_VISIBLE = "preferences.visible.validation.section";
+	// Visibilidad de las preferencias - VALUES
+	public static final String VISIBILITY_TYPE_VISIBLE = "0";
+	public static final String VISIBILITY_TYPE_HIDDEN_DEPENDANT = "1";
+	public static final String VISIBILITY_TYPE_HIDDEN_ALWAYS = "2";
 	
-	
-	// valor por defecto de las preferencias.
+	// valor por defecto de las preferencias. (esta quizas deberia estar en PreferencesUtil)
 	public static final String DEFAULT_IMAGE_FILE_PATH = USER_BASE_PATH + File.separatorChar + "sinadura150.png"; 	// imagen por defecto para el sello
 	
+	
 	public static final String VERSION_CHECK_UPDATE_ENABLED = "version.check.update.enabled";
-
 	public static final String PROXY_ENABLED 				= "proxy.enabled"; // se habilita el soporte para proxy (solo EE)
 	
 	private static Properties configuration = null;
