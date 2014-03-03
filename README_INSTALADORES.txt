@@ -36,7 +36,9 @@ Por último en el proyecto "sinaduraDesktop" no hay que hacer "perform maven rel
 revisar tambien el pom.xml, quitando los "-SNAPSHOT" de las dependencias, y en este caso quitandolo tambien de la versión principal del pom.
 
 A nivel de codigo fuente hay que especificar a mano la versión en:
-- En el "configuration.properties" (desktop) la propiedad "application.local.version"
+- En el "configuration.properties" (desktop) la propiedad "application.local.version". El valor debe tener un valor numérico de unicamente 
+3 dígitos ya que se utiliza para realizar comparaciones entre versiones. Así que la version del desktop debe seguir siempre el formato 
+x.x.x (y no x.x.xx o x.xx.x) para que se pueda hacer la correspondencia a 3 digitos.   
 
 Una vez hecho esto ya se puede hacer el build.
 
