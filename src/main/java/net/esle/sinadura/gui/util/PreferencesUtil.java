@@ -44,8 +44,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.util.Os;
 import org.eclipse.jface.preference.PreferenceStore;
 
-import com.itextpdf.text.pdf.PdfSignatureAppearance;
-
 
 public class PreferencesUtil {
 
@@ -57,13 +55,12 @@ public class PreferencesUtil {
 	// General
 	public static final String IDIOMA = "idioma";
 	public static final String TOKEN_LOCALE = "_";
-	public static final String OUTPUT_AUTO_ENABLE= "output.auto.enable";
+	public static final String OUTPUT_AUTO_ENABLE = "output.auto.enable";
 	public static final String OUTPUT_DIR = "output.dir";
 	public static final String SAVE_EXTENSION = "save.extension";
 	public static final String AUTO_VALIDATE = "auto.validate";
 	public static final String ADD_DIR_RECURSIVE = "add.dir.recursive";
 	public static final String ENABLE_STATISTICS = "enable.statistics";
-	public static final String GENERAL_SAVE_VISIBLE = "preferences.visible.general.save.extension";
 
 	// Proxy
 	public static final String PROXY_USER = "proxy.http.user";
@@ -82,15 +79,10 @@ public class PreferencesUtil {
 	// Opciones certificados
 	public static final String APLICAR_PREFERENCIAS_USAGE_CERT = "certificado.aplicar.preferencias";
 
-	
 	// Sign
 	public static final String SIGN_TS_ENABLE = "sign.ts.enable";
 	public static final String SIGN_TS_TSA = "sign.ts.tsa";
 	public static final String SIGN_OCSP_ENABLE = "sign.ocsp.enable";
-	
-	public static final String SIGNNODE_TIMESTAMP_VISIBLE = "preferences.visible.sign.timeStamp";
-	public static final String SIGNNODE_VA_VISIBLE = "preferences.visible.sign.va";
-	public static final String SIGNNODE_OCSP_VISIBLE = "preferences.visible.sign.ocsp";
 	
 	// Pdf
 	public static final String PDF_TIPO = "pdf.tipo";
@@ -110,7 +102,7 @@ public class PreferencesUtil {
 	
 	// xades
 	public static final String XADES_ARCHIVE = "xades.archive";
-	public static final String XADES_XL_OCSP_ADD_ALL = "preferences.visible.xades.xl.ocsp.add_all";
+	public static final String XADES_XL_OCSP_ADD_ALL = "xades.xl.ocsp.add_all";
 	public static final String XADES_VALIDATOR_IMPL = "xades.validator.impl";
 	
 	// validation
@@ -228,60 +220,57 @@ public class PreferencesUtil {
 				
 				// General
 				preferences.setDefault(IDIOMA, PreferencesDefaultUtil.get(IDIOMA));
-				preferences.setDefault(OUTPUT_AUTO_ENABLE,PreferencesDefaultUtil.get(OUTPUT_AUTO_ENABLE));// "true");
+				preferences.setDefault(OUTPUT_AUTO_ENABLE,PreferencesDefaultUtil.get(OUTPUT_AUTO_ENABLE)); // "true");
 				preferences.setDefault(OUTPUT_DIR, System.getProperty(USER_HOME)); // esta necesita definirse en runtime
 				/*
 				 * "-signed" - sinadura
 				 * ""  		 - parlamento
 				 */
 				preferences.setDefault(SAVE_EXTENSION, PreferencesDefaultUtil.get(SAVE_EXTENSION));
-				preferences.setDefault(AUTO_VALIDATE, PreferencesDefaultUtil.get(AUTO_VALIDATE));//"true");
-				preferences.setDefault(ADD_DIR_RECURSIVE, PreferencesDefaultUtil.get(ADD_DIR_RECURSIVE));//"false");
-				preferences.setDefault(ENABLE_STATISTICS, PreferencesDefaultUtil.get(ENABLE_STATISTICS));//"true");
+				preferences.setDefault(AUTO_VALIDATE, PreferencesDefaultUtil.get(AUTO_VALIDATE)); //"true");
+				preferences.setDefault(ADD_DIR_RECURSIVE, PreferencesDefaultUtil.get(ADD_DIR_RECURSIVE)); //"false");
+				preferences.setDefault(ENABLE_STATISTICS, PreferencesDefaultUtil.get(ENABLE_STATISTICS)); //"true");
 				
 				// Proxy
-				preferences.setDefault(PROXY_USER, PreferencesDefaultUtil.get(PROXY_USER));//"");
-				preferences.setDefault(PROXY_PASS, PreferencesDefaultUtil.get(PROXY_PASS));//"");
-				preferences.setDefault(PROXY_SYSTEM, PreferencesDefaultUtil.get(PROXY_SYSTEM));//"true");
+				preferences.setDefault(PROXY_USER, PreferencesDefaultUtil.get(PROXY_USER)); //"");
+				preferences.setDefault(PROXY_PASS, PreferencesDefaultUtil.get(PROXY_PASS)); //"");
+				preferences.setDefault(PROXY_SYSTEM, PreferencesDefaultUtil.get(PROXY_SYSTEM)); //"true");
 				
 				// Sign
-				preferences.setDefault(SIGN_TS_ENABLE, PreferencesDefaultUtil.get(SIGN_TS_ENABLE));//"true");
-				preferences.setDefault(SIGN_TS_TSA, PreferencesDefaultUtil.get(SIGN_TS_TSA));//"izenpe");
-				preferences.setDefault(SIGN_OCSP_ENABLE, PreferencesDefaultUtil.get(SIGN_OCSP_ENABLE));//"true");
+				preferences.setDefault(SIGN_TS_ENABLE, PreferencesDefaultUtil.get(SIGN_TS_ENABLE)); //"true");
+				preferences.setDefault(SIGN_TS_TSA, PreferencesDefaultUtil.get(SIGN_TS_TSA)); //"izenpe");
+				preferences.setDefault(SIGN_OCSP_ENABLE, PreferencesDefaultUtil.get(SIGN_OCSP_ENABLE)); //"true");
 
 				// Certificado
-				preferences.setDefault(APLICAR_PREFERENCIAS_USAGE_CERT, PreferencesDefaultUtil.get(APLICAR_PREFERENCIAS_USAGE_CERT));//true);
+				preferences.setDefault(APLICAR_PREFERENCIAS_USAGE_CERT, PreferencesDefaultUtil.get(APLICAR_PREFERENCIAS_USAGE_CERT)); //true);
 				
 				// Pdf
-				
 				/*
 				 * 0 (pdf) - sinadura
 				 * 1 (xml) - parlamento
 				 */
-				
-				//log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ - " + PropertiesUtil.get(PDF_TIPO));
 				preferences.setDefault(PDF_TIPO, PreferencesDefaultUtil.get(PDF_TIPO));
-				preferences.setDefault(PDF_VISIBLE, PreferencesDefaultUtil.get(PDF_VISIBLE));//"true");
-				preferences.setDefault(PDF_PAGE, PreferencesDefaultUtil.get(PDF_PAGE));//"1");
-				preferences.setDefault(PDF_REASON, PreferencesDefaultUtil.get(PDF_REASON));//"powered by zylk.net");
-				preferences.setDefault(PDF_LOCATION, PreferencesDefaultUtil.get(PDF_LOCATION));//"Bilbao");
-				preferences.setDefault(PDF_STAMP_ENABLE, PreferencesDefaultUtil.get(PDF_STAMP_ENABLE));//"true");
+				preferences.setDefault(PDF_VISIBLE, PreferencesDefaultUtil.get(PDF_VISIBLE)); // "true");
+				preferences.setDefault(PDF_PAGE, PreferencesDefaultUtil.get(PDF_PAGE)); // "1");
+				preferences.setDefault(PDF_REASON, PreferencesDefaultUtil.get(PDF_REASON)); // "powered by zylk.net");
+				preferences.setDefault(PDF_LOCATION, PreferencesDefaultUtil.get(PDF_LOCATION)); // "Bilbao");
+				preferences.setDefault(PDF_STAMP_ENABLE, PreferencesDefaultUtil.get(PDF_STAMP_ENABLE)); // "true");
 				preferences.setDefault(PDF_STAMP_PATH, PropertiesUtil.DEFAULT_IMAGE_FILE_PATH); // esta necesita definirse en runtime
-				preferences.setDefault(PDF_STAMP_X, PreferencesDefaultUtil.get(PDF_STAMP_X));//"20");
-				preferences.setDefault(PDF_STAMP_Y, PreferencesDefaultUtil.get(PDF_STAMP_Y));//"20");
-				preferences.setDefault(PDF_STAMP_WIDTH, PreferencesDefaultUtil.get(PDF_STAMP_WIDTH));//"125");
-				preferences.setDefault(PDF_STAMP_HEIGHT, PreferencesDefaultUtil.get(PDF_STAMP_HEIGHT));//"125");
-				preferences.setDefault(PDF_CERTIFIED, PreferencesDefaultUtil.get(PDF_CERTIFIED));//""+ PdfSignatureAppearance.NOT_CERTIFIED);
+				preferences.setDefault(PDF_STAMP_X, PreferencesDefaultUtil.get(PDF_STAMP_X)); // "20");
+				preferences.setDefault(PDF_STAMP_Y, PreferencesDefaultUtil.get(PDF_STAMP_Y)); // "20");
+				preferences.setDefault(PDF_STAMP_WIDTH, PreferencesDefaultUtil.get(PDF_STAMP_WIDTH)); // "125");
+				preferences.setDefault(PDF_STAMP_HEIGHT, PreferencesDefaultUtil.get(PDF_STAMP_HEIGHT)); // "125");
+				preferences.setDefault(PDF_CERTIFIED, PreferencesDefaultUtil.get(PDF_CERTIFIED)); // (PdfSignatureAppearance.NOT_CERTIFIED);
 				
 				// xades
-				preferences.setDefault(XADES_ARCHIVE, PreferencesDefaultUtil.get(XADES_ARCHIVE));//"true");
-				preferences.setDefault(XADES_XL_OCSP_ADD_ALL, PreferencesDefaultUtil.get(XADES_XL_OCSP_ADD_ALL));//"true");
+				preferences.setDefault(XADES_ARCHIVE, PreferencesDefaultUtil.get(XADES_ARCHIVE)); //"true");
+				preferences.setDefault(XADES_XL_OCSP_ADD_ALL, PreferencesDefaultUtil.get(XADES_XL_OCSP_ADD_ALL)); //"true");
 				preferences.setDefault(XADES_VALIDATOR_IMPL, PreferencesDefaultUtil.get(XADES_VALIDATOR_IMPL));
 				
 				// validation
-				preferences.setDefault(VALIDATION_CHECK_REVOCATION, PreferencesDefaultUtil.get(VALIDATION_CHECK_REVOCATION));//"true");
-				preferences.setDefault(VALIDATION_CHECK_POLICY, PreferencesDefaultUtil.get(VALIDATION_CHECK_POLICY));//"true");
-				preferences.setDefault(VALIDATION_CHECK_NODE_NAME, PreferencesDefaultUtil.get(VALIDATION_CHECK_NODE_NAME));//"true");
+				preferences.setDefault(VALIDATION_CHECK_REVOCATION, PreferencesDefaultUtil.get(VALIDATION_CHECK_REVOCATION)); //"true");
+				preferences.setDefault(VALIDATION_CHECK_POLICY, PreferencesDefaultUtil.get(VALIDATION_CHECK_POLICY)); //"true");
+				preferences.setDefault(VALIDATION_CHECK_NODE_NAME, PreferencesDefaultUtil.get(VALIDATION_CHECK_NODE_NAME)); //"true");
 				
 				// carga de certificado
 				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())) { // esta necesita definirse en runtime
@@ -290,7 +279,7 @@ public class PreferencesUtil {
 					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_HARDWARE);					
 				}
 
-				preferences.setDefault(HARDWARE_DISPOSITIVE, PreferencesDefaultUtil.get(HARDWARE_DISPOSITIVE));//"izenpe");
+				preferences.setDefault(HARDWARE_DISPOSITIVE, PreferencesDefaultUtil.get(HARDWARE_DISPOSITIVE)); //"izenpe");
 				
 				// FileDialogs path
 				preferences.setDefault(FILEDIALOG_PATH, System.getProperty(USER_HOME)); // esta necesita definirse en runtime

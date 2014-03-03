@@ -73,23 +73,23 @@ public class PropertiesUtil {
 	public static final String ZAIN_LOG_REQUEST_FOLDER_PATH = "zain.log.request.path"; // son paths de file system
 	public static final String ZAIN_LOG_RESPONSE_FOLDER_PATH = "zain.log.response.path"; // son paths de file system
 	
-	
 	// Visibilidad de las preferencias
-	public static final String PREFERENCES_SUFFIX_ENABLED 	= "preferences.visible.suffix.enabled";
-	public static final String PREFERENCES_PDF_ENABLED 		= "preferences.visible.pdf.enabled";
-	public static final String PREFERENCES_XADES_XL_OCSP_ADD_ALL_VISIBLE = "preferences.visible.xades.xl.ocsp.add_all";
-	
-	public static final String VISIBLE_ALL = "preferences.visible.all";
-	public static final String GENERAL_SAVE_VISIBLE = "preferences.visible.general.save.extension";
-	public static final String SIGNNODE_TIMESTAMP_VISIBLE = "preferences.visible.sign.timeStamp";
-	public static final String SIGNNODE_VA_VISIBLE = "preferences.visible.sign.va";
-	public static final String SIGNNODE_OCSP_VISIBLE = "preferences.visible.sign.ocsp";
-	public static final String XADES_PREFERENCES_VISIBLE = "preferences.visible.sign.XadesPreferences";
-	public static final String VALIDATIONNODE_VISIBLE = "preferences.visible.validation.section";
+	public static final String PREFERENCES_VISIBLE_ALL = "preferences.visible.all";
+	public static final String PREFERENCES_VISIBLE_GENERAL_OUTPUT_AUTO_ENABLE = "preferences.visible.general.output.auto.enable";
+	public static final String PREFERENCES_VISIBLE_GENERAL_OUTPUT_DIR = "preferences.visible.general.output.dir";
+	public static final String PREFERENCES_VISIBLE_GENERAL_SAVE_EXTENSION = "preferences.visible.general.save.extension";
+	public static final String PREFERENCES_VISIBLE_GENERAL_AUTO_VALIDATE = "preferences.visible.general.auto.validate";
+	public static final String PREFERENCES_VISIBLE_SIGN_TS_ENABLE = "preferences.visible.sign.ts.enable";
+	public static final String PREFERENCES_VISIBLE_SIGN_TS_TSA = "preferences.visible.sign.ts.tsa";
+	public static final String PREFERENCES_VISIBLE_SIGN_OCSP_ENABLE = "preferences.visible.sign.ocsp.enable";
+	public static final String PREFERENCES_VISIBLE_PDF_SECTION = "preferences.visible.pdf.section";
+	public static final String PREFERENCES_VISIBLE_XADES_SECTION = "preferences.visible.xades.section";
+	public static final String PREFERENCES_VISIBLE_XADES_XL_OCSP_ADD_ALL = "preferences.visible.xades.xl.ocsp.add_all";
+	public static final String PREFERENCES_VISIBLE_VALIDATION_SECTION = "preferences.visible.validation.section";
 	// Visibilidad de las preferencias - VALUES
-	public static final String VISIBILITY_TYPE_VISIBLE = "0";
-	public static final String VISIBILITY_TYPE_HIDDEN_DEPENDANT = "1";
-	public static final String VISIBILITY_TYPE_HIDDEN_ALWAYS = "2";
+	public static final String VISIBLE_TYPE_VISIBLE = "0";
+	public static final String VISIBLE_TYPE_HIDDEN_DEPENDANT = "1";
+	public static final String VISIBLE_TYPE_HIDDEN_ALWAYS = "2";
 	
 	// valor por defecto de las preferencias. (esta quizas deberia estar en PreferencesUtil)
 	public static final String DEFAULT_IMAGE_FILE_PATH = USER_BASE_PATH + File.separatorChar + "sinadura150.png"; 	// imagen por defecto para el sello

@@ -118,20 +118,23 @@ public class PreferencesManager {
 				mgr.addTo(signNode.getId() + "." + certNode.getId(), softwareCertNode);
 				mgr.addTo(signNode.getId() + "." + certNode.getId(), hardwareCertNode);
 				
-			if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_PDF_ENABLED).equals(PropertiesUtil.VISIBILITY_TYPE_VISIBLE) ||
-						(PropertiesUtil.get(PropertiesUtil.PREFERENCES_PDF_ENABLED).equals(PropertiesUtil.VISIBILITY_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.VISIBLE_ALL))){
+			if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_PDF_SECTION).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE)
+					|| (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_PDF_SECTION).equals(
+							PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {
 				
 				mgr.addTo(signNode.getId(), pdfNode);
 			}
 
-			if(PropertiesUtil.get(PropertiesUtil.XADES_PREFERENCES_VISIBLE).equals(PropertiesUtil.VISIBILITY_TYPE_VISIBLE) ||
-					(PropertiesUtil.get(PropertiesUtil.XADES_PREFERENCES_VISIBLE).equals(PropertiesUtil.VISIBILITY_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.VISIBLE_ALL))){
+			if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_XADES_SECTION).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE)
+					|| (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_XADES_SECTION).equals(
+							PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {
 				
 				mgr.addTo(signNode.getId(), xadesNode);
 			}
 
-		if (PropertiesUtil.get(PropertiesUtil.VALIDATIONNODE_VISIBLE).equals(PropertiesUtil.VISIBILITY_TYPE_VISIBLE) ||
-				(PropertiesUtil.get(PropertiesUtil.VALIDATIONNODE_VISIBLE).equals(PropertiesUtil.VISIBILITY_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.VISIBLE_ALL))) {
+		if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_VALIDATION_SECTION).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE)
+				|| (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_VALIDATION_SECTION).equals(
+						PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {
 			mgr.addToRoot(validationNode);
 				mgr.addTo(validationNode.getId(), trustedNode);
 				mgr.addTo(validationNode.getId(), cacheNode);

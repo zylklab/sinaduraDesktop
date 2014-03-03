@@ -52,13 +52,16 @@ public class XadesPreferences extends FieldEditorPreferencePage {
 			"preferences.xades.archive"), getFieldEditorParent());
 		addField(archiveField);
 		
-		boolean ocspAddAllVisible = Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PREFERENCES_XADES_XL_OCSP_ADD_ALL_VISIBLE));
 		
-		if (ocspAddAllVisible) {
+		if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_XADES_XL_OCSP_ADD_ALL).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE)
+				|| (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_XADES_XL_OCSP_ADD_ALL).equals(
+						PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {
+	
 			xlOcspAddAllField = new BooleanFieldEditor(PreferencesUtil.XADES_XL_OCSP_ADD_ALL, LanguageUtil.getLanguage().getString(
 				"preferences.xades.xl.ocsp.add_all"), getFieldEditorParent());
-			addField(xlOcspAddAllField);		
+			addField(xlOcspAddAllField);
 		}
+		
 	}
 	
 	

@@ -59,31 +59,30 @@
 	</organization>
 
 	<properties>
-		<!-- propiedades de maven (compilacion, generacion de empaquetados, releases...) -->
+		<!-- PROPIEDADES de maven (compilacion, generacion de empaquetados, releases...) -->
 		<izpack-standalone.version>4.3.2</izpack-standalone.version>
 		<staging-dir>${project.build.directory}/staging</staging-dir>
 		<release.publish.path>/var/www/releases/sinadura</release.publish.path>
-		
 		<!-- PREFERENCIAS de usuario -->
 		<pdf.tipo>0</pdf.tipo>
 		<save.extension>-signed</save.extension>
 		<xades.validator.impl>sinadura</xades.validator.impl>
-
+		<sign.ocsp.enable>true</sign.ocsp.enable>
 		<!-- CONFIGURACION de la aplicacion -->
 		<!-- system -->
 		<ee.proxy.enabled>false</ee.proxy.enabled>
 		<version.check.update.enabled>true</version.check.update.enabled>
-		
 		<!-- visibilidad -->
-		<preferences.visible.suffix.enabled>0</preferences.visible.suffix.enabled>
-		<preferences.visible.pdf.enabled>0</preferences.visible.pdf.enabled>
-		<preferences.visible.xades.xl.ocsp.add_all>0</preferences.visible.xades.xl.ocsp.add_all>
-		
+		<preferences.visible.general.output.auto.enable>0</preferences.visible.general.output.auto.enable>
+		<preferences.visible.general.output.dir>0</preferences.visible.general.output.dir>
 		<preferences.visible.general.save.extension>0</preferences.visible.general.save.extension>
-		<preferences.visible.sign.timeStamp>0</preferences.visible.sign.timeStamp>
-		<preferences.visible.sign.va>0</preferences.visible.sign.va>
-		<preferences.visible.sign.ocsp>0</preferences.visible.sign.ocsp>
-		<preferences.visible.sign.XadesPreferences>0</preferences.visible.sign.XadesPreferences>
+		<preferences.visible.general.auto.validate>0</preferences.visible.general.auto.validate>
+		<preferences.visible.sign.ts.enable>0</preferences.visible.sign.ts.enable>
+		<preferences.visible.sign.ts.tsa>0</preferences.visible.sign.ts.tsa>
+		<preferences.visible.sign.ocsp.enable>0</preferences.visible.sign.ocsp.enable>
+		<preferences.visible.pdf.section>0</preferences.visible.pdf.section>
+		<preferences.visible.xades.section>0</preferences.visible.xades.section>
+		<preferences.visible.xades.xl.ocsp.add_all>0</preferences.visible.xades.xl.ocsp.add_all>
 		<preferences.visible.validation.section>0</preferences.visible.validation.section>
 	</properties>
 
@@ -202,21 +201,21 @@
 				<pdf.tipo>1</pdf.tipo>
 				<save.extension />
 				<xades.validator.impl>zain</xades.validator.impl>
-				
+				<sign.ocsp.enable>false</sign.ocsp.enable>
 				<!-- CONFIGURACION de la aplicacion -->
 				<!-- system -->
 				<version.check.update.enabled>false</version.check.update.enabled>
-				
 				<!-- visibilidad -->
-				<preferences.visible.suffix.enabled>2</preferences.visible.suffix.enabled>
-				<preferences.visible.pdf.enabled>2</preferences.visible.pdf.enabled>
+				<preferences.visible.general.output.auto.enable>2</preferences.visible.general.output.auto.enable>
+				<preferences.visible.general.output.dir>2</preferences.visible.general.output.dir>
+				<preferences.visible.general.save.extension>2</preferences.visible.general.save.extension>
+				<preferences.visible.general.auto.validate>1</preferences.visible.general.auto.validate>
+				<preferences.visible.sign.ts.enable>1</preferences.visible.sign.ts.enable>
+				<preferences.visible.sign.ts.tsa>1</preferences.visible.sign.ts.tsa>
+				<preferences.visible.sign.ocsp.enable>1</preferences.visible.sign.ocsp.enable>
+				<preferences.visible.pdf.section>2</preferences.visible.pdf.section>
+				<preferences.visible.xades.section>2</preferences.visible.xades.section>
 				<preferences.visible.xades.xl.ocsp.add_all>2</preferences.visible.xades.xl.ocsp.add_all>
-				
-				<preferences.visible.general.save.extension>1</preferences.visible.general.save.extension>
-				<preferences.visible.sign.timeStamp>1</preferences.visible.sign.timeStamp>
-				<preferences.visible.sign.va>1</preferences.visible.sign.va>
-				<preferences.visible.sign.ocsp>1</preferences.visible.sign.ocsp>
-				<preferences.visible.sign.XadesPreferences>1</preferences.visible.sign.XadesPreferences>
 				<preferences.visible.validation.section>1</preferences.visible.validation.section>
 			</properties>
 		</profile>

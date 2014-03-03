@@ -109,15 +109,19 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 				comboFields, getFieldEditorParent());
 
 		addField(cfe);
-		//log.info(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.GENERAL_SAVE_VISIBLE) + " - " + Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL )));
-		//log.info("GENERAL_SAVE - " + Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VISIBLE_ALL)));
-		if(PropertiesUtil.get(PropertiesUtil.GENERAL_SAVE_VISIBLE).equals(PropertiesUtil.VISIBILITY_TYPE_VISIBLE) ||
-			(PropertiesUtil.get(PropertiesUtil.GENERAL_SAVE_VISIBLE).equals(PropertiesUtil.VISIBILITY_TYPE_HIDDEN_DEPENDANT) && 
-			PropertiesUtil.getBoolean(PropertiesUtil.VISIBLE_ALL))){
+
+		if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_GENERAL_OUTPUT_AUTO_ENABLE).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE) ||
+			(PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_GENERAL_OUTPUT_AUTO_ENABLE).equals(PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && 
+			PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {
 				
-				checkOutput = new BooleanFieldEditor(PreferencesUtil.OUTPUT_AUTO_ENABLE, LanguageUtil.getLanguage().getString(
-					"preferences.main.output.auto.enable"), getFieldEditorParent());
-				addField(checkOutput);
+			checkOutput = new BooleanFieldEditor(PreferencesUtil.OUTPUT_AUTO_ENABLE, LanguageUtil.getLanguage().getString(
+				"preferences.main.output.auto.enable"), getFieldEditorParent());
+			addField(checkOutput);
+			
+			if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_GENERAL_OUTPUT_DIR).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE) ||
+					(PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_GENERAL_OUTPUT_DIR).equals(PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && 
+					PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {
+				
 				checkOutput.getDescriptionControl(getFieldEditorParent()).addListener(SWT.MouseUp, new Listener() {
 					
 					@Override
@@ -129,23 +133,33 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 						}
 					}
 				});
+			}
+		
+		}
+		
+		if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_GENERAL_OUTPUT_DIR).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE) ||
+				(PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_GENERAL_OUTPUT_DIR).equals(PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && 
+				PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {
 				
-				// Add a directory field
-				outputDir2 = new GenericDirectoryFieldEditor(PreferencesUtil.OUTPUT_DIR, LanguageUtil
-						.getLanguage().getString("preferences.main.output_dir"), getFieldEditorParent());
-				addField(outputDir2);
-				
-				
-				if (PreferencesUtil.getPreferences().getString(PreferencesUtil.OUTPUT_AUTO_ENABLE).equals("true")) {
-					outputDir2.setEnabled(false, getFieldEditorParent());
-				} else {
-					outputDir2.setEnabled(true, getFieldEditorParent());
-				}
+			// Add a directory field
+			outputDir2 = new GenericDirectoryFieldEditor(PreferencesUtil.OUTPUT_DIR, LanguageUtil
+					.getLanguage().getString("preferences.main.output_dir"), getFieldEditorParent());
+			addField(outputDir2);
+			
+			if (PreferencesUtil.getPreferences().getString(PreferencesUtil.OUTPUT_AUTO_ENABLE).equals("true")) {
+				outputDir2.setEnabled(false, getFieldEditorParent());
+			} else {
+				outputDir2.setEnabled(true, getFieldEditorParent());
+			}
 		}
 		
 		// -- sufijo
 		//---------------
-		if (PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_SUFFIX_ENABLED)){
+		
+		if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_GENERAL_SAVE_EXTENSION).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE) ||
+				(PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_GENERAL_SAVE_EXTENSION).equals(PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && 
+				PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {	
+			
 			saveExtension = new GenericStringFieldEditor(PreferencesUtil.SAVE_EXTENSION, LanguageUtil.getLanguage()
 					.getString("preferences.main.extension"), getFieldEditorParent(), 150);
 			
@@ -162,10 +176,14 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 			addField(saveExtension);
 		}
 		
-		
-		autoValidate = new BooleanFieldEditor(PreferencesUtil.AUTO_VALIDATE, LanguageUtil.getLanguage().getString(
-			"preferences.main.auto.validate"), getFieldEditorParent());
-		addField(autoValidate);
+		if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_GENERAL_AUTO_VALIDATE).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE) ||
+				(PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_GENERAL_AUTO_VALIDATE).equals(PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && 
+				PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {
+			
+			autoValidate = new BooleanFieldEditor(PreferencesUtil.AUTO_VALIDATE, LanguageUtil.getLanguage().getString(
+				"preferences.main.auto.validate"), getFieldEditorParent());
+			addField(autoValidate);
+		}
 		
 		addDirRecursive = new BooleanFieldEditor(PreferencesUtil.ADD_DIR_RECURSIVE, LanguageUtil.getLanguage().getString(
 			"preferences.main.add.dir.recursive"), getFieldEditorParent());

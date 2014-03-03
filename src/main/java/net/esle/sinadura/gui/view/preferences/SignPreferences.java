@@ -23,7 +23,6 @@ package net.esle.sinadura.gui.view.preferences;
 
 import java.util.Map;
 
-import net.esle.sinadura.gui.util.HardwareItem;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.PropertiesUtil;
@@ -64,59 +63,75 @@ public class SignPreferences extends FieldEditorPreferencePage {
 	@Override
 	protected void createFieldEditors() {
 
+		// tsa enabled
+		if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_SIGN_TS_ENABLE).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE)
+				|| (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_SIGN_TS_ENABLE).equals(
+						PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {
 		
-		this.checkTSEnable = new BooleanFieldEditor(PreferencesUtil.SIGN_TS_ENABLE, LanguageUtil.getLanguage().getString(
+			this.checkTSEnable = new BooleanFieldEditor(PreferencesUtil.SIGN_TS_ENABLE, LanguageUtil.getLanguage().getString(
 				"preferences.sign.ts.enable"), getFieldEditorParent());
 		
-
-		Map<String, TimestampItem> map = PreferencesUtil.getTimestampPreferences();
-		String[][] comboFields = new String[map.size()][2];
-		int i = 0;
-		
-		for (TimestampItem item : map.values()){
-			String[] campo2 = { item.getName(), item.getKey()};
-			comboFields[i] = campo2;
-			i++;
-		}
-
-		Composite composite = new Composite(getFieldEditorParent(), SWT.NONE);
-		composite.setLayoutData(new GridData(GridData.BEGINNING));
-		
-		ComboFieldEditor comboTSA = new ComboFieldEditor(PreferencesUtil.SIGN_TS_TSA, LanguageUtil.getLanguage().getString("preferences.sign.ts.tsa"),
-				comboFields, composite);
-		
-
-		this.checkOCSP = new BooleanFieldEditor(PreferencesUtil.SIGN_OCSP_ENABLE, LanguageUtil.getLanguage().getString(
-				"preferences.sign.ocsp.enable"), getFieldEditorParent());
-		
-		boolean tsSelected = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE);
-		if (!tsSelected) {
-			this.checkOCSP.setEnabled(false, getFieldEditorParent());
-		} else {
-			this.checkOCSP.setEnabled(true, getFieldEditorParent());
-		}
-
-		if (PropertiesUtil.get(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE).equals(PropertiesUtil.VISIBILITY_TYPE_VISIBLE)
-				|| (PropertiesUtil.get(PropertiesUtil.SIGNNODE_TIMESTAMP_VISIBLE).equals(
-						PropertiesUtil.VISIBILITY_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.VISIBLE_ALL))) {
-			
 			addField(this.checkTSEnable);
+			
+			if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_SIGN_OCSP_ENABLE).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE)
+					|| (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_SIGN_OCSP_ENABLE).equals(
+							PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {
+				this.checkTSEnable.getDescriptionControl(getFieldEditorParent()).addListener(SWT.MouseUp, new Listener() {
+	
+					@Override
+					public void handleEvent(Event arg0) {
+						if (!checkTSEnable.getBooleanValue()) {
+							checkOCSP.setEnabled(false, getFieldEditorParent());
+						} else {
+							checkOCSP.setEnabled(true, getFieldEditorParent());
+						}
+					}
+				});
+			}
+		}
+
+		// tsa autorithy
+		if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_SIGN_TS_TSA).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE)
+				|| (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_SIGN_TS_TSA).equals(
+						PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {
+		
+			Map<String, TimestampItem> map = PreferencesUtil.getTimestampPreferences();
+			String[][] comboFields = new String[map.size()][2];
+			int i = 0;
+			
+			for (TimestampItem item : map.values()){
+				String[] campo2 = { item.getName(), item.getKey()};
+				comboFields[i] = campo2;
+				i++;
+			}
+	
+			Composite composite = new Composite(getFieldEditorParent(), SWT.NONE);
+			composite.setLayoutData(new GridData(GridData.BEGINNING));
+			
+			ComboFieldEditor comboTSA = new ComboFieldEditor(PreferencesUtil.SIGN_TS_TSA, LanguageUtil.getLanguage().getString("preferences.sign.ts.tsa"),
+					comboFields, composite);
+		
 			addField(comboTSA);
-			addField(this.checkOCSP);
 		}
 		
-		this.checkTSEnable.getDescriptionControl(getFieldEditorParent()).addListener(SWT.MouseUp, new Listener() {
-
-			@Override
-			public void handleEvent(Event arg0) {
-				if (!checkTSEnable.getBooleanValue()) {
-					checkOCSP.setEnabled(false, getFieldEditorParent());
-					PreferencesUtil.getPreferences().setValue(PreferencesUtil.SIGN_OCSP_ENABLE, false);
-					checkOCSP.load();
-				} else {
-					checkOCSP.setEnabled(true, getFieldEditorParent());
-				}
+		// ocsp enable
+		if (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_SIGN_OCSP_ENABLE).equals(PropertiesUtil.VISIBLE_TYPE_VISIBLE)
+				|| (PropertiesUtil.get(PropertiesUtil.PREFERENCES_VISIBLE_SIGN_OCSP_ENABLE).equals(
+						PropertiesUtil.VISIBLE_TYPE_HIDDEN_DEPENDANT) && PropertiesUtil.getBoolean(PropertiesUtil.PREFERENCES_VISIBLE_ALL))) {
+			
+			this.checkOCSP = new BooleanFieldEditor(PreferencesUtil.SIGN_OCSP_ENABLE, LanguageUtil.getLanguage().getString(
+					"preferences.sign.ocsp.enable"), getFieldEditorParent());
+			
+			boolean tsSelected = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE);
+			if (!tsSelected) {
+				this.checkOCSP.setEnabled(false, getFieldEditorParent());
+			} else {
+				this.checkOCSP.setEnabled(true, getFieldEditorParent());
 			}
-		});
+	
+			addField(this.checkOCSP);	
+		}
+		
+		
 	}
 }
