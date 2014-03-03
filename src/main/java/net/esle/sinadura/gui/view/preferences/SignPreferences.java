@@ -82,6 +82,13 @@ public class SignPreferences extends FieldEditorPreferencePage {
 					public void handleEvent(Event arg0) {
 						if (!checkTSEnable.getBooleanValue()) {
 							checkOCSP.setEnabled(false, getFieldEditorParent());
+							// Las siguientes dos sentencias no estan bien, ya que persisten el valor de la preferencia al
+							// instante. Unicamente habria que editar el valor del check y dejar que el gestor de preferencias
+							// la persista al pulsar el boton aceptar. Pero como ahora mismo no se como se setea el valor lo dejo
+							// como esta.
+							PreferencesUtil.getPreferences().setValue(PreferencesUtil.SIGN_OCSP_ENABLE, false);
+							checkOCSP.load();
+							/////
 						} else {
 							checkOCSP.setEnabled(true, getFieldEditorParent());
 						}
