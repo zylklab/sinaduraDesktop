@@ -85,26 +85,32 @@ public class Sinadura {
 		try {
 			
 			log.info("Iniciando Sinadura");
-			
 			log.info("Sinadura version: " + PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.APPLICATION_VERSION_STRING));
 			log.info("Sinadura core version: " + PropertiesCoreUtil.getProperty(PropertiesCoreUtil.KEY_CORE_VERSION));
-			
 			log.info("Java vendor: " + System.getProperty("java.vendor"));
 			log.info("Java version: " + System.getProperty("java.version"));
-			
 			log.info("Class path: " + System.getProperty("java.class.path"));
 			log.info("User home: " + System.getProperty("user.home"));
-			
 			log.info("Os name: " + System.getProperty("os.name"));
 			log.info("Os version: " + System.getProperty("os.version"));
 			log.info("Os arch: " + System.getProperty("os.arch"));
-			
 			log.info("Locale country: " + Locale.getDefault().getCountry());
 			log.info("Locale language: " + Locale.getDefault().getLanguage());
+			
+			int mb = 1024*1024; // solo un 1024 para medirlo en KB 
+	        Runtime runtime = Runtime.getRuntime();
+	        log.info("Init - Used memory:" + (runtime.totalMemory() - runtime.freeMemory()) / mb + " MB");
+	        log.info("Init - Free memory:" + runtime.freeMemory() / mb + " MB");
+	        log.info("Init - Total memory:" + runtime.totalMemory() / mb + " MB");
+	        log.info("Init - Max memory:" + runtime.maxMemory() / mb + " MB");
 			
 			new LoadingWindow(args);
 
 			StatisticsUtil.log(StatisticsUtil.KEY_CLOSING_SINADURA);
+			log.info("Close - Used memory:" + (runtime.totalMemory() - runtime.freeMemory()) / mb + " MB");
+	        log.info("Close - Free memory:" + runtime.freeMemory() / mb + " MB");
+	        log.info("Close - Total memory:" + runtime.totalMemory() / mb + " MB");
+	        log.info("Close - Max memory:" + runtime.maxMemory() / mb + " MB");
 			log.info("Finalizando Sinadura");
 			
 		} catch (java.lang.UnsatisfiedLinkError e) {
