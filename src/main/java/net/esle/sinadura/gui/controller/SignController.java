@@ -45,7 +45,6 @@ package net.esle.sinadura.gui.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyStore;
@@ -101,8 +100,6 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.exceptions.BadPasswordException;
 
 import es.mityc.firmaJava.libreria.utilidades.URIEncoder;
@@ -276,7 +273,7 @@ public class SignController {
 	}
 	
 
-	public static void sign(DocumentInfo pdfParameter, KsSignaturePreferences ksSignaturePreferences) throws OCSPCoreException,
+	public static void sign(DocumentInfo pdfParameter, PdfSignaturePreferences pdfSignaturePreferences) throws OCSPCoreException,
 			RevokedException, ConnectionException, CertificateExpiredException, CertificateNotYetValidException,
 			OCSPIssuerRequiredException, OCSPUnknownUrlException {
 
@@ -299,7 +296,7 @@ public class SignController {
 			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_PDF)) {
 				
 				if (PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_TIPO).equals(PreferencesUtil.PDF_TIPO_XML)){
-					signDetached(pdfParameter, ksSignaturePreferences);
+					signDetached(pdfParameter, pdfSignaturePreferences.getKsSignaturePreferences());
 					
 				}else{
 					boolean successfullySigned = false;
@@ -307,7 +304,7 @@ public class SignController {
 					
 					while (!successfullySigned) {
 						try {
-							signPDF(pdfParameter, ksSignaturePreferences, ownerPassword);
+							signPDF(pdfParameter, pdfSignaturePreferences, ownerPassword);
 							successfullySigned = true;
 							
 						} catch (BadPasswordException e) {
@@ -327,13 +324,13 @@ public class SignController {
 			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_XML)) {
 				// TODO Aqui tendria sentido hacer una firma enveloped
 				// TODO Como ahora solo es detached -> mostrar error??? -> Para evitar firmar un xml que sea ya una firma.
-				signDetached(pdfParameter, ksSignaturePreferences);
+				signDetached(pdfParameter, pdfSignaturePreferences.getKsSignaturePreferences());
 				
 			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR)) {
-				signDetached(pdfParameter, ksSignaturePreferences);
+				signDetached(pdfParameter, pdfSignaturePreferences.getKsSignaturePreferences());
 				
 			} else { // un documento cualquiera
-				signDetached(pdfParameter, ksSignaturePreferences);
+				signDetached(pdfParameter, pdfSignaturePreferences.getKsSignaturePreferences());
 			}
 			
 		} catch (PasswordCallbackCanceledException e) {
@@ -361,66 +358,28 @@ public class SignController {
 			Display.getDefault().syncExec(new ProgressWriter(ProgressWriter.ERROR, m));
 		}
 	}
-
-	private static void signPDF(DocumentInfo pdfParameter, KsSignaturePreferences ksSignaturePreferences, PasswordProtection ownerPassword) throws OCSPCoreException,
+	
+	// TODO 
+	private static void signPDF(DocumentInfo pdfParameter, PdfSignaturePreferences pdfSignaturePreferences, PasswordProtection ownerPassword) throws OCSPCoreException,
 			RevokedException, OverwritingException, ConnectionException, IOException, CertificateExpiredException,
 			CertificateNotYetValidException, OCSPIssuerRequiredException, OCSPUnknownUrlException {
-
 		try {
 
-			PdfSignaturePreferences signaturePreferences = new PdfSignaturePreferences();
-			signaturePreferences.setKsSignaturePreferences(ksSignaturePreferences);
-
-			signaturePreferences.setKsCache(PreferencesUtil.getCacheKeystoreComplete());
-
-			String reason = PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_REASON);
-			signaturePreferences.setReason(reason);
-
-			String location = PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_LOCATION);
-			signaturePreferences.setLocation(location);
-
-			boolean selloVisible = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PDF_VISIBLE);
-			signaturePreferences.setVisible(selloVisible);
-
-			signaturePreferences.setPage(PreferencesUtil.getPreferences().getInt(PreferencesUtil.PDF_PAGE));
-
-			signaturePreferences.setStartX(PreferencesUtil.getPreferences().getInt(PreferencesUtil.PDF_STAMP_X));
-			signaturePreferences.setStartY(PreferencesUtil.getPreferences().getInt(PreferencesUtil.PDF_STAMP_Y));
-			signaturePreferences.setWidht(PreferencesUtil.getPreferences().getInt(PreferencesUtil.PDF_STAMP_WIDTH));
-			signaturePreferences.setHeight(PreferencesUtil.getPreferences().getInt(PreferencesUtil.PDF_STAMP_HEIGHT));
-
-			Image sello = null;
-			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PDF_STAMP_ENABLE)) {
-				try {
-					sello = Image.getInstance(PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_STAMP_PATH));
-
-				} catch (BadElementException e) {
-					log.error("", e);
-
-				} catch (MalformedURLException e) {
-					log.error("", e);
-
-				} catch (IOException e) {
-					log.error("", e);
-				}
-			}
-			signaturePreferences.setImage(sello);
-
-			signaturePreferences.setCertified(PreferencesUtil.getPreferences().getInt(PreferencesUtil.PDF_CERTIFIED));
-
+			pdfSignaturePreferences.setKsCache(PreferencesUtil.getCacheKeystoreComplete());
+			
 			String tsurl = null;
 			String tsaOcspUrl = null; // en la firma de PDF este dato no es necesario, pero lo añado igualmente.
 			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE) == true) {
 				tsurl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA)).getUrl();
 				tsaOcspUrl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA)).getOcspUrl();
 			}
-			signaturePreferences.setTimestampUrl(tsurl);
-			signaturePreferences.setTimestampOcspUrl(tsaOcspUrl);
-			signaturePreferences.setTimestampUser(null);
-			signaturePreferences.setTimestampPassword(null);
+			pdfSignaturePreferences.setTimestampUrl(tsurl);
+			pdfSignaturePreferences.setTimestampOcspUrl(tsaOcspUrl);
+			pdfSignaturePreferences.setTimestampUser(null);
+			pdfSignaturePreferences.setTimestampPassword(null);
 
 			boolean addOCSP = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_OCSP_ENABLE);
-			signaturePreferences.setAddOCSP(addOCSP);
+			pdfSignaturePreferences.setAddOCSP(addOCSP);
 
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_OCSP, addOCSP + "");
 			log.info("ocsp enable: " + addOCSP);
@@ -462,7 +421,7 @@ public class SignController {
 				File file = new File(pdfParameter.getPath());
 				outputPath = PreferencesUtil.getOutputDir(file) + File.separatorChar + PreferencesUtil.getOutputName(file.getName()) + "." + FileUtil.EXTENSION_PDF;
 				
-				PdfService.sign(inputPath, outputPath, signaturePreferences, ownerPassword);
+				PdfService.sign(inputPath, outputPath, pdfSignaturePreferences, ownerPassword);
 					
 				
 			/*
@@ -474,7 +433,7 @@ public class SignController {
 				String sss = PreferencesUtil.getOutputNameFromCompletePath(pdfParameter.getPath());
 				outputPath = PreferencesUtil.getOutputDir(pdfParameter.getPath()) + "/" + sss + "." + FileUtil.EXTENSION_PDF;
 				try {
-					PdfService.sign(is, FileUtil.getOutputStreamFromURI(outputPath), signaturePreferences, ownerPassword);
+					PdfService.sign(is, FileUtil.getOutputStreamFromURI(outputPath), pdfSignaturePreferences, ownerPassword);
 				} catch (URISyntaxException e) {
 					// TODO Auto-generated catch block
 					log.error("error creando el OutputStream asociado al fichero de entrada " + FileUtil.getLocalPathFromURI(pdfParameter.getPath()) , e);

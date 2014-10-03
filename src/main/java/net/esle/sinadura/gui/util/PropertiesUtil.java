@@ -91,10 +91,6 @@ public class PropertiesUtil {
 	public static final String VISIBLE_TYPE_HIDDEN_DEPENDANT = "1";
 	public static final String VISIBLE_TYPE_HIDDEN_ALWAYS = "2";
 	
-	// valor por defecto de las preferencias. (esta quizas deberia estar en PreferencesUtil)
-	public static final String DEFAULT_IMAGE_FILE_PATH = USER_BASE_PATH + File.separatorChar + "sinadura150.png"; 	// imagen por defecto para el sello
-	
-	
 	public static final String VERSION_CHECK_UPDATE_ENABLED = "version.check.update.enabled";
 	public static final String PROXY_ENABLED 				= "proxy.enabled"; // se habilita el soporte para proxy (solo EE)
 	

@@ -45,6 +45,7 @@ import net.esle.sinadura.core.exceptions.PasswordCallbackCanceledException;
 import net.esle.sinadura.core.exceptions.RevokedException;
 import net.esle.sinadura.core.keystore.KeyStoreBuilderFactory;
 import net.esle.sinadura.core.model.KsSignaturePreferences;
+import net.esle.sinadura.core.model.PdfSignaturePreferences;
 import net.esle.sinadura.core.util.ExceptionUtil;
 import net.esle.sinadura.gui.controller.SignController;
 import net.esle.sinadura.gui.exceptions.AliasesNotFoundException;
@@ -53,9 +54,11 @@ import net.esle.sinadura.gui.exceptions.SignProgressInterruptedException;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.LoggingDesktopController;
+import net.esle.sinadura.gui.util.PdfUtils;
 import net.esle.sinadura.gui.util.StatisticsUtil;
 import net.esle.sinadura.gui.view.main.AliasDialog;
 import net.esle.sinadura.gui.view.main.DocumentsTable;
+import net.esle.sinadura.gui.view.main.PdfProfileSelectionDialog;
 import net.esle.sinadura.gui.view.main.SlotDialog;
 
 import org.apache.commons.logging.Log;
@@ -63,6 +66,8 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+
+import com.itextpdf.text.pdf.PdfException;
 
 public class SignListener implements SelectionListener {
 
@@ -79,18 +84,50 @@ public class SignListener implements SelectionListener {
 
 		if (tablePDF.getDocuments() != null && tablePDF.getDocuments().size() != 0) {
 
-			KsSignaturePreferences ksSignaturePreferences = null;
+			//=======================================
+			// DocumentInfo list
+			//=======================================
+			List<DocumentInfo> list = new ArrayList<DocumentInfo>();
+			if (tablePDF.getSelectedDocuments().size() == 0) {
+				list = tablePDF.getDocuments();
+			} else {
+				list = tablePDF.getSelectedDocuments();
+			}
+			
+			
+			//=======================================
+			// PDF-Stamp profile
+			//=======================================
+			
+			/*
+			 * // TODO
+			 * Ahora mismo las preferencias de pdf y no pdf están algo liadas
+			 * PdfSignaturePreferences -> SignaturePreferences (KsSignaturePreferences)
+			 * 
+			 * Mirar si merece la pena refactorizarlo
+			 */
+			PdfSignaturePreferences pdfStampPreferences = new PdfSignaturePreferences();
+			try {
+				
+				PdfProfileSelectionDialog pdfProfileSelect = new PdfProfileSelectionDialog(tablePDF.getShell(), PdfUtils.getPdfStampResolutionOptions(list));
+				pdfProfileSelect.openDialog();
+				pdfStampPreferences = pdfProfileSelect.getSelectedPreference();
+				
+			} catch (PdfException e) {
+				e.printStackTrace();
+			}
+
+			
+			//=======================================
+			// KeyStore Preferences
+			//=======================================
+			
 			// alias
 			String alias = null;
-
+			KsSignaturePreferences ksSignaturePreferences = null;
+			
 			try {
-				List<DocumentInfo> list = new ArrayList<DocumentInfo>();
-				if (tablePDF.getSelectedDocuments().size() == 0) {
-					list = tablePDF.getDocuments();
-				} else {
-					list = tablePDF.getSelectedDocuments();
-				}
-
+				
 				// slot
 				Map<String, Long> slotByReader = null;
 				try {
@@ -178,7 +215,6 @@ public class SignListener implements SelectionListener {
 				}
 
 				// comienzo de la petición de slot
-
 				String slot = "0";
 
 				if (slotByReader != null && slotByReader.size() > 0) {
@@ -323,7 +359,14 @@ public class SignListener implements SelectionListener {
 					throw new SignProgressInterruptedException();
 				}
 
+				// TODO mira si refactorizarlo de alguna manera @see 
+				// establecemos propiedades ks dentro de pdf preferences
+				pdfStampPreferences.setKsSignaturePreferences(ksSignaturePreferences);
+				
+				
+				//=======================================
 				// statistics
+				//=======================================
 				try {
 					X509Certificate cert = (X509Certificate) ksSignaturePreferences.getKs().getCertificate(alias);
 					StatisticsUtil.log(StatisticsUtil.KEY_SIGN_ISSUER, cert.getIssuerX500Principal().getName());
@@ -333,10 +376,14 @@ public class SignListener implements SelectionListener {
 					log.error("", e);
 				}
 
-				// firma
+				
+				
+				//=======================================
+				// firmamos
+				//=======================================
 				try {
 					ProgressMonitorDialog signProgress = new ProgressMonitorDialog(tablePDF.getShell());
-					signProgress.run(true, true, new SignProgress(list, ksSignaturePreferences));
+					signProgress.run(true, true, new SignProgress(list, pdfStampPreferences));
 
 				} catch (InvocationTargetException e) {
 

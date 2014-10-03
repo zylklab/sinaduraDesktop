@@ -163,20 +163,6 @@ class ThreadOperations extends Thread {
 		StatisticsUtil.log(StatisticsUtil.KEY_JAVA_VERSION, System.getProperty("java.version"));
 
 
-		// imagen por defecto para el sello
-		try {
-			File f = new File(PropertiesUtil.DEFAULT_IMAGE_FILE_PATH);
-			if (!f.exists()) {
-				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.EXT_SINADURA_LOGO_150_IMG);
-				FileOutputStream fos = new FileOutputStream(PropertiesUtil.DEFAULT_IMAGE_FILE_PATH);
-				IOUtils.copy(is, fos);
-			}
-		} catch (FileNotFoundException e) {
-			log.error("", e);
-		} catch (IOException e) {
-			log.error("", e);
-		}
-
 		// check new version
 		boolean checkNewVersion = Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.VERSION_CHECK_UPDATE_ENABLED));
 		if (checkNewVersion) {

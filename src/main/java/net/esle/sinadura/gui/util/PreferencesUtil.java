@@ -31,10 +31,13 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
+import net.esle.sinadura.core.model.PdfSignaturePreferences;
 import net.esle.sinadura.core.util.KeystoreUtil;
 import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
 
@@ -88,17 +91,6 @@ public class PreferencesUtil {
 	public static final String PDF_TIPO = "pdf.tipo";
 	public static final String PDF_TIPO_PDF = "0";
 	public static final String PDF_TIPO_XML = "1";
-	public static final String PDF_VISIBLE = "pdf.visible";
-	public static final String PDF_PAGE = "pdf.page";
-	public static final String PDF_REASON = "pdf.reason";
-	public static final String PDF_LOCATION = "pdf.location";
-	public static final String PDF_STAMP_ENABLE = "pdf.stamp.enable";
-	public static final String PDF_STAMP_PATH = "pdf.stamp.path";
-	public static final String PDF_STAMP_WIDTH = "pdf.stamp.width";
-	public static final String PDF_STAMP_HEIGHT = "pdf.stamp.height";
-	public static final String PDF_STAMP_X = "pdf.stamp.x";
-	public static final String PDF_STAMP_Y = "pdf.stamp.y";
-	public static final String PDF_CERTIFIED = "pdf.certified";
 	
 	// xades
 	public static final String XADES_ARCHIVE = "xades.archive";
@@ -123,6 +115,8 @@ public class PreferencesUtil {
 	
 	private static final String PATH_USER_PREFERENCES_MAIN = FOLDER_PREFERENCES_PATH + File.separatorChar + "preferences.properties";
 	private static final String PATH_USER_PREFERENCES_SOFTWARE = FOLDER_PREFERENCES_PATH + File.separatorChar + "software-preferences.csv";
+	private static final String PATH_USER_PREFERENCES_PDF_PROFILES = FOLDER_PREFERENCES_PATH + File.separatorChar + "pdf-profiles.csv";
+	public static  final String DEFAULT_IMAGE_FILEPATH = PropertiesUtil.USER_BASE_PATH + File.separatorChar + "sinadura150.png";
 	private static final String PATH_USER_PREFERENCES_TRUSTED_KEYSTORE = FOLDER_PREFERENCES_PATH + File.separatorChar + "trusted.jks";
 	private static final String PATH_USER_PREFERENCES_CACHE_KEYSTORE = FOLDER_PREFERENCES_PATH + File.separatorChar + "cache.jks";
 	
@@ -131,12 +125,14 @@ public class PreferencesUtil {
 	private static final String PATH_DEFAULT_PREFERENCES_SOFTWARE = PACKAGE_PATH + "/" + "software-preferences.csv";
 	private static final String PATH_DEFAULT_PREFERENCES_HARDWARE = PACKAGE_PATH + "/" + "hardware-preferences.csv";
 	private static final String PATH_DEFAULT_PREFERENCES_TIMESTAMP = PACKAGE_PATH + "/"+ "timestamp-preferences.csv";
+	private static final String PATH_DEFAULT_PREFERENCES_PDF_PROFILES = PACKAGE_PATH + "/" + "pdf-profiles.csv";
 	private static final String PATH_DEFAULT_PREFERENCES_TRUSTED_KEYSTORE = PACKAGE_PATH + "/" + "trusted.jks";
 	private static final String PATH_DEFAULT_PREFERENCES_CACHE_KEYSTORE = PACKAGE_PATH + "/" + "cache.jks";
 	
 	
 	// STATIC ATRIBUTES
 	private static PreferenceStore preferences = null;
+	private static List<PdfSignaturePreferences> pdfProfiles = null;
 	private static Map<String, String> softwarePrefs = null;
 	private static Map<String, HardwareItem> hardwarePrefs = null;
 	private static Map<String, TimestampItem> timestampPrefs = null;
@@ -168,6 +164,11 @@ public class PreferencesUtil {
 			}
 		}
 		
+		/*
+		 * copiamos default preferences a la home user
+		 */
+		
+		
 		// software
 		f = new File(PATH_USER_PREFERENCES_SOFTWARE);
 		if (!f.exists()) {
@@ -178,6 +179,32 @@ public class PreferencesUtil {
 			} catch (IOException e) {
 				log.error("", e);
 			}
+		}
+		
+		// pdf profiles
+		f = new File(PATH_USER_PREFERENCES_PDF_PROFILES);
+		if (!f.exists()) {
+			try {
+				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_DEFAULT_PREFERENCES_PDF_PROFILES);
+				FileOutputStream os = new FileOutputStream(PATH_USER_PREFERENCES_PDF_PROFILES);
+				IOUtils.copy(is, os);	
+			} catch (IOException e) {
+				log.error("", e);
+			}
+		}
+		
+		// imagen por defecto para el sello (pdf-profiles.csv)
+		try {
+			f = new File(DEFAULT_IMAGE_FILEPATH);
+			if (!f.exists()) {
+				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.EXT_SINADURA_LOGO_150_IMG);
+				FileOutputStream fos = new FileOutputStream(DEFAULT_IMAGE_FILEPATH);
+				IOUtils.copy(is, fos);
+			}
+		} catch (FileNotFoundException e) {
+			log.error("", e);
+		} catch (IOException e) {
+			log.error("", e);
 		}
 		
 		// ks trust
@@ -250,17 +277,6 @@ public class PreferencesUtil {
 				 * 1 (xml) - parlamento
 				 */
 				preferences.setDefault(PDF_TIPO, PreferencesDefaultUtil.get(PDF_TIPO));
-				preferences.setDefault(PDF_VISIBLE, PreferencesDefaultUtil.get(PDF_VISIBLE)); // "true");
-				preferences.setDefault(PDF_PAGE, PreferencesDefaultUtil.get(PDF_PAGE)); // "1");
-				preferences.setDefault(PDF_REASON, PreferencesDefaultUtil.get(PDF_REASON)); // "powered by zylk.net");
-				preferences.setDefault(PDF_LOCATION, PreferencesDefaultUtil.get(PDF_LOCATION)); // "Bilbao");
-				preferences.setDefault(PDF_STAMP_ENABLE, PreferencesDefaultUtil.get(PDF_STAMP_ENABLE)); // "true");
-				preferences.setDefault(PDF_STAMP_PATH, PropertiesUtil.DEFAULT_IMAGE_FILE_PATH); // esta necesita definirse en runtime
-				preferences.setDefault(PDF_STAMP_X, PreferencesDefaultUtil.get(PDF_STAMP_X)); // "20");
-				preferences.setDefault(PDF_STAMP_Y, PreferencesDefaultUtil.get(PDF_STAMP_Y)); // "20");
-				preferences.setDefault(PDF_STAMP_WIDTH, PreferencesDefaultUtil.get(PDF_STAMP_WIDTH)); // "125");
-				preferences.setDefault(PDF_STAMP_HEIGHT, PreferencesDefaultUtil.get(PDF_STAMP_HEIGHT)); // "125");
-				preferences.setDefault(PDF_CERTIFIED, PreferencesDefaultUtil.get(PDF_CERTIFIED)); // (PdfSignatureAppearance.NOT_CERTIFIED);
 				
 				// xades
 				preferences.setDefault(XADES_ARCHIVE, PreferencesDefaultUtil.get(XADES_ARCHIVE)); //"true");
@@ -366,7 +382,6 @@ public class PreferencesUtil {
 		return hardwarePrefs;
 	}
 	
-	
 	/***************************************************************
 	 * @return true si soCol pertence al sistema operativo actual
 	 * osPreferencias  	linux, win, mac
@@ -376,6 +391,15 @@ public class PreferencesUtil {
 	}
 	
 	
+	/*
+	 * csv preferences
+	 * - software
+	 * - pdf profile
+	 */
+	
+	// =====================================
+	//  software
+	// =====================================
 	private static Map<String, String> loadSoftwarePreferences() {
 
 		Map<String, String> map = new TreeMap<String, String>();
@@ -430,6 +454,92 @@ public class PreferencesUtil {
 
 	}
 	
+	// =====================================
+	//  pdf profiles
+	// =====================================
+	private static List<PdfSignaturePreferences> loadPdfProfiles() {
+
+		List<PdfSignaturePreferences> profiles = new ArrayList<PdfSignaturePreferences>();
+
+		// generar el map
+		String image;
+		List<List<String>> array = CsvUtil.importCSV(PATH_USER_PREFERENCES_PDF_PROFILES);
+		for (int i = 1; i < array.size(); i++) {
+
+			List<String> list = array.get(i);
+			
+			image = list.get(3);
+			if (image.equals("")){
+				image = DEFAULT_IMAGE_FILEPATH;
+			}
+			profiles.add(new PdfSignaturePreferences(
+							list.get(0), 	// name
+							Boolean.valueOf(list.get(1)), 				// visible
+							Boolean.valueOf(list.get(2)), 				// image
+							image, 										// image path
+							list.get(4), 								// acrofield
+							Integer.valueOf(list.get(5)),				// width
+							Integer.valueOf(list.get(6)), 
+							Integer.valueOf(list.get(7)), 
+							Integer.valueOf(list.get(8)), 
+							Integer.valueOf(list.get(9)),				// page
+							list.get(10),								// reason
+							list.get(11), 								// location
+							
+							/*
+							 * NOT_CERTIFIED (0)
+							 * CERTIFIED_NO_CHANGES_ALLOWED (1)
+							 * CERTIFIED_FORM_FILLING (2)
+							 * CERTIFIED_FORM_FILLING_AND_ANNOTATIONS (3)
+							 */
+							Integer.valueOf(list.get(12))				// certified
+					)
+			);
+		}
+		return profiles;
+	}
+	
+	
+	public static List<PdfSignaturePreferences> getPdfProfiles() {
+
+		if (pdfProfiles == null) {
+			pdfProfiles = loadPdfProfiles();
+		} 
+		return pdfProfiles;
+	}
+	
+	public static void savePdfProfiles(List<PdfSignaturePreferences> profiles) {
+
+		List<List<String>> array = new ArrayList<List<String>>();
+		
+		// header
+		array.add(Arrays.asList("name", "visible", "image", "imagepath", " acrofield", "stamp.width", "stamp.height", "stamp.x", "stamp.y", "page", "reason", "location", "certified"));
+		
+		// rows
+		List<String> fila;
+		for (PdfSignaturePreferences profile : profiles) {
+			fila = new ArrayList<String>();
+			fila.add(0, profile.getName());
+			fila.add(1, Boolean.toString(profile.getVisible()));
+			fila.add(2, Boolean.toString(profile.hasImage()));
+			fila.add(3, profile.getImagePath());
+			fila.add(4, profile.getAcroField());
+			fila.add(5, String.valueOf(profile.getWidht()));
+			fila.add(6, String.valueOf(profile.getHeight()));
+			fila.add(7, String.valueOf(profile.getStartX()));
+			fila.add(8, String.valueOf(profile.getStartY()));
+			fila.add(9, String.valueOf(profile.getPage()));
+			fila.add(10, profile.getReason());
+			fila.add(11, profile.getLocation());
+			fila.add(12, String.valueOf(profile.getCertified()));
+			array.add(fila);
+		}
+		
+		CsvUtil.exportCSV(PATH_USER_PREFERENCES_PDF_PROFILES, array);
+		
+		pdfProfiles = profiles;
+
+	}
 	
 	
 	public static Map<String, TimestampItem> getTimestampPreferences() {
