@@ -52,6 +52,7 @@ import net.esle.sinadura.gui.exceptions.AliasesNotFoundException;
 import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
 import net.esle.sinadura.gui.exceptions.SignProgressInterruptedException;
 import net.esle.sinadura.gui.model.DocumentInfo;
+import net.esle.sinadura.gui.model.PdfProfileResolution;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.LoggingDesktopController;
 import net.esle.sinadura.gui.util.PdfUtils;
@@ -107,15 +108,23 @@ public class SignListener implements SelectionListener {
 			 * Mirar si merece la pena refactorizarlo
 			 */
 			PdfSignaturePreferences pdfStampPreferences = new PdfSignaturePreferences();
+			
+			List<PdfProfileResolution> perfilesDetectados = null;
 			try {
+				perfilesDetectados = PdfUtils.getPdfStampResolutionOptions(list);
 				
-				PdfProfileSelectionDialog pdfProfileSelect = new PdfProfileSelectionDialog(tablePDF.getShell(), PdfUtils.getPdfStampResolutionOptions(list));
-				pdfProfileSelect.openDialog();
-				pdfStampPreferences = pdfProfileSelect.getSelectedPreference();
-				
+				// TODO esto seria, si no hay perfiles, o si ninguno tiene resolución
+				if (perfilesDetectados.size() > 0){
+					
+					PdfProfileSelectionDialog pdfProfileSelect = new PdfProfileSelectionDialog(tablePDF.getShell(), perfilesDetectados);
+					pdfProfileSelect.openDialog();
+					pdfStampPreferences = pdfProfileSelect.getSelectedPreference();
+				}
+
 			} catch (PdfException e) {
 				e.printStackTrace();
 			}
+			
 
 			
 			//=======================================
