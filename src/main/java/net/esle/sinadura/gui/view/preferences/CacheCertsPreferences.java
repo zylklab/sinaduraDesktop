@@ -248,7 +248,7 @@ public class CacheCertsPreferences extends FieldEditorPreferencePage {
 	}
 
 	
-	class ButtonAddListener implements SelectionListener {
+	private class ButtonAddListener implements SelectionListener {
 		
 		public void widgetSelected(SelectionEvent event) {
 
@@ -306,7 +306,7 @@ public class CacheCertsPreferences extends FieldEditorPreferencePage {
 		}
 	}
 	
-	class ButtonShowListener implements SelectionListener {
+	private class ButtonShowListener implements SelectionListener {
 		
 		public void widgetSelected(SelectionEvent event) {
 
@@ -360,7 +360,7 @@ public class CacheCertsPreferences extends FieldEditorPreferencePage {
 	}
 	
 	
-	class ButtonExportListener implements SelectionListener {
+	private class ButtonExportListener implements SelectionListener {
 
 		public void widgetSelected(SelectionEvent event) {
 
@@ -400,7 +400,7 @@ public class CacheCertsPreferences extends FieldEditorPreferencePage {
 		}
 	}
 
-	class SupButtonKeyListener implements KeyListener {
+	private class SupButtonKeyListener implements KeyListener {
 
 		public void keyPressed(KeyEvent e) {
 		}
