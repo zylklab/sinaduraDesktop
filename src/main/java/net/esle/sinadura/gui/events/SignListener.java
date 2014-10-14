@@ -52,14 +52,11 @@ import net.esle.sinadura.gui.exceptions.AliasesNotFoundException;
 import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
 import net.esle.sinadura.gui.exceptions.SignProgressInterruptedException;
 import net.esle.sinadura.gui.model.DocumentInfo;
-import net.esle.sinadura.gui.model.PdfProfileResolution;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.LoggingDesktopController;
-import net.esle.sinadura.gui.util.PdfUtils;
 import net.esle.sinadura.gui.util.StatisticsUtil;
 import net.esle.sinadura.gui.view.main.AliasDialog;
 import net.esle.sinadura.gui.view.main.DocumentsTable;
-import net.esle.sinadura.gui.view.main.PdfProfileSelectionDialog;
 import net.esle.sinadura.gui.view.main.SlotDialog;
 
 import org.apache.commons.logging.Log;
@@ -94,39 +91,7 @@ public class SignListener implements SelectionListener {
 			} else {
 				list = tablePDF.getSelectedDocuments();
 			}
-			
-			
-			//=======================================
-			// PDF-Stamp profile
-			//=======================================
-			
-			/*
-			 * // TODO
-			 * Ahora mismo las preferencias de pdf y no pdf están algo liadas
-			 * PdfSignaturePreferences -> SignaturePreferences (KsSignaturePreferences)
-			 * 
-			 * Mirar si merece la pena refactorizarlo
-			 */
-			PdfSignaturePreferences pdfStampPreferences = new PdfSignaturePreferences();
-			
-			List<PdfProfileResolution> perfilesDetectados = null;
-			try {
-				perfilesDetectados = PdfUtils.getPdfStampResolutionOptions(list);
-				
-				// TODO esto seria, si no hay perfiles, o si ninguno tiene resolución
-				if (perfilesDetectados.size() > 0){
-					
-					PdfProfileSelectionDialog pdfProfileSelect = new PdfProfileSelectionDialog(tablePDF.getShell(), perfilesDetectados);
-					pdfProfileSelect.openDialog();
-					pdfStampPreferences = pdfProfileSelect.getSelectedPreference();
-				}
-
-			} catch (PdfException e) {
-				e.printStackTrace();
-			}
-			
-
-			
+	
 			//=======================================
 			// KeyStore Preferences
 			//=======================================
@@ -367,11 +332,6 @@ public class SignListener implements SelectionListener {
 					LoggingDesktopController.printError(m);
 					throw new SignProgressInterruptedException();
 				}
-
-				// TODO mira si refactorizarlo de alguna manera @see 
-				// establecemos propiedades ks dentro de pdf preferences
-				pdfStampPreferences.setKsSignaturePreferences(ksSignaturePreferences);
-				
 				
 				//=======================================
 				// statistics
@@ -385,14 +345,12 @@ public class SignListener implements SelectionListener {
 					log.error("", e);
 				}
 
-				
-				
 				//=======================================
 				// firmamos
 				//=======================================
 				try {
 					ProgressMonitorDialog signProgress = new ProgressMonitorDialog(tablePDF.getShell());
-					signProgress.run(true, true, new SignProgress(list, pdfStampPreferences));
+					signProgress.run(true, true, new SignProgress(list, ksSignaturePreferences, signProgress.getShell()));
 
 				} catch (InvocationTargetException e) {
 

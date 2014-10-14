@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.Shell;
  * Runnable para abrir el diálogo de petición de contraseñas de forma desacoplada del diálogo de
  * PasswordCallbackHanlderDialog.
  * 
- * @author martind
  */
 public class PasswordDialogRunnable implements Runnable {
 

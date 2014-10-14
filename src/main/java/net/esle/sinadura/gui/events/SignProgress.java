@@ -32,7 +32,7 @@ import net.esle.sinadura.core.exceptions.OCSPCoreException;
 import net.esle.sinadura.core.exceptions.OCSPIssuerRequiredException;
 import net.esle.sinadura.core.exceptions.OCSPUnknownUrlException;
 import net.esle.sinadura.core.exceptions.RevokedException;
-import net.esle.sinadura.core.model.PdfSignaturePreferences;
+import net.esle.sinadura.core.model.KsSignaturePreferences;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.controller.SignController;
 import net.esle.sinadura.gui.model.DocumentInfo;
@@ -42,20 +42,24 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.Shell;
 
 class SignProgress implements IRunnableWithProgress {
 
 	private static Log log = LogFactory.getLog(SignProgress.class);
 
 	
+	private Shell parentShell = null;
+	
 	private List<DocumentInfo> pdfParameterList = null;
-	private PdfSignaturePreferences pdfSignaturePreferences;
+	private KsSignaturePreferences ksSignaturePreferences;
 	
 
-	public SignProgress(List<DocumentInfo> pdfParameterList, PdfSignaturePreferences ksSignaturePreferences) {
+	public SignProgress(List<DocumentInfo> pdfParameterList, KsSignaturePreferences ksSignaturePreferences, Shell parentShell) {
 
-		this.pdfSignaturePreferences = ksSignaturePreferences;
+		this.ksSignaturePreferences = ksSignaturePreferences;
 		this.pdfParameterList = pdfParameterList;
+		this.parentShell = parentShell;
 	}
 
 	@Override
@@ -71,7 +75,8 @@ class SignProgress implements IRunnableWithProgress {
 					monitor.beginTask(m2, IProgressMonitor.UNKNOWN);
 
 					// firma
-					SignController.sign(pdfParameter, pdfSignaturePreferences);
+					SignController.sign(pdfParameter, ksSignaturePreferences, parentShell);
+
 				} else {
 					throw new InterruptedException("The long running operation was cancelled");
 				}

@@ -21,10 +21,10 @@
  */
 package net.esle.sinadura.gui.view.preferences;
 
-import net.esle.sinadura.core.model.PdfSignaturePreferences;
 import net.esle.sinadura.gui.events.BotonCancelarListener;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
+import net.esle.sinadura.gui.util.PdfProfile;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -44,17 +44,17 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * @author zylk.net
  */
-public class PdfProfileDialog extends Dialog {
+public class PdfProfilePreferencesDialog extends Dialog {
 
-	PdfSignaturePreferences profile;
+	PdfProfile profile;
 	private Shell sShell = null;
 
-	private PdfProfile profilePanel;
+	private PdfProfilePreferences profilePanel;
 	private Composite ButtonsComposite = null;
 	private Button bottonAceptar = null;
 	private Button bottonCancelar = null;
 
-	public PdfProfileDialog(Shell parent, PdfSignaturePreferences profile) {
+	public PdfProfilePreferencesDialog(Shell parent, PdfProfile profile) {
 		super(parent);
 		this.profile = profile;
 	}
@@ -89,7 +89,7 @@ public class PdfProfileDialog extends Dialog {
 		
 
 		Composite profileComposite = new Composite(this.sShell, SWT.NONE);
-		profilePanel = new PdfProfile(profileComposite, profile);
+		profilePanel = new PdfProfilePreferences(profileComposite, profile);
 		
 		GridData gdTexto = new GridData();
 		gdTexto.widthHint = 400;

@@ -23,10 +23,10 @@ package net.esle.sinadura.gui.view.preferences;
 
 import java.awt.Rectangle;
 
-import net.esle.sinadura.core.model.PdfSignaturePreferences;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
+import net.esle.sinadura.gui.util.PdfProfile;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.view.main.FileDialogs;
 
@@ -53,12 +53,12 @@ import com.itextpdf.text.pdf.PdfSignatureAppearance;
 /**
  * @author zylk.net
  */
-public class PdfProfile {
+public class PdfProfilePreferences {
 
-	private static Log log = LogFactory.getLog(PdfProfile.class);
+	private static Log log = LogFactory.getLog(PdfProfilePreferences.class);
 
 	private Composite compositeMain = null;
-	private PdfSignaturePreferences profile;
+	private PdfProfile profile;
 
 	private Composite divPosicional;
 	private Composite divAcroField;
@@ -87,7 +87,7 @@ public class PdfProfile {
 	private Rectangle rectangle = null;
 	
 
-	public PdfProfile(Composite composite, PdfSignaturePreferences profile) {
+	public PdfProfilePreferences(Composite composite, PdfProfile profile) {
 
 		this.compositeMain = composite;
 		this.profile = profile;
@@ -406,11 +406,23 @@ public class PdfProfile {
 			gd.horizontalAlignment = SWT.FILL;
 			gd.grabExcessHorizontalSpace = true;
 			acroField.setLayoutData(gd);
+			
+			if (profile.getAcroField() != null) {
+				acroField.setText(profile.getAcroField());			
+			}
+			
 		}
 
 		
-
-		String[][] comboFields2 = { { LanguageUtil.getLanguage().getString("preferences.pdf.combo.not.certified"), "" + PdfSignatureAppearance.NOT_CERTIFIED }, { LanguageUtil.getLanguage().getString("preferences.pdf.combo.no.changes.allowed"), "" + PdfSignatureAppearance.CERTIFIED_NO_CHANGES_ALLOWED }, { LanguageUtil.getLanguage().getString("preferences.pdf.combo.form.filling"), "" + PdfSignatureAppearance.CERTIFIED_FORM_FILLING }, { LanguageUtil.getLanguage().getString("preferences.pdf.combo.form.filling.and.annotations"), "" + PdfSignatureAppearance.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS } };
+		String[][] comboFields2 = {
+				{ LanguageUtil.getLanguage().getString("preferences.pdf.combo.not.certified"),
+						"" + PdfSignatureAppearance.NOT_CERTIFIED },
+				{ LanguageUtil.getLanguage().getString("preferences.pdf.combo.no.changes.allowed"),
+						"" + PdfSignatureAppearance.CERTIFIED_NO_CHANGES_ALLOWED },
+				{ LanguageUtil.getLanguage().getString("preferences.pdf.combo.form.filling"),
+						"" + PdfSignatureAppearance.CERTIFIED_FORM_FILLING },
+				{ LanguageUtil.getLanguage().getString("preferences.pdf.combo.form.filling.and.annotations"),
+						"" + PdfSignatureAppearance.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS } };
 
 		this.labelOCSP = new Label(this.compositeMain, SWT.NONE);
 		this.labelOCSP.setText(LanguageUtil.getLanguage().getString("preferences.pdf.certified"));
@@ -543,7 +555,7 @@ public class PdfProfile {
 	}
 	
 	
-	public PdfSignaturePreferences getProfile(){
+	public PdfProfile getProfile(){
 
 		profile.setVisible(checkVisible.getSelection());
 		profile.setReason(textReason.getText());

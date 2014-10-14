@@ -132,7 +132,7 @@ public class PreferencesUtil {
 	
 	// STATIC ATRIBUTES
 	private static PreferenceStore preferences = null;
-	private static List<PdfSignaturePreferences> pdfProfiles = null;
+	private static List<PdfProfile> pdfProfiles = null;
 	private static Map<String, String> softwarePrefs = null;
 	private static Map<String, HardwareItem> hardwarePrefs = null;
 	private static Map<String, TimestampItem> timestampPrefs = null;
@@ -457,9 +457,9 @@ public class PreferencesUtil {
 	// =====================================
 	//  pdf profiles
 	// =====================================
-	private static List<PdfSignaturePreferences> loadPdfProfiles() {
+	private static List<PdfProfile> loadPdfProfiles() {
 
-		List<PdfSignaturePreferences> profiles = new ArrayList<PdfSignaturePreferences>();
+		List<PdfProfile> profiles = new ArrayList<PdfProfile>();
 
 		// generar el map
 		String image;
@@ -472,7 +472,7 @@ public class PreferencesUtil {
 			if (image.equals("")){
 				image = DEFAULT_IMAGE_FILEPATH;
 			}
-			profiles.add(new PdfSignaturePreferences(
+			profiles.add(new PdfProfile(
 							list.get(0), 	// name
 							Boolean.valueOf(list.get(1)), 				// visible
 							Boolean.valueOf(list.get(2)), 				// image
@@ -496,11 +496,12 @@ public class PreferencesUtil {
 					)
 			);
 		}
+		
 		return profiles;
 	}
 	
 	
-	public static List<PdfSignaturePreferences> getPdfProfiles() {
+	public static List<PdfProfile> getPdfProfiles() {
 
 		if (pdfProfiles == null) {
 			pdfProfiles = loadPdfProfiles();
@@ -508,16 +509,16 @@ public class PreferencesUtil {
 		return pdfProfiles;
 	}
 	
-	public static void savePdfProfiles(List<PdfSignaturePreferences> profiles) {
+	public static void savePdfProfiles(List<PdfProfile> profiles) {
 
 		List<List<String>> array = new ArrayList<List<String>>();
 		
 		// header
-		array.add(Arrays.asList("name", "visible", "image", "imagepath", " acrofield", "stamp.width", "stamp.height", "stamp.x", "stamp.y", "page", "reason", "location", "certified"));
+		array.add(Arrays.asList("name", "visible", "image", "imagepath", "acrofield", "stamp.width", "stamp.height", "stamp.x", "stamp.y", "page", "reason", "location", "certified"));
 		
 		// rows
 		List<String> fila;
-		for (PdfSignaturePreferences profile : profiles) {
+		for (PdfProfile profile : profiles) {
 			fila = new ArrayList<String>();
 			fila.add(0, profile.getName());
 			fila.add(1, Boolean.toString(profile.getVisible()));
@@ -538,7 +539,6 @@ public class PreferencesUtil {
 		CsvUtil.exportCSV(PATH_USER_PREFERENCES_PDF_PROFILES, array);
 		
 		pdfProfiles = profiles;
-
 	}
 	
 	

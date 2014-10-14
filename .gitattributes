@@ -27,12 +27,9 @@ resources-ext/trusted-certs/izenpe-prod/ca_aapp_reconocidos.crt svn_mime_002dtyp
 resources-ext/trusted-certs/izenpe-prod/ca_ciudadanos_entidades_reconocidos.crt svn_mime_002dtype=application%2Foctet-stream
 resources-ext/trusted-certs/izenpe-prod/ca_raiz.crt svn_mime_002dtype=application%2Foctet-stream
 src/main/java/net/esle/sinadura/gui/exceptions/FileNotValidException.java svn_mime_002dtype=text%2Fplain
-src/main/java/net/esle/sinadura/gui/model/PdfProfileResolution.java svn_mime_002dtype=text%2Fplain
 src/main/java/net/esle/sinadura/gui/util/HardwareItem.java svn_mime_002dtype=text%2Fplain
-src/main/java/net/esle/sinadura/gui/util/PdfUtils.java svn_mime_002dtype=text%2Fplain
-src/main/java/net/esle/sinadura/gui/view/main/PdfProfileSelectionDialog.java svn_mime_002dtype=text%2Fplain
-src/main/java/net/esle/sinadura/gui/view/preferences/PdfProfile.java svn_mime_002dtype=text%2Fplain
-src/main/java/net/esle/sinadura/gui/view/preferences/PdfProfileDialog.java svn_mime_002dtype=text%2Fplain
+src/main/java/net/esle/sinadura/gui/view/preferences/PdfProfilePreferences.java svn_mime_002dtype=text%2Fplain
+src/main/java/net/esle/sinadura/gui/view/preferences/PdfProfilePreferencesDialog.java svn_mime_002dtype=text%2Fplain
 src/main/resources/images/accept.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/add.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/adddir.png svn_mime_002dtype=application%2Foctet-stream

@@ -21,9 +21,9 @@
  */
 package net.esle.sinadura.gui.view.preferences;
 
-import net.esle.sinadura.core.model.PdfSignaturePreferences;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
+import net.esle.sinadura.gui.util.PdfProfile;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 
 import org.apache.commons.logging.Log;
@@ -54,7 +54,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 	private Composite compositeMain = null;
 	private Combo comboTipoFirmaPDF = null;
 
-	private java.util.List<PdfSignaturePreferences> pdfProfiles;
+	private java.util.List<PdfProfile> pdfProfiles;
 	private List visualList = null;
 	private Button buttonAdd;
 	private Button buttonShow;
@@ -263,7 +263,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		if (fetch){
 			this.pdfProfiles = PreferencesUtil.getPdfProfiles();			
 		}
-		for(PdfSignaturePreferences profile : this.pdfProfiles){
+		for(PdfProfile profile : this.pdfProfiles){
 			visualList.add(profile.toString());
 		}
 	}
@@ -282,8 +282,8 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 	private class ButtonAddListener implements SelectionListener {
 
 		public void widgetSelected(SelectionEvent event) {
-			PdfSignaturePreferences newProfile = new PdfSignaturePreferences();
-			PdfProfileDialog  pdfDialog= new PdfProfileDialog(compositeMain.getShell(), newProfile);
+			PdfProfile newProfile = new PdfProfile();
+			PdfProfilePreferencesDialog pdfDialog= new PdfProfilePreferencesDialog(compositeMain.getShell(), newProfile);
 			pdfDialog.open();
 			System.out.println("--- aqui sale del detalle " + newProfile.getName());
 			pdfProfiles.add(newProfile);
@@ -302,8 +302,8 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		public void widgetSelected(SelectionEvent event) {
 			int i = visualList.getSelectionIndex();
 			if (i != -1){
-				PdfSignaturePreferences selectedProfile = pdfProfiles.get(i);
-				PdfProfileDialog  pdfDialog= new PdfProfileDialog(compositeMain.getShell(),selectedProfile);
+				PdfProfile selectedProfile = pdfProfiles.get(i);
+				PdfProfilePreferencesDialog pdfDialog = new PdfProfilePreferencesDialog(compositeMain.getShell(), selectedProfile);
 				pdfDialog.open();
 				pdfProfiles.set(i, selectedProfile);
 				
