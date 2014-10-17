@@ -23,13 +23,15 @@ package net.esle.sinadura.gui.view.main;
 
 
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
-import net.esle.sinadura.gui.model.PdfBlankSignatureInfoDesktop;
+import net.esle.sinadura.gui.model.PdfSignatureFieldGui;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -45,24 +47,25 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 
-public class SignatureFieldsSelectorPositionPanel extends Composite {
+public class PdfSignatureFieldSelectorPanel extends Composite {
 	
-	private static Log log = LogFactory.getLog(SignatureFieldsSelectorPositionPanel.class);
+	private static Log log = LogFactory.getLog(PdfSignatureFieldSelectorPanel.class);
+	
+	private static final int MARGIN = 0;
 	
 	private Image stampOriginalImage = null;
 	private Image stampImage = null;
-	
 	private Image backgroundImage = null;
 	
 	private Cursor oldCursor = null;
 	
-	private List<PdfBlankSignatureInfoDesktop> pdfBlankSignatureInfos = null;
-	private PdfBlankSignatureInfoDesktop selectedPdfBlankSignatureInfo = null;
+	private List<PdfSignatureFieldGui> signatureFields = null;
+	private PdfSignatureFieldGui selectedSignatureField = null;
 	
 	private Display display;
 	
 	
-	public SignatureFieldsSelectorPositionPanel(Composite parent, List<PdfBlankSignatureInfoDesktop> pdfBlankSignatureInfos2, String stampPath, Image backgroundImage2) {
+	public PdfSignatureFieldSelectorPanel(Composite parent, List<PdfSignatureFieldGui> signatureFields2, String stampPath, Image backgroundImage2) {
 		
 		super(parent, SWT.NONE);
 		
@@ -78,13 +81,22 @@ public class SignatureFieldsSelectorPositionPanel extends Composite {
 		oldCursor = this.getShell().getCursor();
 		
 		if (stampPath != null) {
-			stampOriginalImage = new Image(this.getDisplay(), stampPath);
-			stampImage = new Image(this.getDisplay(), stampPath);
-		}
+			try {
+				stampOriginalImage = new Image(this.getDisplay(), stampPath);
+				stampImage = new Image(this.getDisplay(), stampPath);
+			} catch (SWTException e) {
+				if (e.getCause() != null && e.getCause() instanceof FileNotFoundException) {
+					stampOriginalImage = null;
+					stampImage = null;	
+				} else {
+					throw e;
+				}
+			}
+		}	
 		
 		this.backgroundImage = backgroundImage2;
 		
-		reloadPdfBlankSignatureInfos(pdfBlankSignatureInfos2);
+		reloadSignatureFields(signatureFields2);
 		
 		this.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 			
@@ -100,19 +112,19 @@ public class SignatureFieldsSelectorPositionPanel extends Composite {
 				event.gc.drawRectangle(new Rectangle(0, 0, backgroundImage.getBounds().width - 1, backgroundImage.getBounds().height - 1));
 				
 				// fields
-				for (PdfBlankSignatureInfoDesktop pbsi : pdfBlankSignatureInfos) {
+				for (PdfSignatureFieldGui pbsi : signatureFields) {
 
 					// border
 					gc.setForeground(new Color(display, 150, 150, 150));
 					gc.setAlpha(255);
 					event.gc.drawRectangle(new Rectangle(pbsi.getStartX(), pbsi.getStartY(), pbsi.getWidht() - 1, pbsi.getHeight() - 1));
 					
-					if (pbsi.getName().equals(selectedPdfBlankSignatureInfo.getName())) { // selected
+					if (pbsi.getName().equals(selectedSignatureField.getName())) { // selected
 						
 						if (stampImage != null) {
 							gc.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 							gc.setAlpha(255);
-							gc.drawImage(stampImage, selectedPdfBlankSignatureInfo.getStartX(), selectedPdfBlankSignatureInfo.getStartY());
+							gc.drawImage(stampImage, selectedSignatureField.getStartX(), selectedSignatureField.getStartY());
 						} else {
 							gc.setBackground(display.getSystemColor(SWT.COLOR_GREEN));
 				            gc.setAlpha(75);
@@ -145,19 +157,19 @@ public class SignatureFieldsSelectorPositionPanel extends Composite {
 		this.backgroundImage = backgroundImage;
 	}
 	
-	public void reloadPdfBlankSignatureInfos(List<PdfBlankSignatureInfoDesktop> pdfBlankSignatureInfos2) {
+	public void reloadSignatureFields(List<PdfSignatureFieldGui> pdfSignatureFieldsGui) {
 		
-		this.pdfBlankSignatureInfos = pdfBlankSignatureInfos2;
+		this.signatureFields = pdfSignatureFieldsGui;
 		// el primero seleccionado por defecto
-		selectedPdfBlankSignatureInfo = pdfBlankSignatureInfos.get(0);
+		selectedSignatureField = signatureFields.get(0);
 		if (stampImage != null) {
-			stampImage = resize(stampOriginalImage, selectedPdfBlankSignatureInfo.getWidht(), selectedPdfBlankSignatureInfo.getHeight());
+			stampImage = resize(stampOriginalImage, selectedSignatureField.getWidht(), selectedSignatureField.getHeight());
 		}
 	}
 	
-	public PdfBlankSignatureInfoDesktop getSignatureField() {
+	public PdfSignatureFieldGui getSignatureField() {
 		
-		return selectedPdfBlankSignatureInfo;
+		return selectedSignatureField;
 	}
 	
 	
@@ -190,15 +202,15 @@ public class SignatureFieldsSelectorPositionPanel extends Composite {
 		@Override
 		public void mouseUp(MouseEvent event) {
 
-			for (PdfBlankSignatureInfoDesktop pdfBlankSignatureInfo : pdfBlankSignatureInfos) {
+			for (PdfSignatureFieldGui pdfSignatureField : signatureFields) {
 				
-				if (isInside(pdfBlankSignatureInfo, event)) {
+				if (isInside(pdfSignatureField, event)) {
 					
-					selectedPdfBlankSignatureInfo = pdfBlankSignatureInfo;
+					selectedSignatureField = pdfSignatureField;
 					
 					if (stampImage != null) {
-						stampImage = resize(stampOriginalImage, selectedPdfBlankSignatureInfo.getWidht(),
-								selectedPdfBlankSignatureInfo.getHeight());
+						stampImage = resize(stampOriginalImage, selectedSignatureField.getWidht(),
+								selectedSignatureField.getHeight());
 					}
 					((Composite) event.getSource()).redraw();
 				}
@@ -214,8 +226,8 @@ public class SignatureFieldsSelectorPositionPanel extends Composite {
 		public void mouseMove(MouseEvent clickEvent) {
 
 			boolean inside = false;
-			for (PdfBlankSignatureInfoDesktop pdfBlankSignatureInfo : pdfBlankSignatureInfos) {
-				if (isInside(pdfBlankSignatureInfo, clickEvent)) {
+			for (PdfSignatureFieldGui pdfBlankSignatureField : signatureFields) {
+				if (isInside(pdfBlankSignatureField, clickEvent)) {
 					inside = true;
 				}
 			}
@@ -233,13 +245,13 @@ public class SignatureFieldsSelectorPositionPanel extends Composite {
 	}
 	
 	
-	private boolean isInside(PdfBlankSignatureInfoDesktop pdfBlankSignatureInfoDesktop, MouseEvent clickEvent) {
-		
-		int margin = 0;
+	private boolean isInside(PdfSignatureFieldGui signatureFieldGui, MouseEvent clickEvent) {
 		
 		// si el usuario clicka dentro de la imagen
-		if (clickEvent.x > pdfBlankSignatureInfoDesktop.getStartX() + margin && clickEvent.x < (pdfBlankSignatureInfoDesktop.getStartX() + pdfBlankSignatureInfoDesktop.getWidht()) - margin
-				&& clickEvent.y > pdfBlankSignatureInfoDesktop.getStartY() + margin && clickEvent.y < (pdfBlankSignatureInfoDesktop.getStartY() + pdfBlankSignatureInfoDesktop.getHeight()) - margin) {
+		if (clickEvent.x > signatureFieldGui.getStartX() + MARGIN
+				&& clickEvent.x < (signatureFieldGui.getStartX() + signatureFieldGui.getWidht()) - MARGIN
+				&& clickEvent.y > signatureFieldGui.getStartY() + MARGIN
+				&& clickEvent.y < (signatureFieldGui.getStartY() + signatureFieldGui.getHeight()) - MARGIN) {
 			
 			return true;
 		}
@@ -248,8 +260,5 @@ public class SignatureFieldsSelectorPositionPanel extends Composite {
 	}
 	
 }
-
-
-
 
 

@@ -23,10 +23,13 @@ package net.esle.sinadura.gui.view.preferences;
 
 
 
-import net.esle.sinadura.gui.model.PdfBlankSignatureInfoDesktop;
+import java.io.FileNotFoundException;
+
+import net.esle.sinadura.gui.model.PdfSignatureFieldGui;
 import net.esle.sinadura.gui.util.ImagesUtil;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -41,23 +44,23 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 
-public class ImagePositionPanel extends Composite {
+public class PdfSignatureFieldPositionPanel extends Composite {
+	
+	private static final int MARGIN = 5;
 	
 	private boolean movable = false;
-	
 	private boolean up = false;
 	private boolean down = false;
 	private boolean left = false;
 	private boolean right = false;
 	
-	private PdfBlankSignatureInfoDesktop stampPosition;
+	private PdfSignatureFieldGui stampPosition;
 	
 	private int xImage2Click = 0; // Distancia entre el punto anterior y el punto donde hace click el usuario.
 	private int yImage2Click = 0;
 	
 	private Image stampOriginalImage = null;
 	private Image stampImage = null;
-	
 	private Image backgroundImage = null;
 	
 	private Cursor oldCursor = null;
@@ -65,7 +68,7 @@ public class ImagePositionPanel extends Composite {
 	private Display display;
 	
 	
-	public ImagePositionPanel(Composite parent, String stampPath, PdfBlankSignatureInfoDesktop stampPosition2, Image backgroundImage2) {
+	public PdfSignatureFieldPositionPanel(Composite parent, String stampPath, PdfSignatureFieldGui stampPosition2, Image backgroundImage2) {
 		
 		super(parent, SWT.NONE);
 		
@@ -81,8 +84,17 @@ public class ImagePositionPanel extends Composite {
 		oldCursor = this.getShell().getCursor();
 		
 		if (stampPath != null) {
-			stampOriginalImage = new Image(this.getDisplay(), stampPath);
-			stampImage = new Image(this.getDisplay(), stampPath);
+			try {
+				stampOriginalImage = new Image(this.getDisplay(), stampPath);
+				stampImage = new Image(this.getDisplay(), stampPath);
+			} catch (SWTException e) {
+				if (e.getCause() != null && e.getCause() instanceof FileNotFoundException) {
+					stampOriginalImage = null;
+					stampImage = null;	
+				} else {
+					throw e;
+				}
+			}
 		}	
 			
 		if (backgroundImage2 == null) {
@@ -136,7 +148,7 @@ public class ImagePositionPanel extends Composite {
 		this.backgroundImage = backgroundImage;
 	}
 	
-	private void reloadStampPosition(PdfBlankSignatureInfoDesktop stampPosition) {
+	private void reloadStampPosition(PdfSignatureFieldGui stampPosition) {
 		
 		this.stampPosition = stampPosition;
 		
@@ -145,7 +157,7 @@ public class ImagePositionPanel extends Composite {
 		}
 	}
 	
-	public PdfBlankSignatureInfoDesktop getStampPosition() {
+	public PdfSignatureFieldGui getStampPosition() {
 		
 		return stampPosition;
 	}
@@ -177,8 +189,8 @@ public class ImagePositionPanel extends Composite {
 		public void mouseDown(MouseEvent clickEvent) {
 			
 			// si el usuario clicka dentro de la imagen
-			if (clickEvent.x > stampPosition.getStartX() + 5 && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) -5
-					&& clickEvent.y > stampPosition.getStartY() + 5 && clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) - 5) {
+			if (clickEvent.x > stampPosition.getStartX() + MARGIN && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) -MARGIN
+					&& clickEvent.y > stampPosition.getStartY() + MARGIN && clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) - MARGIN) {
 				
 				// accionamos el estado en el que se mueve la imagen (se repinta el composite).
 				movable = true;
@@ -190,33 +202,33 @@ public class ImagePositionPanel extends Composite {
 			
 			
 			// si el usuario clicka en el margen inferior de la imagen
-			if (clickEvent.x > stampPosition.getStartX() + 5 && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) -5
-					&& clickEvent.y > (stampPosition.getStartY() + stampPosition.getHeight()) - 5
-					&& clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) + 5) {
+			if (clickEvent.x > stampPosition.getStartX() + MARGIN && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) -MARGIN
+					&& clickEvent.y > (stampPosition.getStartY() + stampPosition.getHeight()) - MARGIN
+					&& clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) + MARGIN) {
 			
 				down = true;
 			}
 			
 			// si el usuario clicka en el margen superior de la imagen
-			if (clickEvent.x > stampPosition.getStartX() + 5 && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) -5
-					&& clickEvent.y > stampPosition.getStartY() - 5
-					&& clickEvent.y < stampPosition.getStartY() + 5) {
+			if (clickEvent.x > stampPosition.getStartX() + MARGIN && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) -MARGIN
+					&& clickEvent.y > stampPosition.getStartY() - MARGIN
+					&& clickEvent.y < stampPosition.getStartY() + MARGIN) {
 			
 				up = true;
 			}
 			
 			// si el usuario clicka en el margen izquierdo de la imagen
-			if (clickEvent.y > stampPosition.getStartY() + 5 && clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) - 5
-					&& clickEvent.x > stampPosition.getStartX() - 5
-					&& clickEvent.x < stampPosition.getStartX() + 5) {
+			if (clickEvent.y > stampPosition.getStartY() + MARGIN && clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) - MARGIN
+					&& clickEvent.x > stampPosition.getStartX() - MARGIN
+					&& clickEvent.x < stampPosition.getStartX() + MARGIN) {
 			
 				left = true;
 			}
 			
 			// si el usuario clicka en el margen derecho de la imagen
-			if (clickEvent.y > stampPosition.getStartY() + 5 && clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) - 5
-					&& clickEvent.x > (stampPosition.getStartX() + stampPosition.getWidht()) - 5
-					&& clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) + 5) {
+			if (clickEvent.y > stampPosition.getStartY() + MARGIN && clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) - MARGIN
+					&& clickEvent.x > (stampPosition.getStartX() + stampPosition.getWidht()) - MARGIN
+					&& clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) + MARGIN) {
 			
 				right = true;
 			}
@@ -240,46 +252,52 @@ public class ImagePositionPanel extends Composite {
 
 		@Override
 		public void mouseMove(MouseEvent clickEvent) {
-			
 
-			if (clickEvent.x > stampPosition.getStartX() + 5 && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) -5
-					&& clickEvent.y > stampPosition.getStartY() + 5 && clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) - 5) {
+			if (clickEvent.x > stampPosition.getStartX() + MARGIN
+					&& clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) - MARGIN
+					&& clickEvent.y > stampPosition.getStartY() + MARGIN
+					&& clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) - MARGIN) {
+				
 				// si el usuario esta dentro de la imagen
-				
 				Cursor handCursor = new Cursor(clickEvent.display, SWT.CURSOR_HAND);
-				((Composite)clickEvent.getSource()).setCursor(handCursor);
+				((Composite) clickEvent.getSource()).setCursor(handCursor);
+
+			} else if (clickEvent.x > stampPosition.getStartX() + MARGIN
+					&& clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) - MARGIN
+					&& clickEvent.y > (stampPosition.getStartY() + stampPosition.getHeight()) - MARGIN
+					&& clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) + MARGIN) {
 				
-			} else if (clickEvent.x > stampPosition.getStartX() + 5 && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) -5 
-					&& clickEvent.y > (stampPosition.getStartY() + stampPosition.getHeight()) - 5
-					&& clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) + 5) {
 				// si el usuario esta en el margen inferior de la imagen
-				
 				Cursor handCursor = new Cursor(clickEvent.display, SWT.CURSOR_SIZES);
-				((Composite)clickEvent.getSource()).setCursor(handCursor);
-			} else if (clickEvent.x > stampPosition.getStartX() + 5 && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) -5
-					&& clickEvent.y > stampPosition.getStartY() - 5
-					&& clickEvent.y < stampPosition.getStartY() + 5) {
-			
+				((Composite) clickEvent.getSource()).setCursor(handCursor);
+			} else if (clickEvent.x > stampPosition.getStartX() + MARGIN
+					&& clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) - MARGIN
+					&& clickEvent.y > stampPosition.getStartY() - MARGIN && clickEvent.y < stampPosition.getStartY() + MARGIN) {
+
 				// si el usuario esta en el margen superior de la imagen
 				Cursor handCursor = new Cursor(clickEvent.display, SWT.CURSOR_SIZEN);
-				((Composite)clickEvent.getSource()).setCursor(handCursor);
+				((Composite) clickEvent.getSource()).setCursor(handCursor);
+
+			} else if (clickEvent.y > stampPosition.getStartY() + MARGIN
+					&& clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) - MARGIN
+					&& clickEvent.x > stampPosition.getStartX() - MARGIN && clickEvent.x < stampPosition.getStartX() + MARGIN) {
 				
-			} else if (clickEvent.y > stampPosition.getStartY() + 5 && clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) - 5
-					&& clickEvent.x > stampPosition.getStartX() - 5
-					&& clickEvent.x < stampPosition.getStartX() + 5) {
 				// si el usuario clicka en el margen izquierdo de la imagen
 				Cursor handCursor = new Cursor(clickEvent.display, SWT.CURSOR_SIZEW);
-				((Composite)clickEvent.getSource()).setCursor(handCursor);
+				((Composite) clickEvent.getSource()).setCursor(handCursor);
+
+			} else if (clickEvent.y > stampPosition.getStartY() + MARGIN
+					&& clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) - MARGIN
+					&& clickEvent.x > (stampPosition.getStartX() + stampPosition.getWidht()) - MARGIN
+					&& clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) + MARGIN) {
 				
-			} else if (clickEvent.y > stampPosition.getStartY() + 5 && clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) - 5
-						&& clickEvent.x > (stampPosition.getStartX() + stampPosition.getWidht()) - 5
-						&& clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) + 5) { 
 				// si el usuario clicka en el margen derecho de la imagen
 				Cursor handCursor = new Cursor(clickEvent.display, SWT.CURSOR_SIZEE);
-				((Composite)clickEvent.getSource()).setCursor(handCursor);
-			}	
-			else { // sino se pone el normal
-				((Composite)clickEvent.getSource()).setCursor(oldCursor);	
+				((Composite) clickEvent.getSource()).setCursor(handCursor);
+				
+			} else {
+				// sino se pone el normal
+				((Composite) clickEvent.getSource()).setCursor(oldCursor);
 			}
 			
 			

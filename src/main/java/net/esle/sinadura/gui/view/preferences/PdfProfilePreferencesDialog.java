@@ -25,6 +25,7 @@ import net.esle.sinadura.gui.events.BotonCancelarListener;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PdfProfile;
+import net.esle.sinadura.gui.util.PreferencesUtil;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -37,7 +38,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
@@ -51,19 +51,33 @@ public class PdfProfilePreferencesDialog extends Dialog {
 
 	private PdfProfilePreferences profilePanel;
 	private Composite ButtonsComposite = null;
+	
 	private Button bottonAceptar = null;
 	private Button bottonCancelar = null;
 
+	
 	public PdfProfilePreferencesDialog(Shell parent, PdfProfile profile) {
+		
 		super(parent);
+		
+		// inicializamos el perfil
+		if (profile == null ) {
+			profile = new PdfProfile();
+			profile.setName("New Profile");
+			profile.setVisible(true);
+			profile.setHasImage(true);
+			profile.setImagePath(PreferencesUtil.DEFAULT_IMAGE_FILEPATH);
+			// TODO coordenadas por defecto???
+			profile.setStartX(20);
+			profile.setStartY(2);
+			profile.setWidht(125);
+			profile.setHeight(125);
+		}
+		
 		this.profile = profile;
 	}
 
-	/**
-	 * @param storeName
-	 * @param mensaje
-	 * @return
-	 */
+	
 	public int open() {
 
 		Shell parent = getParentShell();
@@ -76,24 +90,9 @@ public class PdfProfilePreferencesDialog extends Dialog {
 		shellGridLayout.numColumns = 1;
 		shellGridLayout.marginTop = 10;
 		this.sShell.setLayout(shellGridLayout);
-
-		Label textoLabel = new Label(this.sShell, SWT.NONE);
-		textoLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		// TODO parametrizar esto
-		if (profile.getName() != null && profile.getName().equals("default-pdf-profile")){
-			textoLabel.setText("i18n-Perfil del sistema 'default-pdf-profile' se compone de un perfil con posición mediante coordenadas.");			
-		}else{
-			textoLabel.setText("i81n-Perfil tipo AcroField");
-		}
-		
-
 		Composite profileComposite = new Composite(this.sShell, SWT.NONE);
 		profilePanel = new PdfProfilePreferences(profileComposite, profile);
-		
-		GridData gdTexto = new GridData();
-		gdTexto.widthHint = 400;
-		textoLabel.setLayoutData(gdTexto);
 
 		this.ButtonsComposite = new Composite(this.sShell, SWT.NONE);
 		this.ButtonsComposite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));

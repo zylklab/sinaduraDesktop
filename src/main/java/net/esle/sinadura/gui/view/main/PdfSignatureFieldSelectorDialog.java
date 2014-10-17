@@ -34,11 +34,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.esle.sinadura.core.model.PdfBlankSignatureInfo;
-import net.esle.sinadura.core.service.PdfService;
+import net.esle.sinadura.core.model.PdfSignatureField;
 import net.esle.sinadura.core.util.PdfUtil;
 import net.esle.sinadura.gui.events.BotonCancelarListener;
-import net.esle.sinadura.gui.model.PdfBlankSignatureInfoDesktop;
+import net.esle.sinadura.gui.model.PdfSignatureFieldGui;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 
@@ -64,9 +63,9 @@ import org.eclipse.swt.widgets.Text;
 import com.itextpdf.text.pdf.PdfReader;
 
 
-public class SignatureFieldsSelectorDialog2 extends Dialog {
+public class PdfSignatureFieldSelectorDialog extends Dialog {
 
-	private static Log log = LogFactory.getLog(SignatureFieldsSelectorDialog2.class);
+	private static Log log = LogFactory.getLog(PdfSignatureFieldSelectorDialog.class);
 	
 	private Shell sShell = null;
 
@@ -78,19 +77,19 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 	private Button bottonAceptar = null;
 	private Button bottonCancelar = null;
 
-	private SignatureFieldsSelectorPositionPanel imagePositionPanel = null;
+	private PdfSignatureFieldSelectorPanel pdfSignatureFieldSelectorPanel = null;
 	
-	
-	private String stampPath = null;
-	private int stampPage = 1;
-	private int numberOfPages = 1;
 	private String documentPath = null;
-	private PdfBlankSignatureInfo blankSignatureName = null;
+	private String stampPath = null;
 	
-	private Map<String, PdfBlankSignatureInfo> originalSignatureFieldsMap = null;
+	private int currentPage = 1;
+	private int numberOfPages = 1;
 	
-	private List<PdfBlankSignatureInfoDesktop> pdfBlankSignatureInfos = null;
-	private Map<Integer, List<PdfBlankSignatureInfoDesktop>> pdfBlankSignatureInfosMapPerPage = null;
+	private PdfSignatureField returnSignatureField = null;
+	
+	private Map<String, PdfSignatureField> originalSignatureFieldsMap = null;
+	private List<PdfSignatureFieldGui> signatureFields = null;
+	private Map<Integer, List<PdfSignatureFieldGui>> signatureFieldsMapPerPage = null;
 	private List<Integer> pages = null;
 	private int pagesIndex = 0;
 	
@@ -113,7 +112,7 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 	private static final Float RELACION_Y = new Float(1.384868421);
 	
 
-	public SignatureFieldsSelectorDialog2(Shell parent, List<PdfBlankSignatureInfo> pdfBlankSignatureInfos2, String stampPath, String documentPath) {
+	public PdfSignatureFieldSelectorDialog(Shell parent, List<PdfSignatureField> pdfSignatureFields, String stampPath, String documentPath) {
 
 		super(parent);
 		
@@ -135,36 +134,35 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 			e.printStackTrace();
 		}
 		
-		this.originalSignatureFieldsMap = new HashMap<String, PdfBlankSignatureInfo>();
-		this.pdfBlankSignatureInfos = new ArrayList<PdfBlankSignatureInfoDesktop>();
+		this.originalSignatureFieldsMap = new HashMap<String, PdfSignatureField>();
+		this.signatureFields = new ArrayList<PdfSignatureFieldGui>();
 		
-		for (PdfBlankSignatureInfo psi : pdfBlankSignatureInfos2) {
+		for (PdfSignatureField psi : pdfSignatureFields) {
 		
-			PdfBlankSignatureInfoDesktop pdfBlankSignatureInfoDesktop = new PdfBlankSignatureInfoDesktop();
-			pdfBlankSignatureInfoDesktop.setName(psi.getName());
-			pdfBlankSignatureInfoDesktop.setPage(psi.getPage());			
-			pdfBlankSignatureInfoDesktop.setStartX(Math.round(psi.getStartX() / RELACION_X));
-			pdfBlankSignatureInfoDesktop.setStartY(Math.round(psi.getStartY() / RELACION_Y));
-			pdfBlankSignatureInfoDesktop.setWidht(Math.round(psi.getWidht() / RELACION_X));
-			pdfBlankSignatureInfoDesktop.setHeight(Math.round(psi.getHeight() / RELACION_X));
+			PdfSignatureFieldGui pdfSignatureField = new PdfSignatureFieldGui();
+			pdfSignatureField.setName(psi.getName());
+			pdfSignatureField.setPage(psi.getPage());			
+			pdfSignatureField.setStartX(Math.round(psi.getStartX() / RELACION_X));
+			pdfSignatureField.setStartY(Math.round(psi.getStartY() / RELACION_Y));
+			pdfSignatureField.setWidht(Math.round(psi.getWidht() / RELACION_X));
+			pdfSignatureField.setHeight(Math.round(psi.getHeight() / RELACION_X));
 			
-			this.pdfBlankSignatureInfos.add(pdfBlankSignatureInfoDesktop);
+			this.signatureFields.add(pdfSignatureField);
 			
 			this.originalSignatureFieldsMap.put(psi.getName(), psi);
 		}
-		
-		// TODO orden de las paginas???
+
 		// se agrupan en un map por pagina
-		pdfBlankSignatureInfosMapPerPage = new HashMap<Integer, List<PdfBlankSignatureInfoDesktop>>();
+		signatureFieldsMapPerPage = new HashMap<Integer, List<PdfSignatureFieldGui>>();
 		pages = new ArrayList<Integer>();
 		
-		for (PdfBlankSignatureInfoDesktop psi : pdfBlankSignatureInfos) {
+		for (PdfSignatureFieldGui psi : signatureFields) {
 			
-			List<PdfBlankSignatureInfoDesktop> list = pdfBlankSignatureInfosMapPerPage.get(psi.getPage());
+			List<PdfSignatureFieldGui> list = signatureFieldsMapPerPage.get(psi.getPage());
 			if (list == null) { // pagina nueva
 				pages.add(psi.getPage());
-				list = new ArrayList<PdfBlankSignatureInfoDesktop>();
-				pdfBlankSignatureInfosMapPerPage.put(psi.getPage(), list);	
+				list = new ArrayList<PdfSignatureFieldGui>();
+				signatureFieldsMapPerPage.put(psi.getPage(), list);	
 			}
 			
 			list.add(psi);
@@ -175,11 +173,11 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 		
 		pagesIndex = 0;
 		
-		this.stampPage = pages.get(pagesIndex);
+		this.currentPage = pages.get(pagesIndex);
 	}
 
 	
-	public PdfBlankSignatureInfo createSShell() {
+	public PdfSignatureField createSShell() {
 		
 		Shell parent = getParent();
 		sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
@@ -213,11 +211,7 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 				display.sleep();
 		}
 		
-		return blankSignatureName;
-	}
-	
-	public int getSignatureField() {
-		 return stampPage;
+		return returnSignatureField;
 	}
 	
 	
@@ -245,7 +239,7 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 			FileInputStream fis = new FileInputStream(documentPath);
 			
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			PdfUtil.getPageImage(fis, baos, stampPage);
+			PdfUtil.getPageImage(fis, baos, currentPage);
 			InputStream is = new ByteArrayInputStream(baos.toByteArray());
 			backgroundImage = new Image(sShell.getDisplay(), is);
 			
@@ -257,7 +251,7 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 			e.printStackTrace();
 		}
 		
-		imagePositionPanel = new SignatureFieldsSelectorPositionPanel(compositeEmail,  pdfBlankSignatureInfosMapPerPage.values().iterator().next(), stampPath, backgroundImage);
+		pdfSignatureFieldSelectorPanel = new PdfSignatureFieldSelectorPanel(compositeEmail,  signatureFieldsMapPerPage.values().iterator().next(), stampPath, backgroundImage);
 	}
 	
 	private void createCompositeNavigator() {
@@ -290,7 +284,7 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 		compositePagination.setLayout(gridLayout2);
 		
 		textRuta = new Text(compositePagination, SWT.BORDER);
-		textRuta.setText(String.valueOf(stampPage));
+		textRuta.setText(String.valueOf(currentPage));
 		textRuta.setEnabled(false);
 		
 		labelPosicion = new Label(compositePagination, SWT.NONE);
@@ -334,9 +328,9 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 		public void widgetSelected(SelectionEvent event) {
 			
 			// se setean los datos
-			PdfBlankSignatureInfoDesktop pdfBlankSignatureInfoDesktop = imagePositionPanel.getSignatureField();
+			PdfSignatureFieldGui pdfSignatureField = pdfSignatureFieldSelectorPanel.getSignatureField();
 			
-			blankSignatureName = originalSignatureFieldsMap.get(pdfBlankSignatureInfoDesktop.getName());
+			returnSignatureField = originalSignatureFieldsMap.get(pdfSignatureField.getName());
 			
 			sShell.dispose();
 		}
@@ -351,7 +345,7 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 		public void widgetSelected(SelectionEvent event) {
 			
 			pagesIndex = pagesIndex - 1;			
-			stampPage = pages.get(pagesIndex);
+			currentPage = pages.get(pagesIndex);
 			
 			updateNavigatorButtons();
 			
@@ -360,7 +354,7 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 				FileInputStream fis = new FileInputStream(documentPath);
 				
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				PdfUtil.getPageImage(fis, baos, stampPage);
+				PdfUtil.getPageImage(fis, baos, currentPage);
 				InputStream is = new ByteArrayInputStream(baos.toByteArray());
 				backgroundImage = new Image(sShell.getDisplay(), is);
 				
@@ -372,10 +366,10 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 				e.printStackTrace();
 			}
 			
-			imagePositionPanel.reloadBackgroundImage(backgroundImage);
-			imagePositionPanel.reloadPdfBlankSignatureInfos(pdfBlankSignatureInfosMapPerPage.get(stampPage));
+			pdfSignatureFieldSelectorPanel.reloadBackgroundImage(backgroundImage);
+			pdfSignatureFieldSelectorPanel.reloadSignatureFields(signatureFieldsMapPerPage.get(currentPage));
 			
-			imagePositionPanel.redraw();
+			pdfSignatureFieldSelectorPanel.redraw();
 		}
 
 		public void widgetDefaultSelected(SelectionEvent event) {
@@ -388,7 +382,7 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 		public void widgetSelected(SelectionEvent event) {
 			
 			pagesIndex = pagesIndex + 1;			
-			stampPage = pages.get(pagesIndex);
+			currentPage = pages.get(pagesIndex);
 			
 			updateNavigatorButtons();
 			
@@ -397,7 +391,7 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 				FileInputStream fis = new FileInputStream(documentPath);
 				
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				PdfUtil.getPageImage(fis, baos, stampPage);
+				PdfUtil.getPageImage(fis, baos, currentPage);
 				InputStream is = new ByteArrayInputStream(baos.toByteArray());
 				backgroundImage = new Image(sShell.getDisplay(), is);
 				
@@ -409,10 +403,10 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 				e.printStackTrace();
 			}
 			
-			imagePositionPanel.reloadBackgroundImage(backgroundImage);
-			imagePositionPanel.reloadPdfBlankSignatureInfos(pdfBlankSignatureInfosMapPerPage.get(stampPage));
+			pdfSignatureFieldSelectorPanel.reloadBackgroundImage(backgroundImage);
+			pdfSignatureFieldSelectorPanel.reloadSignatureFields(signatureFieldsMapPerPage.get(currentPage));
 			
-			imagePositionPanel.redraw();
+			pdfSignatureFieldSelectorPanel.redraw();
 	
 		}
 	
@@ -423,7 +417,7 @@ public class SignatureFieldsSelectorDialog2 extends Dialog {
 	
 	private void updateNavigatorButtons() {
 		
-		textRuta.setText(String.valueOf(stampPage));
+		textRuta.setText(String.valueOf(currentPage));
 		
 		if (pages.size() == 1) {
 			bottonAnterior.setEnabled(false);

@@ -154,23 +154,6 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 
 		this.visualList = new org.eclipse.swt.widgets.List(compositeList, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		this.visualList.addKeyListener(new SupButtonKeyListener());
-		this.visualList.addSelectionListener(new SelectionListener() {
-			
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				if (visualList.getSelectionIndex() > 0){
-					buttonRemove.setEnabled(true);
-				}else{
-					buttonRemove.setEnabled(false);
-				}
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {
-				widgetSelected(arg0);
-				
-			}
-		});
 
 		reloadVisualList();
 
@@ -223,6 +206,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 
 	@Override
 	protected void performApply() {
+		
 		savePreferences();
 		super.performApply();
 	}
@@ -230,11 +214,13 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 
 	@Override
 	public boolean performOk() {
+		
 		PreferencesUtil.savePdfProfiles(pdfProfiles);		
 		return super.performOk();
 	}
 
 	private void trigerComboSelectTipoFirma() {
+		
 		if (comboTipoFirmaPDF.getSelectionIndex() == 1) {
 			visualList.setEnabled(false);
 			buttonAdd.setEnabled(false);
@@ -255,12 +241,13 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 	private void reloadVisualList() {
 		reloadVisualList(true);
 	}
+	
 	private void reloadVisualList(boolean fetch) {
 		
 		// inicializar lista
 		visualList.removeAll();
 		
-		if (fetch){
+		if (fetch) {
 			this.pdfProfiles = PreferencesUtil.getPdfProfiles();			
 		}
 		for(PdfProfile profile : this.pdfProfiles){
@@ -270,6 +257,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 
 	
 	private void removeTableFile() {
+		
 		int index = visualList.getSelectionIndex();
 		this.pdfProfiles.remove(index);
 		visualList.remove(index);
@@ -282,10 +270,11 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 	private class ButtonAddListener implements SelectionListener {
 
 		public void widgetSelected(SelectionEvent event) {
-			PdfProfile newProfile = new PdfProfile();
+			
+			PdfProfile newProfile = null;
 			PdfProfilePreferencesDialog pdfDialog= new PdfProfilePreferencesDialog(compositeMain.getShell(), newProfile);
 			pdfDialog.open();
-			System.out.println("--- aqui sale del detalle " + newProfile.getName());
+			
 			pdfProfiles.add(newProfile);
 			
 			reloadVisualList(false);
@@ -300,8 +289,9 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 	private class ButtonShowListener implements SelectionListener {
 
 		public void widgetSelected(SelectionEvent event) {
+			
 			int i = visualList.getSelectionIndex();
-			if (i != -1){
+			if (i != -1) {
 				PdfProfile selectedProfile = pdfProfiles.get(i);
 				PdfProfilePreferencesDialog pdfDialog = new PdfProfilePreferencesDialog(compositeMain.getShell(), selectedProfile);
 				pdfDialog.open();
@@ -319,7 +309,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 	private class ButtonRemoveListener implements SelectionListener {
 
 		public void widgetSelected(SelectionEvent event) {
-			removeTableFile();				
+			removeTableFile();
 		}
 
 		public void widgetDefaultSelected(SelectionEvent event) {
@@ -333,7 +323,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		}
 
 		public void keyReleased(KeyEvent e) {
-			if (SWT.DEL == e.character && visualList.getSelectionIndex() > 0 ) {
+			if (SWT.DEL == e.character) {
 				removeTableFile();
 			}
 		}

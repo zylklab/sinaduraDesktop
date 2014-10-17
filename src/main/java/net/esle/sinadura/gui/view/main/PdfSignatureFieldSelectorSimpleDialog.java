@@ -47,7 +47,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * @author zylk.net
  */
-public class SignatureFieldSelectorDialog extends Dialog {
+public class PdfSignatureFieldSelectorSimpleDialog extends Dialog {
 
 	private Shell sShell = null;
 	
@@ -64,7 +64,7 @@ public class SignatureFieldSelectorDialog extends Dialog {
 	/**
 	 * @param parent
 	 */
-	public SignatureFieldSelectorDialog(Shell parent) {
+	public PdfSignatureFieldSelectorSimpleDialog(Shell parent) {
 		super(parent);
 	}
 

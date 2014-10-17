@@ -79,7 +79,7 @@ import net.esle.sinadura.core.keystore.KeyStoreBuilderFactory;
 import net.esle.sinadura.core.keystore.KeyStoreBuilderFactory.KeyStoreTypes;
 import net.esle.sinadura.core.keystore.PKCS11Helper;
 import net.esle.sinadura.core.model.KsSignaturePreferences;
-import net.esle.sinadura.core.model.PdfBlankSignatureInfo;
+import net.esle.sinadura.core.model.PdfSignatureField;
 import net.esle.sinadura.core.model.PdfSignaturePreferences;
 import net.esle.sinadura.core.model.XadesSignaturePreferences;
 import net.esle.sinadura.core.password.DummyCallbackHandler;
@@ -371,6 +371,7 @@ public class SignController {
 			CertificateNotYetValidException, OCSPIssuerRequiredException, OCSPUnknownUrlException, InterruptedException {
 		
 		try {
+			
 			List<PdfProfile> availableProfiles = PreferencesUtil.getPdfProfiles();
 			// map por acrofield para simplificar la logica --> preferencias
 			Map<String, PdfProfile> availableProfilesMap = new HashMap<String, PdfProfile>();
@@ -382,11 +383,12 @@ public class SignController {
 			// TODO default preferences y borrar esto
 			PdfProfile defaultPdfProfile = availableProfiles.get(0);
 			
+			PdfProfile pdfProfile = defaultPdfProfile;
 			
 			// 1- seleccion del hueco
 			String signatureName = null;
 			
-			List<PdfBlankSignatureInfo> blankSignatureNames = PdfUtil.getBlankSignatureInfos(pdfParameter.getPath(), ownerPassword);
+			List<PdfSignatureField> blankSignatureNames = PdfUtil.getBlankSignatureFields(pdfParameter.getPath(), ownerPassword);
 			
 			if (blankSignatureNames != null && blankSignatureNames.size() == 1) { // 1 hueco de firma
 				
@@ -395,7 +397,7 @@ public class SignController {
 			} else if (blankSignatureNames != null && blankSignatureNames.size() > 1) { // N huecos de firma
 				
 				int resolutionsCount = 0;
-				for (PdfBlankSignatureInfo blankSignatureName : blankSignatureNames) {
+				for (PdfSignatureField blankSignatureName : blankSignatureNames) {
 					
 					PdfProfile resolutionPdfProfile = availableProfilesMap.get(blankSignatureName.getName());
 					if (resolutionPdfProfile != null) {
@@ -407,7 +409,15 @@ public class SignController {
 				
 				if (resolutionsCount == 0 || resolutionsCount > 1) {
 					// si hay mas de un hueco de firma y no se resuelve ninguno o bien se resuelven mas de uno, hay que preguntar al usuario.
-					SignatureFieldSelectorRunnable sfsr = new SignatureFieldSelectorRunnable(sShell, pdfParameter, blankSignatureNames);
+					
+					String stampPath = null;
+					if (resolutionsCount == 0) {
+						if (pdfProfile.hasImage()) {
+							stampPath = pdfProfile.getImagePath();	
+						}
+					}
+
+					SignatureFieldSelectorRunnable sfsr = new SignatureFieldSelectorRunnable(sShell, pdfParameter, blankSignatureNames, stampPath);
 					Display.getDefault().syncExec(sfsr);
 					
 					if (sfsr.getSelectedSignatureField() != null) {
@@ -420,9 +430,7 @@ public class SignController {
 				
 			}
 
-			// 2- seleccion del profile
-			PdfProfile pdfProfile = defaultPdfProfile;
-			
+			// 2- re-seleccion del profile en base al acrofieldName
 			if (signatureName != null) {
 				PdfProfile resolutionPdfProfile = availableProfilesMap.get(signatureName);
 				if (resolutionPdfProfile != null) {
@@ -431,21 +439,27 @@ public class SignController {
 			}
 			
 			
-			PdfBlankSignatureInfo pdfBlankSignatureInfo = new PdfBlankSignatureInfo();
+			PdfSignatureField pdfBlankSignatureInfo = new PdfSignatureField();
 			pdfBlankSignatureInfo.setPage(pdfProfile.getPage());
 			pdfBlankSignatureInfo.setStartX(pdfProfile.getStartX());
 			pdfBlankSignatureInfo.setStartY(pdfProfile.getStartY());
 			pdfBlankSignatureInfo.setWidht(pdfProfile.getWidht());
 			pdfBlankSignatureInfo.setHeight(pdfProfile.getHeight());
 			
-			// TODO descomentatr
-//			if (signatureName == null) {
+
+			if (signatureName == null && pdfProfile.getVisible()) {
+			
 				// TODO preferencia preguntar la posicion del sello individual
 				boolean askPosition = true;
 				
 				if (askPosition) {
+
+					String stampPath = null;
+					if (pdfProfile.hasImage()) {
+						stampPath = pdfProfile.getImagePath();
+					}
 					
-					SignatureFieldPositionRunnable sfpr = new SignatureFieldPositionRunnable(sShell, pdfBlankSignatureInfo, pdfParameter);
+					SignatureFieldPositionRunnable sfpr = new SignatureFieldPositionRunnable(sShell, pdfBlankSignatureInfo, pdfParameter, stampPath);
 					Display.getDefault().syncExec(sfpr);
 					
 					if (sfpr.getSignatureField() != null) {
@@ -455,7 +469,7 @@ public class SignController {
 						throw new InterruptedException();
 					}	
 				}
-//			}
+			}
 
 			PdfSignaturePreferences signaturePreferences = new PdfSignaturePreferences();
 

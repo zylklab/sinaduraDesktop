@@ -22,9 +22,13 @@
 package net.esle.sinadura.gui.model;
 
 
-
-
-public class PdfBlankSignatureInfoDesktop {
+/**
+ * Este objeto es el correspondiente a "PdfSignatureField", ya que las coordenadas en itext son float y en swt/awt integer.
+ * 
+ * Se utiliza unicamente de forma interna en los visores de la GUI ("PdfSignatureFieldPositionDialog" y "PdfSignatureFieldSelectorDialog"). 
+ *
+ */
+public class PdfSignatureFieldGui {
 
 	private String name;
 	private int startX = 0;
@@ -34,7 +38,7 @@ public class PdfBlankSignatureInfoDesktop {
 	private int page;
 	
 	
-	public PdfBlankSignatureInfoDesktop() {
+	public PdfSignatureFieldGui() {
 	}
 
 	public String getName() {

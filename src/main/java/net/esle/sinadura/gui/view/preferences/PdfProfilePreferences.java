@@ -21,12 +21,11 @@
  */
 package net.esle.sinadura.gui.view.preferences;
 
-import net.esle.sinadura.core.model.PdfBlankSignatureInfo;
+import net.esle.sinadura.core.model.PdfSignatureField;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PdfProfile;
-import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.view.main.FileDialogs;
 
 import org.apache.commons.logging.Log;
@@ -60,12 +59,9 @@ public class PdfProfilePreferences {
 	private PdfProfile profile;
 
 	private Composite divPosicional;
-	private Composite divAcroField;
 	
-	private boolean isDefault = false;
-	private Text profileName = null;
-	private Combo comboTipoFirma = null;
-	private Text acroField;
+	private Text textName = null;
+	private Text textAcroField;
 	private Button checkVisible = null;
 	private Button checkSello = null;
 	private Text textRuta = null;
@@ -81,7 +77,7 @@ public class PdfProfilePreferences {
 	private Combo comboOCSP = null;
 	private Label labelOCSP = null;
 	
-	private PdfBlankSignatureInfo signatureField = null;
+	private PdfSignatureField signatureField = null;
 
 	
 	public PdfProfilePreferences(Composite composite, PdfProfile profile) {
@@ -89,35 +85,15 @@ public class PdfProfilePreferences {
 		this.compositeMain = composite;
 		this.profile = profile;
 
-		if (profile.getName() != null && profile.getName().equals("default-pdf-profile")){
-			isDefault = true;
-		}
-		
-		// inicializamos perfil - image
-		if (profile.getName() == null){
-			profile.setName("New Profile");
-			profile.setVisible(true);
-			profile.setHasImage(true);
-		}
-		
-		if (profile.getImagePath() == null){
-			profile.setImagePath(PreferencesUtil.DEFAULT_IMAGE_FILEPATH);
-			profile.setStartX(20);
-			profile.setStartY(2);
-			profile.setWidht(125);
-			profile.setHeight(125);
-		}
-
-		// itext utiliza float y swt int, asi que se redondea para minimizar la perdida de precision.
-		
-		this.signatureField = new PdfBlankSignatureInfo();
+		this.signatureField = new PdfSignatureField();
 		this.signatureField.setStartX(profile.getStartX());
 		this.signatureField.setStartY(profile.getStartY());
 		this.signatureField.setWidht(profile.getWidht());
 		this.signatureField.setHeight(profile.getHeight());
 		
 		createContents();
-		initControls();
+		
+		updateControlState();
 	}
 	
 	
@@ -139,6 +115,7 @@ public class PdfProfilePreferences {
 		this.compositeMain.setLayoutData(gdPrincipal);
 
 		createArea();
+		
 		return this.compositeMain;
 	}
 
@@ -146,47 +123,32 @@ public class PdfProfilePreferences {
 
 		GridData gd = new GridData();
 		
-		
 		// profile name
 		label = new Label(this.compositeMain, SWT.NONE);
 		label.setText("i18n - Nombre Perfil");
 		
-		profileName = new Text(this.compositeMain, SWT.BORDER);
-		profileName.setText(profile.getName());	
+		textName = new Text(this.compositeMain, SWT.BORDER);
+		textName.setText(profile.getName());
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.grabExcessHorizontalSpace = true;
 		gd.horizontalSpan = 2;
-		profileName.setLayoutData(gd);
-		
-		
-		// tipo firma
-		Label labelCombo = new Label(this.compositeMain, SWT.NONE);
-		labelCombo.setText("i18n-Tipo perfil");
-		
-		comboTipoFirma = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
-		comboTipoFirma.add("i18n - Posicional", 0);
-		comboTipoFirma.add("i18n - AcroField", 1);
-		comboTipoFirma.addSelectionListener(new SelectionListener() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				if (comboSelectPage.getSelectionIndex() != 0) {
-					profileName.setEnabled(false);
-					
-				} else {
-					profileName.setEnabled(true);
-				}
-			}
+		textName.setLayoutData(gd);
 
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {
-				widgetSelected(arg0);
-			}
-		});
+		
+		labelPosicion = new Label(this.compositeMain, SWT.NONE);
+		labelPosicion.setText("i18n-AcroField name");
+		labelPosicion.setLayoutData(new GridData());
+
+		textAcroField = new Text(this.compositeMain, SWT.NONE | SWT.BORDER);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.grabExcessHorizontalSpace = true;
 		gd.horizontalSpan = 2;
-		comboTipoFirma.setLayoutData(gd);
-
+		gd.horizontalAlignment = SWT.FILL;
+		gd.grabExcessHorizontalSpace = true;
+		textAcroField.setLayoutData(gd);
+		
+		if (profile.getAcroField() != null) {
+			textAcroField.setText(profile.getAcroField());			
+		}
 		
 		// firma visible
 		checkVisible = new Button(this.compositeMain, SWT.CHECK);
@@ -201,37 +163,8 @@ public class PdfProfilePreferences {
 
 			@Override
 			public void handleEvent(Event arg0) {
-				if (checkVisible.getSelection()) {
-					checkSello.setEnabled(true);
-					if (checkSello.getSelection()) {
-						label.setEnabled(true);
-						textRuta.setEnabled(true);
-						buttonBrowse.setEnabled(true);
-						labelPosicion.setEnabled(true);
-						buttonPosition.setEnabled(true);
-						labelPages.setEnabled(true);
-						comboSelectPage.setEnabled(true);
-					} else {
-						label.setEnabled(false);
-						textRuta.setEnabled(false);
-						buttonBrowse.setEnabled(false);
-						labelPosicion.setEnabled(false);
-						buttonPosition.setEnabled(false);
-						labelPages.setEnabled(false);
-						comboSelectPage.setEnabled(false);
-						textSelectPage.setEnabled(false);
-					}
-				} else {
-					checkSello.setEnabled(false);
-					label.setEnabled(false);
-					textRuta.setEnabled(false);
-					buttonBrowse.setEnabled(false);
-					labelPosicion.setEnabled(false);
-					buttonPosition.setEnabled(false);
-					labelPages.setEnabled(false);
-					comboSelectPage.setEnabled(false);
-					textSelectPage.setEnabled(false);
-				}
+				
+				updateControlState();
 			}
 		});
 
@@ -248,36 +181,8 @@ public class PdfProfilePreferences {
 
 			@Override
 			public void handleEvent(Event arg0) {
-				if (checkVisible.getSelection() && checkSello.getSelection()) {
-//					label.setEnabled(true);
-					textRuta.setEnabled(true);
-					
-					if (isDefault){
-						buttonBrowse.setEnabled(true);
-						labelPosicion.setEnabled(true);
-						buttonPosition.setEnabled(true);
-						labelPages.setEnabled(true);
-						comboSelectPage.setEnabled(true);
-						if (comboSelectPage.getSelectionIndex() > 1) {
-							textSelectPage.setEnabled(true);
-						} else {
-							textSelectPage.setEnabled(false);
-						}
-					}
-					
-				} else {
-//					label.setEnabled(false);
-					textRuta.setEnabled(false);
-					
-					if (isDefault){
-						buttonBrowse.setEnabled(false);
-						labelPosicion.setEnabled(false);
-						buttonPosition.setEnabled(false);
-						labelPages.setEnabled(false);
-						comboSelectPage.setEnabled(false);
-						textSelectPage.setEnabled(false);						
-					}
-				}
+				
+				updateControlState();
 			}
 
 		});
@@ -305,116 +210,81 @@ public class PdfProfilePreferences {
 		
 		// posicion
 		//--------------------------
-		if (isDefault){
-			
-			divPosicional = new Composite(this.compositeMain, SWT.NONE);
-			gl = new GridLayout();
-			gl.numColumns = 3;
-			gl.verticalSpacing = 5;
-			gl.marginBottom = 5;
-			divPosicional.setLayout(gl);
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.horizontalAlignment = SWT.FILL;
-			gd.horizontalSpan = 3;
-			gd.grabExcessHorizontalSpace = true;
-			divPosicional.setLayoutData(gd);
-			
-			labelPosicion = new Label(divPosicional, SWT.NONE);
-			labelPosicion.setText(LanguageUtil.getLanguage().getString("preferences.pdf.image.position"));
-			labelPosicion.setLayoutData(new GridData());
+		
+		divPosicional = new Composite(this.compositeMain, SWT.NONE);
+		gl = new GridLayout();
+		gl.numColumns = 3;
+		gl.verticalSpacing = 5;
+		gl.marginBottom = 5;
+		divPosicional.setLayout(gl);
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalAlignment = SWT.FILL;
+		gd.horizontalSpan = 3;
+		gd.grabExcessHorizontalSpace = true;
+		divPosicional.setLayoutData(gd);
+		
+		labelPosicion = new Label(divPosicional, SWT.NONE);
+		labelPosicion.setText(LanguageUtil.getLanguage().getString("preferences.pdf.image.position"));
+		labelPosicion.setLayoutData(new GridData());
 
-			buttonPosition = new Button(divPosicional, SWT.NONE);
-			buttonPosition.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.STAMP_POSITION_IMG)));
-			buttonPosition.addSelectionListener(new ButtonPositionListener());
-			gd = new GridData();
-			gd.horizontalSpan = 2;
-			gd.grabExcessHorizontalSpace = false;
-			buttonPosition.setLayoutData(gd);
+		buttonPosition = new Button(divPosicional, SWT.NONE);
+		buttonPosition.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.STAMP_POSITION_IMG)));
+		buttonPosition.addSelectionListener(new ButtonPositionListener());
+		gd = new GridData();
+		gd.horizontalSpan = 2;
+		gd.grabExcessHorizontalSpace = false;
+		buttonPosition.setLayoutData(gd);
 
-			// pagina
-			labelPages = new Label(divPosicional, SWT.NONE);
-			labelPages.setText(LanguageUtil.getLanguage().getString("preferences.pdf.page.location"));
+		// pagina
+		labelPages = new Label(divPosicional, SWT.NONE);
+		labelPages.setText(LanguageUtil.getLanguage().getString("preferences.pdf.page.location"));
 
-			comboSelectPage = new Combo(divPosicional, SWT.NONE | SWT.READ_ONLY);
-			comboSelectPage.add(LanguageUtil.getLanguage().getString("preferences.pdf.last.page"), 0);
-			comboSelectPage.add(LanguageUtil.getLanguage().getString("preferences.pdf.first.page"), 1);
-			comboSelectPage.add(LanguageUtil.getLanguage().getString("preferences.pdf.select.page"), 2);
-			comboSelectPage.addSelectionListener(new SelectionListener() {
-				@Override
-				public void widgetSelected(SelectionEvent arg0) {
-					if (comboSelectPage.getSelectionIndex() > 1) {
-						textSelectPage.setEnabled(true);
-					} else {
-						textSelectPage.setEnabled(false);
-					}
-				}
-
-				@Override
-				public void widgetDefaultSelected(SelectionEvent arg0) {
-					widgetSelected(arg0);
-				}
-			});
-			GridData gdComboSelPage = new GridData(GridData.FILL_HORIZONTAL);
-			gdComboSelPage.grabExcessHorizontalSpace = true;
-			gdComboSelPage.horizontalSpan = 1;
-			comboSelectPage.setLayoutData(gdComboSelPage);
-
-			textSelectPage = new Text(divPosicional, SWT.NONE | SWT.BORDER);
-			textSelectPage.setEnabled(false);
-			GridData gdTextSelpage = new GridData();
-			gdTextSelpage.grabExcessHorizontalSpace = false;
-			textSelectPage.setLayoutData(gdTextSelpage);
-
-			int page = profile.getPage();
-			switch(page){
-				case 0:
-					comboSelectPage.select(0);
-					break;
-				case 1:
-					comboSelectPage.select(1);
-					break;
-				default:
-					comboSelectPage.select(2);
-					textSelectPage.setText(String.valueOf(page));
+		comboSelectPage = new Combo(divPosicional, SWT.NONE | SWT.READ_ONLY);
+		comboSelectPage.add(LanguageUtil.getLanguage().getString("preferences.pdf.last.page"), 0);
+		comboSelectPage.add(LanguageUtil.getLanguage().getString("preferences.pdf.first.page"), 1);
+		comboSelectPage.add(LanguageUtil.getLanguage().getString("preferences.pdf.select.page"), 2);
+		comboSelectPage.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if (comboSelectPage.getSelectionIndex() > 1) {
 					textSelectPage.setEnabled(true);
-					break;
+				} else {
+					textSelectPage.setEnabled(false);
+				}
 			}
 
-		// acrofield
-		//---------------------------
-		}else{
-			
-			divAcroField = new Composite(this.compositeMain, SWT.BORDER_SOLID);
-			gl = new GridLayout();
-			gl.numColumns = 3;
-			gl.verticalSpacing = 5;
-			gl.marginBottom = 5;
-			divAcroField.setLayout(gl);
-			divAcroField.setLayout(gl);
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.horizontalSpan = 3;
-			gd.grabExcessHorizontalSpace = true;
-			divAcroField.setLayoutData(gd);
-
-			
-			labelPosicion = new Label(divAcroField, SWT.NONE);
-			labelPosicion.setText("i18n-AcroField name");
-			labelPosicion.setLayoutData(new GridData());
-
-			acroField = new Text(divAcroField, SWT.NONE | SWT.BORDER);
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.horizontalSpan = 2;
-			gd.horizontalAlignment = SWT.FILL;
-			gd.grabExcessHorizontalSpace = true;
-			acroField.setLayoutData(gd);
-			
-			if (profile.getAcroField() != null) {
-				acroField.setText(profile.getAcroField());			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				widgetSelected(arg0);
 			}
-			
+		});
+		GridData gdComboSelPage = new GridData(GridData.FILL_HORIZONTAL);
+		gdComboSelPage.grabExcessHorizontalSpace = true;
+		gdComboSelPage.horizontalSpan = 1;
+		comboSelectPage.setLayoutData(gdComboSelPage);
+
+		textSelectPage = new Text(divPosicional, SWT.NONE | SWT.BORDER);
+		textSelectPage.setEnabled(false);
+		GridData gdTextSelpage = new GridData();
+		gdTextSelpage.grabExcessHorizontalSpace = false;
+		textSelectPage.setLayoutData(gdTextSelpage);
+
+		int page = profile.getPage();
+		switch(page){
+			case 0:
+				comboSelectPage.select(0);
+				break;
+			case 1:
+				comboSelectPage.select(1);
+				break;
+			default:
+				comboSelectPage.select(2);
+				textSelectPage.setText(String.valueOf(page));
+				textSelectPage.setEnabled(true);
+				break;
 		}
 
-		
+
 		String[][] comboFields2 = {
 				{ LanguageUtil.getLanguage().getString("preferences.pdf.combo.not.certified"),
 						"" + PdfSignatureAppearance.NOT_CERTIFIED },
@@ -482,7 +352,7 @@ public class PdfProfilePreferences {
 		gdTextLocation.grabExcessVerticalSpace = true;
 		gdTextLocation.verticalAlignment = SWT.FILL;
 		textLocation.setLayoutData(gdTextLocation);
-		if (profile.getLocation() != null){
+		if (profile.getLocation() != null) {
 			textLocation.setText(profile.getLocation());	
 		}
 		
@@ -508,8 +378,17 @@ public class PdfProfilePreferences {
 
 		public void widgetSelected(SelectionEvent event) {
 			
-			ImagePositionDialog imagePositionDialog = new ImagePositionDialog(Display.getDefault().getActiveShell(), textRuta.getText(), signatureField);
-			signatureField = imagePositionDialog.createSShell();
+			String path = null;
+			if (checkSello.getSelection()) {
+				path = textRuta.getText();
+			}
+			
+			PdfSignatureFieldPositionDialog pdfSignatureFieldPositionDialog = new PdfSignatureFieldPositionDialog(Display.getDefault().getActiveShell(), path, signatureField);
+			
+			PdfSignatureField psf = pdfSignatureFieldPositionDialog.createSShell();
+			if (psf != null) {
+				signatureField = psf;
+			}
 		}
 
 		public void widgetDefaultSelected(SelectionEvent event) {
@@ -517,54 +396,59 @@ public class PdfProfilePreferences {
 		}
 	}
 	
-	private void initControls(){
+	
+	private void updateControlState() {
 		
-		comboTipoFirma.setEnabled(false);
-		
-		// default
-		if (isDefault){
-			profileName.setEnabled(false);
-			comboTipoFirma.select(0);
+		if (checkVisible.getSelection()) {
 			
-			if (checkVisible.getSelection() && checkSello.getSelection()) {
+			checkSello.setEnabled(true);
+			labelPosicion.setEnabled(true);
+			buttonPosition.setEnabled(true);
+			labelPages.setEnabled(true);
+			comboSelectPage.setEnabled(true);
+			textSelectPage.setEnabled(true);
+			
+			if (comboSelectPage.getSelectionIndex() > 1) {
+				textSelectPage.setEnabled(true);
+			} else {
+				textSelectPage.setEnabled(false);
+			}
+			
+			if (checkSello.getSelection()) {
 				label.setEnabled(true);
 				textRuta.setEnabled(true);
 				buttonBrowse.setEnabled(true);
-				labelPosicion.setEnabled(true);
-				buttonPosition.setEnabled(true);
-				labelPages.setEnabled(true);
-				if (comboSelectPage.getSelectionIndex() > 1) {
-					textSelectPage.setEnabled(true);
-				} else {
-					textSelectPage.setEnabled(false);
-				}
 			} else {
 				label.setEnabled(false);
 				textRuta.setEnabled(false);
 				buttonBrowse.setEnabled(false);
-				labelPosicion.setEnabled(false);
-				buttonPosition.setEnabled(false);
-				labelPages.setEnabled(false);
-				comboSelectPage.setEnabled(false);
-				textSelectPage.setEnabled(false);
 			}
 			
-		// acrofield
-		}else{
-			comboTipoFirma.select(1);
+		} else {
+			checkSello.setEnabled(false);
+			label.setEnabled(false);
+			textRuta.setEnabled(false);
+			buttonBrowse.setEnabled(false);
+			labelPosicion.setEnabled(false);
+			buttonPosition.setEnabled(false);
+			labelPages.setEnabled(false);
+			comboSelectPage.setEnabled(false);
+			textSelectPage.setEnabled(false);
 		}
+
 	}
 	
 	
-	public PdfProfile getProfile(){
+	public PdfProfile getProfile() {
 
+		profile.setName(textName.getText());
+		profile.setAcroField(textAcroField.getText());
 		profile.setVisible(checkVisible.getSelection());
 		profile.setReason(textReason.getText());
 		profile.setLocation(textLocation.getText());
 		profile.setHasImage(checkSello.getSelection());
 		profile.setImagePath(textRuta.getText());
-
-		profile.setCertified(this.comboOCSP.getSelectionIndex());
+		profile.setCertified(comboOCSP.getSelectionIndex());
 		
 		
 //		 if (checkSello != null && checkVisible != null &&
@@ -591,30 +475,21 @@ public class PdfProfilePreferences {
 //				 }
 //				 }
 		
-		// posicional
-		if (isDefault){
-			
-			switch(comboSelectPage.getSelectionIndex()){
-				case 0:
-				case 1:
-					profile.setPage(comboSelectPage.getSelectionIndex());
-					break;
-					
-				default:
-					profile.setPage(Integer.valueOf(textSelectPage.getText()));
-					break;
-			}
-			
-			profile.setStartX(signatureField.getStartX());
-			profile.setStartY(signatureField.getStartY());
-			profile.setWidht(signatureField.getWidht());
-			profile.setHeight(signatureField.getHeight());
-		
-		// acrofield
-		}else{
-			profile.setName(profileName.getText());
-			profile.setAcroField(acroField.getText());
+		switch(comboSelectPage.getSelectionIndex()){
+			case 0:
+			case 1:
+				profile.setPage(comboSelectPage.getSelectionIndex());
+				break;
+				
+			default:
+				profile.setPage(Integer.valueOf(textSelectPage.getText()));
+				break;
 		}
+		
+		profile.setStartX(signatureField.getStartX());
+		profile.setStartY(signatureField.getStartY());
+		profile.setWidht(signatureField.getWidht());
+		profile.setHeight(signatureField.getHeight());
 		
 		return profile;
 	}

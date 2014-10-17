@@ -30,10 +30,10 @@ package net.esle.sinadura.gui.controller;
 
 import java.util.List;
 
-import net.esle.sinadura.core.model.PdfBlankSignatureInfo;
+import net.esle.sinadura.core.model.PdfSignatureField;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.model.DocumentInfo;
-import net.esle.sinadura.gui.view.main.SignatureFieldsSelectorDialog2;
+import net.esle.sinadura.gui.view.main.PdfSignatureFieldSelectorDialog;
 
 import org.eclipse.swt.widgets.Shell;
 
@@ -44,17 +44,19 @@ import org.eclipse.swt.widgets.Shell;
 public class SignatureFieldSelectorRunnable implements Runnable {
 
 	
-	private PdfBlankSignatureInfo selectedSignatureField = null;
+	private PdfSignatureField selectedSignatureField = null;
 	private Shell shell;
-	private List<PdfBlankSignatureInfo> signatureFields;
+	private List<PdfSignatureField> signatureFields;
 	private DocumentInfo pdfParameter;
+	private String stampPath;
 	
 
-	SignatureFieldSelectorRunnable(Shell shell, DocumentInfo pdfParameter, List<PdfBlankSignatureInfo> signatureFields) {
+	SignatureFieldSelectorRunnable(Shell shell, DocumentInfo pdfParameter, List<PdfSignatureField> signatureFields, String stampPath) {
 		
 		this.shell = shell;
 		this.signatureFields = signatureFields;
 		this.pdfParameter = pdfParameter;
+		this.stampPath = stampPath; 
 	}
 
 	@Override
@@ -64,13 +66,12 @@ public class SignatureFieldSelectorRunnable implements Runnable {
 //		SignatureFieldSelectorDialog sfsd = new SignatureFieldSelectorDialog(shell);
 //		this.signatureName = sfsd.open(signatureFields);
 		
-		// TODO stamp a null
-		SignatureFieldsSelectorDialog2 imagePositionDialog = new SignatureFieldsSelectorDialog2(shell, signatureFields, null, FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
-		selectedSignatureField = imagePositionDialog.createSShell();
+		PdfSignatureFieldSelectorDialog pdfSignatureFieldSelectorDialog = new PdfSignatureFieldSelectorDialog(shell, signatureFields, stampPath, FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
+		selectedSignatureField = pdfSignatureFieldSelectorDialog.createSShell();
 		
 	}
 
-	public PdfBlankSignatureInfo getSelectedSignatureField() {
+	public PdfSignatureField getSelectedSignatureField() {
 		return selectedSignatureField;
 	}
 

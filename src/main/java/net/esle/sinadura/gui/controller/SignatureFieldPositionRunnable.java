@@ -28,10 +28,10 @@
  */
 package net.esle.sinadura.gui.controller;
 
-import net.esle.sinadura.core.model.PdfBlankSignatureInfo;
+import net.esle.sinadura.core.model.PdfSignatureField;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.model.DocumentInfo;
-import net.esle.sinadura.gui.view.preferences.ImagePositionDialog;
+import net.esle.sinadura.gui.view.preferences.PdfSignatureFieldPositionDialog;
 
 import org.eclipse.swt.widgets.Shell;
 
@@ -42,30 +42,31 @@ import org.eclipse.swt.widgets.Shell;
 public class SignatureFieldPositionRunnable implements Runnable {
 
 	
-	private PdfBlankSignatureInfo signatureField = null;
+	private PdfSignatureField signatureField = null;
 	private Shell shell;
 	private DocumentInfo pdfParameter;
+	private String stampPath;
 	
-	private PdfBlankSignatureInfo selectedSignatureField = null;
+	private PdfSignatureField selectedSignatureField = null;
 	
 
-	SignatureFieldPositionRunnable(Shell shell, PdfBlankSignatureInfo pdfBlankSignatureInfo, DocumentInfo pdfParameter) {
+	SignatureFieldPositionRunnable(Shell shell, PdfSignatureField pdfBlankSignatureInfo, DocumentInfo pdfParameter, String stampPath) {
 		
 		this.shell = shell;
 		this.signatureField = pdfBlankSignatureInfo;
 		this.pdfParameter = pdfParameter;
+		this.stampPath = stampPath;
 	}
 
 	@Override
 	public void run() {
 		
-		// TODO stamp a null
-		ImagePositionDialog imagePositionDialog = new ImagePositionDialog(shell, null, signatureField, FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
-		selectedSignatureField = imagePositionDialog.createSShell();
+		PdfSignatureFieldPositionDialog pdfSignatureFieldPositionDialog = new PdfSignatureFieldPositionDialog(shell, stampPath, signatureField, FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
+		selectedSignatureField = pdfSignatureFieldPositionDialog.createSShell();
 		
 	}
 
-	public PdfBlankSignatureInfo getSignatureField() {
+	public PdfSignatureField getSignatureField() {
 		return selectedSignatureField;
 	}
 
