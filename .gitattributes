@@ -52,6 +52,7 @@ src/main/resources/images/menu-license.png svn_mime_002dtype=application%2Foctet
 src/main/resources/images/menu-preferences.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/news.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/ok.png svn_mime_002dtype=application%2Foctet-stream
+src/main/resources/images/pdf-preview-old.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/pdf-preview.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/position.png svn_mime_002dtype=application%2Foctet-stream
 src/main/resources/images/remove.png svn_mime_002dtype=application%2Foctet-stream

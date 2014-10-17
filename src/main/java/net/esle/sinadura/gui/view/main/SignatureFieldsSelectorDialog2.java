@@ -19,7 +19,7 @@
  * # See COPYRIGHT.txt for copyright notices and details. 
  * #
  */
-package net.esle.sinadura.gui.view.preferences;
+package net.esle.sinadura.gui.view.main;
 
 
 import java.io.ByteArrayInputStream;
@@ -28,6 +28,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import net.esle.sinadura.core.model.PdfBlankSignatureInfo;
 import net.esle.sinadura.core.service.PdfService;
@@ -59,9 +64,9 @@ import org.eclipse.swt.widgets.Text;
 import com.itextpdf.text.pdf.PdfReader;
 
 
-public class ImagePositionDialog extends Dialog {
+public class SignatureFieldsSelectorDialog2 extends Dialog {
 
-	private static Log log = LogFactory.getLog(ImagePositionDialog.class);
+	private static Log log = LogFactory.getLog(SignatureFieldsSelectorDialog2.class);
 	
 	private Shell sShell = null;
 
@@ -73,16 +78,21 @@ public class ImagePositionDialog extends Dialog {
 	private Button bottonAceptar = null;
 	private Button bottonCancelar = null;
 
-	private ImagePositionPanel imagePositionPanel = null;
+	private SignatureFieldsSelectorPositionPanel imagePositionPanel = null;
 	
 	
 	private String stampPath = null;
-	private PdfBlankSignatureInfoDesktop stampPosition = null;
-	private PdfBlankSignatureInfo returnPosition = null;
 	private int stampPage = 1;
 	private int numberOfPages = 1;
 	private String documentPath = null;
+	private PdfBlankSignatureInfo blankSignatureName = null;
 	
+	private Map<String, PdfBlankSignatureInfo> originalSignatureFieldsMap = null;
+	
+	private List<PdfBlankSignatureInfoDesktop> pdfBlankSignatureInfos = null;
+	private Map<Integer, List<PdfBlankSignatureInfoDesktop>> pdfBlankSignatureInfosMapPerPage = null;
+	private List<Integer> pages = null;
+	private int pagesIndex = 0;
 	
 	/*
 	 * Diferencial entre el sistema de medición de itext y el de esta pantalla. 
@@ -102,72 +112,83 @@ public class ImagePositionDialog extends Dialog {
 	private static final Float RELACION_X = new Float(1.38372093);
 	private static final Float RELACION_Y = new Float(1.384868421);
 	
-	
-	private int mode = MODE_ADV;
-	private static int MODE_SIMPLE = 0; // sin navegacion y con imagen de fondo
-	private static int MODE_ADV = 1; // con navegaacion y documento
-	
-	
-	public ImagePositionDialog(Shell parent, String stampPath, PdfBlankSignatureInfo pdfBlankSignatureInfo) {
 
-		this(parent, stampPath, pdfBlankSignatureInfo, null);
-	}
+	public SignatureFieldsSelectorDialog2(Shell parent, List<PdfBlankSignatureInfo> pdfBlankSignatureInfos2, String stampPath, String documentPath) {
 
-	
-	public ImagePositionDialog(Shell parent, String stampPath, PdfBlankSignatureInfo pdfBlankSignatureInfo, String documentPath) {
-		
 		super(parent);
 		
-		if (documentPath == null) {
-			mode = MODE_SIMPLE;
-		} else {
-			mode = MODE_ADV;
-		}
-		
+		// TODO cargar el sello directamente
 		this.stampPath = stampPath;
+		
 		this.documentPath = documentPath;
-		this.stampPage = pdfBlankSignatureInfo.getPage();
-		this.returnPosition = pdfBlankSignatureInfo;
 		
-		PdfBlankSignatureInfoDesktop pdfBlankSignatureInfoDesktop = new PdfBlankSignatureInfoDesktop();
-		pdfBlankSignatureInfoDesktop.setName(pdfBlankSignatureInfo.getName());
-		pdfBlankSignatureInfoDesktop.setPage(pdfBlankSignatureInfo.getPage());
-		pdfBlankSignatureInfoDesktop.setStartX(Math.round(pdfBlankSignatureInfo.getStartX() / RELACION_X));
-		pdfBlankSignatureInfoDesktop.setStartY(Math.round(pdfBlankSignatureInfo.getStartY() / RELACION_Y));
-		pdfBlankSignatureInfoDesktop.setWidht(Math.round(pdfBlankSignatureInfo.getWidht() / RELACION_X));
-		pdfBlankSignatureInfoDesktop.setHeight(Math.round(pdfBlankSignatureInfo.getHeight() / RELACION_Y));
 		
-		this.stampPosition = pdfBlankSignatureInfoDesktop;
-		
-		if (mode == MODE_ADV) {
-			try {
-				// password!! --> PdfReader reader = new PdfReader(inputPath, ownerPassword);
-				PdfReader reader = new PdfReader(documentPath);
-				numberOfPages = reader.getNumberOfPages();
-				
-				// TODO cerrar reader???
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			// password!! --> PdfReader reader = new PdfReader(inputPath, ownerPassword);
+			PdfReader reader = new PdfReader(documentPath);
+			numberOfPages = reader.getNumberOfPages();
+			
+			// TODO cerrar reader???
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
+		
+		this.originalSignatureFieldsMap = new HashMap<String, PdfBlankSignatureInfo>();
+		this.pdfBlankSignatureInfos = new ArrayList<PdfBlankSignatureInfoDesktop>();
+		
+		for (PdfBlankSignatureInfo psi : pdfBlankSignatureInfos2) {
+		
+			PdfBlankSignatureInfoDesktop pdfBlankSignatureInfoDesktop = new PdfBlankSignatureInfoDesktop();
+			pdfBlankSignatureInfoDesktop.setName(psi.getName());
+			pdfBlankSignatureInfoDesktop.setPage(psi.getPage());			
+			pdfBlankSignatureInfoDesktop.setStartX(Math.round(psi.getStartX() / RELACION_X));
+			pdfBlankSignatureInfoDesktop.setStartY(Math.round(psi.getStartY() / RELACION_Y));
+			pdfBlankSignatureInfoDesktop.setWidht(Math.round(psi.getWidht() / RELACION_X));
+			pdfBlankSignatureInfoDesktop.setHeight(Math.round(psi.getHeight() / RELACION_X));
+			
+			this.pdfBlankSignatureInfos.add(pdfBlankSignatureInfoDesktop);
+			
+			this.originalSignatureFieldsMap.put(psi.getName(), psi);
+		}
+		
+		// TODO orden de las paginas???
+		// se agrupan en un map por pagina
+		pdfBlankSignatureInfosMapPerPage = new HashMap<Integer, List<PdfBlankSignatureInfoDesktop>>();
+		pages = new ArrayList<Integer>();
+		
+		for (PdfBlankSignatureInfoDesktop psi : pdfBlankSignatureInfos) {
+			
+			List<PdfBlankSignatureInfoDesktop> list = pdfBlankSignatureInfosMapPerPage.get(psi.getPage());
+			if (list == null) { // pagina nueva
+				pages.add(psi.getPage());
+				list = new ArrayList<PdfBlankSignatureInfoDesktop>();
+				pdfBlankSignatureInfosMapPerPage.put(psi.getPage(), list);	
+			}
+			
+			list.add(psi);
+		}
+		
+		// se ordena el listado de paginas
+		Collections.sort(pages);
+		
+		pagesIndex = 0;
+		
+		this.stampPage = pages.get(pagesIndex);
 	}
-	
 
+	
 	public PdfBlankSignatureInfo createSShell() {
 		
 		Shell parent = getParent();
-		sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE );
+		sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
 		sShell.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 		sShell.setText(LanguageUtil.getLanguage().getString("preferences.pdf.stamp.position.tittle"));
 		
 		sShell.setLayout(new GridLayout());
 		
-		if (mode == MODE_ADV) {	
-			createCompositeNavigator();
-		}
+		createCompositeNavigator();
 		
 		createCompositeCampos();
 		
@@ -192,7 +213,11 @@ public class ImagePositionDialog extends Dialog {
 				display.sleep();
 		}
 		
-		return returnPosition;
+		return blankSignatureName;
+	}
+	
+	public int getSignatureField() {
+		 return stampPage;
 	}
 	
 	
@@ -216,26 +241,23 @@ public class ImagePositionDialog extends Dialog {
 		
 		
 		Image backgroundImage = null;
-		
-		if (mode == MODE_ADV) {
-			try {
-				FileInputStream fis = new FileInputStream(documentPath);
-				
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				PdfUtil.getPageImage(fis, baos, stampPage);
-				InputStream is = new ByteArrayInputStream(baos.toByteArray());
-				backgroundImage = new Image(sShell.getDisplay(), is);
-				
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			FileInputStream fis = new FileInputStream(documentPath);
+			
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			PdfUtil.getPageImage(fis, baos, stampPage);
+			InputStream is = new ByteArrayInputStream(baos.toByteArray());
+			backgroundImage = new Image(sShell.getDisplay(), is);
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
-		imagePositionPanel = new ImagePositionPanel(compositeEmail, stampPath, stampPosition, backgroundImage);
+		imagePositionPanel = new SignatureFieldsSelectorPositionPanel(compositeEmail,  pdfBlankSignatureInfosMapPerPage.values().iterator().next(), stampPath, backgroundImage);
 	}
 	
 	private void createCompositeNavigator() {
@@ -255,6 +277,7 @@ public class ImagePositionDialog extends Dialog {
 		bottonAnterior.setText("Anterior i18n");
 		bottonAnterior.addSelectionListener(new BotonAnteriorListener());
 
+		
 		Composite compositePagination = new Composite(compositeBotones, SWT.NONE);
 		GridData gd11 = new GridData();
 		gd11.horizontalAlignment = GridData.CENTER;
@@ -272,8 +295,8 @@ public class ImagePositionDialog extends Dialog {
 		
 		labelPosicion = new Label(compositePagination, SWT.NONE);
 		labelPosicion.setText("/ " + numberOfPages);
-
 		
+
 		bottonSiguiente = new Button(compositeBotones, SWT.NONE);
 		bottonSiguiente.setText("Siguiente i18n");
 		bottonSiguiente.addSelectionListener(new BotonSiguienteListener());
@@ -310,11 +333,10 @@ public class ImagePositionDialog extends Dialog {
 		
 		public void widgetSelected(SelectionEvent event) {
 			
-			// se setean los nuevos datos
-			returnPosition.setStartX(stampPosition.getStartX() * RELACION_X);
-			returnPosition.setStartY(stampPosition.getStartY() * RELACION_Y);
-			returnPosition.setWidht(stampPosition.getWidht() * RELACION_X);
-			returnPosition.setHeight(stampPosition.getHeight() * RELACION_Y);
+			// se setean los datos
+			PdfBlankSignatureInfoDesktop pdfBlankSignatureInfoDesktop = imagePositionPanel.getSignatureField();
+			
+			blankSignatureName = originalSignatureFieldsMap.get(pdfBlankSignatureInfoDesktop.getName());
 			
 			sShell.dispose();
 		}
@@ -328,7 +350,8 @@ public class ImagePositionDialog extends Dialog {
 		
 		public void widgetSelected(SelectionEvent event) {
 			
-			stampPage = stampPage - 1;
+			pagesIndex = pagesIndex - 1;			
+			stampPage = pages.get(pagesIndex);
 			
 			updateNavigatorButtons();
 			
@@ -349,7 +372,8 @@ public class ImagePositionDialog extends Dialog {
 				e.printStackTrace();
 			}
 			
-			imagePositionPanel.setBackgroundImage(backgroundImage);
+			imagePositionPanel.reloadBackgroundImage(backgroundImage);
+			imagePositionPanel.reloadPdfBlankSignatureInfos(pdfBlankSignatureInfosMapPerPage.get(stampPage));
 			
 			imagePositionPanel.redraw();
 		}
@@ -363,7 +387,8 @@ public class ImagePositionDialog extends Dialog {
 		
 		public void widgetSelected(SelectionEvent event) {
 			
-			stampPage = stampPage + 1;
+			pagesIndex = pagesIndex + 1;			
+			stampPage = pages.get(pagesIndex);
 			
 			updateNavigatorButtons();
 			
@@ -384,9 +409,11 @@ public class ImagePositionDialog extends Dialog {
 				e.printStackTrace();
 			}
 			
-			imagePositionPanel.setBackgroundImage(backgroundImage);
+			imagePositionPanel.reloadBackgroundImage(backgroundImage);
+			imagePositionPanel.reloadPdfBlankSignatureInfos(pdfBlankSignatureInfosMapPerPage.get(stampPage));
 			
 			imagePositionPanel.redraw();
+	
 		}
 	
 		public void widgetDefaultSelected(SelectionEvent event) {
@@ -398,13 +425,13 @@ public class ImagePositionDialog extends Dialog {
 		
 		textRuta.setText(String.valueOf(stampPage));
 		
-		if (numberOfPages == 1) {
+		if (pages.size() == 1) {
 			bottonAnterior.setEnabled(false);
 			bottonSiguiente.setEnabled(false);
-		} else if (stampPage == 1) {
+		} else if (pagesIndex == 0) {
 			bottonAnterior.setEnabled(false);
 			bottonSiguiente.setEnabled(true);
-		} else if (stampPage == numberOfPages) {
+		} else if (pagesIndex == pages.size() - 1) {
 			bottonAnterior.setEnabled(true);
 			bottonSiguiente.setEnabled(false);
 		} else {

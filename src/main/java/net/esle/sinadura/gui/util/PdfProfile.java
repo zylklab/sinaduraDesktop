@@ -1,22 +1,20 @@
 package net.esle.sinadura.gui.util;
 
-import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfSignatureAppearance;
 
 
 public class PdfProfile {
 	
-	// pdf-profile-name
 	private String name;
 	
 	private boolean visible = false;
 	private String acroField = null;
 			
 	private int page = 1;
-	private int startX = 0;
-	private int startY = 0;
-	private int widht = 0;
-	private int height = 0;
+	private float startX = 0;
+	private float startY = 0;
+	private float widht = 0;
+	private float height = 0;
 	
 	private String reason = null;
 	private String location = null;
@@ -29,10 +27,12 @@ public class PdfProfile {
 	public PdfProfile(){
 		
 	}
+	
 	public PdfProfile(String acroFieldName){
 		this.acroField = acroFieldName;
 	}
-	public PdfProfile(String name, boolean visible, boolean image, String imagePath, String acroField, int width, int height, int startX, int startY, int page, String reason, String location, int certified){
+	
+	public PdfProfile(String name, boolean visible, boolean image, String imagePath, String acroField, float width, float height, float startX, float startY, int page, String reason, String location, int certified){
 		this.name = name;
 		this.visible = visible;
 		this.acroField = acroField;
@@ -46,7 +46,6 @@ public class PdfProfile {
 		this.hasImage = image;
 		this.imagePath = imagePath;
 		this.certified = certified;
-		
 	}
 	
 	public void setVisible(boolean visible) {
@@ -67,28 +66,28 @@ public class PdfProfile {
 	public String getLocation() {
 		return location;
 	}
-	public void setStartX(int startX) {
+	public void setStartX(float startX) {
 		this.startX = startX;
 	}
-	public int getStartX() {
+	public float getStartX() {
 		return startX;
 	}
-	public void setStartY(int startY) {
+	public void setStartY(float startY) {
 		this.startY = startY;
 	}
-	public int getStartY() {
+	public float getStartY() {
 		return startY;
 	}
-	public void setWidht(int widht) {
+	public void setWidht(float widht) {
 		this.widht = widht;
 	}
-	public int getWidht() {
+	public float getWidht() {
 		return widht;
 	}
-	public void setHeight(int height) {
+	public void setHeight(float height) {
 		this.height = height;
 	}
-	public int getHeight() {
+	public float getHeight() {
 		return height;
 	}
 	public void setCertified(int certified) {

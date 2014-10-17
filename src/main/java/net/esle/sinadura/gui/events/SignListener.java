@@ -350,7 +350,7 @@ public class SignListener implements SelectionListener {
 				//=======================================
 				try {
 					ProgressMonitorDialog signProgress = new ProgressMonitorDialog(tablePDF.getShell());
-					signProgress.run(true, true, new SignProgress(list, ksSignaturePreferences, signProgress.getShell()));
+					signProgress.run(true, true, new SignProgress(list, ksSignaturePreferences, tablePDF.getShell()));
 
 				} catch (InvocationTargetException e) {
 

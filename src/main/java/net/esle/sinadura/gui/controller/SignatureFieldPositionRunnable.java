@@ -28,49 +28,44 @@
  */
 package net.esle.sinadura.gui.controller;
 
-import java.util.List;
-
 import net.esle.sinadura.core.model.PdfBlankSignatureInfo;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.model.DocumentInfo;
-import net.esle.sinadura.gui.view.main.SignatureFieldsSelectorDialog2;
+import net.esle.sinadura.gui.view.preferences.ImagePositionDialog;
 
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Runnable para abrir el diálogo de seleccion de campo de firma.
+ * Runnable para abrir el diálogo de seleccion de posicion.
  * 
  */
-public class SignatureFieldSelectorRunnable implements Runnable {
+public class SignatureFieldPositionRunnable implements Runnable {
 
 	
-	private PdfBlankSignatureInfo selectedSignatureField = null;
+	private PdfBlankSignatureInfo signatureField = null;
 	private Shell shell;
-	private List<PdfBlankSignatureInfo> signatureFields;
 	private DocumentInfo pdfParameter;
 	
+	private PdfBlankSignatureInfo selectedSignatureField = null;
+	
 
-	SignatureFieldSelectorRunnable(Shell shell, DocumentInfo pdfParameter, List<PdfBlankSignatureInfo> signatureFields) {
+	SignatureFieldPositionRunnable(Shell shell, PdfBlankSignatureInfo pdfBlankSignatureInfo, DocumentInfo pdfParameter) {
 		
 		this.shell = shell;
-		this.signatureFields = signatureFields;
+		this.signatureField = pdfBlankSignatureInfo;
 		this.pdfParameter = pdfParameter;
 	}
 
 	@Override
 	public void run() {
 		
-//		// TODO mantener este dialog a modo de como fallback?? sí por config
-//		SignatureFieldSelectorDialog sfsd = new SignatureFieldSelectorDialog(shell);
-//		this.signatureName = sfsd.open(signatureFields);
-		
 		// TODO stamp a null
-		SignatureFieldsSelectorDialog2 imagePositionDialog = new SignatureFieldsSelectorDialog2(shell, signatureFields, null, FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
+		ImagePositionDialog imagePositionDialog = new ImagePositionDialog(shell, null, signatureField, FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
 		selectedSignatureField = imagePositionDialog.createSShell();
 		
 	}
 
-	public PdfBlankSignatureInfo getSelectedSignatureField() {
+	public PdfBlankSignatureInfo getSignatureField() {
 		return selectedSignatureField;
 	}
 

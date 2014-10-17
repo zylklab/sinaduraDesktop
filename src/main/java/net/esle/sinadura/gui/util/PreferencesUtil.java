@@ -478,14 +478,13 @@ public class PreferencesUtil {
 							Boolean.valueOf(list.get(2)), 				// image
 							image, 										// image path
 							list.get(4), 								// acrofield
-							Integer.valueOf(list.get(5)),				// width
-							Integer.valueOf(list.get(6)), 
-							Integer.valueOf(list.get(7)), 
-							Integer.valueOf(list.get(8)), 
+							new Float(list.get(5)),				// width
+							new Float(list.get(6)), 
+							new Float(list.get(7)), 
+							new Float(list.get(8)), 
 							Integer.valueOf(list.get(9)),				// page
 							list.get(10),								// reason
 							list.get(11), 								// location
-							
 							/*
 							 * NOT_CERTIFIED (0)
 							 * CERTIFIED_NO_CHANGES_ALLOWED (1)

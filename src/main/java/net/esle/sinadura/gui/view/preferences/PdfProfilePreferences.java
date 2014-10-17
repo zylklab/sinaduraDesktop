@@ -21,8 +21,7 @@
  */
 package net.esle.sinadura.gui.view.preferences;
 
-import java.awt.Rectangle;
-
+import net.esle.sinadura.core.model.PdfBlankSignatureInfo;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
@@ -81,12 +80,10 @@ public class PdfProfilePreferences {
 	private Text textSelectPage = null;
 	private Combo comboOCSP = null;
 	private Label labelOCSP = null;
-
-	// diferencial entre el sistema de medición de itext y el de esta pantalla
-	private static final Float RELACION = new Float(1.375816993);
-	private Rectangle rectangle = null;
 	
+	private PdfBlankSignatureInfo signatureField = null;
 
+	
 	public PdfProfilePreferences(Composite composite, PdfProfile profile) {
 
 		this.compositeMain = composite;
@@ -110,11 +107,15 @@ public class PdfProfilePreferences {
 			profile.setWidht(125);
 			profile.setHeight(125);
 		}
+
+		// itext utiliza float y swt int, asi que se redondea para minimizar la perdida de precision.
 		
-		this.rectangle = new Rectangle(	new Float(profile.getStartX() / RELACION).intValue(), 
-										new Float(profile.getStartY() / RELACION).intValue(), 
-										new Float(profile.getWidht() / RELACION).intValue(), 
-										new Float(profile.getHeight() / RELACION).intValue());
+		this.signatureField = new PdfBlankSignatureInfo();
+		this.signatureField.setStartX(profile.getStartX());
+		this.signatureField.setStartY(profile.getStartY());
+		this.signatureField.setWidht(profile.getWidht());
+		this.signatureField.setHeight(profile.getHeight());
+		
 		createContents();
 		initControls();
 	}
@@ -506,9 +507,9 @@ public class PdfProfilePreferences {
 	class ButtonPositionListener implements SelectionListener {
 
 		public void widgetSelected(SelectionEvent event) {
-
-			ImagePositionDialog imagePositionDialog = new ImagePositionDialog(Display.getDefault().getActiveShell(), textRuta.getText(), rectangle);
-			rectangle = imagePositionDialog.createSShell();
+			
+			ImagePositionDialog imagePositionDialog = new ImagePositionDialog(Display.getDefault().getActiveShell(), textRuta.getText(), signatureField);
+			signatureField = imagePositionDialog.createSShell();
 		}
 
 		public void widgetDefaultSelected(SelectionEvent event) {
@@ -604,11 +605,11 @@ public class PdfProfilePreferences {
 					break;
 			}
 			
-			profile.setStartX(new Float(rectangle.x * RELACION).intValue());
-			profile.setStartY(new Float(rectangle.y * RELACION).intValue());
-			profile.setWidht(new Float(rectangle.width * RELACION).intValue());
-			profile.setHeight(new Float(rectangle.height * RELACION).intValue());
-			
+			profile.setStartX(signatureField.getStartX());
+			profile.setStartY(signatureField.getStartY());
+			profile.setWidht(signatureField.getWidht());
+			profile.setHeight(signatureField.getHeight());
+		
 		// acrofield
 		}else{
 			profile.setName(profileName.getText());

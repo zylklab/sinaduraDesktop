@@ -79,6 +79,7 @@ import net.esle.sinadura.core.keystore.KeyStoreBuilderFactory;
 import net.esle.sinadura.core.keystore.KeyStoreBuilderFactory.KeyStoreTypes;
 import net.esle.sinadura.core.keystore.PKCS11Helper;
 import net.esle.sinadura.core.model.KsSignaturePreferences;
+import net.esle.sinadura.core.model.PdfBlankSignatureInfo;
 import net.esle.sinadura.core.model.PdfSignaturePreferences;
 import net.esle.sinadura.core.model.XadesSignaturePreferences;
 import net.esle.sinadura.core.password.DummyCallbackHandler;
@@ -86,6 +87,7 @@ import net.esle.sinadura.core.password.PasswordExtractor;
 import net.esle.sinadura.core.service.PdfService;
 import net.esle.sinadura.core.service.XadesService;
 import net.esle.sinadura.core.util.FileUtil;
+import net.esle.sinadura.core.util.PdfUtil;
 import net.esle.sinadura.gui.events.ProgressWriter;
 import net.esle.sinadura.gui.exceptions.AliasesNotFoundException;
 import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
@@ -363,14 +365,14 @@ public class SignController {
 		}
 	}
 	
-	// TODO 
+
 	private static void signPDF(DocumentInfo pdfParameter, KsSignaturePreferences ksSignaturePreferences, PasswordProtection ownerPassword, Shell sShell) throws OCSPCoreException,
 			RevokedException, OverwritingException, ConnectionException, IOException, CertificateExpiredException,
 			CertificateNotYetValidException, OCSPIssuerRequiredException, OCSPUnknownUrlException, InterruptedException {
 		
 		try {
 			List<PdfProfile> availableProfiles = PreferencesUtil.getPdfProfiles();
-			// TODO map por acrofield para simplificar la logica --> preferencias
+			// map por acrofield para simplificar la logica --> preferencias
 			Map<String, PdfProfile> availableProfilesMap = new HashMap<String, PdfProfile>();
 			for (PdfProfile p : availableProfiles) {	
 				availableProfilesMap.put(p.getAcroField(), p);
@@ -384,38 +386,40 @@ public class SignController {
 			// 1- seleccion del hueco
 			String signatureName = null;
 			
-			List<String> blankSignatureNames = PdfService.getBlankSignatureNames(pdfParameter.getPath(), ownerPassword);
+			List<PdfBlankSignatureInfo> blankSignatureNames = PdfUtil.getBlankSignatureInfos(pdfParameter.getPath(), ownerPassword);
 			
 			if (blankSignatureNames != null && blankSignatureNames.size() == 1) { // 1 hueco de firma
 				
-				signatureName = blankSignatureNames.get(0);
+				signatureName = blankSignatureNames.get(0).getName();
 				
 			} else if (blankSignatureNames != null && blankSignatureNames.size() > 1) { // N huecos de firma
 				
 				int resolutionsCount = 0;
-				for (String blankSignatureName : blankSignatureNames) {
+				for (PdfBlankSignatureInfo blankSignatureName : blankSignatureNames) {
 					
-					PdfProfile resolutionPdfProfile = availableProfilesMap.get(blankSignatureName);
+					PdfProfile resolutionPdfProfile = availableProfilesMap.get(blankSignatureName.getName());
 					if (resolutionPdfProfile != null) {
 						resolutionsCount++;
-						signatureName = blankSignatureName;
+						signatureName = blankSignatureName.getName();
 					}
 					
 				}
 				
 				if (resolutionsCount == 0 || resolutionsCount > 1) {
 					// si hay mas de un hueco de firma y no se resuelve ninguno o bien se resuelven mas de uno, hay que preguntar al usuario.
-					SignatureFieldSelectorRunnable sfsr = new SignatureFieldSelectorRunnable(sShell, blankSignatureNames);
+					SignatureFieldSelectorRunnable sfsr = new SignatureFieldSelectorRunnable(sShell, pdfParameter, blankSignatureNames);
 					Display.getDefault().syncExec(sfsr);
-					signatureName = sfsr.getSignatureName();
-					if (signatureName == null) {
-						// TODO interrumped exception (cancelar)
+					
+					if (sfsr.getSelectedSignatureField() != null) {
+						signatureName = sfsr.getSelectedSignatureField().getName();	
+					} else {
+						// interrumped exception (cancelar)
 						throw new InterruptedException();
 					}
 				}
 				
 			}
-				
+
 			// 2- seleccion del profile
 			PdfProfile pdfProfile = defaultPdfProfile;
 			
@@ -427,23 +431,46 @@ public class SignController {
 			}
 			
 			
+			PdfBlankSignatureInfo pdfBlankSignatureInfo = new PdfBlankSignatureInfo();
+			pdfBlankSignatureInfo.setPage(pdfProfile.getPage());
+			pdfBlankSignatureInfo.setStartX(pdfProfile.getStartX());
+			pdfBlankSignatureInfo.setStartY(pdfProfile.getStartY());
+			pdfBlankSignatureInfo.setWidht(pdfProfile.getWidht());
+			pdfBlankSignatureInfo.setHeight(pdfProfile.getHeight());
 			
-			
-			
+			// TODO descomentatr
+//			if (signatureName == null) {
+				// TODO preferencia preguntar la posicion del sello individual
+				boolean askPosition = true;
+				
+				if (askPosition) {
+					
+					SignatureFieldPositionRunnable sfpr = new SignatureFieldPositionRunnable(sShell, pdfBlankSignatureInfo, pdfParameter);
+					Display.getDefault().syncExec(sfpr);
+					
+					if (sfpr.getSignatureField() != null) {
+						pdfBlankSignatureInfo = sfpr.getSignatureField();
+					} else {
+						// interrumped exception (cancelar)
+						throw new InterruptedException();
+					}	
+				}
+//			}
 
-			
 			PdfSignaturePreferences signaturePreferences = new PdfSignaturePreferences();
 
 			signaturePreferences.setAcroField(signatureName);
 			
+			signaturePreferences.setPage(pdfBlankSignatureInfo.getPage());
+			signaturePreferences.setStartX(pdfBlankSignatureInfo.getStartX());
+			signaturePreferences.setStartY(pdfBlankSignatureInfo.getStartY());
+			signaturePreferences.setWidht(pdfBlankSignatureInfo.getWidht());
+			signaturePreferences.setHeight(pdfBlankSignatureInfo.getHeight());
+			
 			signaturePreferences.setReason(pdfProfile.getReason());
 			signaturePreferences.setLocation(pdfProfile.getLocation());
 			signaturePreferences.setVisible(pdfProfile.getVisible());
-			signaturePreferences.setPage(pdfProfile.getPage());
-			signaturePreferences.setStartX(pdfProfile.getStartX());
-			signaturePreferences.setStartY(pdfProfile.getStartY());
-			signaturePreferences.setWidht(pdfProfile.getWidht());
-			signaturePreferences.setHeight(pdfProfile.getHeight());
+			
 			Image sello = null;
 			if (pdfProfile.hasImage()) {
 				try {
