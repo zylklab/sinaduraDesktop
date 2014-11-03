@@ -159,7 +159,7 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 		Shell parent = getParent();
 		sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE );
 		sShell.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
-		sShell.setText(LanguageUtil.getLanguage().getString("preferences.pdf.stamp.position.tittle"));
+		sShell.setText(LanguageUtil.getLanguage().getString("preferences.pdf.stamp.position.title"));
 		
 		sShell.setLayout(new GridLayout());
 		
@@ -201,7 +201,7 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 
 		// info top
 		Label labelInfo = new Label(sShell, SWT.WRAP);
-		labelInfo.setText("i18n-Seleccione la posicion de la firma y pulse el boton Aceptar.");
+		labelInfo.setText(LanguageUtil.getLanguage().getString("preferences.pdf.stamp.dialog.position.ask.help"));
 		GridData gd = new GridData();
 		gd.verticalIndent = 10;
 		gd.horizontalAlignment = GridData.FILL;
@@ -223,7 +223,7 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 		compositeBotones.setLayout(gridLayout);
 
 		bottonAnterior = new Button(compositeBotones, SWT.NONE);
-		bottonAnterior.setText("Anterior i18n");
+		bottonAnterior.setText(LanguageUtil.getLanguage().getString("preferences.pdf.stamp.dialog.anterior"));
 		bottonAnterior.addSelectionListener(new BotonAnteriorListener());
 
 		Composite compositePagination = new Composite(compositeBotones, SWT.NONE);
@@ -279,7 +279,7 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 
 		
 		bottonSiguiente = new Button(compositeBotones, SWT.NONE);
-		bottonSiguiente.setText("Siguiente i18n");
+		bottonSiguiente.setText(LanguageUtil.getLanguage().getString("preferences.pdf.stamp.dialog.siguiente"));
 		bottonSiguiente.addSelectionListener(new BotonSiguienteListener());
 		
 		updateNavigatorButtons();

@@ -27,7 +27,7 @@ public class ImagesUtil {
 
 	// todas por classpath
 	
-	private static final String	PATH_IMAGES					=  "images";
+	public static final String	PATH_IMAGES					=  "images";
 	
 	// menu
 	public static final String	MENU_EXIT				= PATH_IMAGES + "/" + "menu-exit.png";
@@ -42,7 +42,10 @@ public class ImagesUtil {
 	public static final String	SINADURA_LOGO_IMG				= PATH_IMAGES + "/" + "sinadura.ico";
 	public static final String	SINADURA_FULL_IMG				= PATH_IMAGES + "/" + "sinadura.png";
 	public static final String	EXT_SINADURA_LOGO_150_IMG				= PATH_IMAGES + "/" + "sinadura150.png";
-	public static final String	SPONSOR_LOGO_IMG				= PATH_IMAGES + "/" + "sponsor.png";
+	
+	// sponsors
+	public static final String	SPONSOR_COMMUNITY_LOGO_IMG				= PATH_IMAGES + "/" + "zylk.png";
+	public static final String	SPONSOR_PARLAMENTO_LOGO_IMG				= PATH_IMAGES + "/" + "parlamento.png";
 	
 	// main actions
 	public static final String	ADD_FILE_IMG			= PATH_IMAGES + "/" + "addfile.png";

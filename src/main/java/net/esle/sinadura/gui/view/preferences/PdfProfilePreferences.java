@@ -127,7 +127,7 @@ public class PdfProfilePreferences {
 		
 		// profile name
 		label = new Label(this.compositeMain, SWT.NONE);
-		label.setText("i18n - Nombre Perfil");
+		label.setText(LanguageUtil.getLanguage().getString("preferences.pdf.profile.name"));
 		
 		textName = new Text(this.compositeMain, SWT.BORDER);
 		textName.setText(profile.getName());
@@ -156,7 +156,7 @@ public class PdfProfilePreferences {
 
 		// askPosition
 		checkAskPosition = new Button(this.compositeMain, SWT.CHECK);
-		checkAskPosition.setText("i18n - preguntar la posicion en el momento de la firma");
+		checkAskPosition.setText(LanguageUtil.getLanguage().getString("preferences.pdf.profile.position.ask"));
 		checkAskPosition.setSelection(true);
 		gd = new GridData();
 		gd.horizontalSpan = 3;
@@ -313,7 +313,7 @@ public class PdfProfilePreferences {
 
 		// acroField
 		Label labelAcroField = new Label(this.compositeMain, SWT.NONE);
-		labelAcroField.setText("i18n-AcroField name");
+		labelAcroField.setText(LanguageUtil.getLanguage().getString("preferences.pdf.profile.acrofield"));
 		labelAcroField.setLayoutData(new GridData());
 
 		textAcroField = new Text(this.compositeMain, SWT.NONE | SWT.BORDER);

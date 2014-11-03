@@ -25,14 +25,22 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Reader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -49,6 +57,7 @@ public class CsvUtil {
 			FileInputStream fstream = new FileInputStream(fileName);
 			list = parseCSV(fstream);
 			
+	    // El tratamiento de excepciones no esta bien, la excepcion deberia propagarse y tratarse fuera.
 		} catch (FileNotFoundException e) {
 			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.importing_csv"), fileName);
 			log.error(m, e);
@@ -119,6 +128,7 @@ public class CsvUtil {
 			writer.flush();
 			writer.close();
 
+	    // El tratamiento de excepciones no esta bien, la excepcion deberia propagarse y tratarse fuera.
 		} catch (IOException e) {
 			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.exporting_csv"), fileName);
 			log.error(m, e);
@@ -126,6 +136,68 @@ public class CsvUtil {
 		}
 	}
 	
+	
+	/**
+	 * Nuevo metodo mediante la libreria CSV de apache (de momento solo para las preferencias de los pdf-profiles).
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	public static List<CSVRecord> importCSVNew(String fileName) {
+		
+		List<CSVRecord> list = new ArrayList<CSVRecord>();
+		
+		try {
+			InputStream is = new FileInputStream(fileName);
+		    Reader reader = new InputStreamReader(is);
+	        CSVParser csvParser = CSVFormat.EXCEL.parse(reader);
+	        list = csvParser.getRecords();
+	        
+	    // El tratamiento de excepciones no esta bien, la excepcion deberia propagarse y tratarse fuera.
+		} catch (FileNotFoundException e) {
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.importing_csv"), fileName);
+			log.error(m, e);
+			LoggingDesktopController.printError(m);
+			
+		} catch (IOException e) {
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.importing_csv"), fileName);
+			log.error(m, e);
+			LoggingDesktopController.printError(m);
+		}
+
+		return list; 
+	}
+	
+	/**
+	 * Nuevo metodo mediante la libreria CSV de apache (de momento solo para las preferencias de los pdf-profiles).
+	 * 
+	 * @param fileName
+	 * @param array
+	 */
+	public static void exportCSVNew(String fileName, List<List<String>> array) {
+
+		try {
+		
+			OutputStream os = new FileOutputStream(fileName);
+			PrintWriter outputWriter = new PrintWriter(os);
+			CSVPrinter printer = new CSVPrinter(outputWriter, CSVFormat.EXCEL);
+        	for (List<String> line : array) {
+	            printer.printRecord(line);
+	        }
+	        printer.close();
+
+	    // El tratamiento de excepciones no esta bien, la excepcion deberia propagarse y tratarse fuera.
+		} catch (FileNotFoundException e) {
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.exporting_csv"), fileName);
+			log.error(m, e);
+			LoggingDesktopController.printError(m);
+		} catch (IOException e) {
+			String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.exporting_csv"), fileName);
+			log.error(m, e);
+			LoggingDesktopController.printError(m);
+		}
+		
+	}
 	
 
 }

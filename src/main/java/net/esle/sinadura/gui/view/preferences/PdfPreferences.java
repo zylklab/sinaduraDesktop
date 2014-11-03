@@ -128,11 +128,11 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		
 		// tipo firma
 		Label labelCombo = new Label(topComposite, SWT.NONE);
-		labelCombo.setText("i18n-Tipo Firma");
+		labelCombo.setText(LanguageUtil.getLanguage().getString("preferences.pdf.sign.type"));
 
 		comboTipoFirmaPDF = new Combo(topComposite, SWT.NONE | SWT.READ_ONLY);
-		comboTipoFirmaPDF.add("i18n-Firma PDF", 0);
-		comboTipoFirmaPDF.add("i18n-Firma XML", 1);
+		comboTipoFirmaPDF.add(LanguageUtil.getLanguage().getString("preferences.pdf.sign.type.pdf"), 0);
+		comboTipoFirmaPDF.add(LanguageUtil.getLanguage().getString("preferences.pdf.sign.type.xades"), 1);
 		comboTipoFirmaPDF.select(Integer.valueOf(PreferencesUtil.getPreferences().getString((PreferencesUtil.PDF_TIPO))));
 		comboTipoFirmaPDF.addSelectionListener(new SelectionListener() {
 			@Override
@@ -163,7 +163,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		
 		// title
 		Label labelSello = new Label(compositeList, SWT.NONE);
-		labelSello.setText("i18n-Perfiles de firma PDF");
+		labelSello.setText(LanguageUtil.getLanguage().getString("preferences.pdf.profile.title"));
 		labelSello.setFont(new Font(compositeMain.getDisplay(), Display.getDefault().getSystemFont().getFontData()[0].getName(),
 				Display.getDefault().getSystemFont().getFontData()[0].getHeight(), SWT.BOLD));
 		
@@ -232,12 +232,11 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		
 
 		Label labelDefaultAreaDesc = new Label(composite, SWT.NONE);
-		labelDefaultAreaDesc.setText("i18n-Seleccione el perfil con el que firmar:");
+		labelDefaultAreaDesc.setText(LanguageUtil.getLanguage().getString("preferences.pdf.profile.selected"));
 
 		comboDefault = new Combo(composite, SWT.NONE | SWT.READ_ONLY);
 		comboDefault.addSelectionListener(new ComboDefaultChangeListener());
 		reloadComboDefault();
-		comboDefault.setText(PreferencesUtil.getPreferences().getString("default.software.cert"));
 	}
 	
 	

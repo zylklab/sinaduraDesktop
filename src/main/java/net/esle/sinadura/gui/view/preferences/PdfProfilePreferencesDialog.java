@@ -96,7 +96,7 @@ public class PdfProfilePreferencesDialog extends Dialog {
 
 		this.sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
 		this.sShell.setImage(new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
-		this.sShell.setText("i18n-Perfil PDF");
+		this.sShell.setText(LanguageUtil.getLanguage().getString("preferences.pdf.profile.window.title"));
 		
 
 		GridLayout shellGridLayout = new GridLayout();

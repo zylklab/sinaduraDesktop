@@ -63,6 +63,9 @@ public class PropertiesUtil {
 	
 	public static final String ENABLE_SEND_BUTTON = "enable.send.button";
 	
+	public static final String SPONSOR_LABEL_ENABLE = "sponsor.label.enable";
+	public static final String SPONSOR_IMAGE_PATH = "sponsor.image.path";
+	
 	// zain
 	public static final String ZAIN_P12_PASSWORD = "zain.p12.password";
 	public static final String ZAIN_TRUSTED_PASSWORD = "zain.trusted.password";

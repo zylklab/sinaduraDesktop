@@ -39,6 +39,7 @@ import java.util.TreeMap;
 import net.esle.sinadura.core.util.KeystoreUtil;
 import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
 
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -494,27 +495,28 @@ public class PreferencesUtil {
 		Map<String, PdfProfile> profiles = new TreeMap<String, PdfProfile>();
 
 		// generar el map
-		List<List<String>> array = CsvUtil.importCSV(PATH_USER_PREFERENCES_PDF_PROFILES);
+		List<CSVRecord> array = CsvUtil.importCSVNew(PATH_USER_PREFERENCES_PDF_PROFILES);
 		
+		// El primer registro es la cabecera asi que se omite (aunque ahora quizas se puede gestionar con la libreria de apache). 
 		for (int i = 1; i < array.size(); i++) {
 
-			List<String> list = array.get(i);
-			
+			CSVRecord record = array.get(i);
+
 			PdfProfile pdfProfile = new PdfProfile();
-			pdfProfile.setName(list.get(0));
-			pdfProfile.setVisible(Boolean.valueOf(list.get(1)));
-			pdfProfile.setHasImage(Boolean.valueOf(list.get(2)));
-			pdfProfile.setImagePath(list.get(3));
-			pdfProfile.setAcroField(list.get(4));
-			pdfProfile.setWidht(new Float(list.get(5)));
-			pdfProfile.setHeight(new Float(list.get(6)));
-			pdfProfile.setStartX(new Float(list.get(7)));
-			pdfProfile.setStartY(new Float(list.get(8)));
-			pdfProfile.setPage(Integer.valueOf(list.get(9)));
-			pdfProfile.setReason(list.get(10));
-			pdfProfile.setLocation(list.get(11));
-			pdfProfile.setCertified(Integer.valueOf(list.get(12)));
-			pdfProfile.setAskPosition(Boolean.valueOf(list.get(13)));
+			pdfProfile.setName(record.get(0));
+			pdfProfile.setVisible(Boolean.valueOf(record.get(1)));
+			pdfProfile.setAskPosition(Boolean.valueOf(record.get(2)));
+			pdfProfile.setHasImage(Boolean.valueOf(record.get(3)));
+			pdfProfile.setImagePath(record.get(4));
+			pdfProfile.setWidht(new Float(record.get(5)));
+			pdfProfile.setHeight(new Float(record.get(6)));
+			pdfProfile.setStartX(new Float(record.get(7)));
+			pdfProfile.setStartY(new Float(record.get(8)));
+			pdfProfile.setPage(Integer.valueOf(record.get(9)));
+			pdfProfile.setCertified(Integer.valueOf(record.get(10)));
+			pdfProfile.setAcroField(record.get(11));
+			pdfProfile.setReason(record.get(12));
+			pdfProfile.setLocation(record.get(13));
 			
 			profiles.put(pdfProfile.getName(), pdfProfile);
 		}
@@ -535,7 +537,7 @@ public class PreferencesUtil {
 		List<List<String>> array = new ArrayList<List<String>>();
 		
 		// header
-		array.add(Arrays.asList("name", "visible", "stamp.enable", "stamp.path", "acrofield", "stamp.width", "stamp.height", "stamp.x", "stamp.y", "page", "reason", "location", "certified", "stamp.ask"));
+		array.add(Arrays.asList("name", "visible", "stamp.ask", "stamp.enable", "stamp.path", "stamp.width", "stamp.height", "stamp.x", "stamp.y", "page", "certified", "acrofield", "reason", "location"));
 		
 		// rows
 		List<String> fila;
@@ -543,22 +545,23 @@ public class PreferencesUtil {
 			fila = new ArrayList<String>();
 			fila.add(0, profile.getName());
 			fila.add(1, Boolean.toString(profile.getVisible()));
-			fila.add(2, Boolean.toString(profile.hasImage()));
-			fila.add(3, profile.getImagePath());
-			fila.add(4, profile.getAcroField());
+			fila.add(2, String.valueOf(profile.getAskPosition()));
+			fila.add(3, Boolean.toString(profile.hasImage()));
+			fila.add(4, profile.getImagePath());
 			fila.add(5, String.valueOf(profile.getWidht()));
 			fila.add(6, String.valueOf(profile.getHeight()));
 			fila.add(7, String.valueOf(profile.getStartX()));
 			fila.add(8, String.valueOf(profile.getStartY()));
 			fila.add(9, String.valueOf(profile.getPage()));
-			fila.add(10, profile.getReason());
-			fila.add(11, profile.getLocation());
-			fila.add(12, String.valueOf(profile.getCertified()));
-			fila.add(13, String.valueOf(profile.getAskPosition()));
+			fila.add(10, String.valueOf(profile.getCertified()));
+			fila.add(11, profile.getAcroField());
+			fila.add(12, profile.getReason());
+			fila.add(13, profile.getLocation());
+			
 			array.add(fila);
 		}
 		
-		CsvUtil.exportCSV(PATH_USER_PREFERENCES_PDF_PROFILES, array);
+		CsvUtil.exportCSVNew(PATH_USER_PREFERENCES_PDF_PROFILES, array);
 		
 		pdfProfiles = profiles;
 	}

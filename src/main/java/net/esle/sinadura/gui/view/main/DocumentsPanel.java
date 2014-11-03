@@ -44,12 +44,14 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
 
@@ -220,16 +222,63 @@ public class DocumentsPanel extends Composite {
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
-				
-		Label labelEsle = new Label(buttonsComposite, SWT.NONE);
-		labelEsle.setImage(new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SPONSOR_LOGO_IMG)));
+		
+		
+		// Composite sponsors
+		Composite sponsorsComposite = new Composite(buttonsComposite, SWT.NONE);
+		gdButtons = new GridData();
+		gdButtons.horizontalAlignment = GridData.FILL;
+		gdButtons.verticalAlignment = GridData.CENTER;
+		gdButtons.grabExcessVerticalSpace = true;
+		gdButtons.grabExcessHorizontalSpace = true;
+		sponsorsComposite.setLayoutData(gdButtons);
+		
+		gridLayout2 = new GridLayout();
+		gridLayout2.numColumns = 1;
+		sponsorsComposite.setLayout(gridLayout2);
+		
+		// label
+		boolean sponsorLabelEnable = PropertiesUtil.getBoolean(PropertiesUtil.SPONSOR_LABEL_ENABLE);
+		if (sponsorLabelEnable) {
+
+			Label labelHeaderSponsors = new Label(sponsorsComposite, SWT.NONE);
+			labelHeaderSponsors.setText("SPONSOR");
+			labelHeaderSponsors.setFont(new Font(this.getDisplay(), Display.getDefault().getSystemFont().getFontData()[0].getName(),
+					Display.getDefault().getSystemFont().getFontData()[0].getHeight(), SWT.BOLD));
+			
+			GridData gdLabel = new GridData();
+			gdLabel.horizontalAlignment = GridData.CENTER;
+			gdLabel.verticalAlignment = GridData.FILL;
+			gdLabel.grabExcessHorizontalSpace = true;
+			gdLabel.grabExcessVerticalSpace = false;
+			labelHeaderSponsors.setLayoutData(gdLabel);
+	
+			// separator
+			Label labelSeparator = new Label(sponsorsComposite, SWT.SEPARATOR | SWT.SHADOW_OUT | SWT.HORIZONTAL);
+			gdLabel = new GridData();
+			gdLabel.horizontalAlignment = GridData.FILL;
+			gdLabel.verticalAlignment = GridData.FILL;
+			gdLabel.grabExcessHorizontalSpace = true;
+			gdLabel.grabExcessVerticalSpace = false;
+			labelSeparator.setLayoutData(gdLabel);
+		}
+		
+		// imagen
+		Label labelEsle = new Label(sponsorsComposite, SWT.NONE);
+		String sponsorImagePath = PropertiesUtil.get(PropertiesUtil.SPONSOR_IMAGE_PATH);
+		String imagePath = ImagesUtil.PATH_IMAGES + "/" + sponsorImagePath;
+		labelEsle.setImage(new Image(this.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(imagePath)));
 		
 		GridData gdLabel = new GridData();
-		gdLabel.horizontalAlignment = GridData.CENTER;
+		gdLabel.horizontalAlignment = GridData.FILL;
 		gdLabel.verticalAlignment = GridData.FILL;
-		gdLabel.grabExcessVerticalSpace = true;
+		gdLabel.grabExcessHorizontalSpace = true;
+		gdLabel.grabExcessVerticalSpace = false;
 		labelEsle.setLayoutData(gdLabel);
 				
+		
+		
+		
 //		this.tablePDF.addSelectionListener(new ButtonControlerListener());
 		
 		this.buttonAddPDF.addSelectionListener(new AddDocumentListener(tablePDF));
