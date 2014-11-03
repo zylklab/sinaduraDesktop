@@ -202,7 +202,7 @@ public class PdfSignatureFieldPositionPanel extends Composite {
 			
 			
 			// si el usuario clicka en el margen inferior de la imagen
-			if (clickEvent.x > stampPosition.getStartX() + MARGIN && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) -MARGIN
+			if (clickEvent.x > stampPosition.getStartX() + MARGIN && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) - MARGIN
 					&& clickEvent.y > (stampPosition.getStartY() + stampPosition.getHeight()) - MARGIN
 					&& clickEvent.y < (stampPosition.getStartY() + stampPosition.getHeight()) + MARGIN) {
 			
@@ -210,7 +210,7 @@ public class PdfSignatureFieldPositionPanel extends Composite {
 			}
 			
 			// si el usuario clicka en el margen superior de la imagen
-			if (clickEvent.x > stampPosition.getStartX() + MARGIN && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) -MARGIN
+			if (clickEvent.x > stampPosition.getStartX() + MARGIN && clickEvent.x < (stampPosition.getStartX() + stampPosition.getWidht()) - MARGIN
 					&& clickEvent.y > stampPosition.getStartY() - MARGIN
 					&& clickEvent.y < stampPosition.getStartY() + MARGIN) {
 			

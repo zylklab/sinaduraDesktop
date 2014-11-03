@@ -28,6 +28,8 @@
  */
 package net.esle.sinadura.gui.controller;
 
+import java.io.IOException;
+import java.security.KeyStore.PasswordProtection;
 import java.util.List;
 
 import net.esle.sinadura.core.model.PdfSignatureField;
@@ -48,31 +50,51 @@ public class SignatureFieldSelectorRunnable implements Runnable {
 	private Shell shell;
 	private List<PdfSignatureField> signatureFields;
 	private DocumentInfo pdfParameter;
+	private PasswordProtection ownerPassword;
 	private String stampPath;
 	
+	// Esto deberia ser una Exception en vez de una IOException para que sea un tratamiento generico. Pero como ahora unicamente
+	// se puede producir una IOException y ademas no quiero cambiar el tratamiento de fuera (habria que empezar a tratar Exception
+	// de forma generica en vez de forma individual como se esta haciendo ahora) lo dejo asi.
+	private IOException exception = null;
+	
 
-	SignatureFieldSelectorRunnable(Shell shell, DocumentInfo pdfParameter, List<PdfSignatureField> signatureFields, String stampPath) {
+	SignatureFieldSelectorRunnable(Shell shell, DocumentInfo pdfParameter, PasswordProtection ownerPassword, List<PdfSignatureField> signatureFields, String stampPath) {
 		
 		this.shell = shell;
 		this.signatureFields = signatureFields;
 		this.pdfParameter = pdfParameter;
+		this.ownerPassword = ownerPassword;
 		this.stampPath = stampPath; 
 	}
 
 	@Override
 	public void run() {
 		
-//		// TODO mantener este dialog a modo de como fallback?? sí por config
-//		SignatureFieldSelectorDialog sfsd = new SignatureFieldSelectorDialog(shell);
-//		this.signatureName = sfsd.open(signatureFields);
+		try {
 		
-		PdfSignatureFieldSelectorDialog pdfSignatureFieldSelectorDialog = new PdfSignatureFieldSelectorDialog(shell, signatureFields, stampPath, FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
-		selectedSignatureField = pdfSignatureFieldSelectorDialog.createSShell();
-		
+//			// TODO mantener este dialog a modo de como fallback?? sí por config
+//			SignatureFieldSelectorDialog sfsd = new SignatureFieldSelectorDialog(shell);
+//			this.signatureName = sfsd.open(signatureFields);
+			
+			PdfSignatureFieldSelectorDialog pdfSignatureFieldSelectorDialog = new PdfSignatureFieldSelectorDialog(shell, signatureFields, stampPath, FileUtil.getLocalPathFromURI(pdfParameter.getPath()), ownerPassword);
+			selectedSignatureField = pdfSignatureFieldSelectorDialog.createSShell();
+			
+		} catch (IOException e) {
+			exception = e;
+		}
 	}
 
 	public PdfSignatureField getSelectedSignatureField() {
 		return selectedSignatureField;
 	}
 
+	// Esto deberia ser una Exception en vez de una IOException para que sea un tratamiento generico. Pero como ahora unicamente
+	// se puede producir una IOException y ademas no quiero cambiar el tratamiento de fuera (habria que empezar a tratar Exception
+	// de forma generica en vez de forma individual como se esta haciendo ahora) lo dejo asi.
+	// IOException getIOException() -> Exception getException()
+	public IOException getIOException() {
+		return exception;
+	}
+	
 }

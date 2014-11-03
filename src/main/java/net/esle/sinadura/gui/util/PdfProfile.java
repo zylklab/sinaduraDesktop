@@ -1,53 +1,32 @@
 package net.esle.sinadura.gui.util;
 
-import com.itextpdf.text.pdf.PdfSignatureAppearance;
-
 
 public class PdfProfile {
 	
 	private String name;
 	
-	private boolean visible = false;
-	private String acroField = null;
+	private boolean visible;
+	private String acroField;
 			
-	private int page = 1;
-	private float startX = 0;
-	private float startY = 0;
-	private float widht = 0;
-	private float height = 0;
+	private boolean askPosition;
+	private int page;
+	private float startX;
+	private float startY;
+	private float widht;
+	private float height;
 	
-	private String reason = null;
-	private String location = null;
 	boolean hasImage;
 	private String imagePath;
 	
-	private int certified = PdfSignatureAppearance.NOT_CERTIFIED;
+	private String reason;
+	private String location;
+	
+	private int certified;
 	
 	
-	public PdfProfile(){
-		
+	public PdfProfile() {
 	}
-	
-	public PdfProfile(String acroFieldName){
-		this.acroField = acroFieldName;
-	}
-	
-	public PdfProfile(String name, boolean visible, boolean image, String imagePath, String acroField, float width, float height, float startX, float startY, int page, String reason, String location, int certified){
-		this.name = name;
-		this.visible = visible;
-		this.acroField = acroField;
-		this.page = page;
-		this.startX = startX;
-		this.startY = startY;
-		this.widht = width;
-		this.height = height;
-		this.reason = reason;
-		this.location = location;
-		this.hasImage = image;
-		this.imagePath = imagePath;
-		this.certified = certified;
-	}
-	
+
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
@@ -96,7 +75,6 @@ public class PdfProfile {
 	public int getCertified() {
 		return certified;
 	}
-
 	public void setPage(int page) {
 		this.page = page;
 	}
@@ -115,7 +93,6 @@ public class PdfProfile {
 	public void setAcroField(String acroField) {
 		this.acroField = acroField;
 	}
-
 	public String getImagePath() {
 		return imagePath;
 	}
@@ -129,11 +106,12 @@ public class PdfProfile {
 		this.hasImage = hasImage;
 	}
 
-	/*
-	 * renderiza la tabla de preferencias
-	 */
-	@Override
-	public String toString(){
-		return name;
+	public void setAskPosition(boolean askPosition) {
+		this.askPosition = askPosition;
 	}
+
+	public boolean getAskPosition() {
+		return askPosition;
+	}
+
 }

@@ -149,7 +149,7 @@ public class FileDialogs {
 	public static List<File> openDirDialog(Shell sShell) {
 
 		DirectoryDialog dirDialog = new DirectoryDialog(sShell, SWT.OPEN);
-		dirDialog. setFilterPath(PreferencesUtil.getPreferences().getString(PreferencesUtil.FILEDIALOG_PATH));
+		dirDialog.setFilterPath(PreferencesUtil.getPreferences().getString(PreferencesUtil.FILEDIALOG_PATH));
 		dirDialog.setText(LanguageUtil.getLanguage().getString("open.dialog.title"));
 		String dir = dirDialog.open();
 		PreferencesUtil.getPreferences().setValue(PreferencesUtil.FILEDIALOG_PATH, dirDialog.getFilterPath());

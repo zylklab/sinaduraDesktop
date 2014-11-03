@@ -70,7 +70,7 @@ public class PdfSignatureFieldSelectorPanel extends Composite {
 		super(parent, SWT.NONE);
 		
 		display = this.getDisplay();
-		
+
 		GridData gd = new GridData();
 		gd.horizontalAlignment = GridData.FILL;
 		gd.verticalAlignment = GridData.FILL;

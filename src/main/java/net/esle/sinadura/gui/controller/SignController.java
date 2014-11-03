@@ -372,16 +372,14 @@ public class SignController {
 		
 		try {
 			
-			List<PdfProfile> availableProfiles = PreferencesUtil.getPdfProfiles();
+			Map<String, PdfProfile> availableProfiles = PreferencesUtil.getPdfProfiles();
+			PdfProfile defaultPdfProfile = availableProfiles.get(PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_PROFILE_SELECTED_NAME));
+			
 			// map por acrofield para simplificar la logica --> preferencias
 			Map<String, PdfProfile> availableProfilesMap = new HashMap<String, PdfProfile>();
-			for (PdfProfile p : availableProfiles) {	
+			for (PdfProfile p : availableProfiles.values()) {
 				availableProfilesMap.put(p.getAcroField(), p);
 			}
-			
-			
-			// TODO default preferences y borrar esto
-			PdfProfile defaultPdfProfile = availableProfiles.get(0);
 			
 			PdfProfile pdfProfile = defaultPdfProfile;
 			
@@ -410,15 +408,26 @@ public class SignController {
 				if (resolutionsCount == 0 || resolutionsCount > 1) {
 					// si hay mas de un hueco de firma y no se resuelve ninguno o bien se resuelven mas de uno, hay que preguntar al usuario.
 					
+					// TODO En la ventana de seleccion del hueco ahora se muestra siempre la imagen del perfil por defecto.
+					// Tendria mas sentido mostrar en cada hueco la imagen del perfil asociado. Si un hueco no tiene perfil
+					// asociando sí hay que utilizar la del perfil por defecto.
+					// De todas formas esto solo seria para cuando haya 2 o mas huecos con un perfil asociado, asi que es un caso que
+					// apenas se va a producir. 
+					// 
+					// Ahora en la clase "PdfSignatureFieldSelectorDialog" "stampPath" es un unico parametro de entrada. Habria que
+					// implementar esta logica dentro de esa clase ya que es donde se alterna entre los distintos huecos.  
 					String stampPath = null;
 					if (resolutionsCount == 0) {
 						if (pdfProfile.hasImage()) {
-							stampPath = pdfProfile.getImagePath();	
+							stampPath = pdfProfile.getImagePath();
 						}
 					}
 
-					SignatureFieldSelectorRunnable sfsr = new SignatureFieldSelectorRunnable(sShell, pdfParameter, blankSignatureNames, stampPath);
+					SignatureFieldSelectorRunnable sfsr = new SignatureFieldSelectorRunnable(sShell, pdfParameter, ownerPassword, blankSignatureNames, stampPath);
 					Display.getDefault().syncExec(sfsr);
+					if (sfsr.getIOException() != null) {
+						throw sfsr.getIOException();
+					}
 					
 					if (sfsr.getSelectedSignatureField() != null) {
 						signatureName = sfsr.getSelectedSignatureField().getName();	
@@ -449,18 +458,18 @@ public class SignController {
 
 			if (signatureName == null && pdfProfile.getVisible()) {
 			
-				// TODO preferencia preguntar la posicion del sello individual
-				boolean askPosition = true;
-				
-				if (askPosition) {
+				if (pdfProfile.getAskPosition()) {
 
 					String stampPath = null;
 					if (pdfProfile.hasImage()) {
 						stampPath = pdfProfile.getImagePath();
 					}
 					
-					SignatureFieldPositionRunnable sfpr = new SignatureFieldPositionRunnable(sShell, pdfBlankSignatureInfo, pdfParameter, stampPath);
+					SignatureFieldPositionRunnable sfpr = new SignatureFieldPositionRunnable(sShell, pdfBlankSignatureInfo, pdfParameter, ownerPassword, stampPath);
 					Display.getDefault().syncExec(sfpr);
+					if (sfpr.getIOException() != null) {
+						throw sfpr.getIOException();
+					}
 					
 					if (sfpr.getSignatureField() != null) {
 						pdfBlankSignatureInfo = sfpr.getSignatureField();

@@ -186,8 +186,6 @@ public class SoftwareCertPreferences extends FieldEditorPreferencePage {
 		comboDefault.addSelectionListener(new ComboDefaultChangeListener());
 		reloadComboDefault();
 		comboDefault.setText(PreferencesUtil.getPreferences().getString("default.software.cert"));
-		
-		
 	}
 	
 	private void reloadComboDefault() {
@@ -211,10 +209,12 @@ public class SoftwareCertPreferences extends FieldEditorPreferencePage {
 
 	private void removeTableFile() {
 
-		// TODO validar not selected (solo una borrable???)
-		tempMap.remove(visualList.getSelection()[0]);
-		reloadVisualList();
-		reloadComboDefault();
+		if (visualList.getSelectionCount() > 0) {
+		
+			tempMap.remove(visualList.getSelection()[0]);
+			reloadVisualList();
+			reloadComboDefault();
+		}
 	}
 	
 	class ComboDefaultChangeListener implements SelectionListener {
@@ -249,13 +249,15 @@ public class SoftwareCertPreferences extends FieldEditorPreferencePage {
 		
 		public void widgetSelected(SelectionEvent event) {
 
-			// TODO validar not selected
-			SoftwareCertUpdateDialog softwareStoreDialog = new SoftwareCertUpdateDialog(compositeMain.getShell(), tempMap,
-					visualList.getSelection()[0]);
-			softwareStoreDialog.open();
+			if (visualList.getSelectionCount() > 0) {
 			
-			reloadVisualList();
-			reloadComboDefault();
+				SoftwareCertUpdateDialog softwareStoreDialog = new SoftwareCertUpdateDialog(compositeMain.getShell(), tempMap,
+						visualList.getSelection()[0]);
+				softwareStoreDialog.open();
+				
+				reloadVisualList();
+				reloadComboDefault();
+			}
 		}
 
 		public void widgetDefaultSelected(SelectionEvent event) {
@@ -311,9 +313,6 @@ public class SoftwareCertPreferences extends FieldEditorPreferencePage {
 	}
 
 }
-
-
-
 
 
 

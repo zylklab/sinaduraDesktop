@@ -28,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.KeyStore.PasswordProtection;
 
 import net.esle.sinadura.core.model.PdfSignatureField;
 import net.esle.sinadura.core.util.PdfUtil;
@@ -39,6 +40,8 @@ import net.esle.sinadura.gui.util.LanguageUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -111,15 +114,16 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 	 * Tiene dos funcionamientos:
 	 * - sin documento --> sin navegacion y con imagen de fondo.
 	 * - con documento --> con navegacion sobre las paginas del documento.
+	 * @throws IOException 
 	 * 
 	 */
-	public PdfSignatureFieldPositionDialog(Shell parent, String stampPath, PdfSignatureField pdfSignatureField) {
+	public PdfSignatureFieldPositionDialog(Shell parent, String stampPath, PdfSignatureField pdfSignatureField) throws IOException {
 
-		this(parent, stampPath, pdfSignatureField, null);
+		this(parent, stampPath, pdfSignatureField, null, null);
 	}
 
 	
-	public PdfSignatureFieldPositionDialog(Shell parent, String stampPath, PdfSignatureField pdfSignatureField, String documentPath) {
+	public PdfSignatureFieldPositionDialog(Shell parent, String stampPath, PdfSignatureField pdfSignatureField, String documentPath, PasswordProtection pwdProtection) throws IOException {
 		
 		super(parent);
 		
@@ -143,24 +147,14 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 		
 		this.tmpSignatureField = pdfSignatureFieldGui;
 		
-		if (mode == MODE_ADV) {
-			try {
-				// password!! --> PdfReader reader = new PdfReader(inputPath, ownerPassword);
-				PdfReader reader = new PdfReader(documentPath);
-				numberOfPages = reader.getNumberOfPages();
-				
-				// TODO cerrar reader???
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if (mode == MODE_ADV) {	
+			numberOfPages = PdfUtil.getNumberOfPages(documentPath, pwdProtection);
 		}
 
 	}
 	
 
-	public PdfSignatureField createSShell() {
+	public PdfSignatureField createSShell() throws IOException {
 		
 		Shell parent = getParent();
 		sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE );
@@ -175,9 +169,13 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 		
 		createCompositeCampos();
 		
-		createCompositeBotones();		
+		createCompositeBotones();
 
-		sShell.setSize(new Point(478, 720));
+		if (mode == MODE_ADV) {
+			sShell.setSize(new Point(478, 830));
+		} else {
+			sShell.setSize(new Point(478, 730));
+		}
 		
 		// to center the shell on the screen
 		Monitor primary = this.sShell.getDisplay().getPrimaryMonitor();
@@ -199,51 +197,20 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 		return returnSignatureField;
 	}
 	
-	
-	private void createCompositeCampos() { 
-		
-		Composite compositeEmail = new Composite(sShell, SWT.BORDER);
+	private void createCompositeNavigator() {
+
+		// info top
+		Label labelInfo = new Label(sShell, SWT.WRAP);
+		labelInfo.setText("i18n-Seleccione la posicion de la firma y pulse el boton Aceptar.");
 		GridData gd = new GridData();
+		gd.verticalIndent = 10;
 		gd.horizontalAlignment = GridData.FILL;
 		gd.verticalAlignment = GridData.FILL;
 		gd.grabExcessHorizontalSpace = true;
-		gd.grabExcessVerticalSpace = true;
-		compositeEmail.setLayoutData(gd);
-
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 1;
-		gridLayout.verticalSpacing = 5;
-		gridLayout.horizontalSpacing = 50;
-		compositeEmail.setLayout(gridLayout);
+		gd.grabExcessVerticalSpace = false;
+		labelInfo.setLayoutData(gd);
 		
-		compositeEmail.setBackground(new Color(Display.getDefault(), 255, 255, 255));
-		
-		
-		Image backgroundImage = null;
-		
-		if (mode == MODE_ADV) {
-			try {
-				FileInputStream fis = new FileInputStream(documentPath);
-				
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				PdfUtil.getPageImage(fis, baos, currentPage);
-				InputStream is = new ByteArrayInputStream(baos.toByteArray());
-				backgroundImage = new Image(sShell.getDisplay(), is);
-				
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		pdfSignatureFieldPositionPanel = new PdfSignatureFieldPositionPanel(compositeEmail, stampPath, tmpSignatureField, backgroundImage);
-	}
-	
-	private void createCompositeNavigator() {
-
+		// navegacion
 		Composite compositeBotones = new Composite(sShell, SWT.NONE);
 		GridData gd10 = new GridData();
 		gd10.horizontalAlignment = GridData.CENTER;
@@ -272,7 +239,40 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 		
 		textRuta = new Text(compositePagination, SWT.BORDER);
 		textRuta.setText(String.valueOf(currentPage));
-		textRuta.setEnabled(false);
+		gd = new GridData();
+		gd.widthHint = 30;
+		textRuta.setLayoutData(gd);
+		
+		textRuta.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				
+				try {
+				// validacion del numero introducido
+					try {
+						String text = textRuta.getText();
+						int number = Integer.parseInt(text);
+						
+						if (number > 0 && number <= numberOfPages) {
+							// si esta todo correcto
+							currentPage = number;
+							updateNavigatorButtons();
+							updateSignatureFieldPanel();
+							
+						} else {
+							// si el valor ontroducido no es valido se vuelve a setear la pagina actual
+							textRuta.setText(String.valueOf(currentPage));
+						}
+						
+					} catch (RuntimeException e2) {
+						// si el valor ontroducido no es valido se vuelve a setear la pagina actual
+						textRuta.setText(String.valueOf(currentPage));
+					}
+				} catch (IOException e1) {
+					log.error(e1);
+				}
+			}
+		}); 
 		
 		labelPosicion = new Label(compositePagination, SWT.NONE);
 		labelPosicion.setText("/ " + numberOfPages);
@@ -283,6 +283,60 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 		bottonSiguiente.addSelectionListener(new BotonSiguienteListener());
 		
 		updateNavigatorButtons();
+	}
+	
+	private void createCompositeCampos() throws IOException { 
+		
+		// ScrolledComposite
+		ScrolledComposite composite = new ScrolledComposite(sShell, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		
+		GridData gd = new GridData();
+		gd.horizontalAlignment = GridData.FILL;
+		gd.verticalAlignment = GridData.FILL;
+		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessVerticalSpace = true;
+		composite.setLayoutData(gd);
+
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		composite.setLayout(gridLayout);
+		
+		composite.setMinSize(1500, 1500);
+		composite.setExpandVertical(true);
+		composite.setExpandHorizontal(true);
+		composite.setAlwaysShowScrollBars(true);
+		composite.setBackground(new Color(Display.getDefault(), 255, 255, 255));
+		
+		// subComposite
+		Composite subComposite = new Composite(composite, SWT.BORDER);
+		composite.setContent(subComposite);
+		
+		gd = new GridData();
+		gd.horizontalAlignment = GridData.FILL;
+		gd.verticalAlignment = GridData.FILL;
+		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessVerticalSpace = true;
+		subComposite.setLayoutData(gd);
+
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		subComposite.setLayout(gridLayout);
+		
+		subComposite.setBackground(new Color(Display.getDefault(), 255, 255, 255));
+		
+		Image backgroundImage = null;
+		
+		if (mode == MODE_ADV) {
+			
+			FileInputStream fis = new FileInputStream(documentPath);
+				
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			PdfUtil.getPageImage(fis, baos, currentPage);
+			InputStream is = new ByteArrayInputStream(baos.toByteArray());
+			backgroundImage = new Image(sShell.getDisplay(), is);	
+		}
+		
+		pdfSignatureFieldPositionPanel = new PdfSignatureFieldPositionPanel(subComposite, stampPath, tmpSignatureField, backgroundImage);
 	}
 	
 	private void createCompositeBotones() {
@@ -335,30 +389,15 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 		
 		public void widgetSelected(SelectionEvent event) {
 			
-			currentPage = currentPage - 1;
-			
-			updateNavigatorButtons();
-			
-			Image backgroundImage = null;
 			try {
-				FileInputStream fis = new FileInputStream(documentPath);
+				currentPage = currentPage - 1;
 				
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				PdfUtil.getPageImage(fis, baos, currentPage);
-				InputStream is = new ByteArrayInputStream(baos.toByteArray());
-				backgroundImage = new Image(sShell.getDisplay(), is);
-				
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				updateNavigatorButtons();
+				updateSignatureFieldPanel();
+			
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e);
 			}
-			
-			pdfSignatureFieldPositionPanel.setBackgroundImage(backgroundImage);
-			
-			pdfSignatureFieldPositionPanel.redraw();
 		}
 
 		public void widgetDefaultSelected(SelectionEvent event) {
@@ -370,30 +409,15 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 		
 		public void widgetSelected(SelectionEvent event) {
 			
-			currentPage = currentPage + 1;
-			
-			updateNavigatorButtons();
-			
-			Image backgroundImage = null;
 			try {
-				FileInputStream fis = new FileInputStream(documentPath);
+				currentPage = currentPage + 1;
+			
+				updateNavigatorButtons();
+				updateSignatureFieldPanel();
 				
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				PdfUtil.getPageImage(fis, baos, currentPage);
-				InputStream is = new ByteArrayInputStream(baos.toByteArray());
-				backgroundImage = new Image(sShell.getDisplay(), is);
-				
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e);
 			}
-			
-			pdfSignatureFieldPositionPanel.setBackgroundImage(backgroundImage);
-			
-			pdfSignatureFieldPositionPanel.redraw();
 		}
 	
 		public void widgetDefaultSelected(SelectionEvent event) {
@@ -418,6 +442,22 @@ public class PdfSignatureFieldPositionDialog extends Dialog {
 			bottonAnterior.setEnabled(true);
 			bottonSiguiente.setEnabled(true);
 		}
+	}
+	
+	private void updateSignatureFieldPanel() throws IOException {
+		
+		Image backgroundImage = null;
+		
+		FileInputStream fis = new FileInputStream(documentPath);
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PdfUtil.getPageImage(fis, baos, currentPage);
+		InputStream is = new ByteArrayInputStream(baos.toByteArray());
+		backgroundImage = new Image(sShell.getDisplay(), is);
+			
+		pdfSignatureFieldPositionPanel.setBackgroundImage(backgroundImage);
+		
+		pdfSignatureFieldPositionPanel.redraw();
 	}
 
 }

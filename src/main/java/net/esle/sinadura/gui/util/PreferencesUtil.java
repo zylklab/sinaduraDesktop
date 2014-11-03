@@ -34,10 +34,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
-import net.esle.sinadura.core.model.PdfSignaturePreferences;
 import net.esle.sinadura.core.util.KeystoreUtil;
 import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
 
@@ -46,6 +44,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.util.Os;
 import org.eclipse.jface.preference.PreferenceStore;
+
+import com.itextpdf.text.pdf.PdfSignatureAppearance;
 
 
 public class PreferencesUtil {
@@ -91,6 +91,23 @@ public class PreferencesUtil {
 	public static final String PDF_TIPO = "pdf.tipo";
 	public static final String PDF_TIPO_PDF = "0";
 	public static final String PDF_TIPO_XML = "1";
+	public static final String PDF_PROFILE_SELECTED_NAME = "pdf.profile.selected.name";
+	private static final String PDF_PROFILE_DEFAULT_NAME = "Default profile";
+	// ----------------
+	// Las siguientes propiedades ahora solo se utilizan para definir el valor por defecto. Para consumir el valor se utiliza el
+	// sistema de perfiles (pdfProfiles).
+	public static final String PDF_VISIBLE = "pdf.visible";
+	public static final String PDF_PAGE = "pdf.page";
+	public static final String PDF_REASON = "pdf.reason";
+	public static final String PDF_LOCATION = "pdf.location";
+	public static final String PDF_STAMP_ENABLE = "pdf.stamp.enable";
+	public static final String PDF_STAMP_WIDTH = "pdf.stamp.width";
+	public static final String PDF_STAMP_HEIGHT = "pdf.stamp.height";
+	public static final String PDF_STAMP_X = "pdf.stamp.x";
+	public static final String PDF_STAMP_Y = "pdf.stamp.y";
+	public static final String PDF_CERTIFIED = "pdf.certified";
+	public static final String PDF_STAMP_ASK = "pdf.stamp.ask";
+	// ----------------
 	
 	// xades
 	public static final String XADES_ARCHIVE = "xades.archive";
@@ -116,23 +133,23 @@ public class PreferencesUtil {
 	private static final String PATH_USER_PREFERENCES_MAIN = FOLDER_PREFERENCES_PATH + File.separatorChar + "preferences.properties";
 	private static final String PATH_USER_PREFERENCES_SOFTWARE = FOLDER_PREFERENCES_PATH + File.separatorChar + "software-preferences.csv";
 	private static final String PATH_USER_PREFERENCES_PDF_PROFILES = FOLDER_PREFERENCES_PATH + File.separatorChar + "pdf-profiles.csv";
-	public static  final String DEFAULT_IMAGE_FILEPATH = PropertiesUtil.USER_BASE_PATH + File.separatorChar + "sinadura150.png";
 	private static final String PATH_USER_PREFERENCES_TRUSTED_KEYSTORE = FOLDER_PREFERENCES_PATH + File.separatorChar + "trusted.jks";
 	private static final String PATH_USER_PREFERENCES_CACHE_KEYSTORE = FOLDER_PREFERENCES_PATH + File.separatorChar + "cache.jks";
+	
+	public static  final String DEFAULT_IMAGE_FILEPATH = PropertiesUtil.USER_BASE_PATH + File.separatorChar + "sinadura150.png";
 	
 	// default files (se cargan por classloader)
 	private static final String PACKAGE_PATH = "preferences";
 	private static final String PATH_DEFAULT_PREFERENCES_SOFTWARE = PACKAGE_PATH + "/" + "software-preferences.csv";
 	private static final String PATH_DEFAULT_PREFERENCES_HARDWARE = PACKAGE_PATH + "/" + "hardware-preferences.csv";
 	private static final String PATH_DEFAULT_PREFERENCES_TIMESTAMP = PACKAGE_PATH + "/"+ "timestamp-preferences.csv";
-	private static final String PATH_DEFAULT_PREFERENCES_PDF_PROFILES = PACKAGE_PATH + "/" + "pdf-profiles.csv";
 	private static final String PATH_DEFAULT_PREFERENCES_TRUSTED_KEYSTORE = PACKAGE_PATH + "/" + "trusted.jks";
 	private static final String PATH_DEFAULT_PREFERENCES_CACHE_KEYSTORE = PACKAGE_PATH + "/" + "cache.jks";
 	
 	
 	// STATIC ATRIBUTES
 	private static PreferenceStore preferences = null;
-	private static List<PdfProfile> pdfProfiles = null;
+	private static Map<String, PdfProfile> pdfProfiles = null;
 	private static Map<String, String> softwarePrefs = null;
 	private static Map<String, HardwareItem> hardwarePrefs = null;
 	private static Map<String, TimestampItem> timestampPrefs = null;
@@ -181,18 +198,6 @@ public class PreferencesUtil {
 			}
 		}
 		
-		// pdf profiles
-		f = new File(PATH_USER_PREFERENCES_PDF_PROFILES);
-		if (!f.exists()) {
-			try {
-				InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH_DEFAULT_PREFERENCES_PDF_PROFILES);
-				FileOutputStream os = new FileOutputStream(PATH_USER_PREFERENCES_PDF_PROFILES);
-				IOUtils.copy(is, os);	
-			} catch (IOException e) {
-				log.error("", e);
-			}
-		}
-		
 		// imagen por defecto para el sello (pdf-profiles.csv)
 		try {
 			f = new File(DEFAULT_IMAGE_FILEPATH);
@@ -205,6 +210,33 @@ public class PreferencesUtil {
 			log.error("", e);
 		} catch (IOException e) {
 			log.error("", e);
+		}
+		
+		// pdf profiles
+		f = new File(PATH_USER_PREFERENCES_PDF_PROFILES);
+		if (!f.exists()) {
+			// El fichero se genera al vuelo (en vez de un copy como en el resto de recursos) ya que el path de la imagen se tiene que generar de forma dinamica.
+			Map<String, PdfProfile> pdfProfiles = new TreeMap<String, PdfProfile>();
+			// valores por defecto del default-pdf-profile
+			PdfProfile pdfProfile = new PdfProfile();
+			pdfProfile.setName(PDF_PROFILE_DEFAULT_NAME);
+			pdfProfile.setVisible(Boolean.valueOf(PreferencesDefaultUtil.get(PDF_VISIBLE)));
+			pdfProfile.setHasImage(Boolean.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_ENABLE)));
+			pdfProfile.setImagePath(PreferencesUtil.DEFAULT_IMAGE_FILEPATH);
+			pdfProfile.setAcroField("");
+			pdfProfile.setAskPosition(Boolean.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_ASK)));
+			pdfProfile.setWidht(Float.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_WIDTH)));
+			pdfProfile.setHeight(Float.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_HEIGHT)));
+			pdfProfile.setStartX(Float.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_X)));
+			pdfProfile.setStartY(Float.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_Y)));
+			pdfProfile.setPage(Integer.valueOf(PreferencesDefaultUtil.get(PDF_PAGE)));
+			pdfProfile.setReason(PreferencesDefaultUtil.get(PDF_REASON));
+			pdfProfile.setLocation(PreferencesDefaultUtil.get(PDF_LOCATION));
+			pdfProfile.setCertified(Integer.valueOf(PreferencesDefaultUtil.get(PDF_CERTIFIED)));
+			
+			pdfProfiles.put(pdfProfile.getName(), pdfProfile);
+			
+			savePdfProfiles(pdfProfiles);
 		}
 		
 		// ks trust
@@ -230,8 +262,6 @@ public class PreferencesUtil {
 				log.error("", e);
 			}
 		}
-		
-		
 		
 	}
 	
@@ -277,6 +307,8 @@ public class PreferencesUtil {
 				 * 1 (xml) - parlamento
 				 */
 				preferences.setDefault(PDF_TIPO, PreferencesDefaultUtil.get(PDF_TIPO));
+				preferences.setDefault(PDF_PROFILE_SELECTED_NAME, PDF_PROFILE_DEFAULT_NAME);
+				
 				
 				// xades
 				preferences.setDefault(XADES_ARCHIVE, PreferencesDefaultUtil.get(XADES_ARCHIVE)); //"true");
@@ -457,50 +489,40 @@ public class PreferencesUtil {
 	// =====================================
 	//  pdf profiles
 	// =====================================
-	private static List<PdfProfile> loadPdfProfiles() {
+	private static Map<String, PdfProfile> loadPdfProfiles() {
 
-		List<PdfProfile> profiles = new ArrayList<PdfProfile>();
+		Map<String, PdfProfile> profiles = new TreeMap<String, PdfProfile>();
 
 		// generar el map
-		String image;
 		List<List<String>> array = CsvUtil.importCSV(PATH_USER_PREFERENCES_PDF_PROFILES);
+		
 		for (int i = 1; i < array.size(); i++) {
 
 			List<String> list = array.get(i);
 			
-			image = list.get(3);
-			if (image.equals("")){
-				image = DEFAULT_IMAGE_FILEPATH;
-			}
-			profiles.add(new PdfProfile(
-							list.get(0), 	// name
-							Boolean.valueOf(list.get(1)), 				// visible
-							Boolean.valueOf(list.get(2)), 				// image
-							image, 										// image path
-							list.get(4), 								// acrofield
-							new Float(list.get(5)),				// width
-							new Float(list.get(6)), 
-							new Float(list.get(7)), 
-							new Float(list.get(8)), 
-							Integer.valueOf(list.get(9)),				// page
-							list.get(10),								// reason
-							list.get(11), 								// location
-							/*
-							 * NOT_CERTIFIED (0)
-							 * CERTIFIED_NO_CHANGES_ALLOWED (1)
-							 * CERTIFIED_FORM_FILLING (2)
-							 * CERTIFIED_FORM_FILLING_AND_ANNOTATIONS (3)
-							 */
-							Integer.valueOf(list.get(12))				// certified
-					)
-			);
+			PdfProfile pdfProfile = new PdfProfile();
+			pdfProfile.setName(list.get(0));
+			pdfProfile.setVisible(Boolean.valueOf(list.get(1)));
+			pdfProfile.setHasImage(Boolean.valueOf(list.get(2)));
+			pdfProfile.setImagePath(list.get(3));
+			pdfProfile.setAcroField(list.get(4));
+			pdfProfile.setWidht(new Float(list.get(5)));
+			pdfProfile.setHeight(new Float(list.get(6)));
+			pdfProfile.setStartX(new Float(list.get(7)));
+			pdfProfile.setStartY(new Float(list.get(8)));
+			pdfProfile.setPage(Integer.valueOf(list.get(9)));
+			pdfProfile.setReason(list.get(10));
+			pdfProfile.setLocation(list.get(11));
+			pdfProfile.setCertified(Integer.valueOf(list.get(12)));
+			pdfProfile.setAskPosition(Boolean.valueOf(list.get(13)));
+			
+			profiles.put(pdfProfile.getName(), pdfProfile);
 		}
 		
 		return profiles;
 	}
 	
-	
-	public static List<PdfProfile> getPdfProfiles() {
+	public static Map<String, PdfProfile> getPdfProfiles() {
 
 		if (pdfProfiles == null) {
 			pdfProfiles = loadPdfProfiles();
@@ -508,16 +530,16 @@ public class PreferencesUtil {
 		return pdfProfiles;
 	}
 	
-	public static void savePdfProfiles(List<PdfProfile> profiles) {
+	public static void savePdfProfiles(Map<String, PdfProfile> profiles) {
 
 		List<List<String>> array = new ArrayList<List<String>>();
 		
 		// header
-		array.add(Arrays.asList("name", "visible", "image", "imagepath", "acrofield", "stamp.width", "stamp.height", "stamp.x", "stamp.y", "page", "reason", "location", "certified"));
+		array.add(Arrays.asList("name", "visible", "stamp.enable", "stamp.path", "acrofield", "stamp.width", "stamp.height", "stamp.x", "stamp.y", "page", "reason", "location", "certified", "stamp.ask"));
 		
 		// rows
 		List<String> fila;
-		for (PdfProfile profile : profiles) {
+		for (PdfProfile profile : profiles.values()) {
 			fila = new ArrayList<String>();
 			fila.add(0, profile.getName());
 			fila.add(1, Boolean.toString(profile.getVisible()));
@@ -532,6 +554,7 @@ public class PreferencesUtil {
 			fila.add(10, profile.getReason());
 			fila.add(11, profile.getLocation());
 			fila.add(12, String.valueOf(profile.getCertified()));
+			fila.add(13, String.valueOf(profile.getAskPosition()));
 			array.add(fila);
 		}
 		

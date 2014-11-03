@@ -21,6 +21,8 @@
  */
 package net.esle.sinadura.gui.view.preferences;
 
+import java.io.IOException;
+
 import net.esle.sinadura.core.model.PdfSignatureField;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.util.ImagesUtil;
@@ -58,11 +60,11 @@ public class PdfProfilePreferences {
 	private Composite compositeMain = null;
 	private PdfProfile profile;
 
-	private Composite divPosicional;
-	
 	private Text textName = null;
 	private Text textAcroField;
 	private Button checkVisible = null;
+	private Button checkAskPosition = null;
+	
 	private Button checkSello = null;
 	private Text textRuta = null;
 	private Text textReason = null;
@@ -133,22 +135,6 @@ public class PdfProfilePreferences {
 		gd.grabExcessHorizontalSpace = true;
 		gd.horizontalSpan = 2;
 		textName.setLayoutData(gd);
-
-		
-		labelPosicion = new Label(this.compositeMain, SWT.NONE);
-		labelPosicion.setText("i18n-AcroField name");
-		labelPosicion.setLayoutData(new GridData());
-
-		textAcroField = new Text(this.compositeMain, SWT.NONE | SWT.BORDER);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 2;
-		gd.horizontalAlignment = SWT.FILL;
-		gd.grabExcessHorizontalSpace = true;
-		textAcroField.setLayoutData(gd);
-		
-		if (profile.getAcroField() != null) {
-			textAcroField.setText(profile.getAcroField());			
-		}
 		
 		// firma visible
 		checkVisible = new Button(this.compositeMain, SWT.CHECK);
@@ -168,9 +154,27 @@ public class PdfProfilePreferences {
 			}
 		});
 
+		// askPosition
+		checkAskPosition = new Button(this.compositeMain, SWT.CHECK);
+		checkAskPosition.setText("i18n - preguntar la posicion en el momento de la firma");
+		checkAskPosition.setSelection(true);
+		gd = new GridData();
+		gd.horizontalSpan = 3;
+		gd.grabExcessHorizontalSpace = true;
+		checkAskPosition.setLayoutData(gd);
+		checkAskPosition.setSelection(profile.getAskPosition());
+		checkAskPosition.addListener(SWT.MouseUp, new Listener() {
+
+			@Override
+			public void handleEvent(Event arg0) {
+				
+				updateControlState();
+			}
+		});
+		
+		// imagen
 		checkSello = new Button(this.compositeMain, SWT.CHECK);
 		checkSello.setText(LanguageUtil.getLanguage().getString("preferences.pdf.stamp_active"));
-
 		gd = new GridData();
 		gd.horizontalSpan = 3;
 		gd.grabExcessHorizontalSpace = true;
@@ -197,37 +201,20 @@ public class PdfProfilePreferences {
 		textRuta.setLayoutData(gd);
 		textRuta.setText(profile.getImagePath());	
 		
-
 		buttonBrowse = new Button(this.compositeMain, SWT.NONE);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 1;
-		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessHorizontalSpace = false;
 		buttonBrowse.setLayoutData(gd);
 		buttonBrowse.setText(LanguageUtil.getLanguage().getString("button.browse"));
 		buttonBrowse.addSelectionListener(new ButtonBrowseListener());
 
-		GridLayout gl = new GridLayout();
-		
 		// posicion
-		//--------------------------
-		
-		divPosicional = new Composite(this.compositeMain, SWT.NONE);
-		gl = new GridLayout();
-		gl.numColumns = 3;
-		gl.verticalSpacing = 5;
-		gl.marginBottom = 5;
-		divPosicional.setLayout(gl);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalAlignment = SWT.FILL;
-		gd.horizontalSpan = 3;
-		gd.grabExcessHorizontalSpace = true;
-		divPosicional.setLayoutData(gd);
-		
-		labelPosicion = new Label(divPosicional, SWT.NONE);
+		labelPosicion = new Label(this.compositeMain, SWT.NONE);
 		labelPosicion.setText(LanguageUtil.getLanguage().getString("preferences.pdf.image.position"));
 		labelPosicion.setLayoutData(new GridData());
 
-		buttonPosition = new Button(divPosicional, SWT.NONE);
+		buttonPosition = new Button(this.compositeMain, SWT.NONE);
 		buttonPosition.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.STAMP_POSITION_IMG)));
 		buttonPosition.addSelectionListener(new ButtonPositionListener());
 		gd = new GridData();
@@ -236,10 +223,10 @@ public class PdfProfilePreferences {
 		buttonPosition.setLayoutData(gd);
 
 		// pagina
-		labelPages = new Label(divPosicional, SWT.NONE);
+		labelPages = new Label(this.compositeMain, SWT.NONE);
 		labelPages.setText(LanguageUtil.getLanguage().getString("preferences.pdf.page.location"));
 
-		comboSelectPage = new Combo(divPosicional, SWT.NONE | SWT.READ_ONLY);
+		comboSelectPage = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
 		comboSelectPage.add(LanguageUtil.getLanguage().getString("preferences.pdf.last.page"), 0);
 		comboSelectPage.add(LanguageUtil.getLanguage().getString("preferences.pdf.first.page"), 1);
 		comboSelectPage.add(LanguageUtil.getLanguage().getString("preferences.pdf.select.page"), 2);
@@ -263,7 +250,7 @@ public class PdfProfilePreferences {
 		gdComboSelPage.horizontalSpan = 1;
 		comboSelectPage.setLayoutData(gdComboSelPage);
 
-		textSelectPage = new Text(divPosicional, SWT.NONE | SWT.BORDER);
+		textSelectPage = new Text(this.compositeMain, SWT.NONE | SWT.BORDER);
 		textSelectPage.setEnabled(false);
 		GridData gdTextSelpage = new GridData();
 		gdTextSelpage.grabExcessHorizontalSpace = false;
@@ -284,7 +271,7 @@ public class PdfProfilePreferences {
 				break;
 		}
 
-
+		// certified
 		String[][] comboFields2 = {
 				{ LanguageUtil.getLanguage().getString("preferences.pdf.combo.not.certified"),
 						"" + PdfSignatureAppearance.NOT_CERTIFIED },
@@ -324,9 +311,30 @@ public class PdfProfilePreferences {
 				this.comboOCSP.select(0);	
 		}
 
+		// acroField
+		Label labelAcroField = new Label(this.compositeMain, SWT.NONE);
+		labelAcroField.setText("i18n-AcroField name");
+		labelAcroField.setLayoutData(new GridData());
+
+		textAcroField = new Text(this.compositeMain, SWT.NONE | SWT.BORDER);
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = 2;
+		gd.horizontalAlignment = SWT.FILL;
+		gd.grabExcessHorizontalSpace = true;
+		textAcroField.setLayoutData(gd);
+		
+		if (profile.getAcroField() != null) {
+			textAcroField.setText(profile.getAcroField());			
+		}
+		
 		// reason
 		Label labelReason = new Label(this.compositeMain, SWT.NONE);
 		labelReason.setText(LanguageUtil.getLanguage().getString("preferences.pdf.reason"));
+		gd = new GridData();
+		gd.verticalAlignment = GridData.BEGINNING;
+		gd.horizontalAlignment = GridData.FILL;
+		gd.verticalIndent = 3;
+		labelReason.setLayoutData(gd);
 
 		textReason = new Text(this.compositeMain, SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		GridData gdTextReason = new GridData();
@@ -343,6 +351,11 @@ public class PdfProfilePreferences {
 		// location
 		Label labelLocation = new Label(this.compositeMain, SWT.NONE);
 		labelLocation.setText(LanguageUtil.getLanguage().getString("preferences.pdf.location"));
+		gd = new GridData();
+		gd.verticalAlignment = GridData.BEGINNING;
+		gd.horizontalAlignment = GridData.FILL;
+		gd.verticalIndent = 2;
+		labelLocation.setLayoutData(gd);
 
 		textLocation = new Text(this.compositeMain, SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		GridData gdTextLocation = new GridData();
@@ -383,12 +396,18 @@ public class PdfProfilePreferences {
 				path = textRuta.getText();
 			}
 			
-			PdfSignatureFieldPositionDialog pdfSignatureFieldPositionDialog = new PdfSignatureFieldPositionDialog(Display.getDefault().getActiveShell(), path, signatureField);
-			
-			PdfSignatureField psf = pdfSignatureFieldPositionDialog.createSShell();
-			if (psf != null) {
-				signatureField = psf;
+			try {
+				PdfSignatureFieldPositionDialog pdfSignatureFieldPositionDialog = new PdfSignatureFieldPositionDialog(Display.getDefault().getActiveShell(), path, signatureField);
+				PdfSignatureField psf = pdfSignatureFieldPositionDialog.createSShell();
+				if (psf != null) {
+					signatureField = psf;
+				}	
+				
+			} catch (IOException e) {
+				// no se puede dar en este caso
+				log.error(e);
 			}
+			
 		}
 
 		public void widgetDefaultSelected(SelectionEvent event) {
@@ -401,12 +420,12 @@ public class PdfProfilePreferences {
 		
 		if (checkVisible.getSelection()) {
 			
+			checkAskPosition.setEnabled(true);
 			checkSello.setEnabled(true);
 			labelPosicion.setEnabled(true);
 			buttonPosition.setEnabled(true);
 			labelPages.setEnabled(true);
 			comboSelectPage.setEnabled(true);
-			textSelectPage.setEnabled(true);
 			
 			if (comboSelectPage.getSelectionIndex() > 1) {
 				textSelectPage.setEnabled(true);
@@ -425,15 +444,16 @@ public class PdfProfilePreferences {
 			}
 			
 		} else {
+			checkAskPosition.setEnabled(false);
 			checkSello.setEnabled(false);
-			label.setEnabled(false);
-			textRuta.setEnabled(false);
-			buttonBrowse.setEnabled(false);
 			labelPosicion.setEnabled(false);
 			buttonPosition.setEnabled(false);
 			labelPages.setEnabled(false);
 			comboSelectPage.setEnabled(false);
 			textSelectPage.setEnabled(false);
+			label.setEnabled(false);
+			textRuta.setEnabled(false);
+			buttonBrowse.setEnabled(false);
 		}
 
 	}
@@ -444,36 +464,12 @@ public class PdfProfilePreferences {
 		profile.setName(textName.getText());
 		profile.setAcroField(textAcroField.getText());
 		profile.setVisible(checkVisible.getSelection());
+		profile.setAskPosition(checkAskPosition.getSelection());
 		profile.setReason(textReason.getText());
 		profile.setLocation(textLocation.getText());
 		profile.setHasImage(checkSello.getSelection());
 		profile.setImagePath(textRuta.getText());
 		profile.setCertified(comboOCSP.getSelectionIndex());
-		
-		
-//		 if (checkSello != null && checkVisible != null &&
-//				 checkSello.getSelection() && checkVisible.getSelection()) {
-//				 try {
-//				 if (comboSelectPage.getSelectionIndex() > 1) {
-//				 int i = Integer.parseInt(textSelectPage.getText());
-//				 if (i > 0) {
-//				 savePreferences();
-//				 return super.performOk();
-//				 } else {
-//				 InfoDialog id = new InfoDialog(this.getShell());
-//				 id.open(LanguageUtil.getLanguage().getString("error.format.number.page"));
-//				 return false;
-//				 }
-//				 } else {
-//				 savePreferences();
-//				 return super.performOk();
-//				 }
-//				 } catch (NumberFormatException e) {
-//				 InfoDialog id = new InfoDialog(this.getShell());
-//				 id.open(LanguageUtil.getLanguage().getString("error.format.number.page"));
-//				 return false;
-//				 }
-//				 }
 		
 		switch(comboSelectPage.getSelectionIndex()){
 			case 0:

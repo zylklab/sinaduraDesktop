@@ -21,6 +21,8 @@
  */
 package net.esle.sinadura.gui.view.preferences;
 
+import java.util.Map;
+
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PdfProfile;
@@ -34,6 +36,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -41,6 +44,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 
@@ -51,17 +55,25 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 
 	private static Log log = LogFactory.getLog(PdfPreferences.class);
 
+	private Map<String, PdfProfile> pdfProfiles;
+	private String tempDefault;
+	
 	private Composite compositeMain = null;
 	private Combo comboTipoFirmaPDF = null;
-
-	private java.util.List<PdfProfile> pdfProfiles;
 	private List visualList = null;
+	private Combo comboDefault = null;
+	
 	private Button buttonAdd;
-	private Button buttonShow;
+	private Button buttonEdit;
 	private Button buttonRemove;
 	
+	
 	public PdfPreferences() {
+		
 		super(FLAT);
+	
+		this.pdfProfiles = PreferencesUtil.getPdfProfiles();
+		this.tempDefault = PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_PROFILE_SELECTED_NAME);
 	}
 
 	@Override
@@ -74,9 +86,9 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 
 		// composite que contiene todos los elementos de la pantalla
 		this.compositeMain = new Composite(parent, SWT.NONE);
+		
 		GridLayout gridLayoutPrincipal = new GridLayout();
-		gridLayoutPrincipal.numColumns = 2;
-		gridLayoutPrincipal.verticalSpacing = 5;
+		gridLayoutPrincipal.numColumns = 1;
 		gridLayoutPrincipal.marginBottom = 5;
 		this.compositeMain.setLayout(gridLayoutPrincipal);
 
@@ -87,26 +99,38 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		gdPrincipal.grabExcessVerticalSpace = true;
 		this.compositeMain.setLayoutData(gdPrincipal);
 
-		createArea();
+		createTopArea();
+
 		createListArea();
 
+		createDefaultArea();
+		
 		trigerComboSelectTipoFirma();
+		
 		return this.compositeMain;
 	}
 
-	private void createArea() {
+	private void createTopArea() {
 
+		Composite topComposite = new Composite(this.compositeMain, SWT.NONE);
+		
+		GridData gd = new GridData(GridData.FILL_BOTH);
+		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessVerticalSpace = false;
+		gd.horizontalAlignment = GridData.FILL;
+		gd.verticalAlignment = GridData.FILL;
+		topComposite.setLayoutData(gd);
+		
+		GridLayout gl = new GridLayout();
+		gl.numColumns = 2;
+		gl.marginBottom = 10;
+		topComposite.setLayout(gl);
+		
 		// tipo firma
-		GridData gdComboTipoFirma = new GridData();
-		gdComboTipoFirma.verticalAlignment = SWT.NONE;
-		gdComboTipoFirma.horizontalAlignment = SWT.NONE;
-		gdComboTipoFirma.grabExcessHorizontalSpace = true;
-
-		Label labelCombo = new Label(this.compositeMain, SWT.NONE);
+		Label labelCombo = new Label(topComposite, SWT.NONE);
 		labelCombo.setText("i18n-Tipo Firma");
-		labelCombo.setLayoutData(gdComboTipoFirma);
 
-		comboTipoFirmaPDF = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
+		comboTipoFirmaPDF = new Combo(topComposite, SWT.NONE | SWT.READ_ONLY);
 		comboTipoFirmaPDF.add("i18n-Firma PDF", 0);
 		comboTipoFirmaPDF.add("i18n-Firma XML", 1);
 		comboTipoFirmaPDF.select(Integer.valueOf(PreferencesUtil.getPreferences().getString((PreferencesUtil.PDF_TIPO))));
@@ -124,54 +148,47 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 	}
 
 	private void createListArea() {
-
-		Label labelSello = new Label(this.compositeMain, SWT.FILL);
-		labelSello.setText("i18n-Perfiles disponibles para el sello de 'Firma PDF'");
 		
-		Composite profileComposite = new Composite(this.compositeMain, SWT.NONE);
+		Composite compositeList = new Composite(this.compositeMain, SWT.NONE);
+		
 		GridData gd = new GridData(GridData.FILL_BOTH);
-		gd.horizontalSpan = 2;
 		gd.grabExcessHorizontalSpace = true;
 		gd.grabExcessVerticalSpace = true;
-		gd.widthHint = 0;
-		gd.heightHint = 0;
-		profileComposite.setLayoutData(gd);
+		compositeList.setLayoutData(gd);
 		
 		GridLayout gl = new GridLayout();
 		gl.numColumns = 2;
-		gl.verticalSpacing = 5;
 		gl.marginBottom = 5;
-		profileComposite.setLayout(gl);
+		compositeList.setLayout(gl);
 		
-		Composite compositeList = new Composite(profileComposite, SWT.NONE);
-		GridData gdListComposite = new GridData(GridData.FILL_BOTH);
-		gdListComposite.grabExcessHorizontalSpace = true;
-		gdListComposite.grabExcessVerticalSpace = true;
-		gdListComposite.widthHint = 0;
-		gdListComposite.heightHint = 0;
-		compositeList.setLayoutData(gdListComposite);
-		compositeList.setLayout(new GridLayout());
-
+		// title
+		Label labelSello = new Label(compositeList, SWT.NONE);
+		labelSello.setText("i18n-Perfiles de firma PDF");
+		labelSello.setFont(new Font(compositeMain.getDisplay(), Display.getDefault().getSystemFont().getFontData()[0].getName(),
+				Display.getDefault().getSystemFont().getFontData()[0].getHeight(), SWT.BOLD));
+		
+		gd = new GridData(GridData.FILL_BOTH);
+		gd.horizontalSpan = 2;
+		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessVerticalSpace = false;
+		labelSello.setLayoutData(gd);
+		
+		// lista
 		this.visualList = new org.eclipse.swt.widgets.List(compositeList, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		this.visualList.addKeyListener(new SupButtonKeyListener());
 
 		reloadVisualList();
 
 		GridData gdList = new GridData();
+		gdList.verticalSpan = 3;
 		gdList.horizontalAlignment = GridData.FILL;
 		gdList.verticalAlignment = GridData.FILL;
 		gdList.grabExcessHorizontalSpace = true;
 		gdList.grabExcessVerticalSpace = true;
 		this.visualList.setLayoutData(gdList);
 
-		Composite compositeButtons = new Composite(profileComposite, SWT.NONE);
-		GridData gdButtonsComposite = new GridData();
-		gdButtonsComposite.grabExcessHorizontalSpace = false;
-		gdButtonsComposite.grabExcessVerticalSpace = false;
-		compositeButtons.setLayoutData(gdButtonsComposite);
-		compositeButtons.setLayout(new GridLayout());
-
-		buttonAdd = new Button(compositeButtons, SWT.NONE);
+		// buttons
+		buttonAdd = new Button(compositeList, SWT.NONE);
 		GridData gdAdd = new GridData();
 		gdAdd.horizontalAlignment = GridData.FILL;
 		buttonAdd.setLayoutData(gdAdd);
@@ -179,29 +196,79 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		buttonAdd.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.ADD_IMG)));
 		buttonAdd.addSelectionListener(new ButtonAddListener());
 
-		buttonShow = new Button(compositeButtons, SWT.NONE);
+		buttonEdit = new Button(compositeList, SWT.NONE);
 		GridData gdMod = new GridData();
 		gdMod.horizontalAlignment = GridData.FILL;
-		buttonShow.setLayoutData(gdMod);
-		buttonShow.setText(LanguageUtil.getLanguage().getString("button.show"));
-		buttonShow.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.EDIT_IMG)));
-		buttonShow.addSelectionListener(new ButtonShowListener());
+		buttonEdit.setLayoutData(gdMod);
+		buttonEdit.setText(LanguageUtil.getLanguage().getString("button.modify"));
+		buttonEdit.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.EDIT_IMG)));
+		buttonEdit.addSelectionListener(new ButtonModifyListener());
 
-		buttonRemove = new Button(compositeButtons, SWT.NONE);
+		buttonRemove = new Button(compositeList, SWT.NONE);
 		GridData gdRemove = new GridData();
-		gdRemove.horizontalAlignment = GridData.FILL;
 		gdRemove.verticalAlignment = GridData.BEGINNING;
+		gdRemove.horizontalAlignment = GridData.FILL;
 		buttonRemove.setLayoutData(gdRemove);
 		buttonRemove.setText(LanguageUtil.getLanguage().getString("button.remove"));
 		buttonRemove.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.REMOVE_IMG)));
 		buttonRemove.addSelectionListener(new ButtonRemoveListener());
+	}
+	
+	private void createDefaultArea() {
+		
+		Composite composite = new Composite(this.compositeMain, SWT.NONE);
+		
+		GridData gd = new GridData(GridData.FILL_BOTH);
+		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessVerticalSpace = false;
+		gd.horizontalAlignment = GridData.FILL;
+		gd.verticalAlignment = GridData.FILL;
+		composite.setLayoutData(gd);
+		
+		GridLayout gl = new GridLayout();
+		gl.numColumns = 1;
+		gl.marginBottom = 10;
+		composite.setLayout(gl);
+		
+
+		Label labelDefaultAreaDesc = new Label(composite, SWT.NONE);
+		labelDefaultAreaDesc.setText("i18n-Seleccione el perfil con el que firmar:");
+
+		comboDefault = new Combo(composite, SWT.NONE | SWT.READ_ONLY);
+		comboDefault.addSelectionListener(new ComboDefaultChangeListener());
+		reloadComboDefault();
+		comboDefault.setText(PreferencesUtil.getPreferences().getString("default.software.cert"));
+	}
+	
+	
+	private void reloadComboDefault() {
+		
+		// cargar combo
+		comboDefault.removeAll();
+		for (PdfProfile pdfProfile : pdfProfiles.values()) {
+			
+			comboDefault.add(pdfProfile.getName());
+		}
+		comboDefault.getParent().layout();
+		
+		comboDefault.setText(tempDefault);
+		if (comboDefault.getText().equals("")) {
+			if (comboDefault.getItemCount() != 0 ) {
+				comboDefault.select(0);
+				tempDefault = comboDefault.getText();
+			}
+		} 
 	}
 
 	private void savePreferences() {
 
 		PreferencesUtil.savePdfProfiles(pdfProfiles);
 		PreferencesUtil.getPreferences().setValue(PreferencesUtil.PDF_TIPO, String.valueOf(comboTipoFirmaPDF.getSelectionIndex()));
-		// TODO guardamos nuevo perfil
+		
+		if (comboDefault != null) {
+			PreferencesUtil.getPreferences().setValue(PreferencesUtil.PDF_PROFILE_SELECTED_NAME, comboDefault.getText());
+		}
+		
 	}
 
 	@Override
@@ -225,44 +292,60 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 			visualList.setEnabled(false);
 			buttonAdd.setEnabled(false);
 			buttonRemove.setEnabled(false);
-			buttonShow.setEnabled(false);
+			buttonEdit.setEnabled(false);
+			comboDefault.setEnabled(false);
 			
 		} else {
 			visualList.setEnabled(true);
 			buttonAdd.setEnabled(true);
 			buttonRemove.setEnabled(true);
-			buttonShow.setEnabled(true);
+			buttonEdit.setEnabled(true);
+			comboDefault.setEnabled(true);
 		}
 	}
 
 	// ==============================================
 	// Table actions
 	// ==============================================
-	private void reloadVisualList() {
-		reloadVisualList(true);
-	}
 	
-	private void reloadVisualList(boolean fetch) {
+	private void reloadVisualList() {
 		
 		// inicializar lista
 		visualList.removeAll();
 		
-		if (fetch) {
-			this.pdfProfiles = PreferencesUtil.getPdfProfiles();			
-		}
-		for(PdfProfile profile : this.pdfProfiles){
-			visualList.add(profile.toString());
+		for (PdfProfile profile : this.pdfProfiles.values()) {
+			visualList.add(profile.getName());
 		}
 	}
 
 	
 	private void removeTableFile() {
 		
-		int index = visualList.getSelectionIndex();
-		this.pdfProfiles.remove(index);
-		visualList.remove(index);
+		if (visualList.getSelectionCount() > 0) {
+		
+			if (visualList.getItemCount() > 1) {
+				
+				String selectedName = visualList.getSelection()[0];
+				this.pdfProfiles.remove(selectedName);
+				
+				reloadVisualList();
+				reloadComboDefault();
+			}
+		}
 	}
 
+	class ComboDefaultChangeListener implements SelectionListener {
+		
+		public void widgetSelected(SelectionEvent event) {
+
+			tempDefault = comboDefault.getText();
+		}
+
+		public void widgetDefaultSelected(SelectionEvent event) {
+			widgetSelected(event);
+		}
+	}
+	
 	// ===================================
 	// Button Listeners
 	// ====================================
@@ -271,14 +354,17 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 
 		public void widgetSelected(SelectionEvent event) {
 			
-			PdfProfile newProfile = null;
-			PdfProfilePreferencesDialog pdfDialog= new PdfProfilePreferencesDialog(compositeMain.getShell(), newProfile);
+			PdfProfilePreferencesDialog pdfDialog = new PdfProfilePreferencesDialog(compositeMain.getShell(), null);
 			pdfDialog.open();
+			PdfProfile newProfile = pdfDialog.getPdfProfile();
 			
-			pdfProfiles.add(newProfile);
+			if (newProfile != null) {
+				pdfProfiles.put(newProfile.getName(), newProfile);
+				
+				reloadVisualList();
+				reloadComboDefault();
+			}
 			
-			reloadVisualList(false);
-
 		}
 
 		public void widgetDefaultSelected(SelectionEvent event) {
@@ -286,18 +372,28 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		}
 	}
 
-	private class ButtonShowListener implements SelectionListener {
+	private class ButtonModifyListener implements SelectionListener {
 
 		public void widgetSelected(SelectionEvent event) {
 			
-			int i = visualList.getSelectionIndex();
-			if (i != -1) {
-				PdfProfile selectedProfile = pdfProfiles.get(i);
-				PdfProfilePreferencesDialog pdfDialog = new PdfProfilePreferencesDialog(compositeMain.getShell(), selectedProfile);
-				pdfDialog.open();
-				pdfProfiles.set(i, selectedProfile);
+			if (visualList.getSelectionCount() > 0) {
+			
+				String selectedName = visualList.getSelection()[0];
 				
-				reloadVisualList(false);				
+				if (selectedName != null) {
+					PdfProfile updatedProfile = pdfProfiles.get(selectedName);
+					PdfProfilePreferencesDialog pdfDialog = new PdfProfilePreferencesDialog(compositeMain.getShell(), updatedProfile);
+					pdfDialog.open();
+					updatedProfile = pdfDialog.getPdfProfile();
+					
+					if (updatedProfile != null) {
+						pdfProfiles.remove(selectedName);
+						pdfProfiles.put(updatedProfile.getName(), updatedProfile);
+						
+						reloadVisualList();
+						reloadComboDefault();
+					}
+				}
 			}
 		}
 

@@ -25,6 +25,7 @@ import net.esle.sinadura.gui.events.BotonCancelarListener;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PdfProfile;
+import net.esle.sinadura.gui.util.PreferencesDefaultUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -41,12 +42,16 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
+import com.itextpdf.text.pdf.PdfSignatureAppearance;
+
 /**
  * @author zylk.net
  */
 public class PdfProfilePreferencesDialog extends Dialog {
 
-	PdfProfile profile;
+	private PdfProfile tmpProfile = null;
+	private PdfProfile selectedProfile = null;
+	
 	private Shell sShell = null;
 
 	private PdfProfilePreferences profilePanel;
@@ -60,21 +65,28 @@ public class PdfProfilePreferencesDialog extends Dialog {
 		
 		super(parent);
 		
-		// inicializamos el perfil
-		if (profile == null ) {
-			profile = new PdfProfile();
-			profile.setName("New Profile");
-			profile.setVisible(true);
-			profile.setHasImage(true);
-			profile.setImagePath(PreferencesUtil.DEFAULT_IMAGE_FILEPATH);
-			// TODO coordenadas por defecto???
-			profile.setStartX(20);
-			profile.setStartY(2);
-			profile.setWidht(125);
-			profile.setHeight(125);
+		if (profile != null) {
+			tmpProfile = profile;
+		} else {
+			// No se utilizan exactamente los mismos valores por defecto que en el default pdf-profile, ya que algunos no tienen
+			// mucho sentido aqui (location, reason...).
+			tmpProfile = new PdfProfile();
+			tmpProfile.setName("");
+			tmpProfile.setVisible(Boolean.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_VISIBLE)));
+			tmpProfile.setHasImage(Boolean.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_ENABLE)));
+			tmpProfile.setImagePath(PreferencesUtil.DEFAULT_IMAGE_FILEPATH);
+			tmpProfile.setAcroField("");
+			tmpProfile.setAskPosition(Boolean.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_ASK)));
+			tmpProfile.setWidht(Float.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_WIDTH)));
+			tmpProfile.setHeight(Float.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_HEIGHT)));
+			tmpProfile.setStartX(Float.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_X)));
+			tmpProfile.setStartY(Float.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_Y)));
+			tmpProfile.setPage(Integer.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_PAGE)));
+			tmpProfile.setReason("");
+			tmpProfile.setLocation("");
+			tmpProfile.setCertified(Integer.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_CERTIFIED)));
 		}
 		
-		this.profile = profile;
 	}
 
 	
@@ -82,9 +94,10 @@ public class PdfProfilePreferencesDialog extends Dialog {
 
 		Shell parent = getParentShell();
 
-		this.sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		this.sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
 		this.sShell.setImage(new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 		this.sShell.setText("i18n-Perfil PDF");
+		
 
 		GridLayout shellGridLayout = new GridLayout();
 		shellGridLayout.numColumns = 1;
@@ -92,7 +105,7 @@ public class PdfProfilePreferencesDialog extends Dialog {
 		this.sShell.setLayout(shellGridLayout);
 		
 		Composite profileComposite = new Composite(this.sShell, SWT.NONE);
-		profilePanel = new PdfProfilePreferences(profileComposite, profile);
+		profilePanel = new PdfProfilePreferences(profileComposite, tmpProfile);
 
 		this.ButtonsComposite = new Composite(this.sShell, SWT.NONE);
 		this.ButtonsComposite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
@@ -111,7 +124,8 @@ public class PdfProfilePreferencesDialog extends Dialog {
 		this.bottonCancelar.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.CANCEL_IMG)));
 		this.bottonCancelar.addSelectionListener(new BotonCancelarListener());
 
-		this.sShell.pack();
+//		this.sShell.pack();
+		this.sShell.setSize(600, 600);
 
 		Monitor primary = this.sShell.getDisplay().getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
@@ -130,11 +144,17 @@ public class PdfProfilePreferencesDialog extends Dialog {
 
 		return 0;
 	}
+	
+	public PdfProfile getPdfProfile() {
+		
+		return selectedProfile;
+	}
 
 	private class BotonAceptarListener implements SelectionListener {
 
 		public void widgetSelected(SelectionEvent event) {
-			profile = profilePanel.getProfile();
+			
+			selectedProfile = profilePanel.getProfile();
 			sShell.dispose();
 		}
 
@@ -143,3 +163,4 @@ public class PdfProfilePreferencesDialog extends Dialog {
 		}
 	}
 }
+
