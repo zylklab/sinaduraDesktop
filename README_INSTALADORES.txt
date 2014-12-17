@@ -2,6 +2,19 @@
 www.zylk.net/web/guest/web-2-0/blog/-/blogs/accediendo-a-repositorios-de-maven-securizados
 
 
+REGISTRO DE VERSIONES (para conocer el perfil de cada versión)
+--------------------------------------------------------------
+...
+3.3.3 - Community (publicada y publicitada)
+3.3.8 - Community (publicada)
+3.4.4 - Parlamento
+3.5.0 - Community (interna)
+3.5.1 - Community (interna de momento)
+3.5.2 - EE
+
+* Las versiones para parlamento se pueden ver en la intranet, y el resto son todas de la Community.
+Y si ademas están en la web pues es que se han publicado.
+
 
 
 PUBLICACION DE VERSIONES - JENKINS
