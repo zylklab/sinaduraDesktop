@@ -40,7 +40,7 @@ A nivel de codigo fuente hay que especificar a mano la versión en:
 3 dígitos ya que se utiliza para realizar comparaciones entre versiones. Así que la version del desktop debe seguir siempre el formato 
 x.x.x (y no x.x.xx o x.xx.x) para que se pueda hacer la correspondencia a 3 digitos.   
 
-Una vez hecho esto ya se puede hacer el build.
+Una vez hecho esto (y subido al svn) ya se puede hacer el build.
 
 Y una vez publicada la versión hay que hacer también a mano:
 - La tag correspondiente en el svn.
