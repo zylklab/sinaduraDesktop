@@ -42,7 +42,10 @@
  */
 package net.esle.sinadura.gui.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -61,6 +64,15 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import net.esle.sinadura.core.certificate.CertificateUtil;
 import net.esle.sinadura.core.exceptions.ConnectionException;
@@ -100,10 +112,14 @@ import net.esle.sinadura.gui.util.StatisticsUtil;
 import net.esle.sinadura.gui.view.main.InfoDialog;
 
 import org.apache.commons.httpclient.util.URIUtil;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Image;
@@ -302,7 +318,7 @@ public class SignController {
 			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_PDF)) {
 				
 				if (PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_TIPO).equals(PreferencesUtil.PDF_TIPO_XML)) {
-					signDetached(pdfParameter, ksSignaturePreferences);
+					signXades(pdfParameter, ksSignaturePreferences);
 					
 				}else{
 					boolean successfullySigned = false;
@@ -329,14 +345,13 @@ public class SignController {
 					
 			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_XML)) {
 				// TODO Aqui tendria sentido hacer una firma enveloped
-				// TODO Como ahora solo es detached -> mostrar error??? -> Para evitar firmar un xml que sea ya una firma.
-				signDetached(pdfParameter, ksSignaturePreferences);
+				signXades(pdfParameter, ksSignaturePreferences);
 				
 			} else if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR)) {
-				signDetached(pdfParameter, ksSignaturePreferences);
+				signXades(pdfParameter, ksSignaturePreferences);
 				
 			} else { // un documento cualquiera
-				signDetached(pdfParameter, ksSignaturePreferences);
+				signXades(pdfParameter, ksSignaturePreferences);
 			}
 			
 		} catch (PasswordCallbackCanceledException e) {
@@ -620,14 +635,35 @@ public class SignController {
 		}
 	}
 
-	private static void signDetached(DocumentInfo pdfParameter, KsSignaturePreferences ksSignaturePreferences) throws OverwritingException,
+	private static void signXades(DocumentInfo pdfParameter, KsSignaturePreferences ksSignaturePreferences) throws OverwritingException,
 			IOException, OCSPUnknownUrlException, CertificateExpiredException, CertificateNotYetValidException, RevokedException,
 			OCSPCoreException, ConnectionException, OCSPIssuerRequiredException {
 
 		try {
-			// firmar
-			byte[] bytes = signXades(pdfParameter.getPath(), ksSignaturePreferences);
+			
+			boolean isFacturae = false;
+			
+			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_XML)) {
+				try {
+					InputStream is = FileUtil.getInputStreamFromURI(pdfParameter.getPath());
+					isFacturae = isFacturae(is);
+					
+				} catch (URISyntaxException e) {
+					throw new IOException(e);
+				}	
+			}
 
+			log.info("isFacturae: " + isFacturae);
+			
+			// firma
+			byte[] bytes;
+			if (isFacturae) {
+				bytes = signFacturae(pdfParameter.getPath(), ksSignaturePreferences);
+			} else {
+				bytes = signDetached(pdfParameter.getPath(), ksSignaturePreferences);
+			}
+			
+			
 			File inputFile = new File(pdfParameter.getPath());
 			
 			String outputDir = PreferencesUtil.getOutputDir(inputFile);
@@ -650,26 +686,35 @@ public class SignController {
 			String outputPath = null;
 			
 			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_SAR)) {
+				// 1- si es un sar el resultante simpre es un sar tambien
 				outputPath = outputDir + File.separatorChar + outputName + "." + FileUtil.EXTENSION_SAR;
 
 			} else {
-
-				// sar
-				if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.XADES_ARCHIVE)) {
-					outputPath = outputDir + File.separatorChar	+ outputName + "." + FileUtil.EXTENSION_SAR;
-				// xml
-				} else {
+				
+				if (isFacturae) {
+					// 2- si es un facturae el resultante es siempre un xml
 					outputPath = outputDir + File.separatorChar	+ outputName + "." + FileUtil.EXTENSION_XML;
 					
-					/*
-					 * unsupported
-					 * validamos que siendo firma XML, el archivo origen y destino no sea el mismo
-					 * // TODO esto se podría hacer con una firma enveloped/ing
-					 * @see SignController (core; desde consola no se pueden hacer firmas sar) + SignController (desktop)
-					 */
-					if (inputFile.getPath().equals(outputPath)){
-						log.error("Se está intentando firmar un fichero XML sobre si mismo. Modifique las preferencias para que esto no ocurra (firma detached sar, sufijo o directorio destino diferente)");
-						throw new OverwritingException();
+				} else {
+					// 3- si es un fichero cualquierra depende de la preferencia "XADES_ARCHIVE".  
+					// sar
+					if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.XADES_ARCHIVE)) {
+						outputPath = outputDir + File.separatorChar	+ outputName + "." + FileUtil.EXTENSION_SAR;
+					// xml
+					} else {
+						outputPath = outputDir + File.separatorChar	+ outputName + "." + FileUtil.EXTENSION_XML;
+						
+						/*
+						 * unsupported
+						 * 
+						 * validamos que siendo firma XML (y haciendo una firma detached) el archivo origen y destino no sea el mismo.
+						 * // TODO esto se podría hacer con una firma enveloped/ing
+						 * @see SignController (core; desde consola no se pueden hacer firmas sar) + SignController (desktop)
+						 */
+						if (inputFile.getPath().equals(outputPath)){
+							log.error("Se está intentando firmar un fichero XML sobre si mismo. Modifique las preferencias para que esto no ocurra (firma detached sar, sufijo o directorio destino diferente)");
+							throw new OverwritingException();
+						}
 					}
 				}
 			}
@@ -701,42 +746,99 @@ public class SignController {
 		}
 	}
 
-	private static byte[] signXades(String documentPath, KsSignaturePreferences ksSignaturePreferences) throws XadesSignatureException,
+	
+	
+	private static byte[] signFacturae(String documentPath, KsSignaturePreferences ksSignaturePreferences) throws XadesSignatureException,
+			OCSPUnknownUrlException, CertificateExpiredException, CertificateNotYetValidException, RevokedException, OCSPCoreException,
+			ConnectionException, OCSPIssuerRequiredException, IOException {
+
+		XadesSignaturePreferences signaturePreferences = getXadesSignaturePreferences(ksSignaturePreferences);
+		
+		InputStream document;
+		try {
+			document = FileUtil.getInputStreamFromURI(documentPath);
+		} catch (URISyntaxException e) {
+			throw new IOException(e);
+		} 
+
+		byte[] bytes = XadesService.signFacturae(document, signaturePreferences);
+		
+		return bytes;
+	}
+	
+	private static byte[] signDetached(String documentPath, KsSignaturePreferences ksSignaturePreferences) throws XadesSignatureException,
 			OCSPUnknownUrlException, CertificateExpiredException, CertificateNotYetValidException, RevokedException, OCSPCoreException,
 			ConnectionException, OCSPIssuerRequiredException {
 
+		XadesSignaturePreferences signaturePreferences = getXadesSignaturePreferences(ksSignaturePreferences);
+		
+		byte[] bytes = XadesService.signArchiver(documentPath, signaturePreferences);
+		
+		return bytes;
+	}
+	
+	private static XadesSignaturePreferences getXadesSignaturePreferences(KsSignaturePreferences ksSignaturePreferences) {
+		
 		XadesSignaturePreferences signaturePreferences = new XadesSignaturePreferences();
 		signaturePreferences.setKsSignaturePreferences(ksSignaturePreferences);
 		signaturePreferences.setType(XadesSignaturePreferences.Type.Detached);
 		signaturePreferences.setGenerateArchiver(PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.XADES_ARCHIVE));
 		signaturePreferences.setKsCache(PreferencesUtil.getCacheKeystoreComplete());
-
+		
 		String tsurl = null;
 		String tsaOcspUrl = null;
 		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE) == true) {
 			tsurl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA)).getUrl();
 			tsaOcspUrl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA)).getOcspUrl();
 		}
-
+		
 		signaturePreferences.setTimestampUrl(tsurl);
 		signaturePreferences.setTimestampOcspUrl(tsaOcspUrl);
 		signaturePreferences.setTimestampUser(null);
 		signaturePreferences.setTimestampPassword(null);
 		
-
+		
 		boolean addOCSP = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_OCSP_ENABLE);
 		signaturePreferences.setAddOCSP(addOCSP);
-
+		
 		StatisticsUtil.log(StatisticsUtil.KEY_SIGN_OCSP, addOCSP + "");
 		log.info("ocsp enable: " + addOCSP);
 		
 		boolean xlOcspAddAll = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.XADES_XL_OCSP_ADD_ALL);
 		signaturePreferences.setXlOcspAddAll(xlOcspAddAll);
-
-		// firmar
-		byte[] bytes = XadesService.signArchiver(documentPath, signaturePreferences);
-
-		return bytes;
+		
+		return signaturePreferences;
 	}
+	
+	 // Logica para identificar la version de facturae
+	private static boolean isFacturae(InputStream is) {
+	    
+		boolean isFacturae = false;
+		
+		try {
+	        DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+	        domFactory.setNamespaceAware(false);
+	        DocumentBuilder builder = domFactory.newDocumentBuilder();
+	        Document doc = builder.parse(is);
+	        XPath xpath = XPathFactory.newInstance().newXPath();        
+	        XPathExpression expr = xpath.compile("/Facturae/FileHeader/SchemaVersion");
+	        Node node = (Node) expr.evaluate(doc, XPathConstants.NODE);
+	        
+	        if (node != null) {
+	        	isFacturae = true;
+	        }
+	        
+		} catch (ParserConfigurationException e) {
+			// nada (isFacturae = false)
+		} catch (SAXException e) {
+			// nada (isFacturae = false)
+		} catch (IOException e) {
+			// nada (isFacturae = false)
+		} catch (XPathExpressionException e) {
+			// nada (isFacturae = false)
+		}
+		
+        return isFacturae;
+    }
 
 }

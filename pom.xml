@@ -223,6 +223,19 @@
 				<preferences.visible.validation.section>1</preferences.visible.validation.section>
 			</properties>
 		</profile>
+		
+		<profile>
+			<id>LantegiBatuak</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<!-- CONFIGURACION de la aplicacion -->
+				<!-- system -->
+				<sponsor.label.enable>false</sponsor.label.enable>
+				<sponsor.image.path>lantegibatuak.png</sponsor.image.path>
+			</properties>
+		</profile>
 
 		<profile>
 			<id>Unix32</id>
