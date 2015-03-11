@@ -3,7 +3,7 @@
 	<groupId>sinadura</groupId>
 	<artifactId>sinaduraDesktop</artifactId>
 	<name>Sinadura Desktop</name>
-	<version>3.5.3-SNAPSHOT</version>
+	<version>4.1.0-SNAPSHOT</version>
 	<description>El origen de sinadura es un software de escritorio para
 		la firma de pdf mediante firma digital. Un aplicativo multiplataforma
 		y una comunidad que ofrece documentación y servicios de valor añadido.
@@ -60,6 +60,7 @@
 
 	<properties>
 		<!-- PROPIEDADES de maven (compilacion, generacion de empaquetados, releases...) -->
+		<sinadura.release.id>ce</sinadura.release.id>
 		<izpack-standalone.version>4.3.2</izpack-standalone.version>
 		<staging-dir>${project.build.directory}/staging</staging-dir>
 		<release.publish.path>/var/www/releases/sinadura</release.publish.path>
@@ -179,6 +180,8 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
+				<!-- PROPIEDADES de maven (compilacion, generacion de empaquetados, releases...) -->
+				<sinadura.release.id>ee</sinadura.release.id>
 				<!-- CONFIGURACION de la aplicacion -->
 				<!-- system -->
 				<ee.proxy.enabled>true</ee.proxy.enabled>
@@ -200,6 +203,8 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
+				<!-- PROPIEDADES de maven (compilacion, generacion de empaquetados, releases...) -->
+				<sinadura.release.id>ee-parlamento</sinadura.release.id>
 				<!-- PREFERENCIAS de usuario -->
 				<pdf.tipo>1</pdf.tipo>
 				<save.extension />
@@ -230,6 +235,10 @@
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
+				<!-- PROPIEDADES de maven (compilacion, generacion de empaquetados, releases...) -->
+				<sinadura.release.id>ee-lantegibatuak</sinadura.release.id>
+				<!-- PREFERENCIAS de usuario -->
+				<sign.ocsp.enable>false</sign.ocsp.enable>
 				<!-- CONFIGURACION de la aplicacion -->
 				<!-- system -->
 				<sponsor.label.enable>false</sponsor.label.enable>
@@ -397,11 +406,11 @@
 								<configuration>
 									<tasks>
 										<echo message="Publicando la aplicacion..." />
-										<available file="${release.publish.path}/${project.version}/sinadura-${project.version}-unix32-installer.jar" property="isFileAvail" />
+										<available file="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-unix32-installer.jar" property="isFileAvail" />
 										<!-- 
 										<fail if="isFileAvail" message="Ya esta publicada" />
 										 -->
-										<copy file="./target/sinaduraDesktop-${project.version}-standard.jar" tofile="${release.publish.path}/${project.version}/sinadura-${project.version}-unix32-installer.jar" overwrite="true" verbose="true" />
+										<copy file="./target/sinaduraDesktop-${project.version}-standard.jar" tofile="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-unix32-installer.jar" overwrite="true" verbose="true" />
 										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
@@ -591,11 +600,11 @@
 								<configuration>
 									<tasks>
 										<echo message="Publicando la aplicacion..." />
-										<available file="${release.publish.path}/${project.version}/sinadura-${project.version}-unix64-installer.jar" property="isFileAvail" />
+										<available file="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-unix64-installer.jar" property="isFileAvail" />
 										<!-- 
 										<fail if="isFileAvail" message="Ya esta publicada" />
 										 -->
-										<copy file="./target/sinaduraDesktop-${project.version}-standard.jar" tofile="${release.publish.path}/${project.version}/sinadura-${project.version}-unix64-installer.jar" overwrite="true" verbose="true" />
+										<copy file="./target/sinaduraDesktop-${project.version}-standard.jar" tofile="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-unix64-installer.jar" overwrite="true" verbose="true" />
 										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
@@ -830,7 +839,7 @@
 										<exec executable="python" dir="installer/izpack2exe">
 											<arg value="izpack2exe.py" />
 											<arg value="--file=../../target/sinaduraDesktop-${project.version}-standard.jar" />
-											<arg value="--output=../../target/sinadura-${project.version}-windows32-installer.exe" />
+											<arg value="--output=../../target/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe" />
 										</exec>
 									</tasks>
 								</configuration>
@@ -844,11 +853,11 @@
 								<configuration>
 									<tasks>
 										<echo message="Publicando la aplicacion..." />
-										<available file="${release.publish.path}/${project.version}/sinadura-${project.version}-windows32-installer.exe" property="isFileAvail" />
+										<available file="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe" property="isFileAvail" />
 										<!-- 
 										<fail if="isFileAvail" message="Ya esta publicada" />
 										 -->
-										<copy file="./target/sinadura-${project.version}-windows32-installer.exe" tofile="${release.publish.path}/${project.version}/sinadura-${project.version}-windows32-installer.exe" overwrite="true" verbose="true" />		 
+										<copy file="./target/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe" tofile="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe" overwrite="true" verbose="true" />		 
 										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
@@ -1075,7 +1084,7 @@
 										<exec executable="python" dir="installer/izpack2exe">
 											<arg value="izpack2exe.py" />
 											<arg value="--file=../../target/sinaduraDesktop-${project.version}-standard.jar" />
-											<arg value="--output=../../target/sinadura-${project.version}-windows64-installer.exe" />
+											<arg value="--output=../../target/sinadura-${sinadura.release.id}-${project.version}-windows64-installer.exe" />
 										</exec>
 									</tasks>
 								</configuration>
@@ -1089,11 +1098,11 @@
 								<configuration>
 									<tasks>
 										<echo message="Publicando la aplicacion..." />
-										<available file="${release.publish.path}/${project.version}/sinadura-${project.version}-windows64-installer.exe" property="isFileAvail" />
+										<available file="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-windows64-installer.exe" property="isFileAvail" />
 										<!-- 
 										<fail if="isFileAvail" message="Ya esta publicada" />
 										 -->
-										<copy file="./target/sinadura-${project.version}-windows64-installer.exe" tofile="${release.publish.path}/${project.version}/sinadura-${project.version}-windows64-installer.exe" overwrite="true" verbose="true" />
+										<copy file="./target/sinadura-${sinadura.release.id}-${project.version}-windows64-installer.exe" tofile="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-windows64-installer.exe" overwrite="true" verbose="true" />
 										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
