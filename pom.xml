@@ -177,7 +177,7 @@
 		<profile>
 			<id>EE</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
 				<!-- PROPIEDADES de maven (compilacion, generacion de empaquetados, releases...) -->
@@ -200,7 +200,7 @@
 		<profile>
 			<id>Parlamento</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
 				<!-- PROPIEDADES de maven (compilacion, generacion de empaquetados, releases...) -->
@@ -249,7 +249,7 @@
 		<profile>
 			<id>Unix32</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 				<os>
 					<name>unix</name>
 					<family>unix</family>
@@ -443,7 +443,7 @@
 		<profile>
 			<id>Unix64</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 				<os>
 					<name>unix64</name>
 					<family>unix</family>
