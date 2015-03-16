@@ -9,9 +9,10 @@ REGISTRO DE VERSIONES (para conocer el perfil de cada versión)
 3.3.8 - Community (publicada)
 3.4.4 - Parlamento
 3.5.0 - Community (interna)
-3.5.1 - Community (interna de momento)
+3.5.1 - Community (publicada)
 3.5.2 - EE
 4.1.0 - LantegiBatuak
+4.2.0 - Community (publicada y publicitada)
 
 * Las versiones para parlamento se pueden ver en la intranet, y el resto son todas de la Community.
 Y si ademas están en la web pues es que se han publicado.
@@ -50,6 +51,7 @@ Por último en el proyecto "sinaduraDesktop" no hay que hacer "perform maven rel
 revisar tambien el pom.xml, quitando los "-SNAPSHOT" de las dependencias, y en este caso quitandolo tambien de la versión principal del pom.
 
 A nivel de codigo fuente hay que especificar a mano la versión en:
+- En el pom.xml de sinaduraDesktop
 - En el "configuration.properties" (desktop) la propiedad "application.local.version". El valor debe tener un valor numérico de unicamente 
 3 dígitos ya que se utiliza para realizar comparaciones entre versiones. Así que la version del desktop debe seguir siempre el formato 
 x.x.x (y no x.x.xx o x.xx.x) para que se pueda hacer la correspondencia a 3 digitos.   
