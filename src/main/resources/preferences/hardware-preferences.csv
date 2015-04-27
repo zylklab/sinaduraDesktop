@@ -21,6 +21,7 @@ Siemens CardOS 3.2 (ACCV);Siemens CardOS 3.2 (ACCV);c:\\windows\\system32\\sieca
 Siemens CardOS 2.2 (ACCV);Siemens CardOS 2.2 (ACCV);c:\\windows\\system32\\CardOS_PKCS11.dll;win;
 camerfirma;Camerfirma;c:\\windows\\system32\\incryptoki2.dll;win;
 Siemens CardOS 3.2 (ACCV) Linux;Siemens CardOS 3.2 (ACCV) Linux;/usr/local/lib/libsiecap11.so;linux;
-generic;Genérico (32-bit);/Library/OpenSC/lib/opensc-pkcs11.so;mac;
+generic;Genérico - OpenSC (32-bit);/Library/OpenSC/lib/opensc-pkcs11.so;mac;
 bit4id 32 bits (izenpe);Izenpe 2012 (32-bit);/usr/lib/libbit4ipki.dylib;mac;
 bit4id 64 bits (izenpe);Izenpe 2012 (64-bit);/usr/lib64/libbit4ipki.dylib;mac;
+dnie-ceres-64-mac;DNIe - Ceres (FNMT);/Library/Libpkcs11-fnmtdnie/lib/libpkcs11-fnmtdnie.so;mac;
