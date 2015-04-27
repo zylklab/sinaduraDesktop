@@ -1,8 +1,12 @@
 key;name;path;so;
-generic;Genérico (32-bit);/usr/lib/opensc-pkcs11.so;linux;
-generic 64b;Genérico (64-bit);/usr/lib64/opensc-pkcs11.so;linux;
+generic;Genérico - OpenSC (32-bit);/usr/lib/opensc-pkcs11.so;linux;
+generic 64b;Genérico - OpenSC (64-bit);/usr/lib64/opensc-pkcs11.so;linux;
 bit4id 32 bits (izenpe);Izenpe 2012 (32-bit);/usr/lib/libbit4ipki.so;linux;
 bit4id 64 bits (izenpe);Izenpe 2012 (64-bit);/usr/lib64/libbit4ipki.so;linux;
+dnie-oficial;DNIe (Oficial);/usr/lib/libpkcs11-dnie.so;linux;
+dnie-oficial-64;DNIe (Oficial);/usr/lib64/libpkcs11-dnie.so;linux;
+dnie-ceres;DNIe - Ceres (FNMT);/usr/lib/libpkcs11-fnmtdnie.so;linux;
+dnie-ceres-64;DNIe - Ceres (FNMT);/usr/lib64/libpkcs11-fnmtdnie.so;linux;
 dnie-izenpe;DNIe (izenpe);/usr/lib/dniepkcs11.so;linux;
 dnie-izenpe-64;DNIe 64-bit (izenpe);/usr/lib64/dniepkcs11.so;linux;
 izenpe;Izenpe;c:\\windows\\system32\\aetpkss1.dll;win;
