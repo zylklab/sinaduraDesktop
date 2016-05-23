@@ -42,7 +42,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
 
 
-class LoadSlotProgress implements IRunnableWithProgress {
+public class LoadSlotProgress implements IRunnableWithProgress {
 	
 	private static Log log = LogFactory.getLog(LoadSlotProgress.class);
 	

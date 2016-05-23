@@ -42,7 +42,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
 
 
-class LoadKeyStoreProgress implements IRunnableWithProgress {
+public class LoadKeyStoreProgress implements IRunnableWithProgress {
 	
 	private static Log log = LogFactory.getLog(LoadKeyStoreProgress.class);
 	

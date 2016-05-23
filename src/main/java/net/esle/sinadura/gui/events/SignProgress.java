@@ -44,7 +44,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
 
-class SignProgress implements IRunnableWithProgress {
+public class SignProgress implements IRunnableWithProgress {
 
 	private static Log log = LogFactory.getLog(SignProgress.class);
 
