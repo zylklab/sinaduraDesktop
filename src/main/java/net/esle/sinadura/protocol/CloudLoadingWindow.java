@@ -1,10 +1,8 @@
-package net.esle.sinadura.gui;
+package net.esle.sinadura.protocol;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.xml.utils.URI.MalformedURIException;
 import org.eclipse.swt.SWT;
@@ -19,20 +17,20 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
+import net.esle.sinadura.gui.LoadingOperations;
 import net.esle.sinadura.gui.exceptions.FileNotValidException;
 import net.esle.sinadura.gui.model.LoggerMessage;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PropertiesUtil;
-import net.esle.sinadura.gui.view.main.MainWindow;
 
-public class LoadingWindow {
+public class CloudLoadingWindow {
 
 	private String[] args;
 
-	public LoadingWindow(String[] args) throws FileNotValidException, FileSystemException, MalformedURIException {
+	public CloudLoadingWindow(String[] args) throws FileNotValidException, FileSystemException, MalformedURIException {
 		
-		this.args = args;	
+		this.args = args;
 		init();
 	}
 
@@ -70,60 +68,35 @@ public class LoadingWindow {
 		labelImage.setImage(imageSinadura);
 
 		Label messages = new Label(shell, SWT.NONE);
-		messages.setLayoutData(new GridData(GridData.CENTER));
-
-		ProgressBar progressBar = new ProgressBar(shell, SWT.INDETERMINATE);
-		progressBar.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		messages.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		List<LoggerMessage> listMessages = new ArrayList<LoggerMessage>();
 
-		new ThreadOperations(shell, messages, listMessages).start();
+		messages.setText(LanguageUtil.getLanguage().getString("loading.checking.conection"));
+		messages.pack();
 
 		shell.open();
 		
+		// Como las funciones internas estan pensada para que haya una Shell, en el modo Cloud mantenemos la ventana de carga.
+		// Por eso ademas, se ejecutan directamente en este hilo las operaciones. La ventana se queda congelada en este caso, 
+		// pero no deberia ser un problema ya que realmente la ventana no tiene interacion alguna.		
+		LoadingOperations.run(listMessages);
+		
+		// TODO tratar o mostrar "listMessages"
+		
+		CloudMainWindow.initCloud(shell, args);
+
+		shell.dispose();
+
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
 		}
 
-		new MainWindow(display, listMessages, args);
-
 		display.dispose();
 	}
-}
-
-class ThreadOperations extends Thread {
 	
-	private static final Log log = LogFactory.getLog(ThreadOperations.class);
-
-	private Shell shell;
-	private Label messages;	
-	private List<LoggerMessage> listMessages;
-
-	public ThreadOperations(Shell shell, Label messages, List<LoggerMessage> listMessages) {
-		
-		this.shell = shell;
-		this.messages = messages;
-		this.listMessages = listMessages;
-	}
-
-	@Override
-	public void run() {
-		
-		shell.getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				messages.setText(LanguageUtil.getLanguage().getString("loading.checking.conection"));
-				messages.pack();
-			}
-		});
-		
-		LoadingOperations.run(listMessages);
-
-		shell.getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				shell.dispose();
-			}
-		});
-	}
 }
+
+

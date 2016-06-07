@@ -32,6 +32,7 @@ import net.esle.sinadura.core.util.PropertiesCoreUtil;
 import net.esle.sinadura.gui.exceptions.FileNotValidException;
 import net.esle.sinadura.gui.util.PropertiesUtil;
 import net.esle.sinadura.gui.util.StatisticsUtil;
+import net.esle.sinadura.protocol.CloudLoadingWindow;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -82,6 +83,11 @@ public class Sinadura {
 	
 	public static void main(String[] args) throws FileNotValidException, FileSystemException, MalformedURIException {
 		
+		// TODO BORRAR ESTO
+//		String token = "fd6f9808-aef9-4e5b-a100-5c710def9f50";
+////		args = new String[] {"sinadura://localhost:8080/sinaduraCloud/rest/api/v1/h/" + token};
+//		args = new String[] {"sinadura://alf4.zylk.net:8080/sinaduraCloud/rest/api/v1/h/" + token};
+		
 		try {
 			
 			log.info("Iniciando Sinadura");
@@ -104,7 +110,22 @@ public class Sinadura {
 	        log.info("Init - Total memory:" + runtime.totalMemory() / mb + " MB");
 	        log.info("Init - Max memory:" + runtime.maxMemory() / mb + " MB");
 			
-			new LoadingWindow(args);
+	        
+	        // CLOUD OR DESKTOP
+	        PropertiesUtil.set(PropertiesUtil.SINADURA_CLOUD_MODE, "false");	        
+			if (args != null && args.length > 0) {
+				String arg = args[0];
+				if (arg.startsWith("sinadura://")) {
+					PropertiesUtil.set(PropertiesUtil.SINADURA_CLOUD_MODE, "true");
+				}
+			}
+			boolean cloudMode = PropertiesUtil.getBoolean(PropertiesUtil.SINADURA_CLOUD_MODE);
+			if (!cloudMode) {
+				new LoadingWindow(args);
+			} else {
+				new CloudLoadingWindow(args);
+			}
+			
 
 			StatisticsUtil.log(StatisticsUtil.KEY_CLOSING_SINADURA);
 			log.info("Close - Used memory:" + (runtime.totalMemory() - runtime.freeMemory()) / mb + " MB");

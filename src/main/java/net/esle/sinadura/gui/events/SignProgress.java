@@ -21,11 +21,18 @@
  */
 package net.esle.sinadura.gui.events;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.text.MessageFormat;
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.Shell;
 
 import net.esle.sinadura.core.exceptions.ConnectionException;
 import net.esle.sinadura.core.exceptions.OCSPCoreException;
@@ -37,12 +44,7 @@ import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.controller.SignController;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.LanguageUtil;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.widgets.Shell;
+import net.esle.sinadura.gui.util.PropertiesUtil;
 
 public class SignProgress implements IRunnableWithProgress {
 
@@ -70,9 +72,16 @@ public class SignProgress implements IRunnableWithProgress {
 			for (DocumentInfo pdfParameter : this.pdfParameterList) {
 				if (!monitor.isCanceled()) {
 					
-					String m2;
-					m2 = MessageFormat.format(LanguageUtil.getLanguage().getString("info.document.signing"), FileUtil.getLocalPathFromURI(pdfParameter.getPath()));
-					monitor.beginTask(m2, IProgressMonitor.UNKNOWN);
+					boolean cloudMode = PropertiesUtil.getBoolean(PropertiesUtil.SINADURA_CLOUD_MODE);
+					String filePath;
+					if (!cloudMode) {
+						filePath = FileUtil.getLocalPathFromURI(pdfParameter.getPath()); 
+					} else {
+						filePath = new File(FileUtil.getLocalPathFromURI(pdfParameter.getPath())).getName();
+					}
+					
+					String message = MessageFormat.format(LanguageUtil.getLanguage().getString("info.document.signing"), filePath);
+					monitor.beginTask(message, IProgressMonitor.UNKNOWN);
 
 					// firma
 					SignController.sign(pdfParameter, ksSignaturePreferences, parentShell);

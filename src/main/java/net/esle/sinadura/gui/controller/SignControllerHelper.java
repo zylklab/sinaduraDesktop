@@ -80,9 +80,11 @@ import net.esle.sinadura.gui.exceptions.SignProgressInterruptedException;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.LoggingDesktopController;
+import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.StatisticsUtil;
 import net.esle.sinadura.gui.view.main.AliasDialog;
 import net.esle.sinadura.gui.view.main.SlotDialog;
+import net.esle.sinadura.gui.view.preferences.CertSelectorRuntimePreferencesDialog;
 
 
 public class SignControllerHelper {
@@ -91,7 +93,7 @@ public class SignControllerHelper {
 
 	public static void signDocuments(List<DocumentInfo> list, Shell shell) {
 
-
+		
 		//=======================================
 		// KeyStore Preferences
 		//=======================================
@@ -99,14 +101,67 @@ public class SignControllerHelper {
 		// alias
 		String alias = null;
 		KsSignaturePreferences ksSignaturePreferences = null;
+		String certType = null;
+		String certPath = null;
 		
 		try {
 			
-			// slot
+			try {
+		
+				// DIALOGO PARA IDENTIFICAR EL TIPO DE CERTIFICADO A UTILIZAR (la config)
+				if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.CERT_TYPE)) {
+					
+					// preguntar al usuario el tipo de certificado
+					CertSelectorRuntimePreferencesDialog csrpd = new CertSelectorRuntimePreferencesDialog(shell);
+					csrpd.open();
+					
+					if (csrpd.getCertType() != null) {
+						certType = csrpd.getCertType();
+						certPath = csrpd.getCertPath();
+						
+					} else {
+						// cancelar
+						throw new InterruptedException();
+					}
+				
+				} else {
+					
+					certType = PreferencesUtil.getPreferences().getString(PreferencesUtil.CERT_TYPE);
+	
+					if (certType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_HARDWARE)) {
+	
+						certPath = PreferencesUtil.getDefaultHardware().getPath();
+	
+					} else if (certType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_SOFTWARE)) {
+	
+						certPath = PreferencesUtil.getSoftwarePreferences().get(
+								PreferencesUtil.getPreferences().getString(PreferencesUtil.SOFTWARE_DISPOSITIVE));
+					}
+				}
+				
+			} catch (DriversNotFoundException e) {
+
+				String m = LanguageUtil.getLanguage().getString("error.drivers.no_encontrados");
+				log.error(m);
+				LoggingDesktopController.printError(m);
+				throw new SignProgressInterruptedException();
+				
+			} catch (InterruptedException e) {
+
+				String m = LanguageUtil.getLanguage().getString("error.operacion_cancelada");
+				log.error(m);
+				LoggingDesktopController.printError(m);
+				throw new SignProgressInterruptedException();
+			}
+			
+			System.out.println("certType: " + certType);
+			System.out.println("certPath: " + certPath);
+			
+			// SLOT
 			Map<String, Long> slotByReader = null;
 			try {
 				ProgressMonitorDialog ksProgress = new ProgressMonitorDialog(shell);
-				LoadSlotProgress lsp = new LoadSlotProgress();
+				LoadSlotProgress lsp = new LoadSlotProgress(certType, certPath);
 				ksProgress.run(true, false, lsp);
 				slotByReader = lsp.getSlotsByReader();
 
@@ -209,7 +264,7 @@ public class SignControllerHelper {
 			// carga
 			try {
 				ProgressMonitorDialog ksProgress = new ProgressMonitorDialog(shell);
-				LoadKeyStoreProgress lkp = new LoadKeyStoreProgress(shell, slot);
+				LoadKeyStoreProgress lkp = new LoadKeyStoreProgress(shell, certType, certPath, slot);
 				ksProgress.run(true, false, lkp);
 				ksSignaturePreferences = lkp.getKsSignaturePreferences();
 
@@ -296,6 +351,7 @@ public class SignControllerHelper {
 				log.error(m);
 				throw new SignProgressInterruptedException();
 			}
+			
 			try {
 				List<String> aliases = SignController.getAlias(ksSignaturePreferences.getKs());
 				if (aliases.size() > 1) {

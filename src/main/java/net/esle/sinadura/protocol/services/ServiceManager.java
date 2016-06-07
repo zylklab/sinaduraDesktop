@@ -36,7 +36,7 @@ public class ServiceManager {
 		SetStatus("status/set"),
 		AddInput("input/add"),
 		GetInputs("inputs/get"),
-		AddSignatureFile("signaturefile-upload/{transaction-id}/{uuid-input}/add"),
+		AddSignatureFile("signaturefile-upload/{transaction-id}/add"),
 		PutError("error/add")
 		;
 		
@@ -108,14 +108,13 @@ public class ServiceManager {
 		}
 	}
 
-	public void addSignatureFile(String uuidInput, byte[] result) throws RestServiceException {
+	public void addSignatureFile(String idInput, byte[] result) throws RestServiceException {
 		
 		try {
-			String fullURL = transactionServerURL + "/" + Services.AddSignatureFile.getServiceName().replace("{transaction-id}", token).replace("{uuid-input}", String.valueOf(uuidInput));
+			String fullURL = transactionServerURL + "/" + Services.AddSignatureFile.getServiceName().replace("{transaction-id}", token);
 		
 			Map<String, String> formObjects = new HashMap<String, String>();
-//			formObjects.put("transaction-id", token);
-//			formObjects.put("idx", String.valueOf(idx));
+			formObjects.put("idInput", idInput);
 			
 			HttpUtils.postHttpMultipart(fullURL, formObjects, result);
 		
@@ -141,13 +140,14 @@ public class ServiceManager {
 		}
 	}
 	
-	public void setError(String error) throws RestServiceException {
+	public void setError(String code, String message) throws RestServiceException {
 		
 		try {
 			String fullURL = transactionServerURL + "/" + token + "/" + Services.PutError.getServiceName();
 		
 			Map<String, String> params = new HashMap<String, String>();
-			params.put("error-message", error);
+			params.put("code", code);
+			params.put("message", message);
 		
 			HttpUtils.postFormHttp(fullURL, params);
 		

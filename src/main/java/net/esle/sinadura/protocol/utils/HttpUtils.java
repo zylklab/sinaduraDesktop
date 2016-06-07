@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -50,10 +51,12 @@ public class HttpUtils {
 		
 		// formObjects to URL
 		StringBuffer urlParams = new StringBuffer();
-		for (String formParam : formObjects.keySet()) {
-			urlParams.append(formParam).append("=").append(URLEncoder.encode(formObjects.get(formParam), "utf-8")).append("&");
+		if (formObjects != null && formObjects.size() > 0) {
+			for (String formParam : formObjects.keySet()) {
+				urlParams.append(formParam).append("=").append(URLEncoder.encode(formObjects.get(formParam), "utf-8")).append("&");
+			}
+			urlParams.deleteCharAt(urlParams.length() - 1);
 		}
-		urlParams.deleteCharAt(urlParams.length() - 1);
 		String urlParamsTxt = urlParams.toString();
 
 		HttpURLConnection con = getHttpURLConnection(url);

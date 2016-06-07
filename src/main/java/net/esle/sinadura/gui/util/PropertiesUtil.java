@@ -35,28 +35,27 @@ public class PropertiesUtil {
 	// CONSTANTES de aplicacion TODO estaria bien encapsular el acceso a las constantes y a las keys -> getProperty(key/constante) 
 	public static final String APPLICATION_NAME = "Sinadura";
 
-	public static final String USER_BASE_PATH = Sinadura.PRIVATE_USER_BASE_PATH;
-	
+	public static final String USER_BASE_PATH = Sinadura.PRIVATE_USER_BASE_PATH;	
 	public static final String LOG_FOLDER_PATH = Sinadura.PRIVATE_LOG_FOLDER_PATH;
 	public static final String STATISTICS_FOLDER_PATH = Sinadura.PRIVATE_LOG_FOLDER_PATH;
-	
 	public static final String TMP_FOLDER_PATH = System.getProperty("java.io.tmpdir");
-	
 
 	public static final String LICENSE_PATH = "LICENSE.txt";
 	public static final String CREDITS_PATH = "credits.txt";
-	
 	public static final String INTROKEY = "RETURN";
 	
 	
 	private static final String PATH_CONFIGURATION = "config/configuration.properties";
 	
 	
+	// KEYS que se fijan de forma programatica
+	public static final String SINADURA_CLOUD_MODE = "sinadura.cloud.mode";
+	
 	// KEYS del configuration.properties
 	public static final String NEWS = "news.sinadura";
 	public static final String SERVER_VERSION_URL = "server.versions.url";
-	public static final String APPLICATION_VERSION_STRING  = "application.local.version.string";
-	public static final String APPLICATION_VERSION_NUMBER  = "application.local.version";
+	public static final String APPLICATION_VERSION_STRING = "application.local.version.string";
+	public static final String APPLICATION_VERSION_NUMBER = "application.local.version";
 
 	public static final String SINADURA_MAIN_URL = "sinadura.main.url";
 	public static final String SINADURA_DOCUMENTATION = "documentation.uri";
@@ -95,7 +94,7 @@ public class PropertiesUtil {
 	public static final String VISIBLE_TYPE_HIDDEN_ALWAYS = "2";
 	
 	public static final String VERSION_CHECK_UPDATE_ENABLED = "version.check.update.enabled";
-	public static final String PROXY_ENABLED 				= "proxy.enabled"; // se habilita el soporte para proxy (solo EE)
+	public static final String PROXY_ENABLED = "proxy.enabled"; // se habilita el soporte para proxy (solo EE)
 	
 	private static Properties configuration = null;
 	
@@ -176,4 +175,13 @@ public class PropertiesUtil {
 		return Boolean.parseBoolean(getConfiguration().getProperty(key));
 	}
 	
+	
+	/**
+	 * Solo para sobreescribir propiedades en memoria
+	 * 
+	 */
+	public static void set(String key, String value) {
+		
+		getConfiguration().setProperty(key, value);
+	}
 }

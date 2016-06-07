@@ -47,6 +47,10 @@ public class CertPreferences extends FieldEditorPreferencePage {
 	@Override
 	protected void createFieldEditors() {
 		
+		BooleanFieldEditor certTypeAsk = new BooleanFieldEditor(PreferencesUtil.CERT_TYPE_ASK,
+				LanguageUtil.getLanguage().getString("preferences.cert.type.ask"), getFieldEditorParent());
+		addField(certTypeAsk);
+		
 		// selección de carga de certificado
 		String[][] values = {
 				{ LanguageUtil.getLanguage().getString("preferences.cert.type.software"), PreferencesUtil.CERT_TYPE_VALUE_SOFTWARE },

@@ -22,9 +22,14 @@
 package net.esle.sinadura.gui.events;
 
 import java.lang.reflect.InvocationTargetException;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.Shell;
 
 import net.esle.sinadura.core.exceptions.CoreException;
 import net.esle.sinadura.core.exceptions.CorePKCS12Exception;
@@ -32,14 +37,7 @@ import net.esle.sinadura.core.exceptions.NoSunPkcs11ProviderException;
 import net.esle.sinadura.core.exceptions.PKCS11Exception;
 import net.esle.sinadura.core.model.KsSignaturePreferences;
 import net.esle.sinadura.gui.controller.SignController;
-import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
 import net.esle.sinadura.gui.util.LanguageUtil;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.widgets.Shell;
 
 
 public class LoadKeyStoreProgress implements IRunnableWithProgress {
@@ -49,10 +47,14 @@ public class LoadKeyStoreProgress implements IRunnableWithProgress {
 	private Shell sShell = null;
 	private KsSignaturePreferences ksSignaturePreferences = null;
 	private String slot = null;
+	private String certificadoType = null;
+	private String certificadoPath = null;
 
-	public LoadKeyStoreProgress(Shell sShell,String slot) {
+	public LoadKeyStoreProgress(Shell sShell, String certificadoType, String certificadoPath, String slot) {
 		
 		this.sShell = sShell;
+		this.certificadoType = certificadoType;
+		this.certificadoPath = certificadoPath;
 		this.slot = slot;
 	}
 
@@ -61,7 +63,7 @@ public class LoadKeyStoreProgress implements IRunnableWithProgress {
 		monitor.beginTask(LanguageUtil.getLanguage().getString("info.loading.certificate"), IProgressMonitor.UNKNOWN);
 		
 		try {
-			ksSignaturePreferences = SignController.loadKeyStore(sShell, slot);
+			ksSignaturePreferences = SignController.loadKeyStore(sShell, certificadoType, certificadoPath, slot);
 			
 		} catch (KeyStoreException e) {
 			throw new InvocationTargetException(e);
@@ -73,11 +75,9 @@ public class LoadKeyStoreProgress implements IRunnableWithProgress {
 			throw new InvocationTargetException(e);	
 		} catch (CorePKCS12Exception e) {
 			throw new InvocationTargetException(e);
-		} catch (DriversNotFoundException e) {
-			throw new InvocationTargetException(e);
 		} catch (NoSunPkcs11ProviderException e) {
 			throw new InvocationTargetException(e);
-		}		
+		}
 		monitor.done();
 	}
 

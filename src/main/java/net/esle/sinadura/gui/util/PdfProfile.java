@@ -9,13 +9,14 @@ public class PdfProfile {
 	private String acroField;
 			
 	private boolean askPosition;
+	private boolean askProperties;
 	private int page;
 	private float startX;
 	private float startY;
 	private float widht;
 	private float height;
 	
-	boolean hasImage;
+	private boolean hasImage;
 	private String imagePath;
 	
 	private String reason;
@@ -25,6 +26,25 @@ public class PdfProfile {
 	
 	
 	public PdfProfile() {
+	}
+	
+	public PdfProfile(PdfProfile pdfProfile) {
+		
+		this.name = pdfProfile.getName();
+		this.visible = pdfProfile.getVisible();
+		this.acroField = pdfProfile.getAcroField();
+		this.askPosition = pdfProfile.getAskPosition();
+		this.askProperties = pdfProfile.getAskProperties();
+		this.page = pdfProfile.getPage();
+		this.startX = pdfProfile.getStartX();
+		this.startY = pdfProfile.getStartY();
+		this.widht = pdfProfile.getWidht();
+		this.height = pdfProfile.getHeight();
+		this.hasImage = pdfProfile.hasImage();
+		this.imagePath = pdfProfile.getImagePath();
+		this.reason = pdfProfile.getReason();
+		this.location = pdfProfile.getLocation();
+		this.certified = pdfProfile.getCertified();
 	}
 
 	public void setVisible(boolean visible) {
@@ -112,6 +132,14 @@ public class PdfProfile {
 
 	public boolean getAskPosition() {
 		return askPosition;
+	}
+
+	public boolean getAskProperties() {
+		return askProperties;
+	}
+
+	public void setAskProperties(boolean askProperties) {
+		this.askProperties = askProperties;
 	}
 
 }

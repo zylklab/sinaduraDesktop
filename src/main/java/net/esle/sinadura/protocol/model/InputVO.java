@@ -1,9 +1,8 @@
 package net.esle.sinadura.protocol.model;
 
-
 public class InputVO {
 
-	private String uuid;
+	private String id;
 	private String type;
 	private String url;
 	private String name;
@@ -11,12 +10,12 @@ public class InputVO {
 	public InputVO() {
 	}
 
-	public String getUuid() {
-		return uuid;
+	public String getId() {
+		return id;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -44,4 +43,3 @@ public class InputVO {
 	}
 
 }
-

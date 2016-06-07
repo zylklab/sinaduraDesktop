@@ -19,7 +19,7 @@
  * # See COPYRIGHT.txt for copyright notices and details. 
  * #
  */
-package net.esle.sinadura.gui.view.preferences;
+package net.esle.sinadura.gui.view.main;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -39,53 +39,29 @@ import net.esle.sinadura.gui.events.BotonCancelarListener;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PdfProfile;
-import net.esle.sinadura.gui.util.PreferencesDefaultUtil;
-import net.esle.sinadura.gui.util.PreferencesUtil;
 
 /**
  * @author zylk.net
  */
-public class PdfProfilePreferencesDialog extends Dialog {
+public class PdfSignaturePropertiesDialog extends Dialog {
 
 	private PdfProfile tmpProfile = null;
 	private PdfProfile selectedProfile = null;
 	
 	private Shell sShell = null;
 
-	private PdfProfilePreferences profilePanel;
+	private PdfSignatureProperties profilePanel;
 	private Composite ButtonsComposite = null;
 	
 	private Button bottonAceptar = null;
 	private Button bottonCancelar = null;
 
 	
-	public PdfProfilePreferencesDialog(Shell parent, PdfProfile profile) {
+	public PdfSignaturePropertiesDialog(Shell parent, PdfProfile profile) {
 		
 		super(parent);
 		
-		if (profile != null) {
-			tmpProfile = profile;
-		} else {
-			// No se utilizan exactamente los mismos valores por defecto que en el default pdf-profile, ya que algunos no tienen
-			// mucho sentido aqui (location, reason...).
-			tmpProfile = new PdfProfile();
-			tmpProfile.setName("");
-			tmpProfile.setVisible(Boolean.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_VISIBLE)));
-			tmpProfile.setHasImage(Boolean.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_ENABLE)));
-			tmpProfile.setImagePath(PreferencesUtil.DEFAULT_IMAGE_FILEPATH);
-			tmpProfile.setAcroField("");
-			tmpProfile.setAskPosition(Boolean.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_ASK)));
-			tmpProfile.setAskProperties(Boolean.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_PROPERTIES_ASK)));
-			tmpProfile.setWidht(Float.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_WIDTH)));
-			tmpProfile.setHeight(Float.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_HEIGHT)));
-			tmpProfile.setStartX(Float.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_X)));
-			tmpProfile.setStartY(Float.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_Y)));
-			tmpProfile.setPage(Integer.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_PAGE)));
-			tmpProfile.setReason("");
-			tmpProfile.setLocation("");
-			tmpProfile.setCertified(Integer.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_CERTIFIED)));
-		}
-		
+		tmpProfile = profile;
 	}
 
 	
@@ -104,7 +80,7 @@ public class PdfProfilePreferencesDialog extends Dialog {
 		this.sShell.setLayout(shellGridLayout);
 		
 		Composite profileComposite = new Composite(this.sShell, SWT.NONE);
-		profilePanel = new PdfProfilePreferences(profileComposite, tmpProfile);
+		profilePanel = new PdfSignatureProperties(profileComposite, tmpProfile);
 
 		this.ButtonsComposite = new Composite(this.sShell, SWT.NONE);
 		this.ButtonsComposite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));

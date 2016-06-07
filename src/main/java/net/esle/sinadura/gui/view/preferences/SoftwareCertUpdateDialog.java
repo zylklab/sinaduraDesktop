@@ -127,7 +127,7 @@ public class SoftwareCertUpdateDialog extends Dialog {
 		buttonExaminar.setText(LanguageUtil.getLanguage().getString("button.browse"));
 		buttonExaminar.addSelectionListener(new ButtonBrowseListener());
 		
-		if (selectedName != null) {
+		if (selectedName != null) { // modo edit
 			textName.setText(selectedName);
 			textPath.setText(tempMap.get(selectedName));
 		}
@@ -162,6 +162,11 @@ public class SoftwareCertUpdateDialog extends Dialog {
 	}
 	
 	
+	public String getSelectedName() {
+		
+		return selectedName;
+	}
+	
 	class ButtonOkListener implements SelectionListener {
 		
 		public void widgetSelected(SelectionEvent event) {
@@ -169,11 +174,13 @@ public class SoftwareCertUpdateDialog extends Dialog {
 
 			if (!textName.getText().equals("") && !textPath.getText().equals("")) {
 	
-				if (selectedName == null) 
+				if (selectedName == null) { // modo new
 					tempMap.put(textName.getText(), textPath.getText());
-				else {
+					selectedName = textName.getText();
+				} else { // modo edicion
 					tempMap.remove(selectedName);
 					tempMap.put(textName.getText(), textPath.getText());
+					selectedName = textName.getText();
 				}
 			
 				sShell.dispose();

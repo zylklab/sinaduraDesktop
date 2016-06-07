@@ -42,10 +42,7 @@
  */
 package net.esle.sinadura.gui.controller;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -74,6 +71,20 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.httpclient.util.URIUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.exceptions.BadPasswordException;
+
+import es.mityc.firmaJava.libreria.utilidades.URIEncoder;
 import net.esle.sinadura.core.certificate.CertificateUtil;
 import net.esle.sinadura.core.exceptions.ConnectionException;
 import net.esle.sinadura.core.exceptions.CoreException;
@@ -109,32 +120,13 @@ import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PdfProfile;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.StatisticsUtil;
-import net.esle.sinadura.gui.view.main.InfoDialog;
-
-import org.apache.commons.httpclient.util.URIUtil;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
-
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.exceptions.BadPasswordException;
-
-import es.mityc.firmaJava.libreria.utilidades.URIEncoder;
 
 public class SignController {
 
 	private static final Log log = LogFactory.getLog(SignController.class);
 
-	public static Map<String, Long> loadSlot() throws NoSuchAlgorithmException, KeyStoreException, PKCS11Exception,
+	public static Map<String, Long> loadSlot(String certificadoType, String certificadoPath) throws NoSuchAlgorithmException, KeyStoreException, PKCS11Exception,
 			CoreException, CorePKCS12Exception, DriversNotFoundException {
-
-		String certificadoType = PreferencesUtil.getPreferences().getString(PreferencesUtil.CERT_TYPE);
 
 		// compruebo las preferencias y cargo el certificado del dispositivo
 		// hardware, o del el file-system
@@ -144,8 +136,7 @@ public class SignController {
 		{
 			if (!System.getProperty("os.name").toLowerCase().contains("win")) {
 			
-				String pkcs11Path = PreferencesUtil.getDefaultHardware();
-				PKCS11Helper pk11h = new PKCS11Helper(pkcs11Path, "");
+				PKCS11Helper pk11h = new PKCS11Helper(certificadoPath, "");
 				// TODO revisar si es necesario
 				// long[] slots = null;
 				// slots = pk11h.getSignatureCapableSlots();
@@ -156,7 +147,6 @@ public class SignController {
 
 			//do nothing
 		}
-
 		else if (certificadoType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_MSCAPI)) {
 
 			//do nothing
@@ -166,10 +156,8 @@ public class SignController {
 		return slotsByReader;
 	}
 
-	public static KsSignaturePreferences loadKeyStore(Shell sShell, String slot) throws NoSuchAlgorithmException, KeyStoreException, PKCS11Exception, NoSunPkcs11ProviderException, 
-			CoreException, CorePKCS12Exception, DriversNotFoundException {
-
-		String certificadoType = PreferencesUtil.getPreferences().getString(PreferencesUtil.CERT_TYPE);
+	public static KsSignaturePreferences loadKeyStore(Shell sShell, String certificadoType, String certificadoPath, String slot) throws NoSuchAlgorithmException, KeyStoreException, PKCS11Exception, NoSunPkcs11ProviderException, 
+			CoreException, CorePKCS12Exception {
 
 		PasswordCallbackHandlerDialog o = new PasswordCallbackHandlerDialog(sShell);
 		PasswordExtractor pe = (PasswordExtractor) o;
@@ -178,29 +166,24 @@ public class SignController {
 		KeyStore ks = null;
 
 		// compruebo las preferencias y cargo el certificado del dispositivo
-		// hardware, o del el file-system
+		// hardware, o del file-system
 		if (certificadoType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_HARDWARE)) {
 
-			String pkcs11Path = PreferencesUtil.getDefaultHardware();
-			
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_CERTTYPE, StatisticsUtil.VALUE_HARD);
 			log.info("sign type: " + StatisticsUtil.VALUE_HARD);
 			
-			StatisticsUtil.log(StatisticsUtil.KEY_LOAD_HARDWAREDRIVER, pkcs11Path);
-			log.info("sign driver: " + pkcs11Path);
+			StatisticsUtil.log(StatisticsUtil.KEY_LOAD_HARDWAREDRIVER, certificadoPath);
+			log.info("sign driver: " + certificadoPath);
 
-			ks = KeyStoreBuilderFactory.getKeyStore("HARD", KeyStoreTypes.PKCS11, pkcs11Path, slot, new KeyStore.CallbackHandlerProtection(
+			ks = KeyStoreBuilderFactory.getKeyStore("HARD", KeyStoreTypes.PKCS11, certificadoPath, slot, new KeyStore.CallbackHandlerProtection(
 					o));
 
 		} else if (certificadoType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_SOFTWARE)) {
 
-			String pkcs12Path = PreferencesUtil.getSoftwarePreferences().get(
-					PreferencesUtil.getPreferences().getString(PreferencesUtil.SOFTWARE_DISPOSITIVE));
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_CERTTYPE, StatisticsUtil.VALUE_SOFT);
-			ks = KeyStoreBuilderFactory.getKeyStore("SOFT", KeyStoreTypes.PKCS12, pkcs12Path, new KeyStore.CallbackHandlerProtection(o));
-		}
-
-		else if (certificadoType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_MSCAPI)) {
+			ks = KeyStoreBuilderFactory.getKeyStore("SOFT", KeyStoreTypes.PKCS12, certificadoPath, new KeyStore.CallbackHandlerProtection(o));
+			
+		} else if (certificadoType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_MSCAPI)) {
 
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_CERTTYPE, StatisticsUtil.VALUE_MSCAPI);
 			DummyCallbackHandler a = new DummyCallbackHandler(null);
@@ -440,9 +423,6 @@ public class SignController {
 
 					SignatureFieldSelectorRunnable sfsr = new SignatureFieldSelectorRunnable(sShell, pdfParameter, ownerPassword, blankSignatureNames, stampPath);
 					Display.getDefault().syncExec(sfsr);
-					if (sfsr.getIOException() != null) {
-						throw sfsr.getIOException();
-					}
 					
 					if (sfsr.getSelectedSignatureField() != null) {
 						signatureName = sfsr.getSelectedSignatureField().getName();	
@@ -454,7 +434,7 @@ public class SignController {
 				
 			}
 
-			// 2- re-seleccion del profile en base al acrofieldName
+			// 2- re-seleccion del profile en base al acrofieldName (hueco)
 			if (signatureName != null) {
 				PdfProfile resolutionPdfProfile = availableProfilesMap.get(signatureName);
 				if (resolutionPdfProfile != null) {
@@ -462,6 +442,19 @@ public class SignController {
 				}
 			}
 			
+			// ASK PROPERTIES
+			if (pdfProfile.getAskProperties()) {
+				
+				PdfSignaturePropertiesRunnable pspr = new PdfSignaturePropertiesRunnable(sShell, pdfProfile);
+				Display.getDefault().syncExec(pspr);
+				
+				if (pspr.getPdfProfile() != null) {
+					pdfProfile = pspr.getPdfProfile();
+				} else {
+					// interrumped exception (cancelar)
+					throw new InterruptedException();
+				}
+			}
 			
 			PdfSignatureField pdfBlankSignatureInfo = new PdfSignatureField();
 			pdfBlankSignatureInfo.setPage(pdfProfile.getPage());
@@ -470,8 +463,8 @@ public class SignController {
 			pdfBlankSignatureInfo.setWidht(pdfProfile.getWidht());
 			pdfBlankSignatureInfo.setHeight(pdfProfile.getHeight());
 			
-
-			if (signatureName == null && pdfProfile.getVisible()) {
+			// ASK POSITION
+			if (pdfProfile.getVisible()) {
 			
 				if (pdfProfile.getAskPosition()) {
 
@@ -482,9 +475,6 @@ public class SignController {
 					
 					SignatureFieldPositionRunnable sfpr = new SignatureFieldPositionRunnable(sShell, pdfBlankSignatureInfo, pdfParameter, ownerPassword, stampPath);
 					Display.getDefault().syncExec(sfpr);
-					if (sfpr.getIOException() != null) {
-						throw sfpr.getIOException();
-					}
 					
 					if (sfpr.getSignatureField() != null) {
 						pdfBlankSignatureInfo = sfpr.getSignatureField();

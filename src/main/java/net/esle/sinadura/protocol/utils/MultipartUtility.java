@@ -16,8 +16,6 @@ import java.net.HttpURLConnection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import net.esle.sinadura.protocol.services.ServiceManager;
-
 public class MultipartUtility {
 	
 	private static Log log = LogFactory.getLog(MultipartUtility.class);

@@ -72,6 +72,7 @@ public class PreferencesUtil {
 	public static final String PROXY_SYSTEM = "proxy.http.system";
 	
 	// Certifications
+	public static final String CERT_TYPE_ASK = "cert.type.ask";
 	public static final String CERT_TYPE = "preferencias.radioCertType.active";
 	public static final String CERT_TYPE_VALUE_SOFTWARE = "0";
 	public static final String CERT_TYPE_VALUE_HARDWARE = "1";
@@ -108,6 +109,7 @@ public class PreferencesUtil {
 	public static final String PDF_STAMP_Y = "pdf.stamp.y";
 	public static final String PDF_CERTIFIED = "pdf.certified";
 	public static final String PDF_STAMP_ASK = "pdf.stamp.ask";
+	public static final String PDF_PROPERTIES_ASK = "pdf.properties.ask";
 	// ----------------
 	
 	// xades
@@ -226,6 +228,7 @@ public class PreferencesUtil {
 			pdfProfile.setImagePath(PreferencesUtil.DEFAULT_IMAGE_FILEPATH);
 			pdfProfile.setAcroField("");
 			pdfProfile.setAskPosition(Boolean.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_ASK)));
+			pdfProfile.setAskProperties(Boolean.valueOf(PreferencesDefaultUtil.get(PDF_PROPERTIES_ASK)));
 			pdfProfile.setWidht(Float.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_WIDTH)));
 			pdfProfile.setHeight(Float.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_HEIGHT)));
 			pdfProfile.setStartX(Float.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_X)));
@@ -321,6 +324,9 @@ public class PreferencesUtil {
 				preferences.setDefault(VALIDATION_CHECK_POLICY, PreferencesDefaultUtil.get(VALIDATION_CHECK_POLICY)); //"true");
 				preferences.setDefault(VALIDATION_CHECK_NODE_NAME, PreferencesDefaultUtil.get(VALIDATION_CHECK_NODE_NAME)); //"true");
 				
+				// cert
+				preferences.setDefault(CERT_TYPE_ASK, PreferencesDefaultUtil.get(CERT_TYPE_ASK)); //"false");
+				
 				// carga de certificado
 				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())) { // esta necesita definirse en runtime
 					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_MSCAPI);
@@ -342,18 +348,31 @@ public class PreferencesUtil {
 		return preferences;
 	}
 	
+	
 	public static void savePreferences() {
 	
-		try {
-			preferences.save();
-	
-		} catch (IOException e) {
-			log.error("", e);
+		// En modo Cloud, se deshabilita la persistencia del fichero general de preferencias.
+		// Esto es debido a que en el inicio de la aplicacion en modo Cloud, se sobreescriben algunas propiedades en "memoria", pero realmente no quieren persistir.
+		// Y como en determinados puntos de Sindura se hace despues un Save, si no se hace esto. se terminarian persitienendo. 
+		// Lo ideal seria mejorar el sistema de preferencias para contemplar esto. Por ejemplo, hacer una interfaz, para que pueda haber una
+		// implementeacion especifica en modo Cloud, pero de momento se queda así. 
+		// 
+		// * Hay que tener en cuenta que ademas de este save, el sistema de preferencias de SWT gestiona tambien la persistencia de este fichero.
+		// Pero como en modo Cloud no se pueden acceder a las GUI de las preferencias, no hay problema en ese aspecto.
+		// Realmente este metodo unicamente se invoca desde el save del path del dialogo del FileChooser.
+		boolean cloudMode = PropertiesUtil.getBoolean(PropertiesUtil.SINADURA_CLOUD_MODE);
+		
+		if (!cloudMode) {
+			try {
+				preferences.save();
+			} catch (IOException e) {
+				log.error("", e);
+			}
 		}
 		
 	}
 	
-	public static String getDefaultHardware() throws DriversNotFoundException {
+	public static HardwareItem getDefaultHardware() throws DriversNotFoundException {
 		
 		Map<String, HardwareItem> map = PreferencesUtil.getHardwarePreferences();
 		
@@ -365,7 +384,7 @@ public class PreferencesUtil {
 				driver = map.values().iterator().next();
 			}
 			
-			return driver.getPath();
+			return driver;
 			
 		} else {
 			throw new DriversNotFoundException();

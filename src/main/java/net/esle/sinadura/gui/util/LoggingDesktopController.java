@@ -22,9 +22,11 @@
 package net.esle.sinadura.gui.util;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -65,6 +67,8 @@ public class LoggingDesktopController {
 	private static final RGB			RGB_INFO		= new RGB(0, 0, 180);
 
 	private static Map<String, String>	ImagesMap		= new HashMap<String, String>();
+	
+	private static List<String>	errorList = new ArrayList<String>();
 	
 
 	/**
@@ -110,8 +114,13 @@ public class LoggingDesktopController {
 	 */
 	public static void printError(String mensajeLog) {
 
+		errorList.add(mensajeLog);
 		println(mensajeLog, MSG_TYPE_ERROR);
 
+	}
+	
+	public static List<String> getErrorList() {
+		return errorList;
 	}
 
 	/**
@@ -130,19 +139,21 @@ public class LoggingDesktopController {
 	 * @param tipo
 	 */
 	private static void println(String mensajeLog, String tipo) {
+		
+		
+		
 		if (cajaLogging != null) {
+			
 			log.info("CONSOLA DE LA APP: " + mensajeLog);
 			
 			cajaLogging.append(getDate() + "   " + mensajeLog + "\n");
 
-			
 			/* estableciendo el estilo */
 			if (tipo.equalsIgnoreCase(MSG_TYPE_ERROR)) {
 				setErrorStyle(mensajeLog.length());
-			} else
-				if (tipo.equalsIgnoreCase(MSG_TYPE_INFO)) {
+			} else if (tipo.equalsIgnoreCase(MSG_TYPE_INFO)) {
 					setInfoStyle(mensajeLog.length());
-				}
+			}
 			
 			cajaLogging.addPaintObjectListener(new PaintObjectListener() {
 				public void paintObject(PaintObjectEvent event) {

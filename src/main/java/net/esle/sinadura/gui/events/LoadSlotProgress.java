@@ -22,24 +22,21 @@
 package net.esle.sinadura.gui.events;
 
 import java.lang.reflect.InvocationTargetException;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-
-import net.esle.sinadura.core.exceptions.CoreException;
-import net.esle.sinadura.core.exceptions.CorePKCS12Exception;
-import net.esle.sinadura.core.exceptions.PKCS11Exception;
-import net.esle.sinadura.core.model.KsSignaturePreferences;
-import net.esle.sinadura.gui.controller.SignController;
-import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
-import net.esle.sinadura.gui.util.LanguageUtil;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.widgets.Shell;
+
+import net.esle.sinadura.core.exceptions.CoreException;
+import net.esle.sinadura.core.exceptions.CorePKCS12Exception;
+import net.esle.sinadura.core.exceptions.PKCS11Exception;
+import net.esle.sinadura.gui.controller.SignController;
+import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
+import net.esle.sinadura.gui.util.LanguageUtil;
 
 
 public class LoadSlotProgress implements IRunnableWithProgress {
@@ -48,8 +45,12 @@ public class LoadSlotProgress implements IRunnableWithProgress {
 	
 	private Map<String, Long> slotsByReader= null;
 
-	public LoadSlotProgress() {
-		
+	private String certificadoType = null;
+	private String certificadoPath = null;
+	
+	public LoadSlotProgress(String certificadoType, String certificadoPath) {
+		this.certificadoType = certificadoType;
+		this.certificadoPath = certificadoPath; 
 	}
 
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -57,7 +58,7 @@ public class LoadSlotProgress implements IRunnableWithProgress {
 		monitor.beginTask(LanguageUtil.getLanguage().getString("info.loading.certificate"), IProgressMonitor.UNKNOWN);
 		
 		try {
-			slotsByReader = SignController.loadSlot();
+			slotsByReader = SignController.loadSlot(certificadoType, certificadoPath);
 			
 		} catch (KeyStoreException e) {
 			throw new InvocationTargetException(e);

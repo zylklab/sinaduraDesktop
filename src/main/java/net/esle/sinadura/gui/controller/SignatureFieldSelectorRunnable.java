@@ -53,11 +53,6 @@ public class SignatureFieldSelectorRunnable implements Runnable {
 	private PasswordProtection ownerPassword;
 	private String stampPath;
 	
-	// Esto deberia ser una Exception en vez de una IOException para que sea un tratamiento generico. Pero como ahora unicamente
-	// se puede producir una IOException y ademas no quiero cambiar el tratamiento de fuera (habria que empezar a tratar Exception
-	// de forma generica en vez de forma individual como se esta haciendo ahora) lo dejo asi.
-	private IOException exception = null;
-	
 
 	SignatureFieldSelectorRunnable(Shell shell, DocumentInfo pdfParameter, PasswordProtection ownerPassword, List<PdfSignatureField> signatureFields, String stampPath) {
 		
@@ -72,29 +67,18 @@ public class SignatureFieldSelectorRunnable implements Runnable {
 	public void run() {
 		
 		try {
-		
-//			// TODO mantener este dialog a modo de como fallback?? sí por config
-//			SignatureFieldSelectorDialog sfsd = new SignatureFieldSelectorDialog(shell);
-//			this.signatureName = sfsd.open(signatureFields);
 			
-			PdfSignatureFieldSelectorDialog pdfSignatureFieldSelectorDialog = new PdfSignatureFieldSelectorDialog(shell, signatureFields, stampPath, FileUtil.getLocalPathFromURI(pdfParameter.getPath()), ownerPassword);
+			PdfSignatureFieldSelectorDialog pdfSignatureFieldSelectorDialog = new PdfSignatureFieldSelectorDialog(shell,
+					signatureFields, stampPath, FileUtil.getLocalPathFromURI(pdfParameter.getPath()), ownerPassword);
 			selectedSignatureField = pdfSignatureFieldSelectorDialog.createSShell();
 			
 		} catch (IOException e) {
-			exception = e;
+			throw new RuntimeException(e);
 		}
 	}
 
 	public PdfSignatureField getSelectedSignatureField() {
 		return selectedSignatureField;
-	}
-
-	// Esto deberia ser una Exception en vez de una IOException para que sea un tratamiento generico. Pero como ahora unicamente
-	// se puede producir una IOException y ademas no quiero cambiar el tratamiento de fuera (habria que empezar a tratar Exception
-	// de forma generica en vez de forma individual como se esta haciendo ahora) lo dejo asi.
-	// IOException getIOException() -> Exception getException()
-	public IOException getIOException() {
-		return exception;
 	}
 	
 }

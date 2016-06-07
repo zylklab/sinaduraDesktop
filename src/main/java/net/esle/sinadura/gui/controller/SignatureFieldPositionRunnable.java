@@ -52,11 +52,6 @@ public class SignatureFieldPositionRunnable implements Runnable {
 	private String stampPath;
 	private PdfSignatureField selectedSignatureField = null;
 	
-	// Esto deberia ser una Exception en vez de una IOException para que sea un tratamiento generico. Pero como ahora unicamente
-	// se puede producir una IOException y ademas no quiero cambiar el tratamiento de fuera (habria que empezar a tratar Exception
-	// de forma generica en vez de forma individual como se esta haciendo ahora) lo dejo asi.
-	private IOException exception = null;
-	
 
 	SignatureFieldPositionRunnable(Shell shell, PdfSignatureField pdfBlankSignatureInfo, DocumentInfo pdfParameter, PasswordProtection ownerPassword, String stampPath) {
 		
@@ -76,7 +71,7 @@ public class SignatureFieldPositionRunnable implements Runnable {
 			selectedSignatureField = pdfSignatureFieldPositionDialog.createSShell();
 			
 		} catch (IOException e) {
-			exception = e;
+			throw new RuntimeException(e);
 		}
 		
 	}
@@ -85,12 +80,5 @@ public class SignatureFieldPositionRunnable implements Runnable {
 		return selectedSignatureField;
 	}
 	
-	// Esto deberia ser una Exception en vez de una IOException para que sea un tratamiento generico. Pero como ahora unicamente
-	// se puede producir una IOException y ademas no quiero cambiar el tratamiento de fuera (habria que empezar a tratar Exception
-	// de forma generica en vez de forma individual como se esta haciendo ahora) lo dejo asi.
-	// IOException getIOException() -> Exception getException()
-	public IOException getIOException() {
-		return exception;
-	}
 
 }
