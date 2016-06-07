@@ -154,9 +154,6 @@ public class SignControllerHelper {
 				throw new SignProgressInterruptedException();
 			}
 			
-			System.out.println("certType: " + certType);
-			System.out.println("certPath: " + certPath);
-			
 			// SLOT
 			Map<String, Long> slotByReader = null;
 			try {
