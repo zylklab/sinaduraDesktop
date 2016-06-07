@@ -1650,7 +1650,6 @@
 		</repository>
 	</distributionManagement>
 
-
 	<repositories>
 		<repository>
 			<id>sinadura-group</id>
@@ -1667,11 +1666,5 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>akathist-repository</id>
-			<name>Akathist Repository</name>
-			<url>http://www.9stmaryrd.com/maven</url>
-		</pluginRepository>
-	</pluginRepositories>
+	
 </project>
