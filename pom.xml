@@ -1026,7 +1026,7 @@
 					<plugin>
 						<groupId>com.akathist.maven.plugins.launch4j</groupId>
 						<artifactId>launch4j-maven-plugin</artifactId>
-						<version>1.3</version>
+						<version>1.7.10</version>
 						<executions>
 							<execution>
 								<id>sinadura</id>
