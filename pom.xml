@@ -247,6 +247,21 @@
 				<sponsor.image.path>lantegibatuak.png</sponsor.image.path>
 			</properties>
 		</profile>
+		
+		<profile>
+			<id>UPV</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<!-- PROPIEDADES de maven (compilacion, generacion de empaquetados, releases...) -->
+				<sinadura.release.id>ee-upv</sinadura.release.id>
+				<!-- PREFERENCIAS de usuario -->
+				<sign.ocsp.enable>false</sign.ocsp.enable>
+				<!-- CONFIGURACION de la aplicacion -->
+				<!-- system -->
+			</properties>
+		</profile>
 
 		<profile>
 			<id>Unix32</id>
@@ -766,7 +781,7 @@
 					<plugin>
 						<groupId>com.akathist.maven.plugins.launch4j</groupId>
 						<artifactId>launch4j-maven-plugin</artifactId>
-						<version>1.3</version>
+						<version>1.7.10</version>
 						<executions>
 							<execution>
 								<id>sinadura</id>
