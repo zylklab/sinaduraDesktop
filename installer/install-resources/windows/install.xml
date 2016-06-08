@@ -1,36 +1,22 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
 
-<!--
-# Copyright 2008 zylk.net
-#
-# This file is part of Sinadura.
-#
-# Sinadura is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 2 of the License, or
-# (at your option) any later version.
-#
-# Sinadura is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Sinadura.  If not, see <http://www.gnu.org/licenses/>. [^]
-#
-# See COPYRIGHT.txt for copyright notices and details.
-#
--->
+<!-- # Copyright 2008 zylk.net # # This file is part of Sinadura. # # Sinadura 
+	is free software: you can redistribute it and/or modify # it under the terms 
+	of the GNU General Public License as published by # the Free Software Foundation, 
+	either version 2 of the License, or # (at your option) any later version. 
+	# # Sinadura is distributed in the hope that it will be useful, # but WITHOUT 
+	ANY WARRANTY; without even the implied warranty of # MERCHANTABILITY or FITNESS 
+	FOR A PARTICULAR PURPOSE. See the # GNU General Public License for more details. 
+	# # You should have received a copy of the GNU General Public License # along 
+	with Sinadura. If not, see <http://www.gnu.org/licenses/>. [^] # # See COPYRIGHT.txt 
+	for copyright notices and details. # -->
 
 <izpack:installation version="5.0"
-                     xmlns:izpack="http://izpack.org/schema/installation"
-                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                     xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
+	xmlns:izpack="http://izpack.org/schema/installation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
 
-	<!--
-		Datos informativos sobre la aplicación, el autor, la organización,
-		etc.
-	-->
+	<!-- Datos informativos sobre la aplicación, el autor, la organización, 
+		etc. -->
 	-
 	<info>
 		<appname>Sinadura</appname>
@@ -43,20 +29,15 @@
 		<javaversion>1.7.0</javaversion>
 		<requiresjdk>no</requiresjdk>
 		<summarylogfilepath>$INSTALL_PATH/</summarylogfilepath>
-        <writeinstallationinformation>yes</writeinstallationinformation>
-        <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
-        <uninstaller name="uninstaller.jar" write="yes"/>
+		<writeinstallationinformation>yes</writeinstallationinformation>
+		<run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7" />
+		<uninstaller name="uninstaller.jar" write="yes" />
 	</info>
 
-	<!--
-		Preferencias del interfaz gráfico que deseamos para nuestra
-		instalación
-	-->
+	<!-- Preferencias del interfaz gráfico que deseamos para nuestra instalación -->
 	<guiprefs width="640" height="480" resizable="no" />
 
-	<!--
-		El interfaz gráfico podrá ser mostrado en Castellano o en Ingles
-	-->
+	<!-- El interfaz gráfico podrá ser mostrado en Castellano o en Ingles -->
 	<locale>
 		<!-- <langpack iso3="spa" /> -->
 		<langpack iso3="eng" />
@@ -66,45 +47,33 @@
 	<resources>
 		<!-- Set the default installation directory shown in the TargetPanel -->
 		<res id="TargetPanel.dir.windows" src="windows-install-path.txt" />
-		<!--<res id="InfoPanel.info"   src="install-resources/Readme.txt"/>-->
+		<!--<res id="InfoPanel.info" src="install-resources/Readme.txt"/> -->
 		<res id="LicencePanel.licence" src="LICENSE.txt" />
 		<res src="shortcutSpec.xml" id="shortcutSpec.xml" />
 		<res src="Unix_shortcutSpec.xml" id="Unix_shortcutSpec.xml" />
-		<!-- 
-		<res id="installer.langsel.img" src="zylk.png"/>
-        <res id="Installer.image" src="idazki.gif"/>
-        <res id="Heading.image" src="izenpe.png"/>
- 		-->
- 		<res id="RegistrySpec.xml" src="win_protocol_registrySpec.xml"/>
- 		
+		<!-- <res id="installer.langsel.img" src="zylk.png"/> <res id="Installer.image" 
+			src="idazki.gif"/> <res id="Heading.image" src="izenpe.png"/> -->
+		<res id="RegistrySpec.xml" src="win_protocol_registrySpec.xml" />
+
 	</resources>
 	<!-- register protocol (sinadura://) for windows -->
-	<!-- 
-	<listeners>
-    	<listener installer="RegistryInstallerListener" uninstaller="RegistryUninstallerListener">
-     		<os family="windows"/>
-    	</listener>
-    	<listener installer="AntActionInstallerListener" />
-  	</listeners>
- 	-->
+	<!-- <listeners> <listener installer="RegistryInstallerListener" uninstaller="RegistryUninstallerListener"> 
+		<os family="windows"/> </listener> <listener installer="AntActionInstallerListener" 
+		/> </listeners> -->
 
 	<!-- Requerido para crear el ShortCut -->
-	<!-- 
-	<native type="izpack" name="ShellLink.dll" />
-	<native type="izpack" name="ShellLink_x64.dll"/>
- 	-->
- 	
-	<!--
-		Paneles que deseamos que sean mostrados. El orden importa excepto en
-		el InstallPanel
-	-->
+	<!-- <native type="izpack" name="ShellLink.dll" /> <native type="izpack" 
+		name="ShellLink_x64.dll"/> -->
+
+	<!-- Paneles que deseamos que sean mostrados. El orden importa excepto en 
+		el InstallPanel -->
 	<panels>
 		<panel classname="HelloPanel" />
 		<!-- <panel classname="InfoPanel"/> -->
-		<panel classname="LicencePanel"/>
-		<panel classname="PacksPanel"/>
+		<panel classname="LicencePanel" />
+		<panel classname="PacksPanel" />
 		<panel classname="TargetPanel" />
-		<!-- <panel classname="PacksPanel"/>-->
+		<!-- <panel classname="PacksPanel"/> -->
 		<panel classname="InstallPanel" />
 		<panel classname="ShortcutPanel" />
 		<panel classname="SimpleFinishPanel" />
@@ -134,7 +103,7 @@
 				<os family="windows" />
 			</fileset>
 
-			<!--  Linux  -->
+			<!-- Linux -->
 			<fileset dir="bin" targetdir="$INSTALL_PATH/bin">
 				<include name="sinadura-console.sh" />
 				<include name="sinadura.sh" />
@@ -142,15 +111,15 @@
 			</fileset>
 
 			<!-- Linux scripts -->
-			<executable targetfile="$INSTALL_PATH/bin/sinadura.sh"	stage="never">
+			<executable targetfile="$INSTALL_PATH/bin/sinadura.sh"
+				stage="never">
 				<os name="unix" />
 			</executable>
 
-			<executable targetfile="$INSTALL_PATH/bin/sinadura-console.sh" stage="never">
+			<executable targetfile="$INSTALL_PATH/bin/sinadura-console.sh"
+				stage="never">
 				<os name="unix" />
 			</executable>
-
 		</pack>
-
 	</packs>
 </izpack:installation>
