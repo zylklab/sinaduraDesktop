@@ -404,7 +404,7 @@
 						</dependencies>
 						<configuration>
 							<izpackBasedir>${staging-dir}</izpackBasedir>
-							<izpack.dir.app>${basedir}/src/main/izpack</izpack.dir.app>
+							<izpack.dir.app>${basedir}/installer/install-resources</izpack.dir.app>
 							<installFile>${izpack-install-file-name}</installFile>
 						</configuration>
 						<executions>
