@@ -406,7 +406,7 @@
 						</dependencies>
 						<configuration>
 							<izpackBasedir>${staging-dir}</izpackBasedir>
-							<installerFile>${staging-dir}/${izpack-install-file-name}</installerFile>
+							<izpackInstallFile>${staging-dir}/${izpack-install-file-name}</izpackInstallFile>
 						</configuration>
 						<executions>
 							<execution>
