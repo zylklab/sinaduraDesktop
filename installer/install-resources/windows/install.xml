@@ -17,7 +17,6 @@
 
 	<!-- Datos informativos sobre la aplicación, el autor, la organización, 
 		etc. -->
-	-
 	<info>
 		<appname>Sinadura</appname>
 		<appsubpath>sinadura</appsubpath>
