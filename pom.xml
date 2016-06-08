@@ -277,6 +277,9 @@
 					<value>unix</value>
 				</property>
 			</activation>
+			<properties>
+				<izpack-install-file-name>install-linux.xml</izpack-install-file-name>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -401,6 +404,7 @@
 						</dependencies>
 						<configuration>
 							<izpackBasedir>${staging-dir}</izpackBasedir>
+							<installFile>${izpack-install-file-name}</installFile>
 						</configuration>
 						<executions>
 							<execution>
@@ -471,6 +475,9 @@
 					<value>unix64</value>
 				</property>
 			</activation>
+			<properties>
+				<izpack-install-file-name>install-linux.xml</izpack-install-file-name>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -664,6 +671,9 @@
 					<value>win32</value>
 				</property>
 			</activation>
+			<properties>
+				<izpack-install-file-name>install-windows.xml</izpack-install-file-name>
+			</properties>
 			<build>
 				<plugins>
 
@@ -910,6 +920,9 @@
 					<value>win64</value>
 				</property>
 			</activation>
+			<properties>
+				<izpack-install-file-name>install-windows.xml</izpack-install-file-name>
+			</properties>
 			<build>
 				<plugins>
 					<!-- quitar el bat? -->
@@ -1155,6 +1168,9 @@
 					<value>macos</value>
 				</property>
 			</activation>
+			<properties>
+				<izpack-install-file-name>install-macosx.xml</izpack-install-file-name>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -1375,6 +1391,9 @@
 					<value>macos</value>
 				</property>
 			</activation>
+			<properties>
+				<izpack-install-file-name>install-macosx.xml</izpack-install-file-name>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
