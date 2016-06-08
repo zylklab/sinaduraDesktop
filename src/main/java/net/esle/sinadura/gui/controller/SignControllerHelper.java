@@ -109,7 +109,7 @@ public class SignControllerHelper {
 			try {
 		
 				// DIALOGO PARA IDENTIFICAR EL TIPO DE CERTIFICADO A UTILIZAR (la config)
-				if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.CERT_TYPE)) {
+				if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.CERT_TYPE_ASK)) {
 					
 					// preguntar al usuario el tipo de certificado
 					CertSelectorRuntimePreferencesDialog csrpd = new CertSelectorRuntimePreferencesDialog(shell);
