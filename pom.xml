@@ -280,7 +280,7 @@
 				</property>
 			</activation>
 			<properties>
-				<izpack-install-file-name>${izpack.dir.app}/install-linux.xml</izpack-install-file-name>
+				<izpack-install-file-name>install-linux.xml</izpack-install-file-name>
 			</properties>
 			<build>
 				<plugins>
@@ -479,7 +479,7 @@
 				</property>
 			</activation>
 			<properties>
-				<izpack-install-file-name>${izpack.dir.app}/install-linux.xml</izpack-install-file-name>
+				<izpack-install-file-name>install-linux.xml</izpack-install-file-name>
 			</properties>
 			<build>
 				<plugins>
@@ -675,7 +675,7 @@
 				</property>
 			</activation>
 			<properties>
-				<izpack-install-file-name>${izpack.dir.app}/install-windows.xml</izpack-install-file-name>
+				<izpack-install-file-name>install-windows.xml</izpack-install-file-name>
 			</properties>
 			<build>
 				<plugins>
@@ -924,7 +924,7 @@
 				</property>
 			</activation>
 			<properties>
-				<izpack-install-file-name>${izpack.dir.app}/install-windows.xml</izpack-install-file-name>
+				<izpack-install-file-name>install-windows.xml</izpack-install-file-name>
 			</properties>
 			<build>
 				<plugins>
@@ -1172,7 +1172,7 @@
 				</property>
 			</activation>
 			<properties>
-				<izpack-install-file-name>${izpack.dir.app}/install-macosx.xml</izpack-install-file-name>
+				<izpack-install-file-name>install-macosx.xml</izpack-install-file-name>
 			</properties>
 			<build>
 				<plugins>
@@ -1395,7 +1395,7 @@
 				</property>
 			</activation>
 			<properties>
-				<izpack-install-file-name>${izpack.dir.app}/install-macosx.xml</izpack-install-file-name>
+				<izpack-install-file-name>install-macosx.xml</izpack-install-file-name>
 			</properties>
 			<build>
 				<plugins>
@@ -1523,6 +1523,7 @@
 						</dependencies>
 						<configuration>
 							<izpackBasedir>${staging-dir}</izpackBasedir>
+							<installFile>${staging-dir}/${izpack-install-file-name}</installFile>
 						</configuration>
 						<executions>
 							<execution>
