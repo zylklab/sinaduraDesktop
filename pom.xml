@@ -675,7 +675,7 @@
 				</property>
 			</activation>
 			<properties>
-				<izpack-install-file-path>windows/install.xml</izpack-install-file-path>
+				<izpack-install-file-path>windows</izpack-install-file-path>
 			</properties>
 			<build>
 				<plugins>
@@ -842,8 +842,8 @@
 							</dependency>
 						</dependencies>
 						<configuration>
-							<baseDir>${staging-dir}</baseDir>
-							<installFile>${staging-dir}/${izpack-install-file-path}</installFile>
+<!--						<installFile>${staging-dir}/${izpack-install-file-path}</installFile>  -->
+							<baseDir>${staging-dir}/${izpack-install-file-path}</baseDir>
 						</configuration>
 						<executions>
 							<execution>
