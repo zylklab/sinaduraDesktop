@@ -524,19 +524,20 @@ public class PreferencesUtil {
 
 			PdfProfile pdfProfile = new PdfProfile();
 			pdfProfile.setName(record.get(0));
-			pdfProfile.setVisible(Boolean.valueOf(record.get(1)));
-			pdfProfile.setAskPosition(Boolean.valueOf(record.get(2)));
-			pdfProfile.setHasImage(Boolean.valueOf(record.get(3)));
-			pdfProfile.setImagePath(record.get(4));
-			pdfProfile.setWidht(new Float(record.get(5)));
-			pdfProfile.setHeight(new Float(record.get(6)));
-			pdfProfile.setStartX(new Float(record.get(7)));
-			pdfProfile.setStartY(new Float(record.get(8)));
-			pdfProfile.setPage(Integer.valueOf(record.get(9)));
-			pdfProfile.setCertified(Integer.valueOf(record.get(10)));
-			pdfProfile.setAcroField(record.get(11));
-			pdfProfile.setReason(record.get(12));
-			pdfProfile.setLocation(record.get(13));
+			pdfProfile.setAskProperties(Boolean.valueOf(record.get(1)));
+			pdfProfile.setVisible(Boolean.valueOf(record.get(2)));
+			pdfProfile.setAskPosition(Boolean.valueOf(record.get(3)));
+			pdfProfile.setHasImage(Boolean.valueOf(record.get(4)));
+			pdfProfile.setImagePath(record.get(5));
+			pdfProfile.setWidht(new Float(record.get(6)));
+			pdfProfile.setHeight(new Float(record.get(7)));
+			pdfProfile.setStartX(new Float(record.get(8)));
+			pdfProfile.setStartY(new Float(record.get(9)));
+			pdfProfile.setPage(Integer.valueOf(record.get(10)));
+			pdfProfile.setCertified(Integer.valueOf(record.get(11)));
+			pdfProfile.setAcroField(record.get(12));
+			pdfProfile.setReason(record.get(13));
+			pdfProfile.setLocation(record.get(14));
 			
 			profiles.put(pdfProfile.getName(), pdfProfile);
 		}
@@ -557,26 +558,27 @@ public class PreferencesUtil {
 		List<List<String>> array = new ArrayList<List<String>>();
 		
 		// header
-		array.add(Arrays.asList("name", "visible", "stamp.ask", "stamp.enable", "stamp.path", "stamp.width", "stamp.height", "stamp.x", "stamp.y", "page", "certified", "acrofield", "reason", "location"));
+		array.add(Arrays.asList("name", "properties.ask", "visible", "stamp.ask", "stamp.enable", "stamp.path", "stamp.width", "stamp.height", "stamp.x", "stamp.y", "page", "certified", "acrofield", "reason", "location"));
 		
 		// rows
 		List<String> fila;
 		for (PdfProfile profile : profiles.values()) {
 			fila = new ArrayList<String>();
 			fila.add(0, profile.getName());
-			fila.add(1, Boolean.toString(profile.getVisible()));
-			fila.add(2, String.valueOf(profile.getAskPosition()));
-			fila.add(3, Boolean.toString(profile.hasImage()));
-			fila.add(4, profile.getImagePath());
-			fila.add(5, String.valueOf(profile.getWidht()));
-			fila.add(6, String.valueOf(profile.getHeight()));
-			fila.add(7, String.valueOf(profile.getStartX()));
-			fila.add(8, String.valueOf(profile.getStartY()));
-			fila.add(9, String.valueOf(profile.getPage()));
-			fila.add(10, String.valueOf(profile.getCertified()));
-			fila.add(11, profile.getAcroField());
-			fila.add(12, profile.getReason());
-			fila.add(13, profile.getLocation());
+			fila.add(1, Boolean.toString(profile.getAskProperties()));
+			fila.add(2, Boolean.toString(profile.getVisible()));
+			fila.add(3, String.valueOf(profile.getAskPosition()));
+			fila.add(4, Boolean.toString(profile.hasImage()));
+			fila.add(5, profile.getImagePath());
+			fila.add(6, String.valueOf(profile.getWidht()));
+			fila.add(7, String.valueOf(profile.getHeight()));
+			fila.add(8, String.valueOf(profile.getStartX()));
+			fila.add(9, String.valueOf(profile.getStartY()));
+			fila.add(10, String.valueOf(profile.getPage()));
+			fila.add(11, String.valueOf(profile.getCertified()));
+			fila.add(12, profile.getAcroField());
+			fila.add(13, profile.getReason());
+			fila.add(14, profile.getLocation());
 			
 			array.add(fila);
 		}
