@@ -260,6 +260,8 @@
 				<sign.ocsp.enable>false</sign.ocsp.enable>
 				<!-- CONFIGURACION de la aplicacion -->
 				<!-- system -->
+				<sponsor.label.enable>false</sponsor.label.enable>
+				<sponsor.image.path>upv.jpg</sponsor.image.path>
 			</properties>
 		</profile>
 
