@@ -138,16 +138,16 @@
 			<fileset dir="bin" targetdir="$INSTALL_PATH/bin">
 				<include name="sinadura-console.sh" />
 				<include name="sinadura.sh" />
-				<os family="linux" />
+				<os family="unix" />
 			</fileset>
 
 			<!-- Linux scripts -->
 			<executable targetfile="$INSTALL_PATH/bin/sinadura.sh"	stage="never">
-				<os name="linux" />
+				<os name="unix" />
 			</executable>
 
 			<executable targetfile="$INSTALL_PATH/bin/sinadura-console.sh" stage="never">
-				<os name="linux" />
+				<os name="unix" />
 			</executable>
 
 		</pack>
