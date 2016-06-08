@@ -89,9 +89,11 @@
  	-->
 
 	<!-- Requerido para crear el ShortCut -->
+	<!-- 
 	<native type="izpack" name="ShellLink.dll" />
 	<native type="izpack" name="ShellLink_x64.dll"/>
-
+ 	-->
+ 	
 	<!--
 		Paneles que deseamos que sean mostrados. El orden importa excepto en
 		el InstallPanel
