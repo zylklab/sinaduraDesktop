@@ -396,7 +396,7 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>1.0-alpha-5</version>
+						<version>5.0.8</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.izpack</groupId>
@@ -405,8 +405,8 @@
 							</dependency>
 						</dependencies>
 						<configuration>
-							<izpackBasedir>${staging-dir}</izpackBasedir>
-							<izpackInstallFile>${staging-dir}/${izpack-install-file-name}</izpackInstallFile>
+							<baseDir>${staging-dir}</baseDir>
+							<installFile>${staging-dir}/${izpack-install-file-name}</installFile>
 						</configuration>
 						<executions>
 							<execution>
