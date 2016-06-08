@@ -105,7 +105,7 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 
 		this.sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
 		this.sShell.setImage(new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
-		this.sShell.setText(LanguageUtil.getLanguage().getString("preferences.pdf.profile.window.title"));
+		this.sShell.setText("Selección del tipo de certificado");
 		
 
 		GridLayout shellGridLayout = new GridLayout();
@@ -136,7 +136,8 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 		
 		// label description
 		Label label = new Label(this.compositeMain, SWT.NONE);
-		label.setText(LanguageUtil.getLanguage().getString("preferences.pdf.profile.name"));
+		label.setText("Seleccione el tipo de certificado con el que desea firmar:");
+		
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.grabExcessHorizontalSpace = true;
 		gd.horizontalSpan = 3;
@@ -145,12 +146,12 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 
 		// 1- combo select cert
 		Label labelPages = new Label(this.compositeMain, SWT.NONE);
-		labelPages.setText("Seleccionar dispositivo i18n:");
+		labelPages.setText("Tipo de certificado:");
 
 		comboCertType = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
-		comboCertType.add("p12 i18n", 0);
-		comboCertType.add("PKCS11 i18n", 1);
-		comboCertType.add("CAPI i18n", 2);
+		comboCertType.add("Certificado software (pkx, p12...)", 0);
+		comboCertType.add("Tarjeta criptografica (Pkcs11, Opensc...)", 1);
+		comboCertType.add("Almacen de certificados de Windows (CAPI)", 2);
 		
 		comboCertType.addSelectionListener(new SelectionListener() {
 			@Override
@@ -178,7 +179,7 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 		
 		// 2- combo select p12 o pkcs11
 		labelCert = new Label(this.compositeMain, SWT.NONE);
-		labelCert.setText("Seleccionar certificado i18n:");
+		labelCert.setText("Certificado:");
 
 		comboCertPath = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
 		
@@ -193,7 +194,8 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 		gd.horizontalSpan = 1;
 		gd.grabExcessHorizontalSpace = false;
 		buttonP12.setLayoutData(gd);
-		buttonP12.setText("Añadir nuevo i18n");
+		buttonP12.setText("Añadir");
+		buttonP12.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.ADD_IMG)));
 		buttonP12.addSelectionListener(new ButtonAddP12Listener());
 
 		this.ButtonsComposite = new Composite(this.sShell, SWT.NONE);

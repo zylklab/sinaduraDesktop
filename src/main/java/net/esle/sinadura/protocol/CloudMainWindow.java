@@ -103,20 +103,15 @@ public class CloudMainWindow {
 				PreferencesUtil.getPreferences().setValue(PreferencesUtil.IDIOMA, locale);
 				PreferencesUtil.getPreferences().setValue(PreferencesUtil.OUTPUT_AUTO_ENABLE, true);
 				PreferencesUtil.getPreferences().setValue(PreferencesUtil.AUTO_VALIDATE, false);
-				// cert
-				PreferencesUtil.getPreferences().setValue(PreferencesUtil.CERT_TYPE_ASK, true);
-				// xades
+				// Xades
 				PreferencesUtil.getPreferences().setValue(PreferencesUtil.XADES_ARCHIVE, false);
-				
-				
-				// pdf profile
-				Map<String, PdfProfile> availableProfiles = PreferencesUtil.getPdfProfiles();
-				PdfProfile defaultPdfProfile = availableProfiles.get(PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_PROFILE_SELECTED_NAME));
-				// TODO sobreescribir PDF. No le veo sentido a sobreescribir estos. Mejor ponerlos a "true" por defecto en la instalacion.
-				defaultPdfProfile.setAskPosition(true);
-				defaultPdfProfile.setAskProperties(true);
+				// Pdf
+				// TODO revisar. No se si tiene sentido sobreescribir estos valores. De momento los pongo a "true" por defecto en la instalacion.
+//				Map<String, PdfProfile> availableProfiles = PreferencesUtil.getPdfProfiles();
+//				PdfProfile defaultPdfProfile = availableProfiles.get(PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_PROFILE_SELECTED_NAME));
+//				defaultPdfProfile.setAskPosition(true); 
+//				defaultPdfProfile.setAskProperties(true); // este no tiene sentido ponerlo siempre a true
 
-				
 				// reload language
 				LanguageUtil.reloadLanguage();
 				

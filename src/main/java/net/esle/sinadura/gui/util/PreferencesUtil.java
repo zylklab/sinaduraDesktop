@@ -324,14 +324,15 @@ public class PreferencesUtil {
 				preferences.setDefault(VALIDATION_CHECK_POLICY, PreferencesDefaultUtil.get(VALIDATION_CHECK_POLICY)); //"true");
 				preferences.setDefault(VALIDATION_CHECK_NODE_NAME, PreferencesDefaultUtil.get(VALIDATION_CHECK_NODE_NAME)); //"true");
 				
-				// cert
-				preferences.setDefault(CERT_TYPE_ASK, PreferencesDefaultUtil.get(CERT_TYPE_ASK)); //"false");
-				
 				// carga de certificado
-				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())) { // esta necesita definirse en runtime
+				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())) { 
+					// estas necesitan definirse en runtime
 					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_MSCAPI);
-				} else{
-					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_HARDWARE);					
+					preferences.setDefault(CERT_TYPE_ASK, false);
+					
+				} else {
+					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_HARDWARE);
+					preferences.setDefault(CERT_TYPE_ASK, true);
 				}
 
 				preferences.setDefault(HARDWARE_DISPOSITIVE, PreferencesDefaultUtil.get(HARDWARE_DISPOSITIVE)); //"izenpe");
