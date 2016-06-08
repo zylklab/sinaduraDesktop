@@ -279,9 +279,6 @@
 					<value>unix</value>
 				</property>
 			</activation>
-			<properties>
-				<izpack-install-file-name>install-linux.xml</izpack-install-file-name>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -396,7 +393,7 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>5.0.8</version>
+						<version>1.0-alpha-5</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.izpack</groupId>
@@ -405,8 +402,7 @@
 							</dependency>
 						</dependencies>
 						<configuration>
-							<baseDir>${staging-dir}</baseDir>
-							<installFile>${staging-dir}/${izpack-install-file-name}</installFile>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
 						</configuration>
 						<executions>
 							<execution>
@@ -477,9 +473,6 @@
 					<value>unix64</value>
 				</property>
 			</activation>
-			<properties>
-				<izpack-install-file-name>install-linux.xml</izpack-install-file-name>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -594,7 +587,7 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>5.0.8</version>
+						<version>1.0-alpha-5</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.izpack</groupId>
@@ -603,8 +596,7 @@
 							</dependency>
 						</dependencies>
 						<configuration>
-							<baseDir>${staging-dir}</baseDir>
-							<installFile>${staging-dir}/${izpack-install-file-name}</installFile>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
 						</configuration>
 						<executions>
 							<execution>
@@ -674,9 +666,6 @@
 					<value>win32</value>
 				</property>
 			</activation>
-			<properties>
-				<izpack-install-file-path>windows</izpack-install-file-path>
-			</properties>
 			<build>
 				<plugins>
 
@@ -833,8 +822,7 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>5.0.8</version>
-						<!-- 
+						<version>1.0-alpha-5</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.izpack</groupId>
@@ -842,10 +830,8 @@
 								<version>${izpack-standalone.version}</version>
 							</dependency>
 						</dependencies>
-						 -->
 						<configuration>
-							<installFile>${staging-dir}/${izpack-install-file-path}/install.xml</installFile>
-							<baseDir>${staging-dir}</baseDir>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
 						</configuration>
 						<executions>
 							<execution>
@@ -926,9 +912,6 @@
 					<value>win64</value>
 				</property>
 			</activation>
-			<properties>
-				<izpack-install-file-name>install-windows.xml</izpack-install-file-name>
-			</properties>
 			<build>
 				<plugins>
 					<!-- quitar el bat? -->
@@ -1084,7 +1067,7 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>5.0.8</version>
+						<version>1.0-alpha-5</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.izpack</groupId>
@@ -1093,8 +1076,7 @@
 							</dependency>
 						</dependencies>
 						<configuration>
-							<baseDir>${staging-dir}</baseDir>
-							<installFile>${staging-dir}/${izpack-install-file-name}</installFile>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
 						</configuration>
 						<executions>
 							<execution>
@@ -1175,9 +1157,6 @@
 					<value>macos</value>
 				</property>
 			</activation>
-			<properties>
-				<izpack-install-file-name>install-macosx.xml</izpack-install-file-name>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -1295,7 +1274,7 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>5.0.8</version>
+						<version>1.0-alpha-5</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.izpack</groupId>
@@ -1304,8 +1283,7 @@
 							</dependency>
 						</dependencies>
 						<configuration>
-							<baseDir>${staging-dir}</baseDir>
-							<installFile>${staging-dir}/${izpack-install-file-name}</installFile>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
 						</configuration>
 						<executions>
 							<execution>
@@ -1399,9 +1377,6 @@
 					<value>macos</value>
 				</property>
 			</activation>
-			<properties>
-				<izpack-install-file-name>install-macosx.xml</izpack-install-file-name>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -1518,7 +1493,7 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>5.0.8</version>
+						<version>1.0-alpha-5</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.izpack</groupId>
@@ -1527,8 +1502,7 @@
 							</dependency>
 						</dependencies>
 						<configuration>
-							<baseDir>${staging-dir}</baseDir>
-							<installFile>${staging-dir}/${izpack-install-file-name}</installFile>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
 						</configuration>
 						<executions>
 							<execution>
