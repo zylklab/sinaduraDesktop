@@ -13,6 +13,7 @@ REGISTRO DE VERSIONES (para conocer el perfil de cada versión)
 3.5.2 - EE
 4.1.0 - LantegiBatuak
 4.2.0 - Community (publicada y publicitada)
+5.0.0 - UPV
 
 * Las versiones para parlamento se pueden ver en la intranet, y el resto son todas de la Community.
 Y si ademas están en la web pues es que se han publicado.
