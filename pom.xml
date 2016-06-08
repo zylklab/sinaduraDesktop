@@ -675,7 +675,7 @@
 				</property>
 			</activation>
 			<properties>
-				<izpack-install-file-path>windows</izpack-install-file-path>
+				<izpack-install-file-path>windows/install.xml</izpack-install-file-path>
 			</properties>
 			<build>
 				<plugins>
