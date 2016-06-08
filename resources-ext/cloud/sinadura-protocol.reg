@@ -1,0 +1,12 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\sinadura]
+@="URL:sinadura Protocol"
+"URL Protocol"=""
+[HKEY_CLASSES_ROOT\sinadura\DefaultIcon]
+@="sinadura.exe,1"
+[HKEY_CLASSES_ROOT\sinadura\shell]
+[HKEY_CLASSES_ROOT\sinadura\shell\open]
+[HKEY_CLASSES_ROOT\sinadura\shell\open\command]
+@="\"C:\\sinadura500\\sinadura.exe\" \"%1\""
+
