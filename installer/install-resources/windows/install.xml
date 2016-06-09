@@ -47,9 +47,9 @@
 		<res id="LicencePanel.licence" src="LICENSE.txt" />
 		<res id="shortcutSpec.xml" src="./windows/windowsShortcut.xml" />
 		<res id="RegistrySpec.xml" src="./windows/win_protocol_registrySpec.xml" />
-		<!-- <res id="installer.langsel.img" src="zylk.png"/> --> 
-		<!-- <res id="Installer.image" src="idazki.gif"/> -->
-		<!-- <res id="Heading.image" src="izenpe.png"/> -->
+		<res id="installer.langsel.img" src="./images/zylk.png"/> 
+		<res id="Installer.image" src="./images/zylk.png"/>
+		<res id="Heading.image" src="./images/sinadura.png"/>
 		
 
 	</resources>
@@ -58,14 +58,12 @@
 		el InstallPanel -->
 	<panels>
 		<panel classname="HelloPanel" />
-		<!-- <panel classname="InfoPanel"/> -->
 		<panel classname="LicencePanel" />
-		<panel classname="PacksPanel" />
 		<panel classname="TargetPanel" />
-		<!-- <panel classname="PacksPanel"/> -->
+		<panel classname="PacksPanel" />
 		<panel classname="InstallPanel" />
 		<panel classname="ShortcutPanel" />
-		<panel classname="SimpleFinishPanel" />
+		<panel classname="FinishPanel" />
 	</panels>
 	
 	<!-- register protocol (sinadura://) for windows -->
@@ -90,7 +88,6 @@
 				<include name="resources/**/*" />
 				<include name="misc/**/*" />
 			</fileset>
-
 			<!-- Windows -->
 			<fileset dir="." targetdir="$INSTALL_PATH">
 				<include name="sinadura.exe" />
@@ -101,30 +98,16 @@
 				<include name="sinadura-console.bat" />
 				<os family="windows" />
 			</fileset>
-
-			<!-- Linux -->
-			<fileset dir="bin" targetdir="$INSTALL_PATH/bin">
-				<include name="sinadura-console.sh" />
-				<include name="sinadura.sh" />
-				<os family="unix" />
-			</fileset>
-
-			<!-- Linux scripts -->
-			<executable targetfile="$INSTALL_PATH/bin/sinadura.sh"
-				stage="never">
-				<os name="unix" />
-			</executable>
-
-			<executable targetfile="$INSTALL_PATH/bin/sinadura-console.sh"
-				stage="never">
-				<os name="unix" />
-			</executable>
 		</pack>
 	</packs>
 	
-	<!-- Requerido para crear el ShortCut -->
+	<!-- Requerido para crear el ShortCut, registrar el protocolo y demás acciones sobre windows-->
 	<natives>
-		<native type="izpack" name="ShellLink.dll" />
-		<native type="izpack" name="ShellLink_x64.dll"/>
+		<native type="izpack" name="ShellLink.dll" uninstaller="true" />
+		<native type="izpack" name="ShellLink_x64.dll" uninstaller="true"/>
+		<native type="izpack" name="WinSetupAPI.dll" uninstaller="true"/>
+		<native type="izpack" name="WinSetupAPI_x64.dll" uninstaller="true"/>
+		<native type="3rdparty" name="COIOSHelper.dll" uninstaller="true"/>
+		<native type="3rdparty" name="COIOSHelper_x64.dll" uninstaller="true"/>
 	</natives>
 </izpack:installation>
