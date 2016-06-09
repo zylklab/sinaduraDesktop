@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<registry>
+<izpack:registry version="5.0"
+                 xmlns:izpack="http://izpack.org/schema/registry"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://izpack.org/schema/registry http://izpack.org/schema/5.0/izpack-registry-5.0.xsd">
   <pack name="RegistProtocol">
     <key 
     	root="HKCR" 
@@ -78,4 +81,4 @@
     />
   </pack>
   
-</registry>
+</izpack:registry>

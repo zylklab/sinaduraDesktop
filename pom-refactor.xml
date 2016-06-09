@@ -150,6 +150,10 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
+						<configuration>
+							<failOnError>false</failOnError>
+                			<additionalparam>-Xdoclint:none</additionalparam>
+            			</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -1693,6 +1697,22 @@
 				<updatePolicy>never</updatePolicy>
 			</snapshots>
 		</repository>
+
+
+		<repository>
+                        <id>sinadura-ee</id>
+                        <name>sinadura-ee</name>
+                        <url>https://services.zylk.net/nexus/content/repositories/sinaduraEE-releases</url>
+                        <layout>default</layout>
+                        <releases>
+                                <enabled>true</enabled>
+                                <updatePolicy>never</updatePolicy>
+                        </releases>
+                        <snapshots>
+                                <enabled>true</enabled>
+                                <updatePolicy>never</updatePolicy>
+                        </snapshots>
+                </repository>
 	</repositories>
 	
 </project>
