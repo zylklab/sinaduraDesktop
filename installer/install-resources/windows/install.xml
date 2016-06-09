@@ -33,7 +33,21 @@
 	</info>
 
 	<!-- Preferencias del interfaz gráfico que deseamos para nuestra instalación -->
-	<guiprefs width="640" height="480" resizable="no" />
+	<guiprefs height="480" resizable="yes" width="720">
+        <laf name="looks">
+            <param name="variant" value="extwin"/>
+            <os family="windows"/>
+        </laf>
+        <modifier key="useFlags" value="yes"/>
+        <modifier key="langDisplayType" value="iso3"/>
+        <modifier key="useHeadingPanel" value="yes"/>
+        <modifier key="headingImageOnLeft" value="no"/>
+        <modifier key="headingFontSize" value="2"/>
+        <modifier key="headingBackgroundColor" value="-16737793"/>
+        <modifier key="headingForegroundColor" value="-16711423"/>
+        <modifier key="headingPanelCounter" value="progressbar"/>
+        <modifier key="headingPanelCounterPos" value="inNavigationPanel"/>
+    </guiprefs>
 
 	<!-- El interfaz gráfico podrá ser mostrado en Castellano o en Ingles -->
 	<locale>
@@ -99,6 +113,9 @@
 				<os family="windows" />
 			</fileset>
 		</pack>
+		<pack name="RegistProtocol" preselected="yes" required="yes">
+        	<description/>
+        </pack>
 	</packs>
 	
 	<!-- Requerido para crear el ShortCut, registrar el protocolo y demás acciones sobre windows-->
