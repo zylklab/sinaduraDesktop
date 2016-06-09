@@ -28,13 +28,13 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://izpack.org/schema/shortcuts http://izpack.org/schema/5.0/izpack-shortcuts-5.0.xsd">
 <programGroup defaultName="Office" location="applications" />
-	<shortcut name="Sinadura - Firma Digital"
+	<shortcut name="Sinadura-FirmaDigital"
 		programGroup="yes"
 		desktop="yes"
 		applications="no"
 		startMenu="no"
 		startup="no"
-		target="$INSTALL_PATH/bin/sinadura.sh"
+		target="$INSTALL_PATH/bin/sinadura.sh %u"  
 		iconFile="$INSTALL_PATH/resources/images/sinadura48.png"
 		iconIndex="0"
 		workingDirectory="$INSTALL_PATH/"
@@ -49,7 +49,7 @@
 		<createForPack name="sinadura" />
 	</shortcut>
 
-	<shortcut name="Uninstall Sinadura - Firma Digital"
+	<shortcut name="UninstallSinadura-FirmaDigital"
 		programGroup="yes"
 		desktop="no"
 		applications="no"

@@ -45,7 +45,7 @@
 	<!-- Recursos de nuestra instalación -->
 	<resources>
 		<res id="LicencePanel.licence" src="LICENSE.txt" />
-		<res id="shortcutSpec.xml" src="./linux/unixShortcut.xml" />
+		<!-- <res id="shortcutSpec.xml" src="./linux/unixShortcut.xml" />-->
 		<res id="installer.langsel.img" src="./images/zylk.png" />
 		<res id="Installer.image" src="./images/zylk.png" />
 		<res id="Heading.image" src="./images/sinadura.png" />
@@ -61,7 +61,7 @@
 		<panel classname="TargetPanel" />
 		<panel classname="PacksPanel" />
 		<panel classname="InstallPanel" />
-		<panel classname="ShortcutPanel" />
+		<!-- <panel classname="ShortcutPanel" />-->
 		<panel classname="FinishPanel" />
 	</panels>
 	<!-- Paquetes que componen la aplicación -->
@@ -82,18 +82,23 @@
 				<include name="sinadura.sh" />
 				<os family="unix" />
 			</fileset>
-
 			<!-- Linux scripts -->
-			<executable targetfile="$INSTALL_PATH/bin/sinadura.sh"
-				stage="never">
+			<executable targetfile="$INSTALL_PATH/bin/sinadura.sh" stage="never" keep="true">
 				<os name="unix" />
 			</executable>
-
-			<executable targetfile="$INSTALL_PATH/bin/sinadura-console.sh"
-				stage="never">
+			<executable targetfile="$INSTALL_PATH/bin/sinadura-console.sh" stage="never" keep="true">
 				<os name="unix" />
 			</executable>
-
 		</pack>
+		<pack name="RegistProtocol" preselected="yes" required="yes">
+        	<description/>
+        	<file override="true" src="./linux/sinadura-desktop-protocol-uninstaller.desktop" targetdir="$USER_HOME/.local/share/applications"/>
+        	<file override="true" src="./linux/sinadura-desktop-protocol.desktop" targetdir="$USER_HOME/.local/share/applications"/>
+        	<file override="false" src="./linux/mimeapps.list" targetdir="$USER_HOME/.local/share/applications"/>
+        	<parsable targetfile="$USER_HOME/.local/share/applications/sinadura-desktop-protocol-uninstaller.desktop" type="plain" />
+        	<parsable targetfile="$USER_HOME/.local/share/applications/sinadura-desktop-protocol.desktop" type="plain" />
+        	<file override="true" src="./linux/regist-schema.sh" targetdir="$INSTALL_PATH/"/>
+        	<executable targetfile="$INSTALL_PATH/regist-schema.sh" stage="postinstall" />
+        </pack>
 	</packs>
 </izpack:installation>
