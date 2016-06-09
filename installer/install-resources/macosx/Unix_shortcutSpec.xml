@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<!--
+# Copyright 2008 zylk.net
+#
+# This file is part of Sinadura.
+#
+# Sinadura is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# Sinadura is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Sinadura.  If not, see <http://www.gnu.org/licenses/>. [^]
+#
+# See COPYRIGHT.txt for copyright notices and details.
+#
+-->
+
+
+<shortcuts>
+<programGroup defaultName="Office" location="applications" />
+	<shortcut name="Sinadura - Firma Digital"
+		programGroup="yes"
+		desktop="yes"
+		applications="no"
+		startMenu="no"
+		startup="no"
+		target="$INSTALL_PATH/bin/sinadura.sh"
+		iconFile="$INSTALL_PATH/resources/images/sinadura48.png"
+		iconIndex="0"
+		workingDirectory="$INSTALL_PATH/"
+		description="Starts Sinadura - Firma Digital"
+		type="Application"
+		encoding="UTF-8"
+		terminal="false"
+		KdeSubstUID="false"
+		initialState="normal"
+		categories=""
+		createForAll="true">
+		<createForPack name="sinadura" />
+	</shortcut>
+
+	<shortcut name="Uninstall Sinadura - Firma Digital"
+		programGroup="yes"
+		desktop="no"
+		applications="no"
+		startMenu="no"
+		startup="no"
+		target="java"
+		commandLine="-jar uninstaller.jar"
+		iconFile="trashcan_empty"
+		iconIndex="0"
+		workingDirectory="$INSTALL_PATH/Uninstaller/"
+		description="Uninstall Sinadura - Firma Digital"
+		type="Application"
+		encoding="UTF-8"
+		terminal="false"
+		KdeSubstUID="false"
+		initialState="normal"
+		categories=""
+		createForAll="true">
+		<createForPack name="sinadura" />
+	</shortcut>
+</shortcuts>

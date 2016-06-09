@@ -15,7 +15,8 @@
 	xmlns:izpack="http://izpack.org/schema/installation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
 
-	<!-- Datos informativos sobre la aplicación, el autor, la organización, etc. -->
+	<!-- Datos informativos sobre la aplicación, el autor, la organización, 
+		etc. -->
 	<info>
 		<appname>Sinadura</appname>
 		<appsubpath>sinadura</appsubpath>
@@ -37,23 +38,21 @@
 
 	<!-- El interfaz gráfico podrá ser mostrado en Castellano o en Ingles -->
 	<locale>
-		<langpack iso3="eng"/>		
+		<!-- <langpack iso3="spa" /> -->
+		<langpack iso3="eng" />
 	</locale>
 
 	<!-- Recursos de nuestra instalación -->
 	<resources>
-		<!-- Set the default installation directory shown in the TargetPanel -->
-		<res id="TargetPanel.dir.windows" src="./windows/windows-install-path.txt" />
 		<res id="LicencePanel.licence" src="LICENSE.txt" />
-		<res id="shortcutSpec.xml" src="./windows/windowsShortcut.xml" />
-		<res id="RegistrySpec.xml" src="./windows/win_protocol_registrySpec.xml" />
-		<res id="installer.langsel.img" src="./images/zylk.png"/> 
-		<res id="Installer.image" src="./images/zylk.png"/>
-		<res id="Heading.image" src="./images/sinadura.png"/>
-		
-
+		<res id="shortcutSpec.xml" src="./linux/unixShortcut.xml" />
+		<res id="installer.langsel.img" src="./images/zylk.png" />
+		<res id="Installer.image" src="./images/zylk.png" />
+		<res id="Heading.image" src="./images/sinadura.png" />
 	</resources>
 
+	<!-- Paneles que deseamos que sean mostrados. El orden importa excepto en 
+		el InstallPanel -->
 	<!-- Paneles que deseamos que sean mostrados. El orden importa excepto en 
 		el InstallPanel -->
 	<panels>
@@ -65,17 +64,6 @@
 		<panel classname="ShortcutPanel" />
 		<panel classname="FinishPanel" />
 	</panels>
-	
-	<!-- register protocol (sinadura://) for windows -->
-	<listeners>
-		<listener classname="RegistryInstallerListener" stage="install">
-			<os family="windows"/>
-		</listener>
-		<listener classname="RegistryUninstallerListener" stage="uninstall">
-			<os family="windows"/>
-		</listener>
-	</listeners>
-	
 	<!-- Paquetes que componen la aplicación -->
 	<packs>
 		<pack name="sinadura" id="sinadura" required="yes">
@@ -88,29 +76,24 @@
 				<include name="resources/**/*" />
 				<include name="misc/**/*" />
 			</fileset>
-			<!-- Windows -->
-			<fileset dir="." targetdir="$INSTALL_PATH">
-				<include name="sinadura.exe" />
-				<os family="windows" />
-			</fileset>
+			<!-- Linux -->
 			<fileset dir="bin" targetdir="$INSTALL_PATH/bin">
-				<include name="sinadura.bat" />
-				<include name="sinadura-console.bat" />
-				<os family="windows" />
+				<include name="sinadura-console.sh" />
+				<include name="sinadura.sh" />
+				<os family="unix" />
 			</fileset>
+
+			<!-- Linux scripts -->
+			<executable targetfile="$INSTALL_PATH/bin/sinadura.sh"
+				stage="never">
+				<os name="unix" />
+			</executable>
+
+			<executable targetfile="$INSTALL_PATH/bin/sinadura-console.sh"
+				stage="never">
+				<os name="unix" />
+			</executable>
+
 		</pack>
-		<pack name="RegistProtocol" preselected="yes" required="yes">
-        	<description/>
-        </pack>
 	</packs>
-	
-	<!-- Requerido para crear el ShortCut, registrar el protocolo y demás acciones sobre windows-->
-	<natives>
-		<native type="izpack" name="ShellLink.dll" uninstaller="true" />
-		<native type="izpack" name="ShellLink_x64.dll" uninstaller="true"/>
-		<native type="izpack" name="WinSetupAPI.dll" uninstaller="true"/>
-		<native type="izpack" name="WinSetupAPI_x64.dll" uninstaller="true"/>
-		<native type="3rdparty" name="COIOSHelper.dll" uninstaller="true"/>
-		<native type="3rdparty" name="COIOSHelper_x64.dll" uninstaller="true"/>
-	</natives>
 </izpack:installation>

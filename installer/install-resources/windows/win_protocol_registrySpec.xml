@@ -16,7 +16,7 @@
     />
     <value 
     	root="HKCR" 
-    	name="URL Sinadura" 
+    	name="URL Protocol" 
     	keypath="sinadura" 
     	string=""
     />

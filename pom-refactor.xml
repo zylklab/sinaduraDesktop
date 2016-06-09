@@ -70,7 +70,7 @@
 		<pdf.tipo>0</pdf.tipo>
 		<save.extension>-signed</save.extension>
 		<xades.validator.impl>sinadura</xades.validator.impl>
-		<sign.ocsp.enable>true</sign.ocsp.enable>
+		<sign.ocsp.enable>false</sign.ocsp.enable>
 		<!-- CONFIGURACION de la aplicacion -->
 		<!-- system -->
 		<ee.proxy.enabled>false</ee.proxy.enabled>
@@ -150,10 +150,6 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
-						<configuration>
-							<failOnError>false</failOnError>
-                			<additionalparam>-Xdoclint:none</additionalparam>
-            			</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -265,7 +261,7 @@
 				<!-- CONFIGURACION de la aplicacion -->
 				<!-- system -->
 				<sponsor.label.enable>false</sponsor.label.enable>
-				<sponsor.image.path>upv.jpg</sponsor.image.path>
+				<sponsor.image.path>upv.png</sponsor.image.path>
 			</properties>
 		</profile>
 
@@ -283,9 +279,6 @@
 					<value>unix</value>
 				</property>
 			</activation>
-			<properties>
-				<izpack-install-file-name>install-linux.xml</izpack-install-file-name>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -400,7 +393,7 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>5.0.8</version>
+						<version>1.0-alpha-5</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.izpack</groupId>
@@ -409,8 +402,7 @@
 							</dependency>
 						</dependencies>
 						<configuration>
-							<baseDir>${staging-dir}</baseDir>
-							<installFile>${staging-dir}/${izpack-install-file-name}</installFile>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
 						</configuration>
 						<executions>
 							<execution>
@@ -481,9 +473,6 @@
 					<value>unix64</value>
 				</property>
 			</activation>
-			<properties>
-				<izpack-install-file-name>install-linux.xml</izpack-install-file-name>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -598,7 +587,7 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>5.0.8</version>
+						<version>1.0-alpha-5</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.izpack</groupId>
@@ -607,8 +596,7 @@
 							</dependency>
 						</dependencies>
 						<configuration>
-							<baseDir>${staging-dir}</baseDir>
-							<installFile>${staging-dir}/${izpack-install-file-name}</installFile>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
 						</configuration>
 						<executions>
 							<execution>
@@ -678,9 +666,6 @@
 					<value>win32</value>
 				</property>
 			</activation>
-			<properties>
-				<izpack-install-file-path>windows</izpack-install-file-path>
-			</properties>
 			<build>
 				<plugins>
 
@@ -837,11 +822,16 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>5.0.8</version>
+						<version>1.0-alpha-5</version>
+						<dependencies>
+							<dependency>
+								<groupId>org.codehaus.izpack</groupId>
+								<artifactId>izpack-standalone-compiler</artifactId>
+								<version>${izpack-standalone.version}</version>
+							</dependency>
+						</dependencies>
 						<configuration>
-							<installFile>${staging-dir}/${izpack-install-file-path}/install.xml</installFile>
-							<baseDir>${staging-dir}</baseDir>
-							<finalName>sinaduraDesktop-${project.version}-windows32-installer</finalName>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
 						</configuration>
 						<executions>
 							<execution>
@@ -867,7 +857,7 @@
 										<echo message="Creating the .exe file." />
 										<exec executable="python" dir="installer/izpack2exe">
 											<arg value="izpack2exe.py" />
-											<arg value="--file=../../target/sinaduraDesktop-${project.version}-windows32-installer.jar" />
+											<arg value="--file=../../target/sinaduraDesktop-${project.version}-standard.jar" />
 											<arg value="--output=../../target/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe" />
 										</exec>
 									</tasks>
@@ -922,9 +912,6 @@
 					<value>win64</value>
 				</property>
 			</activation>
-			<properties>
-				<izpack-install-file-name>install-windows.xml</izpack-install-file-name>
-			</properties>
 			<build>
 				<plugins>
 					<!-- quitar el bat? -->
@@ -1080,7 +1067,7 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>5.0.8</version>
+						<version>1.0-alpha-5</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.izpack</groupId>
@@ -1089,8 +1076,7 @@
 							</dependency>
 						</dependencies>
 						<configuration>
-							<baseDir>${staging-dir}</baseDir>
-							<installFile>${staging-dir}/${izpack-install-file-name}</installFile>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
 						</configuration>
 						<executions>
 							<execution>
@@ -1171,9 +1157,6 @@
 					<value>macos</value>
 				</property>
 			</activation>
-			<properties>
-				<izpack-install-file-name>install-macosx.xml</izpack-install-file-name>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -1291,7 +1274,7 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>5.0.8</version>
+						<version>1.0-alpha-5</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.izpack</groupId>
@@ -1300,8 +1283,7 @@
 							</dependency>
 						</dependencies>
 						<configuration>
-							<baseDir>${staging-dir}</baseDir>
-							<installFile>${staging-dir}/${izpack-install-file-name}</installFile>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
 						</configuration>
 						<executions>
 							<execution>
@@ -1395,9 +1377,6 @@
 					<value>macos</value>
 				</property>
 			</activation>
-			<properties>
-				<izpack-install-file-name>install-macosx.xml</izpack-install-file-name>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -1514,7 +1493,7 @@
 					<plugin>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>izpack-maven-plugin</artifactId>
-						<version>5.0.8</version>
+						<version>1.0-alpha-5</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.izpack</groupId>
@@ -1523,8 +1502,7 @@
 							</dependency>
 						</dependencies>
 						<configuration>
-							<baseDir>${staging-dir}</baseDir>
-							<installFile>${staging-dir}/${izpack-install-file-name}</installFile>
+							<izpackBasedir>${staging-dir}</izpackBasedir>
 						</configuration>
 						<executions>
 							<execution>
@@ -1689,22 +1667,6 @@
 				<updatePolicy>never</updatePolicy>
 			</snapshots>
 		</repository>
-
-
-		<repository>
-                        <id>sinadura-ee</id>
-                        <name>sinadura-ee</name>
-                        <url>https://services.zylk.net/nexus/content/repositories/sinaduraEE-releases</url>
-                        <layout>default</layout>
-                        <releases>
-                                <enabled>true</enabled>
-                                <updatePolicy>never</updatePolicy>
-                        </releases>
-                        <snapshots>
-                                <enabled>true</enabled>
-                                <updatePolicy>never</updatePolicy>
-                        </snapshots>
-                </repository>
 	</repositories>
 	
 </project>
