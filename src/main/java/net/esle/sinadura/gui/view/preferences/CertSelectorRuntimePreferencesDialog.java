@@ -81,7 +81,7 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 		
 		// p12
 		tmpP12Map = PreferencesUtil.getSoftwarePreferences();
-		tempP12Default = PreferencesUtil.getPreferences().getString(PreferencesUtil.SOFTWARE_DISPOSITIVE);
+		tempP12Default = PreferencesUtil.getString(PreferencesUtil.SOFTWARE_DISPOSITIVE);
 		if (tempP12Default == null) {
 			tempP12Default = "";
 		}

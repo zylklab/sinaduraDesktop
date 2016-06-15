@@ -107,7 +107,7 @@ public class ValidateController {
 			
 			XadesValidator xadesValidator;
 			
-			String xadesValidatorImpl = PreferencesUtil.getPreferences().getString(PreferencesUtil.XADES_VALIDATOR_IMPL);
+			String xadesValidatorImpl = PreferencesUtil.getString(PreferencesUtil.XADES_VALIDATOR_IMPL);
 			
 			if (xadesValidatorImpl != null && xadesValidatorImpl.equals("zain")) { // TODO hardcode!
 				
@@ -130,9 +130,9 @@ public class ValidateController {
 				String proxyUser = null;
 				String proxyPass = null;
 				boolean proxyEnabled = Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PROXY_ENABLED));
-				if (proxyEnabled && PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
-					proxyUser = PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_USER);
-					proxyPass = PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_PASS);
+				if (proxyEnabled && PreferencesUtil.getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
+					proxyUser = PreferencesUtil.getString(PreferencesUtil.PROXY_USER);
+					proxyPass = PreferencesUtil.getString(PreferencesUtil.PROXY_PASS);
 				}
 				
 				String language = Locale.getDefault().getLanguage();
@@ -148,13 +148,13 @@ public class ValidateController {
 			}
 			
 			ValidationPreferences validationPreferences = new ValidationPreferences();
-			validationPreferences.setCheckRevocation(PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.VALIDATION_CHECK_REVOCATION));
-			validationPreferences.setValidateEpesPolicy(PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.VALIDATION_CHECK_POLICY));
+			validationPreferences.setCheckRevocation(PreferencesUtil.getBoolean(PreferencesUtil.VALIDATION_CHECK_REVOCATION));
+			validationPreferences.setValidateEpesPolicy(PreferencesUtil.getBoolean(PreferencesUtil.VALIDATION_CHECK_POLICY));
 			validationPreferences.setKsCache(PreferencesUtil.getCacheKeystoreComplete());
 			validationPreferences.setKsTrust(PreferencesUtil.getTrustedKeystoreComplete());
 
 			// configuracion estatica, lo dejo aqui para que este con el resto de preferencias de validacion
-			PropertiesCoreUtil.setCheckNodeName(PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.VALIDATION_CHECK_NODE_NAME));
+			PropertiesCoreUtil.setCheckNodeName(PreferencesUtil.getBoolean(PreferencesUtil.VALIDATION_CHECK_NODE_NAME));
 			
 			List<XadesSignatureInfo> resultados = null;
 			

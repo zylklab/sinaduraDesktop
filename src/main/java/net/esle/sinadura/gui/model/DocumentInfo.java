@@ -22,7 +22,6 @@
 package net.esle.sinadura.gui.model;
 
 import java.util.List;
-import java.util.Map;
 
 import net.esle.sinadura.core.interpreter.SignatureInfo;
 
@@ -41,11 +40,6 @@ public class DocumentInfo {
 	 * Lista vacia si el documento no tiene ninguna firma
 	 */
 	private List<SignatureInfo> signatures;
-	
-	/**
-	 * propiedades adicionales (para el uso desde plugins) 
-	 */
-	private Map<String, Object> properties;
 	
 	
 	public DocumentInfo () {
@@ -83,14 +77,6 @@ public class DocumentInfo {
 
 	public String getMimeType() {
 		return mimeType;
-	}
-
-	public void setProperties(Map<String, Object> properties) {
-		this.properties = properties;
-	}
-
-	public Map<String, Object> getProperties() {
-		return properties;
 	}
 
 	@Override

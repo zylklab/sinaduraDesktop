@@ -76,7 +76,7 @@ public class SoftwareCertPreferences extends FieldEditorPreferencePage {
 			tempMap.put(name, PreferencesUtil.getSoftwarePreferences().get(name) );
 		}
 		
-		tempDefault = PreferencesUtil.getPreferences().getString(PreferencesUtil.SOFTWARE_DISPOSITIVE);
+		tempDefault = PreferencesUtil.getPreferenceStore().getString(PreferencesUtil.SOFTWARE_DISPOSITIVE);
 	}
 
 	@Override
@@ -185,7 +185,7 @@ public class SoftwareCertPreferences extends FieldEditorPreferencePage {
 		comboDefault = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
 		comboDefault.addSelectionListener(new ComboDefaultChangeListener());
 		reloadComboDefault();
-		comboDefault.setText(PreferencesUtil.getPreferences().getString("default.software.cert"));
+		comboDefault.setText(PreferencesUtil.getPreferenceStore().getString("default.software.cert"));
 	}
 	
 	private void reloadComboDefault() {
@@ -294,7 +294,7 @@ public class SoftwareCertPreferences extends FieldEditorPreferencePage {
 		if (comboDefault != null) {
 			
 			PreferencesUtil.saveSoftwarePreferences(tempMap);
-			PreferencesUtil.getPreferences().setValue(PreferencesUtil.SOFTWARE_DISPOSITIVE, comboDefault.getText());
+			PreferencesUtil.getPreferenceStore().setValue(PreferencesUtil.SOFTWARE_DISPOSITIVE, comboDefault.getText());
 		}
 	}
 	

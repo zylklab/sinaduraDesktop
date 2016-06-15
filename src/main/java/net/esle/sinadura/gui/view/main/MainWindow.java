@@ -149,7 +149,7 @@ public class MainWindow {
 
 			List<DocumentInfo> openWithDocuments = DocumentInfoUtil.fileToDocumentInfoFromUris(files);
 			// TODO duplicado
-			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
+			if (PreferencesUtil.getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
 
 				try {
 					ProgressMonitorDialog progressMonitorDialog = new ProgressMonitorDialog(panelPDF.getTablePDF().getShell());

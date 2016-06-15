@@ -44,6 +44,7 @@ import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.controller.SignController;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.LanguageUtil;
+import net.esle.sinadura.gui.util.PdfProfile;
 import net.esle.sinadura.gui.util.PropertiesUtil;
 
 public class SignProgress implements IRunnableWithProgress {
@@ -51,16 +52,17 @@ public class SignProgress implements IRunnableWithProgress {
 	private static Log log = LogFactory.getLog(SignProgress.class);
 
 	
-	private Shell parentShell = null;
-	
 	private List<DocumentInfo> pdfParameterList = null;
 	private KsSignaturePreferences ksSignaturePreferences;
+	private PdfProfile pdfProfile = null;
+	private Shell parentShell = null;
 	
 
-	public SignProgress(List<DocumentInfo> pdfParameterList, KsSignaturePreferences ksSignaturePreferences, Shell parentShell) {
+	public SignProgress(List<DocumentInfo> pdfParameterList, KsSignaturePreferences ksSignaturePreferences, PdfProfile pdfProfile, Shell parentShell) {
 
 		this.ksSignaturePreferences = ksSignaturePreferences;
 		this.pdfParameterList = pdfParameterList;
+		this.pdfProfile = pdfProfile;
 		this.parentShell = parentShell;
 	}
 
@@ -84,7 +86,7 @@ public class SignProgress implements IRunnableWithProgress {
 					monitor.beginTask(message, IProgressMonitor.UNKNOWN);
 
 					// firma
-					SignController.sign(pdfParameter, ksSignaturePreferences, parentShell);
+					SignController.sign(pdfParameter, ksSignaturePreferences, pdfProfile, parentShell);
 
 				} else {
 					throw new InterruptedException("The long running operation was cancelled");

@@ -66,7 +66,7 @@ public class FileDialogs {
 	public static String openFileDialog(Shell sShell, String[] extensions, boolean allFilter) {
 
 		FileDialog archivoDialog = new FileDialog(sShell, SWT.OPEN);
-		archivoDialog.setFilterPath(PreferencesUtil.getPreferences().getString(PreferencesUtil.FILEDIALOG_PATH));
+		archivoDialog.setFilterPath(PreferencesUtil.getString(PreferencesUtil.FILEDIALOG_PATH));
 		archivoDialog.setText(LanguageUtil.getLanguage().getString("open.dialog.title"));
 		
 		List<String> names = new ArrayList<String>();
@@ -85,8 +85,7 @@ public class FileDialogs {
 		archivoDialog.setFilterExtensions((String[]) extensionsList.toArray(new String[names.size()]));
 		
 		String selectedFile = archivoDialog.open();
-		PreferencesUtil.getPreferences().setValue(PreferencesUtil.FILEDIALOG_PATH, archivoDialog.getFilterPath());
-		PreferencesUtil.savePreferences();
+		PreferencesUtil.savePreference(PreferencesUtil.FILEDIALOG_PATH, archivoDialog.getFilterPath());
 		
 		if (selectedFile != null) {
 			File f = new File(selectedFile);
@@ -109,7 +108,7 @@ public class FileDialogs {
 	public static List<File> openFilesDialog(Shell sShell, String[] extensions, boolean allFilter) {
 
 		FileDialog archivoDialog = new FileDialog(sShell, SWT.MULTI);
-		archivoDialog.setFilterPath(PreferencesUtil.getPreferences().getString(PreferencesUtil.FILEDIALOG_PATH));
+		archivoDialog.setFilterPath(PreferencesUtil.getString(PreferencesUtil.FILEDIALOG_PATH));
 		archivoDialog.setText(LanguageUtil.getLanguage().getString("open.dialog.title"));
 		
 		List<String> names = new ArrayList<String>();
@@ -129,8 +128,7 @@ public class FileDialogs {
 		archivoDialog.setFilterExtensions((String[]) extensionsList.toArray(new String[names.size()]));
 		
 		String selectedFile = archivoDialog.open();
-		PreferencesUtil.getPreferences().setValue(PreferencesUtil.FILEDIALOG_PATH, archivoDialog.getFilterPath());
-		PreferencesUtil.savePreferences();
+		PreferencesUtil.savePreference(PreferencesUtil.FILEDIALOG_PATH, archivoDialog.getFilterPath());
 		
 		List<File> fileList = new ArrayList<File>();
 		if (selectedFile != null) {
@@ -149,15 +147,14 @@ public class FileDialogs {
 	public static List<File> openDirDialog(Shell sShell) {
 
 		DirectoryDialog dirDialog = new DirectoryDialog(sShell, SWT.OPEN);
-		dirDialog.setFilterPath(PreferencesUtil.getPreferences().getString(PreferencesUtil.FILEDIALOG_PATH));
+		dirDialog.setFilterPath(PreferencesUtil.getString(PreferencesUtil.FILEDIALOG_PATH));
 		dirDialog.setText(LanguageUtil.getLanguage().getString("open.dialog.title"));
 		String dir = dirDialog.open();
-		PreferencesUtil.getPreferences().setValue(PreferencesUtil.FILEDIALOG_PATH, dirDialog.getFilterPath());
-		PreferencesUtil.savePreferences();
+		PreferencesUtil.savePreference(PreferencesUtil.FILEDIALOG_PATH, dirDialog.getFilterPath());
 		
 		List<File> fileList = new ArrayList<File>();
 		
-		boolean addDirRecursive = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.ADD_DIR_RECURSIVE);
+		boolean addDirRecursive = PreferencesUtil.getBoolean(PreferencesUtil.ADD_DIR_RECURSIVE);
 		
 		if (dir != null) {
 			File dirFile = new File(dir);

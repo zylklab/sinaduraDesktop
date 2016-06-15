@@ -13,6 +13,7 @@ import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -93,18 +94,31 @@ public class CloudMainWindow {
 				ConfigVO config = serviceManager.getConfig();
 				log.info("config: " + config);
 				
-				String locale = config.getProperties().get("locale");
-				// TODO validar locale
-				
 				// Se sobreescriben en memoria las preferencias que asi lo requieran.
 				// Tendria mas sentido hacer una implementacion de lectura de preferencias alternativa.
-				// **********
+
+				
+				String localeConfig = config.getProperties().get("locale");
+
+				if (localeConfig != null) {
+					try {
+						
+						Locale locale = LanguageUtil.getLocale(localeConfig);
+						// en este caso quizas no sea necesario cambiar el valor de la preferencia en Runtime (con el
+						// reloadLanguage es sufiente), pero lo hago aun asi por si acaso.
+						PreferencesUtil.setRuntimePreference(PreferencesUtil.IDIOMA, locale.toString());
+						LanguageUtil.reloadLanguage(locale.toString());
+						
+					} catch (RuntimeException e) {
+						// si no se puede instanciar un locale es que el formato no es correto
+					}
+				}
+
 				// General
-				PreferencesUtil.getPreferences().setValue(PreferencesUtil.IDIOMA, locale);
-				PreferencesUtil.getPreferences().setValue(PreferencesUtil.OUTPUT_AUTO_ENABLE, true);
-				PreferencesUtil.getPreferences().setValue(PreferencesUtil.AUTO_VALIDATE, false);
+				PreferencesUtil.setRuntimePreference(PreferencesUtil.OUTPUT_AUTO_ENABLE, true);
+				PreferencesUtil.setRuntimePreference(PreferencesUtil.AUTO_VALIDATE, false);
 				// Xades
-				PreferencesUtil.getPreferences().setValue(PreferencesUtil.XADES_ARCHIVE, false);
+				PreferencesUtil.setRuntimePreference(PreferencesUtil.XADES_ARCHIVE, false);
 				// Pdf
 				// TODO revisar. No se si tiene sentido sobreescribir estos valores. De momento los pongo a "true" por defecto en la instalacion.
 //				Map<String, PdfProfile> availableProfiles = PreferencesUtil.getPdfProfiles();
@@ -112,8 +126,7 @@ public class CloudMainWindow {
 //				defaultPdfProfile.setAskPosition(true); 
 //				defaultPdfProfile.setAskProperties(true); // este no tiene sentido ponerlo siempre a true
 
-				// reload language
-				LanguageUtil.reloadLanguage();
+
 				
 				
 				// INPUTS				

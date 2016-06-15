@@ -55,6 +55,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import net.esle.sinadura.core.certificate.CertificateUtil;
@@ -71,6 +72,7 @@ import net.esle.sinadura.core.exceptions.RevokedException;
 import net.esle.sinadura.core.keystore.KeyStoreBuilderFactory;
 import net.esle.sinadura.core.model.KsSignaturePreferences;
 import net.esle.sinadura.core.util.ExceptionUtil;
+import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.events.LoadKeyStoreProgress;
 import net.esle.sinadura.gui.events.LoadSlotProgress;
 import net.esle.sinadura.gui.events.SignProgress;
@@ -80,6 +82,7 @@ import net.esle.sinadura.gui.exceptions.SignProgressInterruptedException;
 import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.LoggingDesktopController;
+import net.esle.sinadura.gui.util.PdfProfile;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.StatisticsUtil;
 import net.esle.sinadura.gui.view.main.AliasDialog;
@@ -109,7 +112,7 @@ public class SignControllerHelper {
 			try {
 		
 				// DIALOGO PARA IDENTIFICAR EL TIPO DE CERTIFICADO A UTILIZAR (la config)
-				if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.CERT_TYPE_ASK)) {
+				if (PreferencesUtil.getBoolean(PreferencesUtil.CERT_TYPE_ASK)) {
 					
 					// preguntar al usuario el tipo de certificado
 					CertSelectorRuntimePreferencesDialog csrpd = new CertSelectorRuntimePreferencesDialog(shell);
@@ -120,13 +123,15 @@ public class SignControllerHelper {
 						certPath = csrpd.getCertPath();
 						
 					} else {
-						// cancelar
-						throw new InterruptedException();
+						String m = LanguageUtil.getLanguage().getString("error.operacion_cancelada");
+						log.error(m);
+						LoggingDesktopController.printError(m);
+						throw new SignProgressInterruptedException();
 					}
 				
 				} else {
 					
-					certType = PreferencesUtil.getPreferences().getString(PreferencesUtil.CERT_TYPE);
+					certType = PreferencesUtil.getString(PreferencesUtil.CERT_TYPE);
 	
 					if (certType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_HARDWARE)) {
 	
@@ -135,7 +140,7 @@ public class SignControllerHelper {
 					} else if (certType.equalsIgnoreCase(PreferencesUtil.CERT_TYPE_VALUE_SOFTWARE)) {
 	
 						certPath = PreferencesUtil.getSoftwarePreferences().get(
-								PreferencesUtil.getPreferences().getString(PreferencesUtil.SOFTWARE_DISPOSITIVE));
+								PreferencesUtil.getString(PreferencesUtil.SOFTWARE_DISPOSITIVE));
 					}
 				}
 				
@@ -144,14 +149,7 @@ public class SignControllerHelper {
 				String m = LanguageUtil.getLanguage().getString("error.drivers.no_encontrados");
 				log.error(m);
 				LoggingDesktopController.printError(m);
-				throw new SignProgressInterruptedException();
-				
-			} catch (InterruptedException e) {
-
-				String m = LanguageUtil.getLanguage().getString("error.operacion_cancelada");
-				log.error(m);
-				LoggingDesktopController.printError(m);
-				throw new SignProgressInterruptedException();
+				throw new SignProgressInterruptedException();	
 			}
 			
 			// SLOT
@@ -398,12 +396,47 @@ public class SignControllerHelper {
 				log.error("", e);
 			}
 
+			
+			
+			//=======================================
+			// Ask PDF profile
+			//=======================================
+			boolean findPdf = false;
+			for (DocumentInfo pdfParameter : list) {
+				if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_PDF)) {
+					findPdf = true;
+				}
+			}
+			
+			// ASK PROPERTIES
+			PdfProfile pdfProfile = null;
+			if (findPdf) { // si hay algun PDF
+				
+				Map<String, PdfProfile> availableProfiles = PreferencesUtil.getPdfProfiles();
+				PdfProfile defaultPdfProfile = availableProfiles.get(PreferencesUtil.getString(PreferencesUtil.PDF_PROFILE_SELECTED_NAME));
+				
+				if (true) { // TODO ahora hay que añadir otra preferencia
+					
+					PdfSignaturePropertiesRunnable pspr = new PdfSignaturePropertiesRunnable(shell, defaultPdfProfile);
+					Display.getDefault().syncExec(pspr);
+					
+					if (pspr.getPdfProfile() != null) {
+						pdfProfile = pspr.getPdfProfile();
+					} else {
+						String m = LanguageUtil.getLanguage().getString("error.operacion_cancelada");
+						log.error(m);
+						LoggingDesktopController.printError(m);
+						throw new SignProgressInterruptedException();
+					}
+				}
+			}
+			
 			//=======================================
 			// firmamos
 			//=======================================
 			try {
 				ProgressMonitorDialog signProgress = new ProgressMonitorDialog(shell);
-				signProgress.run(true, true, new SignProgress(list, ksSignaturePreferences, shell));
+				signProgress.run(true, true, new SignProgress(list, ksSignaturePreferences, pdfProfile, shell));
 
 			} catch (InvocationTargetException e) {
 

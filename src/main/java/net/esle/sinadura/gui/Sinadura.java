@@ -84,9 +84,9 @@ public class Sinadura {
 	public static void main(String[] args) throws FileNotValidException, FileSystemException, MalformedURIException {
 		
 		// TODO BORRAR ESTO
-//		String token = "41746ccb-9c4d-433c-971b-ce92004b89a1";
+//		String token = "57912ec2-96ab-47d9-bda7-6b383cf484ed";
 ////		args = new String[] {"sinadura://localhost:8080/sinaduraCloud/rest/api/v1/h/" + token};
-//		args = new String[] {"sinadura://alf4.zylk.net:8080/sinaduraCloud/rest/api/v1/h/" + token};
+//		args = new String[] {"sinadura://faut.zylk.net:8080/sinaduraCloud/rest/api/v1/h/" + token};
 		
 		try {
 			
@@ -139,7 +139,7 @@ public class Sinadura {
 			e.printStackTrace();
 			String message = e.getMessage();
 			if (message.equals("Cannot load 64-bit SWT libraries on 32-bit JVM")) {
-				message = "You have the 32 bits version of Java installed, and this is the 64 bits version of Sinadura.\nTry installing the 32 bits version.";
+				message = "You have the 32 bits version of Java installed, and this is the 64 bits version of Sinadura.\nTry installing the 32 bits version of Sinadura.";
 			}
 			JOptionPane.showMessageDialog(null, message, "Sinadura", JOptionPane.ERROR_MESSAGE);
 			

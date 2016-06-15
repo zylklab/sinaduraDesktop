@@ -32,12 +32,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import net.esle.sinadura.core.util.KeystoreUtil;
-import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
 
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
@@ -46,7 +44,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.util.Os;
 import org.eclipse.jface.preference.PreferenceStore;
 
-import com.itextpdf.text.pdf.PdfSignatureAppearance;
+import net.esle.sinadura.core.util.KeystoreUtil;
+import net.esle.sinadura.gui.exceptions.DriversNotFoundException;
+
 
 
 public class PreferencesUtil {
@@ -151,7 +151,8 @@ public class PreferencesUtil {
 	
 	
 	// STATIC ATRIBUTES
-	private static PreferenceStore preferences = null;
+	private static PreferenceStore preferenceStore = null;
+	private static Map<String, String> preferencesRuntime = new HashMap<String, String>();
 	private static Map<String, PdfProfile> pdfProfiles = null;
 	private static Map<String, String> softwarePrefs = null;
 	private static Map<String, HardwareItem> hardwarePrefs = null;
@@ -269,76 +270,76 @@ public class PreferencesUtil {
 		
 	}
 	
-	public static PreferenceStore getPreferences() {
+	public static PreferenceStore getPreferenceStore() {
 
-		if (preferences == null) {
+		if (preferenceStore == null) {
 			
 			try {
-				preferences = new PreferenceStore(PATH_USER_PREFERENCES_MAIN);
-				preferences.load();
+				preferenceStore = new PreferenceStore(PATH_USER_PREFERENCES_MAIN);
+				preferenceStore.load();
 
 				// VALORES POR DEFECTO
 				
 				// General
-				preferences.setDefault(IDIOMA, PreferencesDefaultUtil.get(IDIOMA));
-				preferences.setDefault(OUTPUT_AUTO_ENABLE,PreferencesDefaultUtil.get(OUTPUT_AUTO_ENABLE)); // "true");
-				preferences.setDefault(OUTPUT_DIR, System.getProperty(USER_HOME)); // esta necesita definirse en runtime
+				preferenceStore.setDefault(IDIOMA, PreferencesDefaultUtil.get(IDIOMA));
+				preferenceStore.setDefault(OUTPUT_AUTO_ENABLE,PreferencesDefaultUtil.get(OUTPUT_AUTO_ENABLE)); // "true");
+				preferenceStore.setDefault(OUTPUT_DIR, System.getProperty(USER_HOME)); // esta necesita definirse en runtime
 				/*
 				 * "-signed" - sinadura
 				 * ""  		 - parlamento
 				 */
-				preferences.setDefault(SAVE_EXTENSION, PreferencesDefaultUtil.get(SAVE_EXTENSION));
-				preferences.setDefault(AUTO_VALIDATE, PreferencesDefaultUtil.get(AUTO_VALIDATE)); //"true");
-				preferences.setDefault(ADD_DIR_RECURSIVE, PreferencesDefaultUtil.get(ADD_DIR_RECURSIVE)); //"false");
-				preferences.setDefault(ENABLE_STATISTICS, PreferencesDefaultUtil.get(ENABLE_STATISTICS)); //"true");
+				preferenceStore.setDefault(SAVE_EXTENSION, PreferencesDefaultUtil.get(SAVE_EXTENSION));
+				preferenceStore.setDefault(AUTO_VALIDATE, PreferencesDefaultUtil.get(AUTO_VALIDATE)); //"true");
+				preferenceStore.setDefault(ADD_DIR_RECURSIVE, PreferencesDefaultUtil.get(ADD_DIR_RECURSIVE)); //"false");
+				preferenceStore.setDefault(ENABLE_STATISTICS, PreferencesDefaultUtil.get(ENABLE_STATISTICS)); //"true");
 				
 				// Proxy
-				preferences.setDefault(PROXY_USER, PreferencesDefaultUtil.get(PROXY_USER)); //"");
-				preferences.setDefault(PROXY_PASS, PreferencesDefaultUtil.get(PROXY_PASS)); //"");
-				preferences.setDefault(PROXY_SYSTEM, PreferencesDefaultUtil.get(PROXY_SYSTEM)); //"true");
+				preferenceStore.setDefault(PROXY_USER, PreferencesDefaultUtil.get(PROXY_USER)); //"");
+				preferenceStore.setDefault(PROXY_PASS, PreferencesDefaultUtil.get(PROXY_PASS)); //"");
+				preferenceStore.setDefault(PROXY_SYSTEM, PreferencesDefaultUtil.get(PROXY_SYSTEM)); //"true");
 				
 				// Sign
-				preferences.setDefault(SIGN_TS_ENABLE, PreferencesDefaultUtil.get(SIGN_TS_ENABLE)); //"true");
-				preferences.setDefault(SIGN_TS_TSA, PreferencesDefaultUtil.get(SIGN_TS_TSA)); //"izenpe");
-				preferences.setDefault(SIGN_OCSP_ENABLE, PreferencesDefaultUtil.get(SIGN_OCSP_ENABLE)); //"true");
+				preferenceStore.setDefault(SIGN_TS_ENABLE, PreferencesDefaultUtil.get(SIGN_TS_ENABLE)); //"true");
+				preferenceStore.setDefault(SIGN_TS_TSA, PreferencesDefaultUtil.get(SIGN_TS_TSA)); //"izenpe");
+				preferenceStore.setDefault(SIGN_OCSP_ENABLE, PreferencesDefaultUtil.get(SIGN_OCSP_ENABLE)); //"true");
 
 				// Certificado
-				preferences.setDefault(APLICAR_PREFERENCIAS_USAGE_CERT, PreferencesDefaultUtil.get(APLICAR_PREFERENCIAS_USAGE_CERT)); //true);
+				preferenceStore.setDefault(APLICAR_PREFERENCIAS_USAGE_CERT, PreferencesDefaultUtil.get(APLICAR_PREFERENCIAS_USAGE_CERT)); //true);
 				
 				// Pdf
 				/*
 				 * 0 (pdf) - sinadura
 				 * 1 (xml) - parlamento
 				 */
-				preferences.setDefault(PDF_TIPO, PreferencesDefaultUtil.get(PDF_TIPO));
-				preferences.setDefault(PDF_PROFILE_SELECTED_NAME, PDF_PROFILE_DEFAULT_NAME);
+				preferenceStore.setDefault(PDF_TIPO, PreferencesDefaultUtil.get(PDF_TIPO));
+				preferenceStore.setDefault(PDF_PROFILE_SELECTED_NAME, PDF_PROFILE_DEFAULT_NAME);
 				
 				
 				// xades
-				preferences.setDefault(XADES_ARCHIVE, PreferencesDefaultUtil.get(XADES_ARCHIVE)); //"true");
-				preferences.setDefault(XADES_XL_OCSP_ADD_ALL, PreferencesDefaultUtil.get(XADES_XL_OCSP_ADD_ALL)); //"true");
-				preferences.setDefault(XADES_VALIDATOR_IMPL, PreferencesDefaultUtil.get(XADES_VALIDATOR_IMPL));
+				preferenceStore.setDefault(XADES_ARCHIVE, PreferencesDefaultUtil.get(XADES_ARCHIVE)); //"true");
+				preferenceStore.setDefault(XADES_XL_OCSP_ADD_ALL, PreferencesDefaultUtil.get(XADES_XL_OCSP_ADD_ALL)); //"true");
+				preferenceStore.setDefault(XADES_VALIDATOR_IMPL, PreferencesDefaultUtil.get(XADES_VALIDATOR_IMPL));
 				
 				// validation
-				preferences.setDefault(VALIDATION_CHECK_REVOCATION, PreferencesDefaultUtil.get(VALIDATION_CHECK_REVOCATION)); //"true");
-				preferences.setDefault(VALIDATION_CHECK_POLICY, PreferencesDefaultUtil.get(VALIDATION_CHECK_POLICY)); //"true");
-				preferences.setDefault(VALIDATION_CHECK_NODE_NAME, PreferencesDefaultUtil.get(VALIDATION_CHECK_NODE_NAME)); //"true");
+				preferenceStore.setDefault(VALIDATION_CHECK_REVOCATION, PreferencesDefaultUtil.get(VALIDATION_CHECK_REVOCATION)); //"true");
+				preferenceStore.setDefault(VALIDATION_CHECK_POLICY, PreferencesDefaultUtil.get(VALIDATION_CHECK_POLICY)); //"true");
+				preferenceStore.setDefault(VALIDATION_CHECK_NODE_NAME, PreferencesDefaultUtil.get(VALIDATION_CHECK_NODE_NAME)); //"true");
 				
 				// carga de certificado
 				if (Os.isFamily(Os.OS_FAMILY_WINDOWS.getName())) { 
 					// estas necesitan definirse en runtime
-					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_MSCAPI);
-					preferences.setDefault(CERT_TYPE_ASK, false);
+					preferenceStore.setDefault(CERT_TYPE, CERT_TYPE_VALUE_MSCAPI);
+					preferenceStore.setDefault(CERT_TYPE_ASK, false);
 					
 				} else {
-					preferences.setDefault(CERT_TYPE, CERT_TYPE_VALUE_HARDWARE);
-					preferences.setDefault(CERT_TYPE_ASK, true);
+					preferenceStore.setDefault(CERT_TYPE, CERT_TYPE_VALUE_HARDWARE);
+					preferenceStore.setDefault(CERT_TYPE_ASK, true);
 				}
 
-				preferences.setDefault(HARDWARE_DISPOSITIVE, PreferencesDefaultUtil.get(HARDWARE_DISPOSITIVE)); //"izenpe");
+				preferenceStore.setDefault(HARDWARE_DISPOSITIVE, PreferencesDefaultUtil.get(HARDWARE_DISPOSITIVE)); //"izenpe");
 				
 				// FileDialogs path
-				preferences.setDefault(FILEDIALOG_PATH, System.getProperty(USER_HOME)); // esta necesita definirse en runtime
+				preferenceStore.setDefault(FILEDIALOG_PATH, System.getProperty(USER_HOME)); // esta necesita definirse en runtime
 				
 			} catch (IOException e) {
 				
@@ -346,29 +347,66 @@ public class PreferencesUtil {
 			}
 		}
 		
-		return preferences;
+		return preferenceStore;
 	}
 	
 	
-	public static void savePreferences() {
 	
-		// En modo Cloud, se deshabilita la persistencia del fichero general de preferencias.
-		// Esto es debido a que en el inicio de la aplicacion en modo Cloud, se sobreescriben algunas propiedades en "memoria", pero realmente no quieren persistir.
-		// Y como en determinados puntos de Sindura se hace despues un Save, si no se hace esto. se terminarian persitienendo. 
-		// Lo ideal seria mejorar el sistema de preferencias para contemplar esto. Por ejemplo, hacer una interfaz, para que pueda haber una
-		// implementeacion especifica en modo Cloud, pero de momento se queda así. 
-		// 
-		// * Hay que tener en cuenta que ademas de este save, el sistema de preferencias de SWT gestiona tambien la persistencia de este fichero.
-		// Pero como en modo Cloud no se pueden acceder a las GUI de las preferencias, no hay problema en ese aspecto.
-		// Realmente este metodo unicamente se invoca desde el save del path del dialogo del FileChooser.
-		boolean cloudMode = PropertiesUtil.getBoolean(PropertiesUtil.SINADURA_CLOUD_MODE);
+	/**
+	 * NO utilizar este metodo desde la configuracion de las preferencias, ya que persistiria el valor de runtime (ver metodo setRuntimePreference).
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public static String getString(String key) {
 		
-		if (!cloudMode) {
-			try {
-				preferences.save();
-			} catch (IOException e) {
-				log.error("", e);
-			}
+		if (preferencesRuntime.containsKey(key)) {
+			return preferencesRuntime.get(key);
+		} else {
+			return getPreferenceStore().getString(key);
+		}	
+	}
+	
+	/**
+	 * NO utilizar este metodo desde la configuracion de las preferencias, ya que persistiria el valor de runtime (ver metodo setRuntimePreference).
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public static Boolean getBoolean(String key) {
+		
+		if (preferencesRuntime.containsKey(key)) {
+			return Boolean.valueOf(preferencesRuntime.get(key));
+		} else {
+			return getPreferenceStore().getBoolean(key);
+		}		
+	}
+	
+	/**
+	 * Este metodo sobreescribe el valor de una preferencia para toda la ejecucion del proceso. Este valor no se persiste en
+	 * fichero. Es para poder sobreescribir valores en el modo Cloud.
+	 * 
+	 * @param key
+	 * @param value
+	 */
+	public static void setRuntimePreference(String key, String value) {
+		
+		preferencesRuntime.put(key, value);
+	}
+	
+	public static void setRuntimePreference(String key, boolean value) {
+		
+		preferencesRuntime.put(key, String.valueOf(value));
+	}
+	
+	
+	public static void savePreference(String key, String value) {
+	
+		try {
+			getPreferenceStore().setValue(key, value);
+			getPreferenceStore().save();
+		} catch (IOException e) {
+			log.error("", e);
 		}
 		
 	}
@@ -379,7 +417,7 @@ public class PreferencesUtil {
 		
 		if (map != null && map.size() > 0) {
 		
-			HardwareItem driver = map.get(PreferencesUtil.getPreferences().getString(PreferencesUtil.HARDWARE_DISPOSITIVE));
+			HardwareItem driver = map.get(PreferencesUtil.getString(PreferencesUtil.HARDWARE_DISPOSITIVE));
 			if (driver == null || driver.equals("")) {
 				// sino devolver el primero
 				driver = map.values().iterator().next();
@@ -392,7 +430,6 @@ public class PreferencesUtil {
 		}
 	}
 
-	
 	
 	public static Map<String, HardwareItem> getHardwarePreferences() {
 
@@ -558,7 +595,8 @@ public class PreferencesUtil {
 		List<List<String>> array = new ArrayList<List<String>>();
 		
 		// header
-		array.add(Arrays.asList("name", "properties.ask", "visible", "stamp.ask", "stamp.enable", "stamp.path", "stamp.width", "stamp.height", "stamp.x", "stamp.y", "page", "certified", "acrofield", "reason", "location"));
+		array.add(Arrays.asList("name", "properties.ask", "visible", "stamp.ask", "stamp.enable", "stamp.path", "stamp.width",
+				"stamp.height", "stamp.x", "stamp.y", "page", "certified", "acrofield", "reason", "location"));
 		
 		// rows
 		List<String> fila;
@@ -729,14 +767,14 @@ public class PreferencesUtil {
 	public static String getOutputName(String name) {
 		
 		return (name.substring(0, name.lastIndexOf("."))
-				+ PreferencesUtil.getPreferences().getString(PreferencesUtil.SAVE_EXTENSION));	
+				+ PreferencesUtil.getString(PreferencesUtil.SAVE_EXTENSION));	
 	}
 	
 	public static String getOutputNameFromCompletePath(String name) 
 	{
 //		String name2 = name.substring(name.lastIndexOf(File.separatorChar)+1, name.length());
 		String name2 = name.substring(name.lastIndexOf("/")+1, name.length());
-		String sufijo = PreferencesUtil.getPreferences().getString(PreferencesUtil.SAVE_EXTENSION);
+		String sufijo = PreferencesUtil.getString(PreferencesUtil.SAVE_EXTENSION);
 		
 		name2 = (name2.substring(0, name2.lastIndexOf("."))) + sufijo;
 		return 	name2;
@@ -744,21 +782,21 @@ public class PreferencesUtil {
 	
 	public static String getOutputDir(File file) {
 		
-		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.OUTPUT_AUTO_ENABLE)) {
+		if (PreferencesUtil.getBoolean(PreferencesUtil.OUTPUT_AUTO_ENABLE)) {
 			return file.getParentFile().getPath();
 		} else {
-			return PreferencesUtil.getPreferences().getString(PreferencesUtil.OUTPUT_DIR);
+			return PreferencesUtil.getString(PreferencesUtil.OUTPUT_DIR);
 		}
 	}
 	
 	public static String getOutputDir(String filePath) {
 		
-		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.OUTPUT_AUTO_ENABLE)) 
+		if (PreferencesUtil.getBoolean(PreferencesUtil.OUTPUT_AUTO_ENABLE)) 
 		{
 			return filePath.substring(0, filePath.lastIndexOf("/"));
 //			return filePath.substring(0, filePath.lastIndexOf(File.separatorChar));	
 		} else {
-			return PreferencesUtil.getPreferences().getString(PreferencesUtil.OUTPUT_DIR);
+			return PreferencesUtil.getString(PreferencesUtil.OUTPUT_DIR);
 		}
 	}
 	

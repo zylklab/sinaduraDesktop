@@ -86,7 +86,7 @@ public class SignPreferences extends FieldEditorPreferencePage {
 							// instante. Unicamente habria que editar el valor del check y dejar que el gestor de preferencias
 							// la persista al pulsar el boton aceptar. Pero como ahora mismo no se como se setea el valor lo dejo
 							// como esta.
-							PreferencesUtil.getPreferences().setValue(PreferencesUtil.SIGN_OCSP_ENABLE, false);
+							PreferencesUtil.getPreferenceStore().setValue(PreferencesUtil.SIGN_OCSP_ENABLE, false);
 							checkOCSP.load();
 							/////
 						} else {
@@ -129,7 +129,7 @@ public class SignPreferences extends FieldEditorPreferencePage {
 			this.checkOCSP = new BooleanFieldEditor(PreferencesUtil.SIGN_OCSP_ENABLE, LanguageUtil.getLanguage().getString(
 					"preferences.sign.ocsp.enable"), getFieldEditorParent());
 			
-			boolean tsSelected = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE);
+			boolean tsSelected = PreferencesUtil.getPreferenceStore().getBoolean(PreferencesUtil.SIGN_TS_ENABLE);
 			if (!tsSelected) {
 				this.checkOCSP.setEnabled(false, getFieldEditorParent());
 			} else {

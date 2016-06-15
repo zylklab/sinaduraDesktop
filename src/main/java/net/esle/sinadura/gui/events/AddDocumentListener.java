@@ -65,7 +65,7 @@ public class AddDocumentListener implements SelectionListener {
 			newDocs = DocumentInfoUtil.fileToDocumentInfo(fileList);
 
 			// TODO duplicado
-			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
+			if (PreferencesUtil.getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
 				
 				ProgressMonitorDialog progressMonitorDialog = new ProgressMonitorDialog(this.tableDocument.getShell());
 				progressMonitorDialog.run(true, true, new ValidatePDFProgress(newDocs));

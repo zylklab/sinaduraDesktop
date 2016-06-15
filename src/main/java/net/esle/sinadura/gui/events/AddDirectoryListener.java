@@ -62,7 +62,7 @@ public class AddDirectoryListener implements SelectionListener {
 			newDocs = DocumentInfoUtil.fileToDocumentInfo(fileList);
 
 			// TODO duplicado dónde? U.n
-			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
+			if (PreferencesUtil.getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
 				
 				ProgressMonitorDialog progressMonitorDialog = new ProgressMonitorDialog(this.tableDocument.getShell());
 				progressMonitorDialog.run(true, true, new ValidatePDFProgress(newDocs));

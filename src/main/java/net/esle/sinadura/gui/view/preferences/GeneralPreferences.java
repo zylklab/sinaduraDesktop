@@ -146,7 +146,7 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 					.getLanguage().getString("preferences.main.output_dir"), getFieldEditorParent());
 			addField(outputDir2);
 			
-			if (PreferencesUtil.getPreferences().getString(PreferencesUtil.OUTPUT_AUTO_ENABLE).equals("true")) {
+			if (PreferencesUtil.getPreferenceStore().getString(PreferencesUtil.OUTPUT_AUTO_ENABLE).equals("true")) {
 				outputDir2.setEnabled(false, getFieldEditorParent());
 			} else {
 				outputDir2.setEnabled(true, getFieldEditorParent());
@@ -197,7 +197,7 @@ public class GeneralPreferences extends FieldEditorPreferencePage {
 	@Override
 	public boolean performOk() {
 		boolean ok = super.performOk();
-		LanguageUtil.reloadLanguage();
+		LanguageUtil.reloadLanguage(PreferencesUtil.getString(PreferencesUtil.IDIOMA));
 		return ok;
 	}
 }

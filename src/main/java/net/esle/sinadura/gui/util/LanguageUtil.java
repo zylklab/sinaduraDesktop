@@ -38,22 +38,19 @@ public class LanguageUtil {
 	
 	private static ResourceBundle language;
 	
+	
 	public static ResourceBundle getLanguage() {
 
 		if (language == null) {
-			reloadLanguage();
+			String languageId = PreferencesUtil.getString(PreferencesUtil.IDIOMA);
+			reloadLanguage(languageId);
 		}
 		return language;
 	}
 	
-	public static void reloadLanguage() {
+	public static void reloadLanguage(String languageId) {
 
-		StringTokenizer tokenizerIdiomaValue = new StringTokenizer(PreferencesUtil.getPreferences().getString("idioma"), "_");
-		
-		String idioma = (String) tokenizerIdiomaValue.nextElement();
-		String pais = (String) tokenizerIdiomaValue.nextElement();
-
-		Locale currentLocale = new Locale(idioma, pais);
+		Locale currentLocale = getLocale(languageId);
 		
 		Locale.setDefault(currentLocale);
 		
@@ -61,8 +58,21 @@ public class LanguageUtil {
 		net.esle.sinadura.core.util.LanguageUtil.reloadLocale(currentLocale);
 		
 		language = ResourceBundle.getBundle(LANGUAGE_FILE_PATH, currentLocale);
-
 	}
+	
+	
+	public static Locale getLocale(String languageId) {
+	
+		StringTokenizer tokenizerIdiomaValue = new StringTokenizer(languageId, "_");
+		
+		String idioma = (String) tokenizerIdiomaValue.nextElement();
+		String pais = (String) tokenizerIdiomaValue.nextElement();
+
+		Locale locale = new Locale(idioma, pais);
+		
+		return locale; 
+	}
+	
 
 	public static SimpleDateFormat getShortFormater() {
 

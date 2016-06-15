@@ -144,7 +144,7 @@ public class PreferencesManager {
 		PreferenceDialog dlg = new PreferenceDialog(mainShell, mgr);
 
 		// Set the preference store
-		PreferenceStore ps = PreferencesUtil.getPreferences();
+		PreferenceStore ps = PreferencesUtil.getPreferenceStore();
 
 		try {
 			ps.load();

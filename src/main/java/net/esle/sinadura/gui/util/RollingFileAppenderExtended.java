@@ -53,7 +53,7 @@ public class RollingFileAppenderExtended extends RollingFileAppender {
 
 	@Override
 	public void rollOver() {
-		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.ENABLE_STATISTICS)) {
+		if (PreferencesUtil.getBoolean(PreferencesUtil.ENABLE_STATISTICS)) {
 			send();
 		}
 		super.rollOver();

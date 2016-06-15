@@ -28,11 +28,11 @@ public class LoadingOperations {
 		
 		// ee (proxy)
 		boolean proxyEnabled = Boolean.valueOf(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.PROXY_ENABLED));
-		if (proxyEnabled && PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
+		if (proxyEnabled && PreferencesUtil.getBoolean(PreferencesUtil.PROXY_SYSTEM)) {
 			try {
 				ProxyEEModule proxyUtil = EEModulesManager.getProxyModule();
-				proxyUtil.configureProxy(PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_USER), PreferencesUtil
-						.getPreferences().getString(PreferencesUtil.PROXY_PASS));
+				proxyUtil.configureProxy(PreferencesUtil.getString(PreferencesUtil.PROXY_USER),
+						PreferencesUtil.getString(PreferencesUtil.PROXY_PASS));
 
 			} catch (EEModuleNotFoundException e) {
 				listMessages.add(new LoggerMessage(Level.INFO, MessageFormat.format(

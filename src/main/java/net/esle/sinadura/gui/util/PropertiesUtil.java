@@ -177,7 +177,7 @@ public class PropertiesUtil {
 	
 	
 	/**
-	 * Solo para sobreescribir propiedades en memoria
+	 * Solo para sobreescribir propiedades en memoria (no se persisten)
 	 * 
 	 */
 	public static void set(String key, String value) {

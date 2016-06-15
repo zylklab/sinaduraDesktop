@@ -124,6 +124,7 @@ import net.esle.sinadura.gui.util.StatisticsUtil;
 public class SignController {
 
 	private static final Log log = LogFactory.getLog(SignController.class);
+	
 
 	public static Map<String, Long> loadSlot(String certificadoType, String certificadoPath) throws NoSuchAlgorithmException, KeyStoreException, PKCS11Exception,
 			CoreException, CorePKCS12Exception, DriversNotFoundException {
@@ -217,7 +218,7 @@ public class SignController {
 
 		// clasificamos los certificados en base a la selección de preferencias
 		//--------------
-		boolean aplicarPreferencias = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.APLICAR_PREFERENCIAS_USAGE_CERT);
+		boolean aplicarPreferencias = PreferencesUtil.getBoolean(PreferencesUtil.APLICAR_PREFERENCIAS_USAGE_CERT);
 		
 		List<String> certificadosNonRepudiation = new ArrayList<String>();
 		List<String> certificadosDigitalSignature = new ArrayList<String>();
@@ -278,7 +279,7 @@ public class SignController {
 		}
 	}
 
-	public static void sign(DocumentInfo pdfParameter, KsSignaturePreferences ksSignaturePreferences, Shell sShell) throws OCSPCoreException,
+	public static void sign(DocumentInfo pdfParameter, KsSignaturePreferences ksSignaturePreferences, PdfProfile pdfProfile, Shell sShell) throws OCSPCoreException,
 			RevokedException, ConnectionException, CertificateExpiredException, CertificateNotYetValidException,
 			OCSPIssuerRequiredException, OCSPUnknownUrlException, InterruptedException {
 
@@ -292,15 +293,15 @@ public class SignController {
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_DOCUMENT_SIZE, new File(pdfParameter.getPath()).length() + "");
 			log.info("size del documento: " + new File(pdfParameter.getPath()).length() + "");
 
-			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_TSA, PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE)
+			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_TSA, PreferencesUtil.getBoolean(PreferencesUtil.SIGN_TS_ENABLE)
 					+ "");
-			log.info("tsa enable: " + PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE)
+			log.info("tsa enable: " + PreferencesUtil.getBoolean(PreferencesUtil.SIGN_TS_ENABLE)
 					+ "");
 
 			// firma
 			if (pdfParameter.getMimeType() != null && pdfParameter.getMimeType().equals(FileUtil.MIMETYPE_PDF)) {
 				
-				if (PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_TIPO).equals(PreferencesUtil.PDF_TIPO_XML)) {
+				if (PreferencesUtil.getString(PreferencesUtil.PDF_TIPO).equals(PreferencesUtil.PDF_TIPO_XML)) {
 					signXades(pdfParameter, ksSignaturePreferences);
 					
 				}else{
@@ -309,7 +310,7 @@ public class SignController {
 					
 					while (!successfullySigned) {
 						try {
-							signPDF(pdfParameter, ksSignaturePreferences, ownerPassword, sShell);
+							signPDF(pdfParameter, ksSignaturePreferences, pdfProfile, ownerPassword, sShell);
 							successfullySigned = true;
 							
 						} catch (BadPasswordException e) {
@@ -364,22 +365,19 @@ public class SignController {
 	}
 	
 
-	private static void signPDF(DocumentInfo pdfParameter, KsSignaturePreferences ksSignaturePreferences, PasswordProtection ownerPassword, Shell sShell) throws OCSPCoreException,
+	private static void signPDF(DocumentInfo pdfParameter, KsSignaturePreferences ksSignaturePreferences, PdfProfile pdfProfile, PasswordProtection ownerPassword, Shell sShell) throws OCSPCoreException,
 			RevokedException, OverwritingException, ConnectionException, IOException, CertificateExpiredException,
 			CertificateNotYetValidException, OCSPIssuerRequiredException, OCSPUnknownUrlException, InterruptedException {
 		
 		try {
 			
 			Map<String, PdfProfile> availableProfiles = PreferencesUtil.getPdfProfiles();
-			PdfProfile defaultPdfProfile = availableProfiles.get(PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_PROFILE_SELECTED_NAME));
 			
 			// map por acrofield para simplificar la logica --> preferencias
 			Map<String, PdfProfile> availableProfilesMap = new HashMap<String, PdfProfile>();
 			for (PdfProfile p : availableProfiles.values()) {
 				availableProfilesMap.put(p.getAcroField(), p);
 			}
-			
-			PdfProfile pdfProfile = defaultPdfProfile;
 			
 			// 1- seleccion del hueco
 			String signatureName = null;
@@ -439,20 +437,6 @@ public class SignController {
 				PdfProfile resolutionPdfProfile = availableProfilesMap.get(signatureName);
 				if (resolutionPdfProfile != null) {
 					pdfProfile = resolutionPdfProfile;
-				}
-			}
-			
-			// ASK PROPERTIES
-			if (pdfProfile.getAskProperties()) {
-				
-				PdfSignaturePropertiesRunnable pspr = new PdfSignaturePropertiesRunnable(sShell, pdfProfile);
-				Display.getDefault().syncExec(pspr);
-				
-				if (pspr.getPdfProfile() != null) {
-					pdfProfile = pspr.getPdfProfile();
-				} else {
-					// interrumped exception (cancelar)
-					throw new InterruptedException();
 				}
 			}
 			
@@ -528,16 +512,16 @@ public class SignController {
 			
 			String tsurl = null;
 			String tsaOcspUrl = null; // en la firma de PDF este dato no es necesario, pero lo añado igualmente.
-			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE) == true) {
-				tsurl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA)).getUrl();
-				tsaOcspUrl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA)).getOcspUrl();
+			if (PreferencesUtil.getBoolean(PreferencesUtil.SIGN_TS_ENABLE) == true) {
+				tsurl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getString(PreferencesUtil.SIGN_TS_TSA)).getUrl();
+				tsaOcspUrl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getString(PreferencesUtil.SIGN_TS_TSA)).getOcspUrl();
 			}
 			signaturePreferences.setTimestampUrl(tsurl);
 			signaturePreferences.setTimestampOcspUrl(tsaOcspUrl);
 			signaturePreferences.setTimestampUser(null);
 			signaturePreferences.setTimestampPassword(null);
 
-			boolean addOCSP = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_OCSP_ENABLE);
+			boolean addOCSP = PreferencesUtil.getBoolean(PreferencesUtil.SIGN_OCSP_ENABLE);
 			signaturePreferences.setAddOCSP(addOCSP);
 
 			StatisticsUtil.log(StatisticsUtil.KEY_SIGN_OCSP, addOCSP + "");
@@ -608,7 +592,7 @@ public class SignController {
 			pdfParameter.setMimeType(mimeType);
 
 			// validar
-			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
+			if (PreferencesUtil.getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
 				ValidateController.validate(pdfParameter);
 			}
 
@@ -688,7 +672,7 @@ public class SignController {
 				} else {
 					// 3- si es un fichero cualquierra depende de la preferencia "XADES_ARCHIVE".  
 					// sar
-					if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.XADES_ARCHIVE)) {
+					if (PreferencesUtil.getBoolean(PreferencesUtil.XADES_ARCHIVE)) {
 						outputPath = outputDir + File.separatorChar	+ outputName + "." + FileUtil.EXTENSION_SAR;
 					// xml
 					} else {
@@ -719,7 +703,7 @@ public class SignController {
 			pdfParameter.setMimeType(mimeType);
 
 			// validar
-			if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
+			if (PreferencesUtil.getBoolean(PreferencesUtil.AUTO_VALIDATE)) {
 				ValidateController.validate(pdfParameter);
 			}
 
@@ -772,14 +756,14 @@ public class SignController {
 		XadesSignaturePreferences signaturePreferences = new XadesSignaturePreferences();
 		signaturePreferences.setKsSignaturePreferences(ksSignaturePreferences);
 		signaturePreferences.setType(XadesSignaturePreferences.Type.Detached);
-		signaturePreferences.setGenerateArchiver(PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.XADES_ARCHIVE));
+		signaturePreferences.setGenerateArchiver(PreferencesUtil.getBoolean(PreferencesUtil.XADES_ARCHIVE));
 		signaturePreferences.setKsCache(PreferencesUtil.getCacheKeystoreComplete());
 		
 		String tsurl = null;
 		String tsaOcspUrl = null;
-		if (PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_TS_ENABLE) == true) {
-			tsurl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA)).getUrl();
-			tsaOcspUrl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getPreferences().getString(PreferencesUtil.SIGN_TS_TSA)).getOcspUrl();
+		if (PreferencesUtil.getBoolean(PreferencesUtil.SIGN_TS_ENABLE) == true) {
+			tsurl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getString(PreferencesUtil.SIGN_TS_TSA)).getUrl();
+			tsaOcspUrl = PreferencesUtil.getTimestampPreferences().get(PreferencesUtil.getString(PreferencesUtil.SIGN_TS_TSA)).getOcspUrl();
 		}
 		
 		signaturePreferences.setTimestampUrl(tsurl);
@@ -788,13 +772,13 @@ public class SignController {
 		signaturePreferences.setTimestampPassword(null);
 		
 		
-		boolean addOCSP = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.SIGN_OCSP_ENABLE);
+		boolean addOCSP = PreferencesUtil.getBoolean(PreferencesUtil.SIGN_OCSP_ENABLE);
 		signaturePreferences.setAddOCSP(addOCSP);
 		
 		StatisticsUtil.log(StatisticsUtil.KEY_SIGN_OCSP, addOCSP + "");
 		log.info("ocsp enable: " + addOCSP);
 		
-		boolean xlOcspAddAll = PreferencesUtil.getPreferences().getBoolean(PreferencesUtil.XADES_XL_OCSP_ADD_ALL);
+		boolean xlOcspAddAll = PreferencesUtil.getBoolean(PreferencesUtil.XADES_XL_OCSP_ADD_ALL);
 		signaturePreferences.setXlOcspAddAll(xlOcspAddAll);
 		
 		return signaturePreferences;

@@ -79,7 +79,7 @@ public class ProxyPreferences extends FieldEditorPreferencePage {
 			}
 		});
 
-		if (PreferencesUtil.getPreferences().getString(PreferencesUtil.PROXY_SYSTEM).equals("true")) {
+		if (PreferencesUtil.getPreferenceStore().getString(PreferencesUtil.PROXY_SYSTEM).equals("true")) {
 			user.setEnabled(true, getFieldEditorParent());
 			pass.setEnabled(true, getFieldEditorParent());
 		} else {

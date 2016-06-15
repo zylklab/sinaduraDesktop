@@ -73,7 +73,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		super(FLAT);
 	
 		this.pdfProfiles = PreferencesUtil.getPdfProfiles();
-		this.tempDefault = PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_PROFILE_SELECTED_NAME);
+		this.tempDefault = PreferencesUtil.getPreferenceStore().getString(PreferencesUtil.PDF_PROFILE_SELECTED_NAME);
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 		comboTipoFirmaPDF = new Combo(topComposite, SWT.NONE | SWT.READ_ONLY);
 		comboTipoFirmaPDF.add(LanguageUtil.getLanguage().getString("preferences.pdf.sign.type.pdf"), 0);
 		comboTipoFirmaPDF.add(LanguageUtil.getLanguage().getString("preferences.pdf.sign.type.xades"), 1);
-		comboTipoFirmaPDF.select(Integer.valueOf(PreferencesUtil.getPreferences().getString((PreferencesUtil.PDF_TIPO))));
+		comboTipoFirmaPDF.select(Integer.valueOf(PreferencesUtil.getPreferenceStore().getString((PreferencesUtil.PDF_TIPO))));
 		comboTipoFirmaPDF.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -262,10 +262,10 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 	private void savePreferences() {
 
 		PreferencesUtil.savePdfProfiles(pdfProfiles);
-		PreferencesUtil.getPreferences().setValue(PreferencesUtil.PDF_TIPO, String.valueOf(comboTipoFirmaPDF.getSelectionIndex()));
+		PreferencesUtil.getPreferenceStore().setValue(PreferencesUtil.PDF_TIPO, String.valueOf(comboTipoFirmaPDF.getSelectionIndex()));
 		
 		if (comboDefault != null) {
-			PreferencesUtil.getPreferences().setValue(PreferencesUtil.PDF_PROFILE_SELECTED_NAME, comboDefault.getText());
+			PreferencesUtil.getPreferenceStore().setValue(PreferencesUtil.PDF_PROFILE_SELECTED_NAME, comboDefault.getText());
 		}
 		
 	}
