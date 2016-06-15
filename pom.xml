@@ -70,7 +70,7 @@
 		<pdf.tipo>0</pdf.tipo>
 		<save.extension>-signed</save.extension>
 		<xades.validator.impl>sinadura</xades.validator.impl>
-		<sign.ocsp.enable>true</sign.ocsp.enable>
+		<sign.ocsp.enable>false</sign.ocsp.enable>
 		<!-- CONFIGURACION de la aplicacion -->
 		<!-- system -->
 		<ee.proxy.enabled>false</ee.proxy.enabled>
