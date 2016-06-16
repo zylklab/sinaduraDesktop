@@ -78,8 +78,8 @@
 	
 	<!-- Paquetes que componen la aplicación -->
 	<packs>
-		<pack name="sinadura" id="sinadura" required="yes">
-			<description>Archivos de la aplicacion</description>
+		<pack name="Sinadura desktop" id="sinadura" required="yes">
+			<description>Sinadura desktop application</description>
 			<fileset dir="." targetdir="$INSTALL_PATH">
 				<include name="COPYRIGHT.txt" />
 				<include name="LICENSE.txt" />
