@@ -68,7 +68,7 @@
 	<packs>
 		<pack name="Sinadura desktop" id="sinadura" required="yes">
 			<description>Sinadura desktop application</description>
-			<fileset dir="." targetdir="$INSTALL_PATH">s
+			<fileset dir="." targetdir="$INSTALL_PATH">
 				<include name="COPYRIGHT.txt" />
 				<include name="LICENSE.txt" />
 				<include name="changelog.txt" />
