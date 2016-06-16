@@ -46,8 +46,8 @@
 	<resources>
 		<res id="LicencePanel.licence" src="LICENSE.txt" />
 		<!-- <res id="shortcutSpec.xml" src="./linux/unixShortcut.xml" />-->
-		<res id="installer.langsel.img" src="./images/zylk.png" />
-		<res id="Installer.image" src="./images/zylk.png" />
+		<!-- <res id="installer.langsel.img" src="./images/zylk.png" />-->
+		<!-- <res id="Installer.image" src="./images/sinadura.png" />-->
 		<res id="Heading.image" src="./images/sinadura.png" />
 	</resources>
 
@@ -66,9 +66,9 @@
 	</panels>
 	<!-- Paquetes que componen la aplicación -->
 	<packs>
-		<pack name="sinadura" id="sinadura" required="yes">
-			<description>Archivos de la aplicacion</description>
-			<fileset dir="." targetdir="$INSTALL_PATH">
+		<pack name="Sinadura desktop" id="sinadura" required="yes">
+			<description>Sinadura desktop application</description>
+			<fileset dir="." targetdir="$INSTALL_PATH">s
 				<include name="COPYRIGHT.txt" />
 				<include name="LICENSE.txt" />
 				<include name="changelog.txt" />
@@ -90,8 +90,8 @@
 				<os name="unix" />
 			</executable>
 		</pack>
-		<pack name="RegistProtocol" preselected="yes" required="yes">
-        	<description/>
+		<pack name="Sinadura cloud connector" preselected="yes" required="yes">
+        	<description>Sinadura cloud connector</description> 
         	<executable targetfile="$INSTALL_PATH/bin/sinadura.sh" stage="never">
 				<os name="unix" />
 			</executable>

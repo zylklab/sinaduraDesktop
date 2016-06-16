@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <registry>
-  <pack name="RegistProtocol">
+  <pack name="Sinadura cloud connector" preselected="yes" required="yes">
+    <description>Sinadura cloud connector</description> 
     <key 
     	root="HKCR" 
     	keypath="sinadura"
