@@ -47,8 +47,8 @@
 		<res id="LicencePanel.licence" src="LICENSE.txt" />
 		<res id="shortcutSpec.xml" src="./windows/windowsShortcut.xml" />
 		<res id="RegistrySpec.xml" src="./windows/win_protocol_registrySpec.xml" />
-		<res id="installer.langsel.img" src="./images/zylk.png"/> 
-		<res id="Installer.image" src="./images/zylk.png"/>
+<!-- 		<res id="installer.langsel.img" src="./images/zylk.png"/> --> 
+<!-- 		<res id="Installer.image" src="./images/zylk.png"/> -->
 		<res id="Heading.image" src="./images/sinadura.png"/>
 		
 
@@ -99,8 +99,8 @@
 				<os family="windows" />
 			</fileset>
 		</pack>
-		<pack name="RegistProtocol" preselected="yes" required="yes">
-        	<description/>
+		<pack name="Sinadura cloud connector" preselected="yes" required="yes">
+    		<description>Sinadura cloud connector</description>
         </pack>
 	</packs>
 	
