@@ -43,9 +43,8 @@ public class ImagesUtil {
 	public static final String	SINADURA_FULL_IMG				= PATH_IMAGES + "/" + "sinadura.png";
 	public static final String	EXT_SINADURA_LOGO_150_IMG				= PATH_IMAGES + "/" + "sinadura150.png";
 	
-	// sponsors
-	public static final String	SPONSOR_COMMUNITY_LOGO_IMG				= PATH_IMAGES + "/" + "zylk.png";
-	public static final String	SPONSOR_PARLAMENTO_LOGO_IMG				= PATH_IMAGES + "/" + "parlamento.png";
+	// zylk
+	public static final String	ZYLK_LOGO_IMG				= PATH_IMAGES + "/" + "zylk.png";
 	
 	// main actions
 	public static final String	ADD_FILE_IMG			= PATH_IMAGES + "/" + "addfile.png";
@@ -76,8 +75,6 @@ public class ImagesUtil {
 	public static final String STAMP_BACKGROUND_IMG = PATH_IMAGES + "/" + "pdf-preview.png";
 	public static final String STAMP_POSITION_IMG = PATH_IMAGES + "/" + "position.png";
 	
-	public static final String CREDITS_IMG_PATH = PATH_IMAGES + "/" + "credits.png";
-	public static final String NEWS_IMG_PATH = PATH_IMAGES + "/" + "news.png";
 	
 	public static final String INFO_IMG_PATH = PATH_IMAGES + "/" + "info.png";
 	public static final String ERROR_IMG_PATH = PATH_IMAGES + "/" + "error.png";

@@ -21,46 +21,27 @@
  */
 package net.esle.sinadura.gui.view.main;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.MessageFormat;
-
-import net.esle.sinadura.core.exceptions.ConnectionException;
-import net.esle.sinadura.gui.events.AddDirectoryListener;
-import net.esle.sinadura.gui.events.AddDocumentListener;
-import net.esle.sinadura.gui.model.LoggerMessage;
-import net.esle.sinadura.gui.model.LoggerMessage.Level;
-import net.esle.sinadura.gui.util.DesktopUtil;
-import net.esle.sinadura.gui.util.ImagesUtil;
-import net.esle.sinadura.gui.util.LanguageUtil;
-import net.esle.sinadura.gui.util.LoggingDesktopController;
-import net.esle.sinadura.gui.util.PropertiesUtil;
-import net.esle.sinadura.gui.util.VersionUtil;
-import net.esle.sinadura.gui.view.documentation.AboutUsWindow;
-import net.esle.sinadura.gui.view.documentation.CreditsWindow;
-import net.esle.sinadura.gui.view.documentation.NewsWindow;
-import net.esle.sinadura.gui.view.documentation.LicenciaWindow;
-import net.esle.sinadura.gui.view.preferences.PreferencesManager;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
+import net.esle.sinadura.gui.events.AddDirectoryListener;
+import net.esle.sinadura.gui.events.AddDocumentListener;
+import net.esle.sinadura.gui.util.DesktopUtil;
+import net.esle.sinadura.gui.util.ImagesUtil;
+import net.esle.sinadura.gui.util.LanguageUtil;
+import net.esle.sinadura.gui.util.PropertiesUtil;
+import net.esle.sinadura.gui.view.documentation.AboutUsWindow;
+import net.esle.sinadura.gui.view.documentation.LicenciaWindow;
+import net.esle.sinadura.gui.view.preferences.PreferencesManager;
 
 public class MainMenu {
 
@@ -79,8 +60,6 @@ public class MainMenu {
 
 	private MenuItem documentacionItem = null;
 	private MenuItem licenciaItem = null;
-	private MenuItem noticiasItem = null;	
-	private MenuItem creditsItem = null;
 
 	private MenuItem acercaDeItem = null;
 
@@ -109,9 +88,7 @@ public class MainMenu {
 		this.ayudaMenu = new Menu(sShell, SWT.DROP_DOWN);
 		this.ayudaMenuHeader.setMenu(this.ayudaMenu);
 		this.documentacionItem = new MenuItem(this.ayudaMenu, SWT.PUSH);
-		this.noticiasItem = new MenuItem(this.ayudaMenu, SWT.PUSH);
 		this.licenciaItem = new MenuItem(this.ayudaMenu, SWT.PUSH);
-		this.creditsItem = new MenuItem(this.ayudaMenu, SWT.PUSH);
 		this.acercaDeItem = new MenuItem(this.ayudaMenu, SWT.PUSH);
 
 		this.addDocument.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_FILE)));
@@ -119,10 +96,8 @@ public class MainMenu {
 		this.salirItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_EXIT)));
 		this.preferenciasItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_PREFERENCES)));
 		this.licenciaItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_LICENSE)));
-		this.creditsItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.CREDITS_IMG_PATH)));
 		this.acercaDeItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_ABOUT)));
 		this.documentacionItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.MENU_DOCUMENTATION)));
-		this.noticiasItem.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.NEWS_IMG_PATH)));
 
 		this.addDocument.addSelectionListener(new AddDocumentListener(documentsTable));
 		this.addDirectory.addSelectionListener(new AddDirectoryListener(documentsTable));
@@ -131,8 +106,6 @@ public class MainMenu {
 		this.acercaDeItem.addSelectionListener(new AboutItemListener());
 		this.licenciaItem.addSelectionListener(new LicenciaItemListener());
 		this.documentacionItem.addSelectionListener(new DocumentacionItemListener());
-		this.creditsItem.addSelectionListener(new CreditsItemListener());
-		this.noticiasItem.addSelectionListener(new NoticiasItemListener());
 
 		changeLanguage();
 
@@ -149,34 +122,7 @@ public class MainMenu {
 		this.licenciaItem.setText(LanguageUtil.getLanguage().getString("submenu.license"));
 		this.acercaDeItem.setText(LanguageUtil.getLanguage().getString("submenu.about"));
 		this.documentacionItem.setText(LanguageUtil.getLanguage().getString("submenu.documentation"));
-		this.creditsItem.setText(LanguageUtil.getLanguage().getString("submenu.credits"));		
-		this.noticiasItem.setText(LanguageUtil.getLanguage().getString("submenu.news"));
-
 	}
-
-	/*
-	 * private void disposeChildren(Composite composite) {
-	 * 
-	 * Control[] array = composite.getChildren(); for (int i = 0; i < array.length; i++) { array[i].dispose(); }
-	 * 
-	 * }
-	 */
-
-	// class SignPanelItemListener implements SelectionListener {
-	//		
-	// public void widgetSelected(SelectionEvent event) {
-	//			
-	// disposeChildren(compositeCentro);
-	//
-	// PanelPDF panelPDF = new PanelPDF(compositeCentro, SWT.NONE);
-	//
-	// compositeCentro.layout();
-	// }
-	//
-	// public void widgetDefaultSelected(SelectionEvent event) {
-	// widgetSelected(event);
-	// }
-	// }
 
 	class PreferenciasItemListener implements SelectionListener {
 
@@ -207,16 +153,6 @@ public class MainMenu {
 		}
 	}
 
-	class CreditsItemListener implements SelectionListener {
-		public void widgetSelected(SelectionEvent event) {
-			CreditsWindow creditsDialog = new CreditsWindow(sShell);
-			creditsDialog.open();
-		}
-
-		public void widgetDefaultSelected(SelectionEvent event) {
-			widgetSelected(event);
-		}
-	}
 	
 	class AyudaItemListener implements SelectionListener {
 
@@ -265,56 +201,6 @@ public class MainMenu {
 
 		public void widgetDefaultSelected(SelectionEvent event) {
 			widgetSelected(event);
-		}
-	}
-
-	class NoticiasItemListener implements SelectionListener {
-
-		@Override
-		public void widgetDefaultSelected(SelectionEvent arg0) {
-
-			widgetSelected(arg0);
-		}
-
-		@Override
-		public void widgetSelected(SelectionEvent arg0) {
-
-			SyndFeedInput input = new SyndFeedInput();		
-			try {
-				URL url = new URL(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.NEWS));
-
-				URLConnection connection = url.openConnection();
-				connection.setConnectTimeout(3000);
-				
-				SyndFeed feed = input.build( new XmlReader(connection));
-
-				NewsWindow newsDialog = new NewsWindow(sShell, feed);
-				newsDialog.open();
-				
-			} catch (IllegalArgumentException e) {
-				
-				log.error("", e);
-				String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.certificate.connection"), e.toString());
-				LoggingDesktopController.printError(m);
-				
-			} catch (MalformedURLException e) {
-				
-				log.error("", e);
-				String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.certificate.connection"), e.toString());
-				LoggingDesktopController.printError(m);
-				
-			} catch (FeedException e) {
-				
-				log.error("", e);
-				String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.certificate.connection"), e.toString());
-				LoggingDesktopController.printError(m);
-				
-			} catch (IOException e) {
-				
-				log.error("", e);
-				String m = MessageFormat.format(LanguageUtil.getLanguage().getString("error.certificate.connection"), e.toString());
-				LoggingDesktopController.printError(m);
-			}
 		}
 	}
 

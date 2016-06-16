@@ -41,7 +41,6 @@ public class PropertiesUtil {
 	public static final String TMP_FOLDER_PATH = System.getProperty("java.io.tmpdir");
 
 	public static final String LICENSE_PATH = "LICENSE.txt";
-	public static final String CREDITS_PATH = "credits.txt";
 	public static final String INTROKEY = "RETURN";
 	
 	
@@ -52,7 +51,6 @@ public class PropertiesUtil {
 	public static final String SINADURA_CLOUD_MODE = "sinadura.cloud.mode";
 	
 	// KEYS del configuration.properties
-	public static final String NEWS = "news.sinadura";
 	public static final String SERVER_VERSION_URL = "server.versions.url";
 	public static final String APPLICATION_VERSION_STRING = "application.local.version.string";
 	public static final String APPLICATION_VERSION_NUMBER = "application.local.version";

@@ -60,12 +60,18 @@ public class AboutUsWindow extends Dialog {
 
 	private static Log log = LogFactory.getLog(AboutUsWindow.class);
 	
-	private Label				labelImage			= null;
-	private Shell				sShell				= null;
-	private Button				buttonClose			= null;
-	private StyledText			textTitle			= null;
-	private StyledText			textDesc			= null;
-	private StyledText			textCopyRight		= null;
+	
+	private Shell sShell = null;
+
+	private Label labelImage = null;
+	private StyledText textTitle = null;
+	private StyledText textDesc = null;
+	private StyledText textCopyRight = null;
+	private Link linkSinadura = null;
+	private Link linkZylk = null;
+	private Label labelImageZylk = null;
+
+	private Button buttonClose = null;
 
 	/**
 	 * @param parent
@@ -87,7 +93,7 @@ public class AboutUsWindow extends Dialog {
 		this.sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 
 		this.sShell.setText(LanguageUtil.getLanguage().getString("about.windowtitle"));
-		this.sShell.setSize(new Point(400, 350));
+		this.sShell.setSize(new Point(400, 550));
 		this.sShell.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 		
 		GridLayout gl = new GridLayout();
@@ -106,43 +112,33 @@ public class AboutUsWindow extends Dialog {
 		gd.minimumWidth = 0;
 		compositeMain.setLayoutData(gd);
 
+		// image sinadura
 		this.labelImage = new Label(compositeMain, SWT.NONE);
 		this.labelImage.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
-		
 		Image imageSinadura = new Image(compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_FULL_IMG));
 		this.labelImage.setImage(imageSinadura);
 
+		// title sinadura
+		this.textTitle = new StyledText(compositeMain, SWT.NONE);
 		String textoTitle = PropertiesUtil.APPLICATION_NAME + " "
 				+ PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.APPLICATION_VERSION_STRING);
-		String textoDesc = LanguageUtil.getLanguage().getString("about.descripcion");
-
-//		String textoLicencia = "\n";
-//		for (int i = 0; i < (textoDesc.length() / 2); i++) {
-//			textoLicencia = textoLicencia + " ";
-//		}
-//		textoLicencia = textoLicencia + LanguageUtil.getLanguage().getString("about.licencia");
-//		textoDesc = textoDesc + textoLicencia;
-
-		String textoCopyRight = LanguageUtil.getLanguage().getString("about.copyright");
-		String textoURL = PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SINADURA_MAIN_URL);
-		this.textTitle = new StyledText(compositeMain, SWT.NONE);
 		this.textTitle.setText(textoTitle);
 		this.textTitle.setEditable(false);
 		this.textTitle.setBackground(compositeMain.getBackground());
-		this.textDesc = new StyledText(compositeMain, SWT.NONE);
-		this.textDesc.setText(textoDesc);
-		this.textDesc.setEditable(false);
-		this.textDesc.setBackground(compositeMain.getBackground());
-		this.textCopyRight = new StyledText(compositeMain, SWT.NONE);
-		this.textCopyRight.setText(textoCopyRight);
-		this.textCopyRight.setEditable(false);
-		this.textCopyRight.setBackground(compositeMain.getBackground());
 
 		StyleRange stylerangeTxtTitle = new StyleRange();
 		stylerangeTxtTitle.start = 0;
 		stylerangeTxtTitle.length = textoTitle.length();
 		stylerangeTxtTitle.font = new Font(this.textTitle.getDisplay(), "", 16, SWT.BOLD);
 		this.textTitle.setStyleRange(stylerangeTxtTitle);
+		this.textTitle.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+		
+		// desc sinadura
+		this.textDesc = new StyledText(compositeMain, SWT.NONE);
+		String textoDesc = LanguageUtil.getLanguage().getString("about.descripcion");
+		this.textDesc.setText(textoDesc);
+		this.textDesc.setEditable(false);
+		this.textDesc.setBackground(compositeMain.getBackground());
 
 		StyleRange stylerangeTxtDesc = new StyleRange();
 		stylerangeTxtDesc.start = 0;
@@ -150,28 +146,55 @@ public class AboutUsWindow extends Dialog {
 		stylerangeTxtDesc.font = new Font(this.textDesc.getDisplay(), "", 8, SWT.CENTER);
 		stylerangeTxtDesc.foreground = new Color(this.textDesc.getDisplay(), new RGB(100, 100, 100));
 		this.textDesc.setStyleRange(stylerangeTxtDesc);
+		this.textDesc.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
 
+		// link sinadura
+		this.linkSinadura = new Link(compositeMain, SWT.NONE);
+		String textoURL = PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SINADURA_MAIN_URL);
+		String text = "<a>" + textoURL + "</a>";
+		this.linkSinadura.setText(text);
+		gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
+		gd.heightHint = 40;
+		this.linkSinadura.setLayoutData(gd);
+		this.linkSinadura.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				DesktopUtil.openDefaultBrowser(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SINADURA_MAIN_URL));
+			}
+		});
+
+		// image zylk
+		this.labelImageZylk = new Label(compositeMain, SWT.NONE);
+		Image imageZylk = new Image(compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.ZYLK_LOGO_IMG));
+		this.labelImageZylk.setImage(imageZylk);
+		this.labelImageZylk.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+		
+		// copyright zylk
+		this.textCopyRight = new StyledText(compositeMain, SWT.NONE);
+		String textoCopyRight = "Copyright  2012";
+		this.textCopyRight.setText(textoCopyRight);
+		this.textCopyRight.setEditable(false);
+		this.textCopyRight.setBackground(compositeMain.getBackground());
 		StyleRange stylerangeTxtCopyRight = new StyleRange();
 		stylerangeTxtCopyRight.start = 0;
 		stylerangeTxtCopyRight.length = textoCopyRight.length();
 		stylerangeTxtCopyRight.font = new Font(this.textCopyRight.getDisplay(), "", 9, SWT.CENTER);
 		stylerangeTxtCopyRight.foreground = new Color(this.textCopyRight.getDisplay(), new RGB(80, 80, 80));
 		this.textCopyRight.setStyleRange(stylerangeTxtCopyRight);
-
-		Link link = new Link(compositeMain, SWT.NONE);
-
-		String text = "<a>" + textoURL + "</a>";
-		link.setText(text);
-		link.addListener(SWT.Selection, new Listener() {
+		this.textCopyRight.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+		
+		// link zylk
+		this.linkZylk = new Link(compositeMain, SWT.NONE);
+		text = "<a>http://www.zylk.net</a>";
+		this.linkZylk.setText(text);
+		this.linkZylk.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+		gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
+		gd.heightHint = 35;
+		this.linkZylk.setLayoutData(gd);
+		this.linkZylk.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				DesktopUtil.openDefaultBrowser(PropertiesUtil.getConfiguration().getProperty(PropertiesUtil.SINADURA_MAIN_URL));
+				DesktopUtil.openDefaultBrowser("http://www.zylk.net");
 			}
 		});
-
-		link.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
-		this.textTitle.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
-		this.textDesc.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
-		this.textCopyRight.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
 
 		// buttons composite
 		Composite composite = new Composite(compositeMain, SWT.NONE);
@@ -180,8 +203,6 @@ public class AboutUsWindow extends Dialog {
 		gridLayoutButtons.numColumns = 1;
 		gridLayoutButtons.horizontalSpacing = 100;
 		composite.setLayout(gridLayoutButtons);
-
-		// this.textURL.addMouseListener(new URLClickListener());
 
 		this.buttonClose = new Button(composite, SWT.NONE);
 		this.buttonClose.setText(LanguageUtil.getLanguage().getString("button.back"));
@@ -198,6 +219,8 @@ public class AboutUsWindow extends Dialog {
 	    this.sShell.setLocation(x, y);
 		
 		this.sShell.open();
+		
+		this.sShell.pack();
 		
 		Display display = parent.getDisplay();
 		
