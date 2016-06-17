@@ -1,0 +1,1 @@
+JAVA_HOME=$BASEDIR/jre

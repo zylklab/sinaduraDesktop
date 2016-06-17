@@ -284,14 +284,14 @@
 				</property>
 			</activation>
 			<properties>
-				<izpack-install-file-path>linux</izpack-install-file-path>
+				<izpack-install-file-path>linux32</izpack-install-file-path>
 			</properties>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>appassembler-maven-plugin</artifactId>
-						<version>1.1</version>
+						<version>1.10</version>
 						<executions>
 							<execution>
 								<id>scripts</id>
@@ -306,6 +306,7 @@
 								<platform>unix</platform>
 							</platforms>
 							<assembleDirectory>${staging-dir}</assembleDirectory>
+							<unixScriptTemplate>installer/install-resources/linux32/unixBinTemplate</unixScriptTemplate>
 							<programs>
 								<program>
 									<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
@@ -387,6 +388,9 @@
 									<encoding>iso-8859-1</encoding>
 									<overWrite>true</overWrite>
 									<outputDirectory>${staging-dir}</outputDirectory>
+									<nonFilteredFileExtensions>
+            							<nonFilteredFileExtension>jar</nonFilteredFileExtension>
+          							</nonFilteredFileExtensions>
 									<resources>
 										<resource>
 											<filtering>true</filtering>
@@ -476,14 +480,14 @@
 				</property>
 			</activation>
 			<properties>
-				<izpack-install-file-path>linux</izpack-install-file-path>
+				<izpack-install-file-path>linux64</izpack-install-file-path>
 			</properties>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>appassembler-maven-plugin</artifactId>
-						<version>1.1</version>
+						<version>1.10</version>
 						<executions>
 							<execution>
 								<id>scripts</id>
@@ -498,6 +502,7 @@
 								<platform>unix</platform>
 							</platforms>
 							<assembleDirectory>${staging-dir}</assembleDirectory>
+							<unixScriptTemplate>installer/install-resources/linux64/unixBinTemplate</unixScriptTemplate>
 							<programs>
 								<program>
 									<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
@@ -579,6 +584,9 @@
 									<encoding>iso-8859-1</encoding>
 									<overWrite>true</overWrite>
 									<outputDirectory>${staging-dir}</outputDirectory>
+									<nonFilteredFileExtensions>
+            							<nonFilteredFileExtension>jar</nonFilteredFileExtension>
+          							</nonFilteredFileExtensions>
 									<resources>
 										<resource>
 											<filtering>true</filtering>
@@ -676,7 +684,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>appassembler-maven-plugin</artifactId>
-						<version>1.1</version>
+						<version>1.10</version>
 						<executions>
 							<execution>
 								<id>scripts</id>
@@ -919,7 +927,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>appassembler-maven-plugin</artifactId>
-						<version>1.1</version>
+						<version>1.10</version>
 						<executions>
 							<execution>
 								<id>scripts</id>
@@ -1161,7 +1169,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>appassembler-maven-plugin</artifactId>
-						<version>1.1</version>
+						<version>1.10</version>
 						<executions>
 							<execution>
 								<id>scripts</id>
@@ -1385,7 +1393,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>appassembler-maven-plugin</artifactId>
-						<version>1.1</version>
+						<version>1.10</version>
 						<executions>
 							<execution>
 								<id>scripts</id>

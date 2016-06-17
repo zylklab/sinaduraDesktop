@@ -1,0 +1,24 @@
+[Desktop Entry]
+Categories=
+Comment=Starts Sinadura - Firma Digital
+Comment[es]=Starts Sinadura - Firma Digital
+Encoding=UTF-8
+Exec=$INSTALL_PATH/bin/sinadura.sh %u
+GenericName=
+GenericName[es]=
+Icon=$INSTALL_PATH/resources/images/sinadura48.png
+MimeType=x-scheme-handler/sinadura
+Name=Sinadura-FirmaDigital
+Name[es]=Sinadura
+Path=$INSTALL_PATH
+ServiceTypes=
+SwallowExec=
+SwallowTitle=
+Terminal=
+TerminalOptions=
+Type=Application
+URL=
+X-KDE-SubstituteUID=false
+X-KDE-Username=root
+# created by com.izforge.izpack.util.os.Unix_Shortcut $Revision$
+# $Id$
