@@ -44,7 +44,7 @@
 		terminal="false"
 		description="Starts Sinadura - Firma Digital"
 		initialState="noShow">
-		<createForPack name="sinadura" />
+		<createForPack name="Sinadura desktop" />
 	</shortcut>
 
 	<shortcut name="Uninstall Sinadura - Firma Digital"
@@ -58,7 +58,7 @@
 		iconFile="%SystemRoot%\system32\SHELL32.dll"
 		iconIndex="31"
 		description="Uninstall Sinadura - Firma Digital">
-		<createForPack name="sinadura" />
+		<createForPack name="Sinadura desktop" />
 	</shortcut>
 
 </izpack:shortcuts>
