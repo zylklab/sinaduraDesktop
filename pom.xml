@@ -675,7 +675,7 @@
 				</property>
 			</activation>
 			<properties>
-				<izpack-install-file-path>windows</izpack-install-file-path>
+				<izpack-install-file-path>windows32</izpack-install-file-path>
 			</properties>
 			<build>
 				<plugins>
@@ -779,6 +779,9 @@
 								<configuration>
 									<encoding>iso-8859-1</encoding>
 									<overWrite>true</overWrite>
+									<nonFilteredFileExtensions>
+            							<nonFilteredFileExtension>jar</nonFilteredFileExtension>
+          							</nonFilteredFileExtensions>
 									<outputDirectory>${staging-dir}</outputDirectory>
 									<resources>
 										<resource>
@@ -824,6 +827,7 @@
 										<minVersion>1.6.0</minVersion>
 										<jdkPreference>preferJre</jdkPreference>
 										<maxHeapSize>1024</maxHeapSize>
+										<path>./jre</path>
 									</jre>
 								</configuration>
 							</execution>
@@ -919,7 +923,7 @@
 				</property>
 			</activation>
 			<properties>
-				<izpack-install-file-path>windows</izpack-install-file-path>
+				<izpack-install-file-path>windows64</izpack-install-file-path>
 			</properties>
 			<build>
 				<plugins>
@@ -1022,6 +1026,9 @@
 								<configuration>
 									<encoding>iso-8859-1</encoding>
 									<overWrite>true</overWrite>
+									<nonFilteredFileExtensions>
+            							<nonFilteredFileExtension>jar</nonFilteredFileExtension>
+          							</nonFilteredFileExtensions>
 									<outputDirectory>${staging-dir}</outputDirectory>
 									<resources>
 										<resource>
@@ -1067,6 +1074,7 @@
 										<minVersion>1.6.0</minVersion>
 										<jdkPreference>preferJre</jdkPreference>
 										<maxHeapSize>1024</maxHeapSize>
+										<path>./jre</path>
 									</jre>
 								</configuration>
 							</execution>
