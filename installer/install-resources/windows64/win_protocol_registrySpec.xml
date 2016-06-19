@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<izpack:registry version="5.0"
+                 xmlns:izpack="http://izpack.org/schema/registry"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://izpack.org/schema/registry http://izpack.org/schema/5.0/izpack-registry-5.0.xsd">
+  <pack name="Sinadura cloud connector"> 
+    <key 
+    	root="HKCR" 
+    	keypath="sinadura"
+    />
+    <value 
+    	root="HKCR"
+    	name=""
+    	keypath="sinadura" 
+    	string="URL:Sinadura protocol"
+    />
+    <value 
+    	root="HKCR" 
+    	name="URL Protocol" 
+    	keypath="sinadura" 
+    	string=""
+    />
+    <key 
+    	root="HKCR" 
+    	keypath="sinadura\DefaultIcon" 
+    />
+    <value 
+    	root="HKCR"
+    	name="" 
+    	keypath="sinadura\DefaultIcon" 
+    	string="sinadura.exe,1"
+    />
+    <key 
+    	root="HKCR" 
+    	keypath="sinadura\shell" 
+    />
+    <key 
+    	root="HKCR" 
+    	keypath="sinadura\shell\open" 
+    />
+    <key 
+    	root="HKCR" 
+    	keypath="sinadura\shell\open\command" 
+    />
+    <!--  esta parte no esta fina del todo ... funciona pero se registrar como binario si pones el tema de "%1" -->
+    <value 
+    	root="HKCR"
+    	name="" 
+    	keypath="sinadura\shell\open\command" 
+    	string="$INSTALL_PATH\sinadura.exe %1"
+    />
+  	</pack>  
+    
+  <!-- para registrar el desinstalador correctamente--> 
+  <pack name="UninstallStuff">
+  	<value
+    	name="UninstallString"  
+    	root="HKLM"
+    	keypath="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$APP_NAME $APP_VER"
+    	string='"$INSTALL_PATH\jre\bin\javaw.exe" -jar "$INSTALL_PATH\uninstaller\uninstaller.jar"' 
+    />
+    
+    <!-- "C:\Users\Zylk\AppData\Local\Temp\7zSC504.tmp\jre\bin\javaw.exe" -jar "C:\Program Files (x86)\sinadura\uninstaller\uninstaller.jar" -->
+    <value
+    	name="DisplayName"  
+    	root="HKLM"
+    	keypath="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$APP_NAME $APP_VER"
+    	string="$APP_NAME $APP_VER" 
+    />
+    <value
+    	name="DisplayVersion"  
+    	root="HKLM"
+    	keypath="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$APP_NAME $APP_VER"
+    	string="$APP_VER" 
+    />
+    <value
+    	name="HelpLink"  
+    	root="HKLM"
+    	keypath="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$APP_NAME $APP_VER"
+    	string="http://www.sinadura.net" 
+    />
+  </pack>
+  
+</izpack:registry>
