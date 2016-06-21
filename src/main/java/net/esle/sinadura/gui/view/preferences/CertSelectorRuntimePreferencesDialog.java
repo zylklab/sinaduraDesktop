@@ -107,6 +107,8 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 		this.sShell.setImage(new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
 		this.sShell.setText("Selección del tipo de certificado");
 		
+		// LanguageUtil.getLanguage().getString("slot.dialog.message");
+		
 
 		GridLayout shellGridLayout = new GridLayout();
 		shellGridLayout.numColumns = 1;

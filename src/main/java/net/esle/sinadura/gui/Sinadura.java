@@ -84,9 +84,9 @@ public class Sinadura {
 	public static void main(String[] args) throws FileNotValidException, FileSystemException, MalformedURIException {
 		
 		// TODO BORRAR ESTO
-//		String token = "57912ec2-96ab-47d9-bda7-6b383cf484ed";
-////		args = new String[] {"sinadura://localhost:8080/sinaduraCloud/rest/api/v1/h/" + token};
-//		args = new String[] {"sinadura://faut.zylk.net:8080/sinaduraCloud/rest/api/v1/h/" + token};
+		String token = "a35fb0b1-aeba-45a0-8c06-d7140efca820";
+//		args = new String[] {"sinadura://localhost:8080/sinaduraCloud/rest/v1/h/" + token};
+		args = new String[] {"sinadura://faut.zylk.net:8080/sinaduraCloud/rest/v1/h/" + token};
 		
 		try {
 			

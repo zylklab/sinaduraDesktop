@@ -8,13 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -22,8 +19,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Shell;
 
-import net.esle.sinadura.core.keystore.KeyStoreBuilderFactory;
-import net.esle.sinadura.core.keystore.KeyStoreBuilderFactory.KeyStoreTypes;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.controller.SignControllerHelper;
 import net.esle.sinadura.gui.exceptions.FileNotValidException;
@@ -31,17 +26,12 @@ import net.esle.sinadura.gui.model.DocumentInfo;
 import net.esle.sinadura.gui.util.DocumentInfoUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.LoggingDesktopController;
-import net.esle.sinadura.gui.util.PdfProfile;
-import net.esle.sinadura.gui.util.PreferencesDefaultUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.PropertiesUtil;
-import net.esle.sinadura.gui.util.StatisticsUtil;
-import net.esle.sinadura.gui.view.main.PdfSignaturePropertiesDialog;
-import net.esle.sinadura.gui.view.preferences.PdfProfilePreferencesDialog;
-import net.esle.sinadura.protocol.exceptions.ProtocolAppException;
+import net.esle.sinadura.protocol.exceptions.CloudAppException;
 import net.esle.sinadura.protocol.exceptions.RestServiceException;
 import net.esle.sinadura.protocol.model.ConfigVO;
-import net.esle.sinadura.protocol.model.InputVO;
+import net.esle.sinadura.protocol.model.DocumentVO;
 import net.esle.sinadura.protocol.services.ServiceManager;
 import net.esle.sinadura.protocol.utils.DesktopUtils;
 import net.esle.sinadura.protocol.utils.HttpUtils;
@@ -55,7 +45,6 @@ public class CloudMainWindow {
 	public static void initCloud(Shell mainShell, String[] args)  {
 
 		shell = mainShell;
-    	log.info("desktop-protocol | input args: " + Arrays.asList(args));
     	
 		// args parse
 		String protURL = args[0];
@@ -66,8 +55,8 @@ public class CloudMainWindow {
 			throw new RuntimeException("Parameters are malformed '" + protURL + "'");
 		}
 		
-		log.info("desktop-protocol | url: " + url);
-		log.info("desktop-protocol | token: " + token);
+		log.info("protocol, url: " + url);
+		log.info("protocol, token: " + token);
 		
 		signCloud(shell, url, token);
 		
@@ -97,7 +86,6 @@ public class CloudMainWindow {
 				// Se sobreescriben en memoria las preferencias que asi lo requieran.
 				// Tendria mas sentido hacer una implementacion de lectura de preferencias alternativa.
 
-				
 				String localeConfig = config.getProperties().get("locale");
 
 				if (localeConfig != null) {
@@ -132,24 +120,24 @@ public class CloudMainWindow {
 				// INPUTS				
 				createTsFolder(token);
 
-				List<InputVO> inputVOList = serviceManager.getInputs();
+				List<DocumentVO> documentVOList = serviceManager.getDocuments();
 
 				List<File> fileList = new ArrayList<File>();
 				
-				// copiamos inputs a FS
-				for (InputVO inputVO : inputVOList) {
+				// copiamos documents a FS
+				for (DocumentVO documentVO : documentVOList) {
 					
-					if (inputVO.getType().equals("url")) {
+					if (documentVO.getType().equals("url")) {
 						
-						InputStream is = HttpUtils.getHttp(inputVO.getUrl());
+						InputStream is = HttpUtils.getHttp(documentVO.getUrl());
 						File tmpFolderFile = new File(PropertiesUtil.TMP_FOLDER_PATH); 
-						String path = tmpFolderFile.getAbsolutePath() + File.separator + token + File.separator + inputVO.getName();
+						String path = tmpFolderFile.getAbsolutePath() + File.separator + token + File.separator + documentVO.getName();
 						OutputStream os = new FileOutputStream(path);
 						IOUtils.copy(is, os);
 						fileList.add(new File(path));
 						
 					} else {
-						throw new ProtocolAppException("input type not supported");
+						throw new CloudAppException("document type not supported");
 					}
 					
 				}
@@ -163,22 +151,22 @@ public class CloudMainWindow {
 				List<String> errorList = LoggingDesktopController.getErrorList();
 				if (errorList != null && errorList.size() > 0) {
 					
-					throw new ProtocolAppException(errorList.get(0));
+					throw new CloudAppException(errorList.get(0));
 					
 				} else {
 					
-					// es un poco cutre, pero de momento la asociacion (entre DocumentInfo e InputVO) la hago por indice
+					// es un poco cutre, pero de momento la asociacion (entre DocumentInfo e DocumentVO) la hago por indice
 					for (int i = 0; i < documentInfoList.size(); i++) {
 						
 						DocumentInfo documentInfo = documentInfoList.get(i);
-						InputVO inputVO = inputVOList.get(i);
+						DocumentVO documentVO = documentVOList.get(i);
 						
 						ByteArrayOutputStream os = new ByteArrayOutputStream();
 						InputStream is = FileUtil.getInputStreamFromURI(documentInfo.getPath());
 						IOUtils.copy(is, os);
 	
 						// se suben al server
-						serviceManager.addSignatureFile(inputVO.getId(), os.toByteArray());
+						serviceManager.addSignatureFile(documentVO.getId(), os.toByteArray());
 					}
 					
 					// se borra la carpeta temporal
@@ -189,20 +177,20 @@ public class CloudMainWindow {
 				}
 	
 			} catch (RestServiceException e) {
-				throw new ProtocolAppException(e);
+				throw new CloudAppException(e);
 			} catch (FileNotValidException e) {
-				throw new ProtocolAppException(e);
+				throw new CloudAppException(e);
 			} catch (FileNotFoundException e) {
-				throw new ProtocolAppException(e);
+				throw new CloudAppException(e);
 			} catch (IOException e) {
-				throw new ProtocolAppException(e);
+				throw new CloudAppException(e);
 			} catch (URISyntaxException e) {
-				throw new ProtocolAppException(e);
+				throw new CloudAppException(e);
 			} catch (RuntimeException e) {
-				throw new ProtocolAppException(e);
+				throw new CloudAppException(e);
 			}
 			
-		} catch (ProtocolAppException e) {
+		} catch (CloudAppException e) {
 			
 			log.error("Code: " + e.getCode(), e);
 			try {

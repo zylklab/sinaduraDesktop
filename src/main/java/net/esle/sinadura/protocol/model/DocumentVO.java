@@ -1,13 +1,13 @@
 package net.esle.sinadura.protocol.model;
 
-public class InputVO {
+public class DocumentVO {
 
 	private String id;
 	private String type;
 	private String url;
 	private String name;
 
-	public InputVO() {
+	public DocumentVO() {
 	}
 
 	public String getId() {

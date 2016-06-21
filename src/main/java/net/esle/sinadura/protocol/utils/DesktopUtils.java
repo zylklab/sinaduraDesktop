@@ -8,7 +8,7 @@ public class DesktopUtils {
 	// ===============================================
 	//  Protocol URL Argument processing
 	// ===============================================
-	// sinadura://idazki-test-external.zylk.net:8080/idazki-protocol-services/rest/api/v1/h/d7c0c9f9-1733-4ad6-a431-1ad54d5d9245
+	// sinadura://localhost:8080/sinaduraCloud/rest/v1/h/d7c0c9f9-1733-4ad6-a431-1ad54d5d9245
 	public static String getServiceURL(String protURL) {
 		
 		String s = protURL.substring(0, protURL.lastIndexOf("/"));

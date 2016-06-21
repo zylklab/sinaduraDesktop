@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.esle.sinadura.protocol.exceptions.RestServiceException;
 import net.esle.sinadura.protocol.model.ConfigVO;
-import net.esle.sinadura.protocol.model.InputVO;
+import net.esle.sinadura.protocol.model.DocumentVO;
 import net.esle.sinadura.protocol.utils.HttpUtils;
 
 
@@ -34,8 +34,8 @@ public class ServiceManager {
 		GetVersionInfo("version/get"),
 		GetConfiguration("config/get"),
 		SetStatus("status/set"),
-		AddInput("input/add"),
-		GetInputs("inputs/get"),
+		AddDocument("document/add"),
+		GetDocuments("documents/get"),
 		AddSignatureFile("signaturefile-upload/{transaction-id}/add"),
 		PutError("error/add")
 		;
@@ -67,7 +67,6 @@ public class ServiceManager {
 		
 		try {
 			String fullURL = transactionServerURL + "/" + token + "/" + Services.GetConfiguration.getServiceName();
-			log.info("desktop-protocol | getConfig: " + fullURL);
 
 			InputStream is = HttpUtils.getHttp(fullURL);
 			byte[] res = IOUtils.toByteArray(is);
@@ -86,10 +85,10 @@ public class ServiceManager {
 	}
 	
 	
-	public List<InputVO> getInputs() throws RestServiceException {
+	public List<DocumentVO> getDocuments() throws RestServiceException {
 		
 		try {
-			String fullURL = transactionServerURL + "/" + token + "/" + Services.GetInputs.getServiceName();
+			String fullURL = transactionServerURL + "/" + token + "/" + Services.GetDocuments.getServiceName();
 		
 			InputStream is = HttpUtils.getHttp(fullURL);
 			byte[] res = IOUtils.toByteArray(is);
@@ -97,9 +96,9 @@ public class ServiceManager {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			
-			List<InputVO> inputs = Arrays.asList(mapper.readValue(s, InputVO[].class));
+			List<DocumentVO> documents = Arrays.asList(mapper.readValue(s, DocumentVO[].class));
 			
-			return inputs;
+			return documents;
 		
 		} catch (MalformedURLException e) {
 			throw new RestServiceException(e);
@@ -108,13 +107,13 @@ public class ServiceManager {
 		}
 	}
 
-	public void addSignatureFile(String idInput, byte[] result) throws RestServiceException {
+	public void addSignatureFile(String idDocument, byte[] result) throws RestServiceException {
 		
 		try {
 			String fullURL = transactionServerURL + "/" + Services.AddSignatureFile.getServiceName().replace("{transaction-id}", token);
 		
 			Map<String, String> formObjects = new HashMap<String, String>();
-			formObjects.put("idInput", idInput);
+			formObjects.put("idDocument", idDocument);
 			
 			HttpUtils.postHttpMultipart(fullURL, formObjects, result);
 		
