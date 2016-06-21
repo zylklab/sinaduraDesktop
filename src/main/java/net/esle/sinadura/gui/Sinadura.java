@@ -28,16 +28,16 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
-import net.esle.sinadura.core.util.PropertiesCoreUtil;
-import net.esle.sinadura.gui.exceptions.FileNotValidException;
-import net.esle.sinadura.gui.util.PropertiesUtil;
-import net.esle.sinadura.gui.util.StatisticsUtil;
-import net.esle.sinadura.protocol.CloudLoadingWindow;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.xml.utils.URI.MalformedURIException;
+
+import net.esle.sinadura.cloud.CloudLoadingWindow;
+import net.esle.sinadura.core.util.PropertiesCoreUtil;
+import net.esle.sinadura.gui.exceptions.FileNotValidException;
+import net.esle.sinadura.gui.util.PropertiesUtil;
+import net.esle.sinadura.gui.util.StatisticsUtil;
 
 /**
  * @author zylk.net

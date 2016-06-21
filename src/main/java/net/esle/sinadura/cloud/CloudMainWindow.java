@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -19,6 +18,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Shell;
 
+import net.esle.sinadura.cloud.exceptions.CloudAppException;
+import net.esle.sinadura.cloud.exceptions.RestServiceException;
+import net.esle.sinadura.cloud.model.ConfigVO;
+import net.esle.sinadura.cloud.model.DocumentVO;
+import net.esle.sinadura.cloud.services.ServiceManager;
+import net.esle.sinadura.cloud.utils.DesktopUtils;
+import net.esle.sinadura.cloud.utils.HttpUtils;
 import net.esle.sinadura.core.util.FileUtil;
 import net.esle.sinadura.gui.controller.SignControllerHelper;
 import net.esle.sinadura.gui.exceptions.FileNotValidException;
@@ -28,13 +34,6 @@ import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.LoggingDesktopController;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.PropertiesUtil;
-import net.esle.sinadura.protocol.exceptions.CloudAppException;
-import net.esle.sinadura.protocol.exceptions.RestServiceException;
-import net.esle.sinadura.protocol.model.ConfigVO;
-import net.esle.sinadura.protocol.model.DocumentVO;
-import net.esle.sinadura.protocol.services.ServiceManager;
-import net.esle.sinadura.protocol.utils.DesktopUtils;
-import net.esle.sinadura.protocol.utils.HttpUtils;
 
 public class CloudMainWindow {
 

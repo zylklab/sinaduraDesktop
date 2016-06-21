@@ -15,10 +15,10 @@ import org.apache.commons.logging.LogFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.esle.sinadura.protocol.exceptions.RestServiceException;
-import net.esle.sinadura.protocol.model.ConfigVO;
-import net.esle.sinadura.protocol.model.DocumentVO;
-import net.esle.sinadura.protocol.utils.HttpUtils;
+import net.esle.sinadura.cloud.exceptions.RestServiceException;
+import net.esle.sinadura.cloud.model.ConfigVO;
+import net.esle.sinadura.cloud.model.DocumentVO;
+import net.esle.sinadura.cloud.utils.HttpUtils;
 
 
 public class ServiceManager {
