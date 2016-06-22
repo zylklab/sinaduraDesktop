@@ -45,8 +45,10 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 
 /**
  * @author zylk.net
@@ -62,6 +64,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 	private Combo comboTipoFirmaPDF = null;
 	private List visualList = null;
 	private Combo comboDefault = null;
+	private Button checkAsk = null;
 	
 	private Button buttonAdd;
 	private Button buttonEdit;
@@ -236,6 +239,18 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 
 		comboDefault = new Combo(composite, SWT.NONE | SWT.READ_ONLY);
 		comboDefault.addSelectionListener(new ComboDefaultChangeListener());
+		
+		// ask profile
+		checkAsk = new Button(composite, SWT.CHECK);
+		checkAsk.setText(LanguageUtil.getLanguage().getString("preferences.pdf.profile.selection.ask"));
+		checkAsk.setSelection(true);
+		gd = new GridData();
+		gd.grabExcessHorizontalSpace = true;
+		checkAsk.setLayoutData(gd);
+		
+		boolean selectionAsk = PreferencesUtil.getPreferenceStore().getBoolean(PreferencesUtil.PDF_PROFILE_SELECTION_ASK);
+		checkAsk.setSelection(selectionAsk);
+		
 		reloadComboDefault();
 	}
 	
@@ -263,6 +278,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 
 		PreferencesUtil.savePdfProfiles(pdfProfiles);
 		PreferencesUtil.getPreferenceStore().setValue(PreferencesUtil.PDF_TIPO, String.valueOf(comboTipoFirmaPDF.getSelectionIndex()));
+		PreferencesUtil.getPreferenceStore().setValue(PreferencesUtil.PDF_PROFILE_SELECTION_ASK, String.valueOf(checkAsk.getSelection()));
 		
 		if (comboDefault != null) {
 			PreferencesUtil.getPreferenceStore().setValue(PreferencesUtil.PDF_PROFILE_SELECTED_NAME, comboDefault.getText());
@@ -293,6 +309,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 			buttonRemove.setEnabled(false);
 			buttonEdit.setEnabled(false);
 			comboDefault.setEnabled(false);
+			checkAsk.setEnabled(false);
 			
 		} else {
 			visualList.setEnabled(true);
@@ -300,6 +317,7 @@ public class PdfPreferences extends FieldEditorPreferencePage {
 			buttonRemove.setEnabled(true);
 			buttonEdit.setEnabled(true);
 			comboDefault.setEnabled(true);
+			checkAsk.setEnabled(true);
 		}
 	}
 

@@ -189,6 +189,19 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 		gd.grabExcessHorizontalSpace = true;
 		gd.horizontalSpan = 1;
 		comboCertPath.setLayoutData(gd);
+		
+		comboCertPath.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				
+				changeComboCertPath();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				widgetSelected(arg0);
+			}
+		});
 
 		// button add p12
 		buttonP12 = new Button(this.compositeMain, SWT.NONE);
@@ -217,7 +230,7 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 		this.bottonCancelar.setImage(new Image(this.sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.CANCEL_IMG)));
 		this.bottonCancelar.addSelectionListener(new BotonCancelarListener());
 
-		reloadComboCert();
+		reloadComboCertPath();
 		
 		this.sShell.pack();
 
@@ -242,11 +255,16 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 	
 	private void changeComboCertType() {
 		
-		 reloadComboCert();
+		reloadComboCertPath();
+	}
+	
+	private void changeComboCertPath() {
+		
+		 // reloadComboCertPath();
 	}
 	
 	
-	private void reloadComboCert() {
+	private void reloadComboCertPath() {
 			
 		if (comboCertType.getSelectionIndex() == 0) { // p12
 		
@@ -260,7 +278,9 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 			}
 			
 			// default
-			comboCertPath.setText(tempP12Default); // TODO validar null o ""??
+			if (tempP12Default != null && !tempP12Default.equals("")) {
+				comboCertPath.setText(tempP12Default);
+			}
 
 			// visible
 			labelCert.setVisible(true);
@@ -333,7 +353,7 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 			if (softwareStoreDialog.getSelectedName() != null) {
 				// se marca el nuevo p12 como valor por defecto del combo (solo de forma temporal para esta pantalla)
 				tempP12Default = softwareStoreDialog.getSelectedName();
-				reloadComboCert();
+				reloadComboCertPath();
 			}
 		}
 
@@ -350,8 +370,14 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 			
 			if (comboCertType.getSelectionIndex() == 0) { // p12
 				
-				// los nuevos p12 se persisten (el selected p12 no)
+				// se persisten los nuevos p12 
 				PreferencesUtil.saveSoftwarePreferences(tmpP12Map);
+				// si no hay un p12 por defecto almacenado en las preferencias, se persiste este valor tambien. En las siguientes
+				// ejecuciones no se persiste este valor (se puede cambiar desde la seccion de preferencias). 
+				String storedP12= PreferencesUtil.getPreferenceStore().getString(PreferencesUtil.SOFTWARE_DISPOSITIVE);
+				if (storedP12 == null || storedP12.equals("")) {
+					PreferencesUtil.savePreference(PreferencesUtil.SOFTWARE_DISPOSITIVE, comboCertPath.getText());
+				}
 				
 				selectedCertPath = tmpP12Map.get(comboCertPath.getText());
 

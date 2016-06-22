@@ -51,27 +51,29 @@ public class PdfSignatureProperties {
 	private static Log log = LogFactory.getLog(PdfSignatureProperties.class);
 
 	private Composite compositeMain = null;
-	private PdfProfile profile;
+	private PdfProfile pdfProfile;
 
 	
 	private Button checkVisible = null;
+	private Button checkAskPosition = null;
 	private Button checkSello = null;
 	private Text textRuta = null;
 	private Text textReason = null;
 	private Text textLocation = null;
 	private Button buttonBrowse = null;
 	private Label label = null;
-	private Combo comboOCSP = null;
-	private Label labelOCSP = null;
-	
+	private Combo comboCertified = null;
+	private Label labelCertified = null;
 
 	
 	public PdfSignatureProperties(Composite composite, PdfProfile profile) {
 
 		this.compositeMain = composite;
-		this.profile = profile;
+		this.pdfProfile = new PdfProfile(profile);
 		
 		createContents();
+		
+		updateProfile();
 		
 		updateControlState();
 	}
@@ -110,8 +112,24 @@ public class PdfSignatureProperties {
 		gd.horizontalSpan = 3;
 		gd.grabExcessHorizontalSpace = true;
 		checkVisible.setLayoutData(gd);
-		checkVisible.setSelection(profile.getVisible());
 		checkVisible.addListener(SWT.MouseUp, new Listener() {
+
+			@Override
+			public void handleEvent(Event arg0) {
+				
+				updateControlState();
+			}
+		});
+		
+		// askPosition
+		checkAskPosition = new Button(this.compositeMain, SWT.CHECK);
+		checkAskPosition.setText(LanguageUtil.getLanguage().getString("preferences.pdf.profile.position.ask"));
+		checkAskPosition.setSelection(true);
+		gd = new GridData();
+		gd.horizontalSpan = 3;
+		gd.grabExcessHorizontalSpace = true;
+		checkAskPosition.setLayoutData(gd);
+		checkAskPosition.addListener(SWT.MouseUp, new Listener() {
 
 			@Override
 			public void handleEvent(Event arg0) {
@@ -127,8 +145,6 @@ public class PdfSignatureProperties {
 		gd.horizontalSpan = 3;
 		gd.grabExcessHorizontalSpace = true;
 		checkSello.setLayoutData(gd);
-		checkSello.setSelection(profile.hasImage());
-		checkSello.setEnabled(profile.getVisible());
 		checkSello.addListener(SWT.MouseUp, new Listener() {
 
 			@Override
@@ -136,7 +152,6 @@ public class PdfSignatureProperties {
 				
 				updateControlState();
 			}
-
 		});
 
 		label = new Label(this.compositeMain, SWT.NONE);
@@ -147,7 +162,6 @@ public class PdfSignatureProperties {
 		gd.horizontalAlignment = SWT.FILL;
 		gd.grabExcessHorizontalSpace = true;
 		textRuta.setLayoutData(gd);
-		textRuta.setText(profile.getImagePath());	
 		
 		buttonBrowse = new Button(this.compositeMain, SWT.NONE);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -168,33 +182,19 @@ public class PdfSignatureProperties {
 				{ LanguageUtil.getLanguage().getString("preferences.pdf.combo.form.filling.and.annotations"),
 						"" + PdfSignatureAppearance.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS } };
 
-		this.labelOCSP = new Label(this.compositeMain, SWT.NONE);
-		this.labelOCSP.setText(LanguageUtil.getLanguage().getString("preferences.pdf.certified"));
+		this.labelCertified = new Label(this.compositeMain, SWT.NONE);
+		this.labelCertified.setText(LanguageUtil.getLanguage().getString("preferences.pdf.certified"));
 
-		this.comboOCSP = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
+		this.comboCertified = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
 		GridData gdCert = new GridData();
 		gdCert.horizontalSpan = 2;
 		gdCert.grabExcessHorizontalSpace = true;
-		this.comboOCSP.setLayoutData(gdCert);
+		this.comboCertified.setLayoutData(gdCert);
 
 		int k = 0;
 		for (String[] value : comboFields2) {
-			this.comboOCSP.add(value[0], k);
+			this.comboCertified.add(value[0], k);
 			k++;
-		}
-
-		switch(profile.getCertified()){
-			case PdfSignatureAppearance.CERTIFIED_NO_CHANGES_ALLOWED:
-				this.comboOCSP.select(1);
-				break;
-			case PdfSignatureAppearance.CERTIFIED_FORM_FILLING:
-				this.comboOCSP.select(2);
-				break;
-			case PdfSignatureAppearance.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS:
-				this.comboOCSP.select(3);
-				break;
-			default:
-				this.comboOCSP.select(0);	
 		}
 
 		// reason
@@ -214,10 +214,7 @@ public class PdfSignatureProperties {
 		gdTextReason.grabExcessVerticalSpace = true;
 		gdTextReason.verticalAlignment = SWT.FILL;
 		textReason.setLayoutData(gdTextReason);
-		if (profile.getReason() != null){
-			textReason.setText(profile.getReason());			
-		}
-
+		
 		// location
 		Label labelLocation = new Label(this.compositeMain, SWT.NONE);
 		labelLocation.setText(LanguageUtil.getLanguage().getString("preferences.pdf.location"));
@@ -235,11 +232,7 @@ public class PdfSignatureProperties {
 		gdTextLocation.grabExcessVerticalSpace = true;
 		gdTextLocation.verticalAlignment = SWT.FILL;
 		textLocation.setLayoutData(gdTextLocation);
-		if (profile.getLocation() != null) {
-			textLocation.setText(profile.getLocation());	
-		}
 		
-
 	}
 
 	class ButtonBrowseListener implements SelectionListener {
@@ -283,16 +276,54 @@ public class PdfSignatureProperties {
 
 	}
 	
+	private void updateProfile() {
+		
+		checkVisible.setSelection(pdfProfile.getVisible());
+		checkAskPosition.setSelection(pdfProfile.getAskPosition());
+		checkSello.setSelection(pdfProfile.hasImage());
+		textRuta.setText(pdfProfile.getImagePath());
+		
+		switch (pdfProfile.getCertified()) {
+		case PdfSignatureAppearance.CERTIFIED_NO_CHANGES_ALLOWED:
+			this.comboCertified.select(1);
+			break;
+		case PdfSignatureAppearance.CERTIFIED_FORM_FILLING:
+			this.comboCertified.select(2);
+			break;
+		case PdfSignatureAppearance.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS:
+			this.comboCertified.select(3);
+			break;
+		default:
+			this.comboCertified.select(0);
+		}
+		
+		if (pdfProfile.getReason() != null){
+			textReason.setText(pdfProfile.getReason());			
+		}
+		
+		if (pdfProfile.getLocation() != null) {
+			textLocation.setText(pdfProfile.getLocation());	
+		}
+	}
+	
+	public void reloadProfile(PdfProfile newProfile) {
+		
+		pdfProfile = new PdfProfile(newProfile);
+		
+		updateProfile();
+		updateControlState();
+	}
 	
 	public PdfProfile getProfile() {
 
-		profile.setVisible(checkVisible.getSelection());
-		profile.setReason(textReason.getText());
-		profile.setLocation(textLocation.getText());
-		profile.setHasImage(checkSello.getSelection());
-		profile.setImagePath(textRuta.getText());
-		profile.setCertified(comboOCSP.getSelectionIndex());
+		pdfProfile.setVisible(checkVisible.getSelection());
+		pdfProfile.setAskPosition(checkAskPosition.getSelection());
+		pdfProfile.setHasImage(checkSello.getSelection());
+		pdfProfile.setImagePath(textRuta.getText());
+		pdfProfile.setCertified(comboCertified.getSelectionIndex());
+		pdfProfile.setReason(textReason.getText());
+		pdfProfile.setLocation(textLocation.getText());
 		
-		return profile;
+		return pdfProfile;
 	}
 }

@@ -75,7 +75,6 @@ public class PdfProfilePreferencesDialog extends Dialog {
 			tmpProfile.setImagePath(PreferencesUtil.DEFAULT_IMAGE_FILEPATH);
 			tmpProfile.setAcroField("");
 			tmpProfile.setAskPosition(Boolean.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_ASK)));
-			tmpProfile.setAskProperties(Boolean.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_PROPERTIES_ASK)));
 			tmpProfile.setWidht(Float.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_WIDTH)));
 			tmpProfile.setHeight(Float.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_HEIGHT)));
 			tmpProfile.setStartX(Float.valueOf(PreferencesDefaultUtil.get(PreferencesUtil.PDF_STAMP_X)));

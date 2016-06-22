@@ -412,12 +412,11 @@ public class SignControllerHelper {
 			PdfProfile pdfProfile = null;
 			if (findPdf) { // si hay algun PDF
 				
-				Map<String, PdfProfile> availableProfiles = PreferencesUtil.getPdfProfiles();
-				PdfProfile defaultPdfProfile = availableProfiles.get(PreferencesUtil.getString(PreferencesUtil.PDF_PROFILE_SELECTED_NAME));
+				boolean profileSelectionAsk = PreferencesUtil.getBoolean(PreferencesUtil.PDF_PROFILE_SELECTION_ASK);
 				
-				if (true) { // TODO ahora hay que añadir otra preferencia
+				if (profileSelectionAsk) {
 					
-					PdfSignaturePropertiesRunnable pspr = new PdfSignaturePropertiesRunnable(shell, defaultPdfProfile);
+					PdfSignaturePropertiesRunnable pspr = new PdfSignaturePropertiesRunnable(shell);
 					Display.getDefault().syncExec(pspr);
 					
 					if (pspr.getPdfProfile() != null) {
@@ -428,6 +427,9 @@ public class SignControllerHelper {
 						LoggingDesktopController.printError(m);
 						throw new SignProgressInterruptedException();
 					}
+				} else {
+					Map<String, PdfProfile> availableProfiles = PreferencesUtil.getPdfProfiles();
+					pdfProfile = availableProfiles.get(PreferencesUtil.getString(PreferencesUtil.PDF_PROFILE_SELECTED_NAME));
 				}
 			}
 			

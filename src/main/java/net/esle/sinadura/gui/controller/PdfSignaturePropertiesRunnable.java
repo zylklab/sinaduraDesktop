@@ -40,20 +40,18 @@ import net.esle.sinadura.gui.view.main.PdfSignaturePropertiesDialog;
 public class PdfSignaturePropertiesRunnable implements Runnable {
 
 	
-	private PdfProfile pdfProfile = null;
 	private PdfProfile selectedPdfProfile = null;
 	private Shell shell;
 
-	PdfSignaturePropertiesRunnable(Shell shell, PdfProfile pdfProfile) {
+	PdfSignaturePropertiesRunnable(Shell shell) {
 		
-		this.shell = shell;
-		this.pdfProfile = new PdfProfile(pdfProfile);
+		this.shell = shell;	
 	}
 
 	@Override
 	public void run() {
 			
-		PdfSignaturePropertiesDialog pdfDialog = new PdfSignaturePropertiesDialog(shell, pdfProfile);
+		PdfSignaturePropertiesDialog pdfDialog = new PdfSignaturePropertiesDialog(shell);
 		pdfDialog.open();
 		PdfProfile newProfile = pdfDialog.getPdfProfile();
 		if (newProfile != null) {

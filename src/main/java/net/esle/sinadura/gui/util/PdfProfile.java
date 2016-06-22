@@ -9,7 +9,6 @@ public class PdfProfile {
 	private String acroField;
 			
 	private boolean askPosition;
-	private boolean askProperties;
 	private int page;
 	private float startX;
 	private float startY;
@@ -34,7 +33,6 @@ public class PdfProfile {
 		this.visible = pdfProfile.getVisible();
 		this.acroField = pdfProfile.getAcroField();
 		this.askPosition = pdfProfile.getAskPosition();
-		this.askProperties = pdfProfile.getAskProperties();
 		this.page = pdfProfile.getPage();
 		this.startX = pdfProfile.getStartX();
 		this.startY = pdfProfile.getStartY();
@@ -132,14 +130,6 @@ public class PdfProfile {
 
 	public boolean getAskPosition() {
 		return askPosition;
-	}
-
-	public boolean getAskProperties() {
-		return askProperties;
-	}
-
-	public void setAskProperties(boolean askProperties) {
-		this.askProperties = askProperties;
 	}
 
 }

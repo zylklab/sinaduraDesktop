@@ -84,7 +84,7 @@ public class CloudMainWindow {
 				
 				// Se sobreescriben en memoria las preferencias que asi lo requieran.
 				// Tendria mas sentido hacer una implementacion de lectura de preferencias alternativa.
-
+				
 				String localeConfig = config.getProperties().get("locale");
 
 				if (localeConfig != null) {
@@ -106,16 +106,7 @@ public class CloudMainWindow {
 				PreferencesUtil.setRuntimePreference(PreferencesUtil.AUTO_VALIDATE, false);
 				// Xades
 				PreferencesUtil.setRuntimePreference(PreferencesUtil.XADES_ARCHIVE, false);
-				// Pdf
-				// TODO revisar. No se si tiene sentido sobreescribir estos valores. De momento los pongo a "true" por defecto en la instalacion.
-//				Map<String, PdfProfile> availableProfiles = PreferencesUtil.getPdfProfiles();
-//				PdfProfile defaultPdfProfile = availableProfiles.get(PreferencesUtil.getPreferences().getString(PreferencesUtil.PDF_PROFILE_SELECTED_NAME));
-//				defaultPdfProfile.setAskPosition(true); 
-//				defaultPdfProfile.setAskProperties(true); // este no tiene sentido ponerlo siempre a true
 
-
-				
-				
 				// INPUTS				
 				createTsFolder(token);
 

@@ -64,7 +64,6 @@ public class PdfProfilePreferences {
 	private Text textAcroField;
 	private Button checkVisible = null;
 	private Button checkAskPosition = null;
-	private Button checkAskProperties = null;
 	
 	private Button checkSello = null;
 	private Text textRuta = null;
@@ -77,8 +76,8 @@ public class PdfProfilePreferences {
 	private Combo comboSelectPage = null;
 	private Label labelPages = null;
 	private Text textSelectPage = null;
-	private Combo comboOCSP = null;
-	private Label labelOCSP = null;
+	private Combo comboCertified = null;
+	private Label labelCertified = null;
 	
 	private PdfSignatureField signatureField = null;
 
@@ -136,25 +135,6 @@ public class PdfProfilePreferences {
 		gd.grabExcessHorizontalSpace = true;
 		gd.horizontalSpan = 2;
 		textName.setLayoutData(gd);
-		
-		
-		// askProperties
-		checkAskProperties = new Button(this.compositeMain, SWT.CHECK);
-		checkAskProperties.setText(LanguageUtil.getLanguage().getString("preferences.pdf.profile.properties.ask"));
-		checkAskProperties.setSelection(true);
-		gd = new GridData();
-		gd.horizontalSpan = 3;
-		gd.grabExcessHorizontalSpace = true;
-		checkAskProperties.setLayoutData(gd);
-		checkAskProperties.setSelection(profile.getAskProperties());
-		checkAskProperties.addListener(SWT.MouseUp, new Listener() {
-
-			@Override
-			public void handleEvent(Event arg0) {
-				
-				updateControlState();
-			}
-		});
 		
 		// firma visible
 		checkVisible = new Button(this.compositeMain, SWT.CHECK);
@@ -302,33 +282,33 @@ public class PdfProfilePreferences {
 				{ LanguageUtil.getLanguage().getString("preferences.pdf.combo.form.filling.and.annotations"),
 						"" + PdfSignatureAppearance.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS } };
 
-		this.labelOCSP = new Label(this.compositeMain, SWT.NONE);
-		this.labelOCSP.setText(LanguageUtil.getLanguage().getString("preferences.pdf.certified"));
+		this.labelCertified = new Label(this.compositeMain, SWT.NONE);
+		this.labelCertified.setText(LanguageUtil.getLanguage().getString("preferences.pdf.certified"));
 
-		this.comboOCSP = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
+		this.comboCertified = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
 		GridData gdCert = new GridData();
 		gdCert.horizontalSpan = 2;
 		gdCert.grabExcessHorizontalSpace = true;
-		this.comboOCSP.setLayoutData(gdCert);
+		this.comboCertified.setLayoutData(gdCert);
 
 		int k = 0;
 		for (String[] value : comboFields2) {
-			this.comboOCSP.add(value[0], k);
+			this.comboCertified.add(value[0], k);
 			k++;
 		}
 
 		switch(profile.getCertified()){
 			case PdfSignatureAppearance.CERTIFIED_NO_CHANGES_ALLOWED:
-				this.comboOCSP.select(1);
+				this.comboCertified.select(1);
 				break;
 			case PdfSignatureAppearance.CERTIFIED_FORM_FILLING:
-				this.comboOCSP.select(2);
+				this.comboCertified.select(2);
 				break;
 			case PdfSignatureAppearance.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS:
-				this.comboOCSP.select(3);
+				this.comboCertified.select(3);
 				break;
 			default:
-				this.comboOCSP.select(0);	
+				this.comboCertified.select(0);	
 		}
 
 		// acroField
@@ -485,12 +465,11 @@ public class PdfProfilePreferences {
 		profile.setAcroField(textAcroField.getText());
 		profile.setVisible(checkVisible.getSelection());
 		profile.setAskPosition(checkAskPosition.getSelection());
-		profile.setAskProperties(checkAskProperties.getSelection());
 		profile.setReason(textReason.getText());
 		profile.setLocation(textLocation.getText());
 		profile.setHasImage(checkSello.getSelection());
 		profile.setImagePath(textRuta.getText());
-		profile.setCertified(comboOCSP.getSelectionIndex());
+		profile.setCertified(comboCertified.getSelectionIndex());
 		
 		switch(comboSelectPage.getSelectionIndex()){
 			case 0:

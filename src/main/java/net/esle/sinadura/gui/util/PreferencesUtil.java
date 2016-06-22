@@ -93,6 +93,7 @@ public class PreferencesUtil {
 	public static final String PDF_TIPO = "pdf.tipo";
 	public static final String PDF_TIPO_PDF = "0";
 	public static final String PDF_TIPO_XML = "1";
+	public static final String PDF_PROFILE_SELECTION_ASK = "pdf.profile.selection.ask";
 	public static final String PDF_PROFILE_SELECTED_NAME = "pdf.profile.selected.name";
 	private static final String PDF_PROFILE_DEFAULT_NAME = "Default profile";
 	// ----------------
@@ -109,7 +110,6 @@ public class PreferencesUtil {
 	public static final String PDF_STAMP_Y = "pdf.stamp.y";
 	public static final String PDF_CERTIFIED = "pdf.certified";
 	public static final String PDF_STAMP_ASK = "pdf.stamp.ask";
-	public static final String PDF_PROPERTIES_ASK = "pdf.properties.ask";
 	// ----------------
 	
 	// xades
@@ -229,7 +229,6 @@ public class PreferencesUtil {
 			pdfProfile.setImagePath(PreferencesUtil.DEFAULT_IMAGE_FILEPATH);
 			pdfProfile.setAcroField("");
 			pdfProfile.setAskPosition(Boolean.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_ASK)));
-			pdfProfile.setAskProperties(Boolean.valueOf(PreferencesDefaultUtil.get(PDF_PROPERTIES_ASK)));
 			pdfProfile.setWidht(Float.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_WIDTH)));
 			pdfProfile.setHeight(Float.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_HEIGHT)));
 			pdfProfile.setStartX(Float.valueOf(PreferencesDefaultUtil.get(PDF_STAMP_X)));
@@ -312,8 +311,8 @@ public class PreferencesUtil {
 				 * 1 (xml) - parlamento
 				 */
 				preferenceStore.setDefault(PDF_TIPO, PreferencesDefaultUtil.get(PDF_TIPO));
+				preferenceStore.setDefault(PDF_PROFILE_SELECTION_ASK, PreferencesDefaultUtil.get(PDF_PROFILE_SELECTION_ASK)); // true
 				preferenceStore.setDefault(PDF_PROFILE_SELECTED_NAME, PDF_PROFILE_DEFAULT_NAME);
-				
 				
 				// xades
 				preferenceStore.setDefault(XADES_ARCHIVE, PreferencesDefaultUtil.get(XADES_ARCHIVE)); //"true");
@@ -384,7 +383,7 @@ public class PreferencesUtil {
 	
 	/**
 	 * Este metodo sobreescribe el valor de una preferencia para toda la ejecucion del proceso. Este valor no se persiste en
-	 * fichero. Es para poder sobreescribir valores en el modo Cloud.
+	 * fichero. Es para poder sobreescribir valores en el modo Cloud (y no se quieran persistir).
 	 * 
 	 * @param key
 	 * @param value
@@ -561,20 +560,19 @@ public class PreferencesUtil {
 
 			PdfProfile pdfProfile = new PdfProfile();
 			pdfProfile.setName(record.get(0));
-			pdfProfile.setAskProperties(Boolean.valueOf(record.get(1)));
-			pdfProfile.setVisible(Boolean.valueOf(record.get(2)));
-			pdfProfile.setAskPosition(Boolean.valueOf(record.get(3)));
-			pdfProfile.setHasImage(Boolean.valueOf(record.get(4)));
-			pdfProfile.setImagePath(record.get(5));
-			pdfProfile.setWidht(new Float(record.get(6)));
-			pdfProfile.setHeight(new Float(record.get(7)));
-			pdfProfile.setStartX(new Float(record.get(8)));
-			pdfProfile.setStartY(new Float(record.get(9)));
-			pdfProfile.setPage(Integer.valueOf(record.get(10)));
-			pdfProfile.setCertified(Integer.valueOf(record.get(11)));
-			pdfProfile.setAcroField(record.get(12));
-			pdfProfile.setReason(record.get(13));
-			pdfProfile.setLocation(record.get(14));
+			pdfProfile.setVisible(Boolean.valueOf(record.get(1)));
+			pdfProfile.setAskPosition(Boolean.valueOf(record.get(2)));
+			pdfProfile.setHasImage(Boolean.valueOf(record.get(3)));
+			pdfProfile.setImagePath(record.get(4));
+			pdfProfile.setWidht(new Float(record.get(5)));
+			pdfProfile.setHeight(new Float(record.get(6)));
+			pdfProfile.setStartX(new Float(record.get(7)));
+			pdfProfile.setStartY(new Float(record.get(8)));
+			pdfProfile.setPage(Integer.valueOf(record.get(9)));
+			pdfProfile.setCertified(Integer.valueOf(record.get(10)));
+			pdfProfile.setAcroField(record.get(11));
+			pdfProfile.setReason(record.get(12));
+			pdfProfile.setLocation(record.get(13));
 			
 			profiles.put(pdfProfile.getName(), pdfProfile);
 		}
@@ -603,20 +601,19 @@ public class PreferencesUtil {
 		for (PdfProfile profile : profiles.values()) {
 			fila = new ArrayList<String>();
 			fila.add(0, profile.getName());
-			fila.add(1, Boolean.toString(profile.getAskProperties()));
-			fila.add(2, Boolean.toString(profile.getVisible()));
-			fila.add(3, String.valueOf(profile.getAskPosition()));
-			fila.add(4, Boolean.toString(profile.hasImage()));
-			fila.add(5, profile.getImagePath());
-			fila.add(6, String.valueOf(profile.getWidht()));
-			fila.add(7, String.valueOf(profile.getHeight()));
-			fila.add(8, String.valueOf(profile.getStartX()));
-			fila.add(9, String.valueOf(profile.getStartY()));
-			fila.add(10, String.valueOf(profile.getPage()));
-			fila.add(11, String.valueOf(profile.getCertified()));
-			fila.add(12, profile.getAcroField());
-			fila.add(13, profile.getReason());
-			fila.add(14, profile.getLocation());
+			fila.add(1, Boolean.toString(profile.getVisible()));
+			fila.add(2, String.valueOf(profile.getAskPosition()));
+			fila.add(3, Boolean.toString(profile.hasImage()));
+			fila.add(4, profile.getImagePath());
+			fila.add(5, String.valueOf(profile.getWidht()));
+			fila.add(6, String.valueOf(profile.getHeight()));
+			fila.add(7, String.valueOf(profile.getStartX()));
+			fila.add(8, String.valueOf(profile.getStartY()));
+			fila.add(9, String.valueOf(profile.getPage()));
+			fila.add(10, String.valueOf(profile.getCertified()));
+			fila.add(11, profile.getAcroField());
+			fila.add(12, profile.getReason());
+			fila.add(13, profile.getLocation());
 			
 			array.add(fila);
 		}
