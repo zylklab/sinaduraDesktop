@@ -86,8 +86,8 @@ import net.esle.sinadura.gui.util.PdfProfile;
 import net.esle.sinadura.gui.util.PreferencesUtil;
 import net.esle.sinadura.gui.util.StatisticsUtil;
 import net.esle.sinadura.gui.view.main.AliasDialog;
+import net.esle.sinadura.gui.view.main.CertSelectorRuntimePreferencesDialog;
 import net.esle.sinadura.gui.view.main.SlotDialog;
-import net.esle.sinadura.gui.view.preferences.CertSelectorRuntimePreferencesDialog;
 
 
 public class SignControllerHelper {

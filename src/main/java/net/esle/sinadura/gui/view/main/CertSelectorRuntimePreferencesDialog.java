@@ -19,7 +19,7 @@
  * # See COPYRIGHT.txt for copyright notices and details. 
  * #
  */
-package net.esle.sinadura.gui.view.preferences;
+package net.esle.sinadura.gui.view.main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +47,7 @@ import net.esle.sinadura.gui.util.HardwareItem;
 import net.esle.sinadura.gui.util.ImagesUtil;
 import net.esle.sinadura.gui.util.LanguageUtil;
 import net.esle.sinadura.gui.util.PreferencesUtil;
+import net.esle.sinadura.gui.view.preferences.SoftwareCertUpdateDialog;
 
 /**
  * @author zylk.net
@@ -105,10 +106,7 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 
 		this.sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
 		this.sShell.setImage(new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
-		this.sShell.setText("Selección del tipo de certificado");
-		
-		// LanguageUtil.getLanguage().getString("slot.dialog.message");
-		
+		this.sShell.setText(LanguageUtil.getLanguage().getString("cert.type.dialog.window.title"));
 
 		GridLayout shellGridLayout = new GridLayout();
 		shellGridLayout.numColumns = 1;
@@ -138,7 +136,7 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 		
 		// label description
 		Label label = new Label(this.compositeMain, SWT.NONE);
-		label.setText("Seleccione el tipo de certificado con el que desea firmar:");
+		label.setText(LanguageUtil.getLanguage().getString("cert.type.dialog.header"));
 		
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.grabExcessHorizontalSpace = true;
@@ -148,12 +146,12 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 
 		// 1- combo select cert
 		Label labelPages = new Label(this.compositeMain, SWT.NONE);
-		labelPages.setText("Tipo de certificado:");
+		labelPages.setText(LanguageUtil.getLanguage().getString("cert.type.dialog.cert.type"));
 
 		comboCertType = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
-		comboCertType.add("Certificado software (pkx, p12...)", 0);
-		comboCertType.add("Tarjeta criptografica (Pkcs11, Opensc...)", 1);
-		comboCertType.add("Almacen de certificados de Windows (CAPI)", 2);
+		comboCertType.add(LanguageUtil.getLanguage().getString("cert.type.dialog.cert.type.soft"), 0);
+		comboCertType.add(LanguageUtil.getLanguage().getString("cert.type.dialog.cert.type.hard"), 1);
+		comboCertType.add(LanguageUtil.getLanguage().getString("cert.type.dialog.cert.type.capi"), 2);
 		
 		comboCertType.addSelectionListener(new SelectionListener() {
 			@Override
@@ -181,7 +179,7 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 		
 		// 2- combo select p12 o pkcs11
 		labelCert = new Label(this.compositeMain, SWT.NONE);
-		labelCert.setText("Certificado:");
+		labelCert.setText(LanguageUtil.getLanguage().getString("cert.type.dialog.cert.name"));
 
 		comboCertPath = new Combo(this.compositeMain, SWT.NONE | SWT.READ_ONLY);
 		
@@ -209,7 +207,7 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 		gd.horizontalSpan = 1;
 		gd.grabExcessHorizontalSpace = false;
 		buttonP12.setLayoutData(gd);
-		buttonP12.setText("Añadir");
+		buttonP12.setText(LanguageUtil.getLanguage().getString("button.add"));
 		buttonP12.setImage(new Image(this.compositeMain.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.ADD_IMG)));
 		buttonP12.addSelectionListener(new ButtonAddP12Listener());
 

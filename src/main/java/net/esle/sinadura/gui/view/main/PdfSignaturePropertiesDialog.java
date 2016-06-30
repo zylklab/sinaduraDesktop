@@ -79,7 +79,7 @@ public class PdfSignaturePropertiesDialog extends Dialog {
 
 		this.sShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
 		this.sShell.setImage(new Image(sShell.getDisplay(), Thread.currentThread().getContextClassLoader().getResourceAsStream(ImagesUtil.SINADURA_LOGO_IMG)));
-		this.sShell.setText(LanguageUtil.getLanguage().getString("preferences.pdf.profile.window.title"));
+		this.sShell.setText(LanguageUtil.getLanguage().getString("pdf.properties.dialog.window.title"));
 
 		GridLayout shellGridLayout = new GridLayout();
 		shellGridLayout.numColumns = 1;
@@ -96,7 +96,7 @@ public class PdfSignaturePropertiesDialog extends Dialog {
 
 		// label
 		Label headerLabel = new Label(headerComposite, SWT.NONE);
-		headerLabel.setText("Seleccione el perfil a utilizar en la firma de los documentos PDF.");
+		headerLabel.setText(LanguageUtil.getLanguage().getString("pdf.properties.dialog.header"));
 		
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -108,7 +108,7 @@ public class PdfSignaturePropertiesDialog extends Dialog {
 		
 		// combo
 		Label labelCert = new Label(headerComposite, SWT.NONE);
-		labelCert.setText("Perfil:");
+		labelCert.setText(LanguageUtil.getLanguage().getString("pdf.properties.dialog.profile"));
 		comboProfile = new Combo(headerComposite, SWT.NONE | SWT.READ_ONLY);
 		
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
