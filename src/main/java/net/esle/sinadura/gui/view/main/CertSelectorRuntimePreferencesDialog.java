@@ -174,7 +174,7 @@ public class CertSelectorRuntimePreferencesDialog extends Dialog {
 		Label label10 = new Label(this.compositeMain, SWT.NONE);
 
 		// TODO set default
-		comboCertType.select(0);
+		comboCertType.select(1);
 		
 		
 		// 2- combo select p12 o pkcs11
