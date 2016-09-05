@@ -14,6 +14,7 @@ REGISTRO DE VERSIONES (para conocer el perfil de cada versión)
 4.1.0 - LantegiBatuak
 4.2.0 - Community (publicada y publicitada)
 5.0.0 - UPV
+5.0.1 - Community
 
 * Las versiones para parlamento se pueden ver en la intranet, y el resto son todas de la Community.
 Y si ademas están en la web pues es que se han publicado.
@@ -74,11 +75,7 @@ Y una vez publicada la versión hay que hacer también a mano:
 - En el pom.xml (core, desktop, ee, ee-interfaces, parent, mityc...)
   - cambiar la versión del producto generado (core y desktop)
   - cambiar la versión de las referencias a sinadura*
-- En el "configuration.properties" (desktop) la propiedad "application.local.version"
-- Modificar el build.properties (estos se usan para algo? el del core? -> si no borrar)
-   @Irune sí se usa, en los build.xml de desktop y core.
-   @Alfredo sí pero esos tampoco se usan. Para la siguiente se borran.
-   @Alfredo borrado el del core. El del dekstop los dejo por si se utilizan en el empaquetado de mac (revisar build.xml). 
+- En el "configuration.properties" (desktop) la propiedad "application.local.version" 
 - Y en el servidor si se publica como nueva version (esto solo para la comunnity. Y para la EE?).
 (http://www.sinadura.net/server)
 
