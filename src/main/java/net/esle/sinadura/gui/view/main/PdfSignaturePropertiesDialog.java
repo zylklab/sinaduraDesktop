@@ -124,7 +124,10 @@ public class PdfSignaturePropertiesDialog extends Dialog {
 			i++;
 		}
 		// combo default
-		comboProfile.setText(pdfProfile.getName());
+		if (pdfProfile != null) {
+			comboProfile.setText(pdfProfile.getName());
+		}
+		
 		comboProfile.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {

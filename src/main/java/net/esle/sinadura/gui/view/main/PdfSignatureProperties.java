@@ -69,7 +69,10 @@ public class PdfSignatureProperties {
 	public PdfSignatureProperties(Composite composite, PdfProfile profile) {
 
 		this.compositeMain = composite;
-		this.pdfProfile = new PdfProfile(profile);
+		
+		if (profile != null) {
+			this.pdfProfile = new PdfProfile(profile);
+		}
 		
 		createContents();
 		
@@ -278,31 +281,33 @@ public class PdfSignatureProperties {
 	
 	private void updateProfile() {
 		
-		checkVisible.setSelection(pdfProfile.getVisible());
-		checkAskPosition.setSelection(pdfProfile.getAskPosition());
-		checkSello.setSelection(pdfProfile.hasImage());
-		textRuta.setText(pdfProfile.getImagePath());
-		
-		switch (pdfProfile.getCertified()) {
-		case PdfSignatureAppearance.CERTIFIED_NO_CHANGES_ALLOWED:
-			this.comboCertified.select(1);
-			break;
-		case PdfSignatureAppearance.CERTIFIED_FORM_FILLING:
-			this.comboCertified.select(2);
-			break;
-		case PdfSignatureAppearance.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS:
-			this.comboCertified.select(3);
-			break;
-		default:
-			this.comboCertified.select(0);
-		}
-		
-		if (pdfProfile.getReason() != null){
-			textReason.setText(pdfProfile.getReason());			
-		}
-		
-		if (pdfProfile.getLocation() != null) {
-			textLocation.setText(pdfProfile.getLocation());	
+		if (pdfProfile != null) {
+			checkVisible.setSelection(pdfProfile.getVisible());
+			checkAskPosition.setSelection(pdfProfile.getAskPosition());
+			checkSello.setSelection(pdfProfile.hasImage());
+			textRuta.setText(pdfProfile.getImagePath());
+			
+			switch (pdfProfile.getCertified()) {
+			case PdfSignatureAppearance.CERTIFIED_NO_CHANGES_ALLOWED:
+				this.comboCertified.select(1);
+				break;
+			case PdfSignatureAppearance.CERTIFIED_FORM_FILLING:
+				this.comboCertified.select(2);
+				break;
+			case PdfSignatureAppearance.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS:
+				this.comboCertified.select(3);
+				break;
+			default:
+				this.comboCertified.select(0);
+			}
+			
+			if (pdfProfile.getReason() != null){
+				textReason.setText(pdfProfile.getReason());			
+			}
+			
+			if (pdfProfile.getLocation() != null) {
+				textLocation.setText(pdfProfile.getLocation());	
+			}
 		}
 	}
 	
