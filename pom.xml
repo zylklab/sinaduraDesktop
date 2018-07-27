@@ -1,11 +1,9 @@
-<project 	xmlns="http://maven.apache.org/POM/4.0.0" 
-			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sinadura</groupId>
 	<artifactId>sinaduraDesktop</artifactId>
 	<name>Sinadura Desktop</name>
-	<version>5.0.2-SNAPSHOT</version>
+	<version>5.0.2</version>
 	<description>El origen de sinadura es un software de escritorio para
 		la firma de pdf mediante firma digital. Un aplicativo multiplataforma
 		y una comunidad que ofrece documentación y servicios de valor añadido.
@@ -30,7 +28,7 @@
     	<connection>scm:git:https://github.com/zylklab/sinaduraDesktop.git</connection>
         <developerConnection>scm:git:https://github.com/zylklab/sinaduraDesktop.git</developerConnection>
         <url>https://github.com/zylklab/sinaduraDesktop</url>
-        <tag>develop</tag>
+        <tag>sinaduraDesktop-5.0.2</tag>
     </scm>
 	
 	
