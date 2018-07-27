@@ -8,6 +8,9 @@ Developers:
 		
 	- Daniel Sánchez Sierra
 		[dsanchez@zylk.net]	[Zylk.net]
+
+	- Douglas C. R. Paes
+		[xxx]			[Community member]
 		
 	
 Contributors:
@@ -32,4 +35,10 @@ Contributors:
 		
 	- Daniel Martín Lambea
 	 	[Community member]	[Contributor v.3.1.0]
+
+        - Douglas C. R. Paes
+                [Community member]      [Contributor v.5.0.2+]
+
+        - Douglas C. R. Paes
+                [Community member]      [Portuguese translator of v.5.0.2+]
 		
