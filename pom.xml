@@ -19,10 +19,20 @@
 		pretende crecer en funcionalidades y servicios.</description>
 	<url>http://www.sinadura.net</url>
 	
+	<!-- 
 	<scm>
    		<connection>scm:svn:https://services.zylk.net/sinadura-repo/sinadura/sinaduraDesktop/trunk</connection>
    		<url>https://services.zylk.net/sinadura-repo/sinadura/sinaduraDesktop/trunk</url>
 	</scm>
+	-->
+	
+	<scm>
+    	<connection>scm:git:https://github.com/zylklab/sinaduraDesktop.git</connection>
+        <developerConnection>scm:git:github.com/zylklab/sinaduraDesktop.git</developerConnection>
+        <url>https://github.com/zylklab/sinaduraDesktop</url>
+        <tag>develop</tag>
+    </scm>
+	
 	
 	<developers>
 		<developer>
