@@ -3,7 +3,7 @@
 	<groupId>sinadura</groupId>
 	<artifactId>sinaduraDesktop</artifactId>
 	<name>Sinadura Desktop</name>
-	<version>5.0.3-SNAPSHOT</version>
+	<version>5.0.4-SNAPSHOT</version>
 	<description>El origen de sinadura es un software de escritorio para
 		la firma de pdf mediante firma digital. Un aplicativo multiplataforma
 		y una comunidad que ofrece documentación y servicios de valor añadido.
@@ -74,6 +74,7 @@
 		<izpack-standalone.version>4.3.2</izpack-standalone.version>
 		<staging-dir>${project.build.directory}/staging</staging-dir>
 		<release.publish.path>/var/www/releases/sinadura</release.publish.path>
+		<release.version>${releaseVersion}</release.version>
 		<!-- PREFERENCIAS de usuario -->
 		<pdf.tipo>0</pdf.tipo>
 		<save.extension>-signed</save.extension>
@@ -416,7 +417,7 @@
 						<configuration>
 							<installFile>${staging-dir}/${izpack-install-file-path}/install.xml</installFile>
 							<baseDir>${staging-dir}</baseDir>
-							<finalName>sinaduraDesktop-${releaseVersion}-unix32-installer</finalName>
+							<finalName>sinaduraDesktop-${release.version}-unix32-installer</finalName>
 						</configuration>
 						<executions>
 							<execution>
@@ -439,11 +440,11 @@
 								<configuration>
 									<tasks>
 										<echo message="Publicando la aplicacion..." />
-										<available file="${release.publish.path}/${releaseVersion}/sinadura-${sinadura.release.id}-${releaseVersion}-unix32-installer.jar" property="isFileAvail" />
+										<available file="${release.publish.path}/${release.version}/sinadura-${sinadura.release.id}-${release.version}-unix32-installer.jar" property="isFileAvail" />
 										<!-- 
 										<fail if="isFileAvail" message="Ya esta publicada" />
 										 -->
-										<copy file="./target/sinaduraDesktop-${releaseVersion}-unix32-installer.jar" tofile="${release.publish.path}/${releaseVersion}/sinadura-${sinadura.release.id}-${releaseVersion}-unix32-installer.jar" overwrite="true" verbose="true" />
+										<copy file="./target/sinaduraDesktop-${release.version}-unix32-installer.jar" tofile="${release.publish.path}/${release.version}/sinadura-${sinadura.release.id}-${release.version}-unix32-installer.jar" overwrite="true" verbose="true" />
 										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
@@ -612,7 +613,7 @@
 						<configuration>
 							<installFile>${staging-dir}/${izpack-install-file-path}/install.xml</installFile>
 							<baseDir>${staging-dir}</baseDir>
-							<finalName>sinaduraDesktop-${releaseVersion}-unix64-installer</finalName>
+							<finalName>sinaduraDesktop-${release.version}-unix64-installer</finalName>
 						</configuration>
 						<executions>
 							<execution>
@@ -635,11 +636,11 @@
 								<configuration>
 									<tasks>
 										<echo message="Publicando la aplicacion..." />
-										<available file="${release.publish.path}/${releaseVersion}/sinadura-${sinadura.release.id}-${releaseVersion}-unix64-installer.jar" property="isFileAvail" />
+										<available file="${release.publish.path}/${release.version}/sinadura-${sinadura.release.id}-${release.version}-unix64-installer.jar" property="isFileAvail" />
 										<!-- 
 										<fail if="isFileAvail" message="Ya esta publicada" />
 										 -->
-										<copy file="./target/sinaduraDesktop-${releaseVersion}-unix64-installer.jar" tofile="${release.publish.path}/${releaseVersion}/sinadura-${sinadura.release.id}-${releaseVersion}-unix64-installer.jar" overwrite="true" verbose="true" />
+										<copy file="./target/sinaduraDesktop-${release.version}-unix64-installer.jar" tofile="${release.publish.path}/${release.version}/sinadura-${sinadura.release.id}-${release.version}-unix64-installer.jar" overwrite="true" verbose="true" />
 										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
@@ -816,7 +817,7 @@
 								<configuration>
 									<dontWrapJar>true</dontWrapJar>
 									<headerType>gui</headerType>
-									<jar>lib/sinaduraDesktop-${releaseVersion}.jar</jar>
+									<jar>lib/sinaduraDesktop-${release.version}.jar</jar>
 									<outfile>${staging-dir}/sinadura.exe</outfile>
 									<chdir>.</chdir>
 									<downloadUrl>http://java.com/download</downloadUrl>
@@ -849,7 +850,7 @@
 						<configuration>
 							<installFile>${staging-dir}/${izpack-install-file-path}/install.xml</installFile>
 							<baseDir>${staging-dir}</baseDir>
-							<finalName>sinaduraDesktop-${releaseVersion}-windows32-installer</finalName>
+							<finalName>sinaduraDesktop-${release.version}-windows32-installer</finalName>
 						</configuration>
 						<executions>
 							<execution>
@@ -875,8 +876,8 @@
 										<echo message="Creating the .exe file." />
 										<exec executable="python" dir="installer/izpack2exe">
 											<arg value="izpack2exe.py" />
-											<arg value="--file=../../target/sinaduraDesktop-${releaseVersion}-windows32-installer.jar" />
-											<arg value="--output=../../target/sinadura-${sinadura.release.id}-${releaseVersion}-windows32-installer.exe" />
+											<arg value="--file=../../target/sinaduraDesktop-${release.version}-windows32-installer.jar" />
+											<arg value="--output=../../target/sinadura-${sinadura.release.id}-${release.version}-windows32-installer.exe" />
 										</exec>
 									</tasks>
 								</configuration>
@@ -890,11 +891,11 @@
 								<configuration>
 									<tasks>
 										<echo message="Publicando la aplicacion..." />
-										<available file="${release.publish.path}/${releaseVersion}/sinadura-${sinadura.release.id}-${releaseVersion}-windows32-installer.exe" property="isFileAvail" />
+										<available file="${release.publish.path}/${release.version}/sinadura-${sinadura.release.id}-${release.version}-windows32-installer.exe" property="isFileAvail" />
 										<!-- 
 										<fail if="isFileAvail" message="Ya esta publicada" />
 										 -->
-										<copy file="./target/sinadura-${sinadura.release.id}-${releaseVersion}-windows32-installer.exe" tofile="${release.publish.path}/${releaseVersion}/sinadura-${sinadura.release.id}-${releaseVersion}-windows32-installer.exe" overwrite="true" verbose="true" />		 
+										<copy file="./target/sinadura-${sinadura.release.id}-${release.version}-windows32-installer.exe" tofile="${release.publish.path}/${release.version}/sinadura-${sinadura.release.id}-${release.version}-windows32-installer.exe" overwrite="true" verbose="true" />		 
 										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
@@ -1063,7 +1064,7 @@
 								<configuration>
 									<dontWrapJar>true</dontWrapJar>
 									<headerType>gui</headerType>
-									<jar>lib/sinaduraDesktop-${releaseVersion}.jar</jar>
+									<jar>lib/sinaduraDesktop-${release.version}.jar</jar>
 									<outfile>${staging-dir}/sinadura.exe</outfile>
 									<chdir>.</chdir>
 									<downloadUrl>http://java.com/download</downloadUrl>
@@ -1096,7 +1097,7 @@
 						<configuration>
 							<installFile>${staging-dir}/${izpack-install-file-path}/install.xml</installFile>
 							<baseDir>${staging-dir}</baseDir>
-							<finalName>sinaduraDesktop-${releaseVersion}-windows64-installer</finalName>
+							<finalName>sinaduraDesktop-${release.version}-windows64-installer</finalName>
 						</configuration>
 						<executions>
 							<execution>
@@ -1122,8 +1123,8 @@
 										<echo message="Creating the .exe file." />
 										<exec executable="python" dir="installer/izpack2exe">
 											<arg value="izpack2exe.py" />
-											<arg value="--file=../../target/sinaduraDesktop-${releaseVersion}-windows64-installer.jar" />
-											<arg value="--output=../../target/sinadura-${sinadura.release.id}-${releaseVersion}-windows64-installer.exe" />
+											<arg value="--file=../../target/sinaduraDesktop-${release.version}-windows64-installer.jar" />
+											<arg value="--output=../../target/sinadura-${sinadura.release.id}-${release.version}-windows64-installer.exe" />
 										</exec>
 									</tasks>
 								</configuration>
@@ -1137,11 +1138,11 @@
 								<configuration>
 									<tasks>
 										<echo message="Publicando la aplicacion..." />
-										<available file="${release.publish.path}/${releaseVersion}/sinadura-${sinadura.release.id}-${releaseVersion}-windows64-installer.exe" property="isFileAvail" />
+										<available file="${release.publish.path}/${release.version}/sinadura-${sinadura.release.id}-${release.version}-windows64-installer.exe" property="isFileAvail" />
 										<!-- 
 										<fail if="isFileAvail" message="Ya esta publicada" />
 										 -->
-										<copy file="./target/sinadura-${sinadura.release.id}-${releaseVersion}-windows64-installer.exe" tofile="${release.publish.path}/${releaseVersion}/sinadura-${sinadura.release.id}-${releaseVersion}-windows64-installer.exe" overwrite="true" verbose="true" />
+										<copy file="./target/sinadura-${sinadura.release.id}-${release.version}-windows64-installer.exe" tofile="${release.publish.path}/${release.version}/sinadura-${sinadura.release.id}-${release.version}-windows64-installer.exe" overwrite="true" verbose="true" />
 										<echo message="Publicacion ok" />
 									</tasks>
 								</configuration>
@@ -1331,14 +1332,14 @@
 								<configuration>
 									<tasks>
 										<echo message="Creating the .tar.gz file" />
-										<tar destfile="./target/sinaduraDesktop-${releaseVersion}-mac.tar">
+										<tar destfile="./target/sinaduraDesktop-${release.version}-mac.tar">
 											<tarfileset dir="./target/staging" />
 											<tarfileset dir="." includes="LICENSE.txt" />
 											<tarfileset dir="." includes="COPYRIGHT.txt" />
 											<tarfileset dir="." includes="changelog.txt" />
 										</tar>
-										<gzip destfile="./target/sinaduraDesktop-${releaseVersion}-mac.tar.gz" src="./target/sinaduraDesktop-${releaseVersion}-mac.tar" />
-										<delete file="./target/sinaduraDesktop-${releaseVersion}-mac.tar" />
+										<gzip destfile="./target/sinaduraDesktop-${release.version}-mac.tar.gz" src="./target/sinaduraDesktop-${release.version}-mac.tar" />
+										<delete file="./target/sinaduraDesktop-${release.version}-mac.tar" />
 									</tasks>
 								</configuration>
 								<goals>
@@ -1554,14 +1555,14 @@
 								<configuration>
 									<tasks>
 										<echo message="Creating the .tar.gz file" />
-										<tar destfile="./target/sinaduraDesktop-${releaseVersion}-mac.tar">
+										<tar destfile="./target/sinaduraDesktop-${release.version}-mac.tar">
 											<tarfileset dir="./target/staging" />
 											<tarfileset dir="." includes="LICENSE.txt" />
 											<tarfileset dir="." includes="COPYRIGHT.txt" />
 											<tarfileset dir="." includes="changelog.txt" />
 										</tar>
-										<gzip destfile="./target/sinaduraDesktop-${releaseVersion}-mac.tar.gz" src="./target/sinaduraDesktop-${releaseVersion}-mac.tar" />
-										<delete file="./target/sinaduraDesktop-${releaseVersion}-mac.tar" />
+										<gzip destfile="./target/sinaduraDesktop-${release.version}-mac.tar.gz" src="./target/sinaduraDesktop-${release.version}-mac.tar" />
+										<delete file="./target/sinaduraDesktop-${release.version}-mac.tar" />
 									</tasks>
 								</configuration>
 								<goals>
