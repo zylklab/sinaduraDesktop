@@ -27,8 +27,8 @@
 	-->
 	
 	<scm>
-    	<connection>scm:git:https://github.com/zylklab/sinaduraDesktop.git</connection>
-        <developerConnection>scm:git:github.com/zylklab/sinaduraDesktop.git</developerConnection>
+    	<connection>scm:git:https://github.com/zylklab/sinaduraDesktop</connection>
+        <developerConnection>scm:git:https://github.com/zylklab/sinaduraDesktop</developerConnection>
         <url>https://github.com/zylklab/sinaduraDesktop</url>
         <tag>develop</tag>
     </scm>
