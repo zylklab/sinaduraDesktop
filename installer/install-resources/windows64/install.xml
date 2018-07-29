@@ -19,7 +19,7 @@
 	<info>
 		<appname>Sinadura</appname>
 		<appsubpath>sinadura</appsubpath>
-		<appversion>${releaseVersionSec}</appversion>
+		<appversion>${project.version}</appversion>
 		<authors>
 			<author name="zylk.net" email="info@zylk.net" />
 		</authors>
