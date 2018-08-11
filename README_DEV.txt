@@ -8,7 +8,7 @@
  		
  	- setear password 
  		/sinaduraDesktop/src/main/resources/config/configuration.properties
- 		zain.p12.password=DEDixpmHLPcFlFck+XSyYg==
+ 		zain.p12.password=
 ___
 
 * maven/eclipse
