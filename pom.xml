@@ -1597,7 +1597,7 @@
 		<dependency>
 			<groupId>sinadura</groupId>
 			<artifactId>sinaduraCore</artifactId>
-			<version>3.3.22</version>
+			<version>3.3.23</version>
 			<exclusions>
 				<exclusion>
 					<groupId>es.mityc.jumbo.adsi</groupId>
