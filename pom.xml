@@ -1598,6 +1598,24 @@
 			<groupId>sinadura</groupId>
 			<artifactId>sinaduraCore</artifactId>
 			<version>3.3.22</version>
+			<exclusions>
+				<exclusion>
+					<groupId>es.mityc.jumbo.adsi</groupId>
+					<artifactId>MITyCLibTSA-sinadura</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>es.mityc.jumbo.adsi</groupId>
+					<artifactId>MITyCLibAPI</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>org.apache.felix.shell</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>

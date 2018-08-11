@@ -35,8 +35,8 @@ Hay que tener en cuenta que si se hace un "release" de un proyecto hay que hacer
 El orden en el que hay que ir realizado este proceso es el siguiente:
  - MITyCLibOCSP-sinadura
  - MITyCLibTSA-sinadura
- - MITyCLibXADES-sinadura
  - xmlsec-mityc-sinadura
+ - MITyCLibXADES-sinadura
  - sinaduraEE-Interface
  - sinaduraCore
  - sinaduraEE
