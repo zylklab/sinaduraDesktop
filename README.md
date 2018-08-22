@@ -1,22 +1,27 @@
 # Sinadura Desktop
 
-## Intro
+## Table of Contents
+- [Introduction](#introduction)
+- [Releases and downloads](#releases-and-downloads)
+- [Build](#build)
+- [Contributors](#contributors)
+- [Links](#links)
+
+## Introduction
 
 Sinadura Desktop is a digital signature desktop tool for Windows and Linux implemented in java. It provides advanced digital signature features such as timestamps, OCSP validation, or digital signature profiles. The application guarantees the integrity, identity and non-repudiation in any file such payslips, contracts or invoices in PDF or other Office formats. Sinadura 5 includes a mini client designed for web applications, as a replacement of applet technology, using a protocol-based system registered in your operating system.
 
-Sinadura Desktop is composed of 6 github repos:
- * [zylklab/MITyCLibOCSP-sinadura](https://github.com/zylklab/MITyCLibOCSP-sinadura) : MITycLibOCSP-sinadura is a library for getting certificates status via OCSP protocol - Online Certifate Status Protocol. 
- * [zylklab/MITyCLibTSA-sinadura](https://github.com/zylklab/MITyCLibTSA-sinadura) : MITycLibTSA-sinadura is a library for managing TSA - Time Stamp Authorities.
+Sinadura Desktop is composed of 6 git repositories:
+ * [zylklab/MITyCLibOCSP-sinadura](https://github.com/zylklab/MITyCLibOCSP-sinadura) : Library for getting certificates status via OCSP protocol - Online Certifate Status Protocol. 
+ * [zylklab/MITyCLibTSA-sinadura](https://github.com/zylklab/MITyCLibTSA-sinadura) : Library for managing TSA - Time Stamp Authorities.
  * [zylklab/xmlsec-mityc-sinadura](https://github.com/zylklab/xmlsec-mityc-sinadura)
- * [zylklab/MITyCLibXADES-sinadura](https://github.com/zylklab/MITyCLibXADES-sinadura) : MITyCLibXADES-sinadura is a library for working with XAdES-type digital signatures, XML metatadata and validation.
+ * [zylklab/MITyCLibXADES-sinadura](https://github.com/zylklab/MITyCLibXADES-sinadura) : Library for working with XAdES-type digital signatures, XML metatadata and validation.
  * [zylklab/sinaduraCore](https://github.com/zylklab/sinaduraCore) : Sinadura Core.
  * [zylklab/sinaduraDesktop](https://github.com/zylklab/sinaduraDesktop) : Sinadura Desktop Interface. 
  
 ## Releases and downloads
 
-The last release is 5.0.9. There exist binary installes for 32 and 64 bits, for both Linux and Windows operating systems.
-
-The directory for old downloads and community releases is located at:
+The last release is 5.0.9. There exist binary installers for 32 and 64 bits, for both Linux and Windows operating systems. The directory for old downloads and community releases is located at:
 
 http://www.sinadura.net/es/community/downloads
 
