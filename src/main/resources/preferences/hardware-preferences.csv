@@ -1,6 +1,7 @@
 key;name;path;so;
 generic;Genérico - OpenSC (32-bit);/usr/lib/opensc-pkcs11.so;linux;
 generic 64b;Genérico - OpenSC (64-bit);/usr/lib64/opensc-pkcs11.so;linux;
+generic 64b;Genérico - OpenSC (64-bit);/usr/lib/x86_64-linux-gnu/opensc-pkcs11.so;linux;
 bit4id 32 bits (izenpe);Izenpe 2012 (32-bit);/usr/lib/libbit4ipki.so;linux;
 bit4id 64 bits (izenpe);Izenpe 2012 (64-bit);/usr/lib64/libbit4ipki.so;linux;
 dnie-oficial;DNIe (Oficial);/usr/lib/libpkcs11-dnie.so;linux;
