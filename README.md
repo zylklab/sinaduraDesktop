@@ -5,6 +5,7 @@
 - [Introduction](#introduction)
 - [Releases and downloads](#releases-and-downloads)
 - [Build](#build)
+- [License](#license)
 - [Contributors](#contributors)
 - [Links and resources](#links-and-resources)
 
@@ -89,6 +90,10 @@ For 64 bits:
 mvn clean pre-integration-test -P Win64,EE
 ```
 If everything goes ok, you should find sinadura-ee-X.X.X-windows64-installer.exe in a generated target directory.
+
+## Licence
+
+Sinadura Desktop is licensed under the GNU GENERAL PUBLIC LICENSE Version 3.
 
 ## Contributors
 
