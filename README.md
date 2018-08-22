@@ -1,5 +1,6 @@
 # Sinadura Desktop
 
+![Sinadura Logo](src/main/resources/images/sinadura.png)
 ## Table of Contents
 - [Introduction](#introduction)
 - [Releases and downloads](#releases-and-downloads)
