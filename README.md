@@ -6,7 +6,7 @@
 - [Releases and downloads](#releases-and-downloads)
 - [Build](#build)
 - [Contributors](#contributors)
-- [Links](#links)
+- [Links and resources](#links-and-resources)
 
 ## Introduction
 
