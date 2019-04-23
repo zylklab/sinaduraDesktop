@@ -42,3 +42,6 @@ Contributors:
         - Douglas C. R. Paes
                 [Community member]      [Portuguese translator of v.5.0.2+]
 		
+	- Natale Tarantino
+		[Community member]      [Italian translator of v.5.0.2+]
+		
