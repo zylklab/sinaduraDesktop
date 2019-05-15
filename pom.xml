@@ -223,7 +223,7 @@
 				<sinadura.release.id>ee-parlamento</sinadura.release.id>
 				<!-- PREFERENCIAS de usuario -->
 				<pdf.tipo>1</pdf.tipo>
-				<save.extension />
+				<save.extension/>
 				<xades.validator.impl>zain</xades.validator.impl>
 				<sign.ocsp.enable>false</sign.ocsp.enable>
 				<!-- CONFIGURACION de la aplicacion -->
@@ -440,13 +440,13 @@
 								<phase>deploy</phase>
 								<configuration>
 									<tasks>
-										<echo message="Publicando la aplicacion..." />
-										<available file="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-unix32-installer.jar" property="isFileAvail" />
+										<echo message="Publicando la aplicacion..."/>
+										<available file="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-unix32-installer.jar" property="isFileAvail"/>
 										<!-- 
 										<fail if="isFileAvail" message="Ya esta publicada" />
 										 -->
-										<copy file="./target/sinaduraDesktop-${project.version}-unix32-installer.jar" tofile="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-unix32-installer.jar" overwrite="true" verbose="true" />
-										<echo message="Publicacion ok" />
+										<copy file="./target/sinaduraDesktop-${project.version}-unix32-installer.jar" tofile="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-unix32-installer.jar" overwrite="true" verbose="true"/>
+										<echo message="Publicacion ok"/>
 									</tasks>
 								</configuration>
 								<goals>
@@ -636,13 +636,13 @@
 								<phase>deploy</phase>
 								<configuration>
 									<tasks>
-										<echo message="Publicando la aplicacion..." />
-										<available file="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-unix64-installer.jar" property="isFileAvail" />
+										<echo message="Publicando la aplicacion..."/>
+										<available file="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-unix64-installer.jar" property="isFileAvail"/>
 										<!-- 
 										<fail if="isFileAvail" message="Ya esta publicada" />
 										 -->
-										<copy file="./target/sinaduraDesktop-${project.version}-unix64-installer.jar" tofile="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-unix64-installer.jar" overwrite="true" verbose="true" />
-										<echo message="Publicacion ok" />
+										<copy file="./target/sinaduraDesktop-${project.version}-unix64-installer.jar" tofile="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-unix64-installer.jar" overwrite="true" verbose="true"/>
+										<echo message="Publicacion ok"/>
 									</tasks>
 								</configuration>
 								<goals>
@@ -825,7 +825,7 @@
 									<icon>${staging-dir}/resources/images/sinadura.ico</icon>
 									<singleInstance>
 										<mutexName>sinadura</mutexName>
-										<windowTitle />
+										<windowTitle/>
 									</singleInstance>
 									<classPath>
 										<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
@@ -874,11 +874,11 @@
 								<phase>pre-integration-test</phase>
 								<configuration>
 									<tasks>
-										<echo message="Creating the .exe file." />
+										<echo message="Creating the .exe file."/>
 										<exec executable="python" dir="installer/izpack2exe">
-											<arg value="izpack2exe.py" />
-											<arg value="--file=../../target/sinaduraDesktop-${project.version}-windows32-installer.jar" />
-											<arg value="--output=../../target/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe" />
+											<arg value="izpack2exe.py"/>
+											<arg value="--file=../../target/sinaduraDesktop-${project.version}-windows32-installer.jar"/>
+											<arg value="--output=../../target/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe"/>
 										</exec>
 									</tasks>
 								</configuration>
@@ -891,13 +891,13 @@
 								<phase>deploy</phase>
 								<configuration>
 									<tasks>
-										<echo message="Publicando la aplicacion..." />
-										<available file="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe" property="isFileAvail" />
+										<echo message="Publicando la aplicacion..."/>
+										<available file="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe" property="isFileAvail"/>
 										<!-- 
 										<fail if="isFileAvail" message="Ya esta publicada" />
 										 -->
-										<copy file="./target/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe" tofile="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe" overwrite="true" verbose="true" />		 
-										<echo message="Publicacion ok" />
+										<copy file="./target/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe" tofile="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-windows32-installer.exe" overwrite="true" verbose="true"/>		 
+										<echo message="Publicacion ok"/>
 									</tasks>
 								</configuration>
 								<goals>
@@ -1072,7 +1072,7 @@
 									<icon>${staging-dir}/resources/images/sinadura.ico</icon>
 									<singleInstance>
 										<mutexName>sinadura</mutexName>
-										<windowTitle />
+										<windowTitle/>
 									</singleInstance>
 									<classPath>
 										<mainClass>net.esle.sinadura.gui.Sinadura</mainClass>
@@ -1121,11 +1121,11 @@
 								<phase>pre-integration-test</phase>
 								<configuration>
 									<tasks>
-										<echo message="Creating the .exe file." />
+										<echo message="Creating the .exe file."/>
 										<exec executable="python" dir="installer/izpack2exe">
-											<arg value="izpack2exe.py" />
-											<arg value="--file=../../target/sinaduraDesktop-${project.version}-windows64-installer.jar" />
-											<arg value="--output=../../target/sinadura-${sinadura.release.id}-${project.version}-windows64-installer.exe" />
+											<arg value="izpack2exe.py"/>
+											<arg value="--file=../../target/sinaduraDesktop-${project.version}-windows64-installer.jar"/>
+											<arg value="--output=../../target/sinadura-${sinadura.release.id}-${project.version}-windows64-installer.exe"/>
 										</exec>
 									</tasks>
 								</configuration>
@@ -1138,13 +1138,13 @@
 								<phase>deploy</phase>
 								<configuration>
 									<tasks>
-										<echo message="Publicando la aplicacion..." />
-										<available file="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-windows64-installer.exe" property="isFileAvail" />
+										<echo message="Publicando la aplicacion..."/>
+										<available file="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-windows64-installer.exe" property="isFileAvail"/>
 										<!-- 
 										<fail if="isFileAvail" message="Ya esta publicada" />
 										 -->
-										<copy file="./target/sinadura-${sinadura.release.id}-${project.version}-windows64-installer.exe" tofile="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-windows64-installer.exe" overwrite="true" verbose="true" />
-										<echo message="Publicacion ok" />
+										<copy file="./target/sinadura-${sinadura.release.id}-${project.version}-windows64-installer.exe" tofile="${release.publish.path}/${project.version}/sinadura-${sinadura.release.id}-${project.version}-windows64-installer.exe" overwrite="true" verbose="true"/>
+										<echo message="Publicacion ok"/>
 									</tasks>
 								</configuration>
 								<goals>
@@ -1332,15 +1332,15 @@
 								<phase>package</phase>
 								<configuration>
 									<tasks>
-										<echo message="Creating the .tar.gz file" />
+										<echo message="Creating the .tar.gz file"/>
 										<tar destfile="./target/sinaduraDesktop-${project.version}-mac.tar">
-											<tarfileset dir="./target/staging" />
-											<tarfileset dir="." includes="LICENSE.txt" />
-											<tarfileset dir="." includes="COPYRIGHT.txt" />
-											<tarfileset dir="." includes="changelog.txt" />
+											<tarfileset dir="./target/staging"/>
+											<tarfileset dir="." includes="LICENSE.txt"/>
+											<tarfileset dir="." includes="COPYRIGHT.txt"/>
+											<tarfileset dir="." includes="changelog.txt"/>
 										</tar>
-										<gzip destfile="./target/sinaduraDesktop-${project.version}-mac.tar.gz" src="./target/sinaduraDesktop-${project.version}-mac.tar" />
-										<delete file="./target/sinaduraDesktop-${project.version}-mac.tar" />
+										<gzip destfile="./target/sinaduraDesktop-${project.version}-mac.tar.gz" src="./target/sinaduraDesktop-${project.version}-mac.tar"/>
+										<delete file="./target/sinaduraDesktop-${project.version}-mac.tar"/>
 									</tasks>
 								</configuration>
 								<goals>
@@ -1555,15 +1555,15 @@
 								<phase>package</phase>
 								<configuration>
 									<tasks>
-										<echo message="Creating the .tar.gz file" />
+										<echo message="Creating the .tar.gz file"/>
 										<tar destfile="./target/sinaduraDesktop-${project.version}-mac.tar">
-											<tarfileset dir="./target/staging" />
-											<tarfileset dir="." includes="LICENSE.txt" />
-											<tarfileset dir="." includes="COPYRIGHT.txt" />
-											<tarfileset dir="." includes="changelog.txt" />
+											<tarfileset dir="./target/staging"/>
+											<tarfileset dir="." includes="LICENSE.txt"/>
+											<tarfileset dir="." includes="COPYRIGHT.txt"/>
+											<tarfileset dir="." includes="changelog.txt"/>
 										</tar>
-										<gzip destfile="./target/sinaduraDesktop-${project.version}-mac.tar.gz" src="./target/sinaduraDesktop-${project.version}-mac.tar" />
-										<delete file="./target/sinaduraDesktop-${project.version}-mac.tar" />
+										<gzip destfile="./target/sinaduraDesktop-${project.version}-mac.tar.gz" src="./target/sinaduraDesktop-${project.version}-mac.tar"/>
+										<delete file="./target/sinaduraDesktop-${project.version}-mac.tar"/>
 									</tasks>
 								</configuration>
 								<goals>
@@ -1671,14 +1671,14 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.5.0</version>
+			<version>2.8.6</version>
 			<type>jar</type>
     		<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.5.0</version>
+			<version>2.8.11.1</version>
 			<type>jar</type>
     		<scope>compile</scope>
 		</dependency>
