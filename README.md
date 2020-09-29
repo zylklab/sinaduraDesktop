@@ -25,7 +25,7 @@ Sinadura Desktop is composed of 6 git repositories:
 
 The last release is 5.0.9. There exist binary installers for 32 and 64 bits, for both Linux and Windows operating systems. The directory for old downloads and community releases is located at:
 
-http://www.sinadura.net/es/community/downloads
+https://github.com/zylklab/sinaduraDesktop/releases/tag/v5.0.9
 
 ```
 3.3.3 - Community 
